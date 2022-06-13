@@ -3,6 +3,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - helm-release.yaml
-  - letsencrypt-prod.yaml
-  - letsencrypt-staging.yaml
-  - cf-token.sops.yaml
+  - issuers
