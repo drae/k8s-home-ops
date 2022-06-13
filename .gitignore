@@ -1,0 +1,21 @@
+# git-secret related
+.env
+
+# sops
+.decrypted~*
+
+# talos.dev core files
+talos/*
+!talos/*.secret
+!talos/overrides.yaml
+!talos/README.md
+
+# kubeconfig from cp
+kubeconfig
+
+# Ansible
+server/ansible/inventory/e2e/hosts.yml
+xanmanning.k3s*
+geerlingguy.nfs*
+mrlesmithjr.*
+node_modules

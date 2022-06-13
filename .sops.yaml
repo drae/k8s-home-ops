@@ -1,0 +1,10 @@
+---
+creation_rules:
+  - path_regex: ansible/.*\.sops\.ya?ml
+    unencrypted_regex: "^(kind)$"
+    pgp: >-
+      4CF588582D481BB5C1927F275BB27F59F87ABCA3
+  - path_regex: cluster/.*\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    pgp: >-
+      4CF588582D481BB5C1927F275BB27F59F87ABCA3

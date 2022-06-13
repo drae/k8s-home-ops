@@ -1,0 +1,28 @@
+#jinja2:lstrip_blocks: True
+---
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  registry: quay.io
+  imagePath: calico
+  calicoNetwork:
+    ipPools:
+    - blockSize: 26
+      cidr: "{{ k3s_server["cluster-cidr"] }}"
+      {% if calico.bgp.enabled is defined and calico.bgp.enabled %}
+      encapsulation: None
+      {% else %}
+      encapsulation: VXLANCrossSubnet
+      {% endif %}
+      natOutgoing: Enabled
+      nodeSelector: all()
+    nodeAddressAutodetectionV4:
+      cidrs:
+        - "{{ calico_node_cidr_v4 }}"
+    nodeAddressAutodetectionV6:
+      cidrs:
+        - "{{ calico_node_cidr_v6 }}"
+  nodeMetricsPort: 9091
+  typhaMetricsPort: 9093

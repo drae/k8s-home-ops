@@ -1,0 +1,49 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: mosquitto
+  namespace: home
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: mosquitto
+      version: 4.3.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/eclipse-mosquitto
+      tag: v2.0.14
+    env:
+      TZ: ${TZ}
+    podSecurityContext:
+      fsGroup: 568
+    podAnnotations:
+      secret.reloader.stakater.com/reload: mosquitto-config
+      backup.velero.io/backup-volumes: data
+    service:
+      main:
+        type: LoadBalancer
+        annotations:
+          coredns.io/hostname: "mqtt.p.lan.${SECRET_DOMAIN}"
+        externalIPs:
+          - "${SVB_LB_MOSQUITO}"
+        externalTrafficPolicy: Local
+    auth:
+      enabled: true
+    persistence:
+      data:
+        enabled: true
+        existingClaim: mosquitto-config
+      configinc:
+        enabled: true
+        type: custom
+        volumeSpec:
+          secret:
+            secretName: mosquitto-config

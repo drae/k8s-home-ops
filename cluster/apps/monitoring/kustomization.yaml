@@ -1,0 +1,11 @@
+---
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - namespace.yaml
+  - vpa
+  - goldilocks
+  #  - kube-prometheus
+  #  - loki
+  #  - generic-rules
+  - botkube
