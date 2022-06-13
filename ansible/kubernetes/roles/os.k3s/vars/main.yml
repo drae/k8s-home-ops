@@ -1,0 +1,67 @@
+---
+# Timezone for the servers
+timezone: "Europe/London"
+
+# Enable to skip apt upgrade
+skip_upgrade_packages: false
+
+# Enable to skip removing crufty packages
+skip_remove_packages: false
+
+# Additional ssh public keys to add to the nodes
+ssh_authorized_keys:
+  - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDIfIVLL+8mVl2rKTh1OASeMT4qIhKqHBUVbGpw8e/EZgR6cTxk64TzEHi69AJULgC6j/VtnAYyOwcVsWWvtGGLkfxMEoHsSRkazpIG/aups+QhoqgYv+Z1/Fux4Scj41CYv+WoIS3Nox1gvVxGosRph1/pftm6RyfzPQudBnjkO2KjinHoGQf5z7eHwZ2g2NAGzqKiR6GqP3WeAJiID/TSRs3uh4XGlfIC/RaAS8jZyj6T7LDFrlTi4LqApZx2RIMlb5JcDTy1H9ddJg5Q2KmtcCNvQYfSc1bcerPbRmxVMAFwfRXc0wMgZ6sgW4t70UkIoHJ+fKNEuxVZALALQD0lPYqOKu0G0pKW43hoCGEoipBwv/SZxwtG5hfdfrHNoiJ5gfz2in6JnfBGHGAaKYMtTQHDmunjka35p5AGdCC5TFcHjzAk5BHDVewHb/H6E3la1HeVOekeU9QPrqKWoTlCCYCZUoF4kxvTK5X0D79nvJIkpSPhtudiyTxV7TKl584lfGug4LHFTm+6aJs6XO0nEKTUVEM9KCNhUJKM5MOGrhuxjtVrzvx8x/JSWB9b0jMc7IzY9vxEwgwbpbnEweQlYOM/UzKR45P1n9ISh0nftRjtaXsOSp07ro9xUB0GM2SgQ4K9vLbvqzNDFgMlQsiBH6MfJSDkS2ceTOclCad2sw== cardno:9 658 488"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnp4n7WX1FgQozEi6qY+E/6y3yg6eqnAdpQHp1MkMTH paul@SURFACEBOOK"
+
+packages:
+  apt_install:
+    - apt-transport-https
+    - arptables
+    - ca-certificates
+    - curl
+    - ebtables
+    - gdisk
+    - hdparm
+    - htop
+    - iputils-ping
+    - ipvsadm
+    - lvm2
+    - net-tools
+    - nfs-common
+    - nano
+    - ntpdate
+    - nvme-cli
+    - open-iscsi
+    - psmisc
+    - smartmontools
+    - socat
+    - software-properties-common
+    - unattended-upgrades
+    - unzip
+    - zfsutils-linux
+
+  apt_remove:
+    - apparmor
+    - apport
+    - bcache-tools
+    - btrfs-progs
+    - byobu
+    - cloud-init
+    - cloud-guest-utils
+    - cloud-initramfs-copymods
+    - cloud-initramfs-dyn-netconf
+    - friendly-recovery
+    - fwupd
+    - landscape-common
+    - lxd-agent-loader
+    - ntfs-3g
+    - open-vm-tools
+    - plymouth
+    - plymouth-theme-ubuntu-text
+    - popularity-contest
+    - snapd
+    - sosreport
+    - tmux
+    - ubuntu-advantage-tools
+    - ufw
+    - bolt

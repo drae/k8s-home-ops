@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-apollo--media
+spec:
+  storageClassName: nfs-apollo--media
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 10.1.10.10
+    path: /mnt/zstore/media
+  mountOptions:
+    - nfsvers=4.1
+    - hard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-apollo--media
+  namespace: downloads
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-apollo--media
+  resources:
+    requests:
+      storage: 1Mi

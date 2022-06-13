@@ -1,0 +1,49 @@
+---
+#
+# Below vars are for the xanmanning.k3s role
+# ...see https://github.com/PyratLabs/ansible-role-k3s#globalcluster-variables
+#
+
+# Use a specific version of k3s
+k3s_release_version: "v1.24.1+k3s1"
+
+# Install using hard links rather than symbolic links.
+# ...if you are using the system-upgrade-controller you will need to use hard links rather than symbolic links as the controller will not be able to follow symbolic links.
+k3s_install_hard_links: true
+
+# Escalate user privileges for all tasks.
+k3s_become: true
+
+# Enable debugging
+k3s_debug: false
+
+# Enabled embedded etcd
+k3s_etcd_datastore: false
+
+# Control Plane registration address
+# ...this is set to my kube-vip address
+k3s_registration_address: 10.1.10.21
+
+# Custom manifest files
+k3s_server_manifests_templates:
+  - "calico/calico-installation.yaml.j2"
+
+# /var/lib/rancher/k3s/server/manifests
+k3s_server_manifests_urls:
+  - url: https://docs.projectcalico.org/archive/v3.21/manifests/tigera-operator.yaml
+    filename: tigera-operator.yaml
+
+# CIDR of the host node interface Calico should use
+calico_node_cidr_v4: 10.1.10.0/23
+calico_node_cidr_v6: 2a02:8010:67cc::/48
+# Enable BGP?
+calico_bgp_enabled: false
+# BGP Peer IP
+# (usually your router IP address)
+calico_bgp_peer_ip: 10.1.10.1
+# BGP Autonomous System Number
+# (must be the same across all BGP peers)
+calico_bgp_as_number: 64512
+# BGP Network you want services to consume
+# (this network should not exist or be defined anywhere in your network)
+calico_bgp_external_ips: 10.1.19.0/24

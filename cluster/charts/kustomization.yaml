@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - node-feature-discovery-charts.yaml
+  - prometheus-community-charts.yaml
+  - metallb-charts.yaml
+  - ingress-nginx-charts.yaml
+  - jetstack-charts.yaml
+  - weaveworks-kured-charts.yaml
+  - k8s-at-home-charts.yaml
+  - infracloudio-charts.yaml
+  - grafana-charts.yaml
+  - stakater-charts.yaml
+  - kubernetes-sigs-descheduler-charts.yaml
+  - lwolf-charts.yaml
+  - k8s-gateway-charts.yaml
+  - emberstack-reflector-charts.yaml
+  - vmware-tanzu-charts.yaml
+  - metrics-server-charts.yaml
+  - fairwinds-charts.yaml
+  - xunholy-charts.yaml
+  - kasten-charts.yaml
+  - aqua-charts.yaml

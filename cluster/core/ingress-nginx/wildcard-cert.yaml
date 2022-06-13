@@ -1,0 +1,27 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "${SECRET_DOMAIN/./-}"
+  namespace: ingress-nginx
+  annotations:
+    reflector.v1.k8s.emberstack.com/secret-reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/secret-reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/secret-reflection-auto-namespaces: "media"
+spec:
+  secretName: "${SECRET_DOMAIN/./-}-tls"
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: "${SECRET_DOMAIN}"
+  dnsNames:
+    - "${SECRET_DOMAIN}"
+    - "*.${SECRET_DOMAIN}"
+    - "*.lan.${SECRET_DOMAIN}"
+    - "*.p.lan.${SECRET_DOMAIN}"
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: "${SECRET_DOMAIN}-pkcs12"
+        key: password-key

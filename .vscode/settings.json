@@ -1,0 +1,17 @@
+{
+    "ansible.ansibleLint.arguments": "-c .github/linters/.ansible-lint",
+    "files.associations": {
+        "*.json5": "jsonc",
+        "**/ansible/**/*.yml": "ansible",
+        "**/ansible/**/*.sops.yml": "yaml",
+        "**/ansible/**/inventory/**/*.yml": "yaml",
+    },
+    "material-icon-theme.folders.associations": {
+        ".taskfiles": "utils",
+    },
+    "prettier.configPath": ".github/linters/.prettierrc.yaml",
+    "prettier.ignorePath": ".github/linters/.prettierignore",
+    "yaml.schemas": {
+        "Kubernetes": "cluster/*.yaml"
+    }
+}

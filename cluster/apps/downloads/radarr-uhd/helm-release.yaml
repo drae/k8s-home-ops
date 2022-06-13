@@ -1,0 +1,72 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app radarr-uhd
+  namespace: downloads
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: kah-common-chart
+      version: 1.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+  values:
+    global:
+      nameOverride: *app
+    image:
+      repository: ghcr.io/k8s-at-home/radarr
+      tag: v4.1.0.6175
+    env:
+      TZ: "${TZ}"
+    podAnnotations:
+      setGateway: "true"
+    service:
+      main:
+        ports:
+          http:
+            port: 7878
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        annotations:
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header Accept-Encoding "";
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.p.lan.${SECRET_DOMAIN}/css/base/radarr/nord.css"></head>';
+            sub_filter_once on;
+        hosts:
+          - host: &host "radarr-uhd.p.lan.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+    podSecurityContext:
+      fsGroup: 568
+    metrics:
+      enabled: true
+      serviceMonitor:
+        interval: 3m
+        scrapeTimeout: 1m
+    persistence:
+      config:
+        enabled: true
+        existingClaim: radarr-uhd-config
+      media:
+        enabled: true
+        existingClaim: nfs-apollo--media
+        mountPath: /mnt/media/
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
