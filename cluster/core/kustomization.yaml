@@ -7,6 +7,6 @@ resources:
   - cert-manager
   - vpn-gateway
   - ingress-nginx
-  - cf-tunnel
+  - cloudflared
   - node-feature-discovery
   - intel-gpu-plugin
