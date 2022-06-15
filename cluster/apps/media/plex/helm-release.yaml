@@ -26,7 +26,7 @@ spec:
     global:
       nameOverride: *app
     image:
-      repository: ghcr.io/drae/container-images/plex
+      repository: ghcr.io/drae/plex
       tag: v1.27.0.5897-3940636f2
     env:
       TZ: "${TZ}"
