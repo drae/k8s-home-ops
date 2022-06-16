@@ -21,7 +21,7 @@ spec:
       namespace: home
   values:
     image:
-      repository: ghcr.io/koenkk/zigbee2mqtt
+      repository: docker.io/koenkk/zigbee2mqtt
       tag: 1.25.2
     env:
       TZ: ${TZ}
