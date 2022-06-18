@@ -21,3 +21,4 @@ resources:
   - xunholy-charts.yaml
   - kasten-charts.yaml
   - aqua-charts.yaml
+  - bitnami-charts.yaml
