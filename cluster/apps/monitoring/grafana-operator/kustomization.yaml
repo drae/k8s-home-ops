@@ -1,0 +1,8 @@
+---
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - helm-release.yaml
+#  - grafana-instance-secret.sops.yaml
+#  - grafana-instance.yaml
+#  - grafana-dashboards.yaml

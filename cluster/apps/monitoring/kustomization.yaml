@@ -9,3 +9,4 @@ resources:
   #  - loki
   #  - generic-rules
   - botkube
+  - grafana-operator

@@ -1,0 +1,36 @@
+apiVersion: integreatly.org/v1alpha1
+kind: Grafana
+metadata:
+  name: mygrafana
+  namespace: monitoring
+spec:
+  deployment:
+    skipCreateAdminAccount: true
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    annotations:
+      nginx.ingress.kubernetes.io/affinity: "cookie"
+      nginx.ingress.kubernetes.io/session-cookie-name: "mygrafana"
+      nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+      nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+    hostname: &host "grafana.p.lan.${SECRET__DOMAIN}"
+    path: /
+    pathType: Prefix
+    tlsSecret: *host
+  config:
+    server:
+      root_url: "https://grafana.p.lan.${SECRET__DOMAIN}"
+    paths:
+      data: /var/lib/grafana/data
+      logs: /var/log/grafana
+      provisioning: /etc/grafana/provisioning
+    analytics:
+      check_for_updates: false
+    log:
+      mode: console
+    auth.anonymous:
+      enabled: True
+  dashboardLabelSelector:
+    - matchExpressions:
+        - {key: app, operator: In, values: [grafana-mon]}
