@@ -20,7 +20,7 @@ spec:
   values:
     image:
       repository: cloudflare/cloudflared
-      tag: "2022.6.2"
+      tag: "2022.6.3"
     cloudflared:
       # Tunnel ID should be unique per instance of running cloudflared
       tunnelID: cfe0d676-2bcf-4cc9-9b9c-820ca86e3602
