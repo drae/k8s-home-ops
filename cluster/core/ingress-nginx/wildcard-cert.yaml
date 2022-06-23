@@ -19,9 +19,3 @@ spec:
     - "*.${SECRET_DOMAIN}"
     - "*.lan.${SECRET_DOMAIN}"
     - "*.p.lan.${SECRET_DOMAIN}"
-  keystores:
-    pkcs12:
-      create: true
-      passwordSecretRef:
-        name: "${SECRET_DOMAIN}-pkcs12"
-        key: password-key
