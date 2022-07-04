@@ -2,6 +2,7 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
-  - https://raw.githubusercontent.com/openebs/zfs-localpv/master/deploy/zfs-operator.yaml
+  - namespace.yaml
+  - helm-release.yaml
   - storage-class.yaml
   - snapshot-class.yaml
