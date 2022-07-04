@@ -34,6 +34,11 @@ spec:
       tag: 10.8.1@sha256:23bba35fdbebc32705953fb5d210c4eab50a5cca39efcd65a5533067eb43a1ba
     env:
       TZ: "${TZ}"
+    podSecurityContext:
+      fsGroup: 568
+      supplementalGroups:
+        - 44
+        - 109
     service:
       main:
         type: LoadBalancer
@@ -55,10 +60,6 @@ spec:
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      supplementalGroups:
-        - 44
-        - 109
     persistence:
       config:
         enabled: true
@@ -132,5 +133,5 @@ spec:
         cpu: 100m
         memory: 1000Mi
       limits:
-        gpu.intel.com/i915: 1
+        #        gpu.intel.com/i915: 1
         memory: 6000Mi
