@@ -15,7 +15,7 @@ clusterSvcNets:
 cniConfig:
   name: custom
   urls:
-    - https://raw.githubusercontent.com/drae/gitops-starstreak.net/talos/cni/install.yaml
+    - https://raw.githubusercontent.com/drae/gitops-starstreak.net/main/talos/cni/install.yaml
 
 nodes:
   - hostname: kube-cp-01
