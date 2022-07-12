@@ -101,6 +101,8 @@ controlPlane:
       serviceAccount:
         key: ${k8sServiceAccountKey}
       token: ${clusterToken}
+      extraManifests:
+        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.5.1/deploy/ha-install.yaml
 
     machine:
       ca:
