@@ -4,12 +4,6 @@
 # sops
 .decrypted~*
 
-# talos.dev core files
-talos/*
-!talos/*.secret
-!talos/overrides.yaml
-!talos/README.md
-
 # kubeconfig from cp
 kubeconfig
 
