@@ -3,5 +3,6 @@ kind: Namespace
 metadata:
   name: home
   labels:
-    app: home
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
     goldilocks.fairwinds.com/enabled: "true"
