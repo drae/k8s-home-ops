@@ -9,7 +9,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: openebs-zfspv
+  storageClassName: rook-ceph-block
   resources:
     requests:
       storage: 10Gi
