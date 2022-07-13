@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.rook.io/release
       chart: rook-ceph-cluster
-      version: v1.9.7
+      version: v1.8.9
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
@@ -118,8 +118,6 @@ spec:
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-rbdplugin-snapclass
-      annotations:
-        k10.kasten.io/is-snapshot-class: "true"
     cephBlockPools:
       - name: replicapool
         spec:
