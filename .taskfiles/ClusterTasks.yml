@@ -98,3 +98,56 @@ tasks:
               "restartPolicy": "Never"
             }
           }'
+
+  rook-ceph-toolbox:
+    desc: Exec into the Rook Ceph toolbox
+    cmds:
+      - kubectl -n rook-ceph exec -it (kubectl -n rook-ceph get pod -l "app=rook-direct-mount" -o jsonpath='{.items[0].metadata.name}') bash
+    silent: true
+
+  rook-password:
+    desc: Retrieve the rook-ceph password
+    cmds:
+      - kubectl -n rook-ceph get secret rook-ceph-dashboard-password -o jsonpath="{['data']['password']}" | base64 --decode && echo
+
+  talos-apply:
+    desc: Apply manifests to talos nodes
+    cmds:
+      - talosctl -n 10.8.20.30 apply-config -f k8s/talos/hegira/machineConfigs/leela.yaml --insecure
+      - talosctl -n 10.8.20.40 apply-config -f k8s/talos/hegira/machineConfigs/xerxes.yaml --insecure
+      - talosctl -n 10.8.20.42 apply-config -f k8s/talos/hegira/machineConfigs/shodan.yaml --insecure
+      - talosctl -n 10.8.20.44 apply-config -f k8s/talos/hegira/machineConfigs/icarus.yaml --insecure
+
+  bootstrap-wipe-rook:
+    desc: Wipe rook disks in talos
+    cmds:
+      - kubectl apply -f tools/wipe-rook.yaml
+
+  git-check-yaml:
+    desc: Check yaml for kustomize/kube errors
+    cmds:
+      - git diff --name-only origin/main.. | grep --color kustomization.yaml | sed 's/kustomization.yaml//' | xargs -I{} kustomize build {}
+      - git diff --name-only origin/main.. | grep --color .yaml | xargs cat | kubectl apply -f - --dry-run=server
+
+  bootstrap-sops:
+    desc: Bootstrap cluster
+    cmds:
+      - kubectl create ns flux-system
+      - cat ~/.config/sops/age/keys.txt | kubectl -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
+
+  bootstrap-flux:
+    desc: Bootstrap flux (as per version in manifest)
+    cmds:
+      - yq '.spec.ref.tag' k8s/global/flux/repositories/git/flux.yaml | xargs -I{} flux install --version={} --export | kubectl apply -f -
+
+  nfs-deps-pause:
+    desc: Pause all Helm Releases that rely on NFS storage
+    cmds:
+      - flux suspend hr -n media plex
+      - kubectl scale -n media deploy/plex --replicas 0
+
+  nfs-deps-resume:
+    desc: Resume all Helm Releases that rely on NFS storage
+    cmds:
+      - flux resume hr -n media plex
+      - kubectl scale -n media deploy/plex --replicas 1
