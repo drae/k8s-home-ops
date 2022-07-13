@@ -20,3 +20,4 @@ resources:
   - fairwinds-charts.yaml
   - xunholy-charts.yaml
   - aqua-charts.yaml
+  - rook-ceph.yaml
