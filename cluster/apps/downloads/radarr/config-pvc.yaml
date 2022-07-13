@@ -4,12 +4,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: radarr-config
   namespace: downloads
-  labels:
-    kasten.io/backup-volume: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: openebs-zfspv
+  storageClassName: rook-ceph-block
   resources:
     requests:
       storage: 10Gi
