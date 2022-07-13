@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   name: rook-ceph
   labels:
+    pod-security.kubernetes.io/enforce: privileged
     kustomize.toolkit.fluxcd.io/prune: disabled
     goldilocks.fairwinds.com/enabled: "true"
     k10.kasten.io/ignorebackuppolicy: "true"
