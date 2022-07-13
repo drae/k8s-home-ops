@@ -21,7 +21,7 @@ nodes:
   - hostname: kube-cp-01
     ipAddress: 10.1.10.21
     controlPlane: true
-    installDisk: /dev/nvme0n1
+    installDisk: /dev/nvme1n1
     nameservers:
       - 10.1.10.1
     networkInterfaces:
@@ -82,7 +82,7 @@ controlPlane:
       path: /machine/kubelet/extraArgs
       value:
         feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true,EphemeralContainers=true,ServerSideApply=true
-        rotate-server-certificates: "true"
+        rotate-server-certificates: "false"
 
   inlinePatch:
     cluster:
@@ -138,7 +138,7 @@ worker:
       path: /machine/kubelet/extraArgs
       value:
         feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true,EphemeralContainers=true,ServerSideApply=true
-        rotate-server-certificates: "true"
+        rotate-server-certificates: "false"
 
   inlinePatch:
     cluster:
