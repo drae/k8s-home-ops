@@ -128,7 +128,7 @@ spec:
           enabled: true
           name: rook-ceph-block
           isDefault: true
-          reclaimPolicy: retain
+          reclaimPolicy: Retain
           allowVolumeExpansion: true
           parameters:
             imageFormat: "2"
