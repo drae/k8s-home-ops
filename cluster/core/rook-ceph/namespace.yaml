@@ -5,6 +5,5 @@ metadata:
   name: rook-ceph
   labels:
     pod-security.kubernetes.io/enforce: privileged
-    kustomize.toolkit.fluxcd.io/prune: disabled
+    pod-security.kubernetes.io/enforce-version: latest
     goldilocks.fairwinds.com/enabled: "true"
-    k10.kasten.io/ignorebackuppolicy: "true"
