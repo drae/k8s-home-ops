@@ -44,6 +44,8 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
+      bluefs_buffered_io = false
+      mon_warn_on_pool_no_redundancy = false
     cephClusterSpec:
       mon:
         count: 1
