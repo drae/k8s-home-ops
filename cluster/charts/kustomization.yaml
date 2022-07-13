@@ -21,3 +21,4 @@ resources:
   - xunholy-charts.yaml
   - aqua-charts.yaml
   - rook-ceph.yaml
+  - cilium-charts.yaml
