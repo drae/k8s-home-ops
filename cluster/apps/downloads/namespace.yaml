@@ -3,6 +3,5 @@ kind: Namespace
 metadata:
   name: downloads
   labels:
-    app: downloads
-    routed-gateway: "true"
+    #    routed-gateway: "true"
     goldilocks.fairwinds.com/enabled: "true"
