@@ -7,5 +7,6 @@ resources:
   #  - goldilocks
   - kube-prometheus
   #  - loki
-  #  - generic-rules
+  - grafana
+  - generic-rules
   - botkube
