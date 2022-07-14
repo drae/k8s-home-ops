@@ -5,7 +5,7 @@ resources:
   - namespace.yaml
   #  - vpa
   #  - goldilocks
-  #  - kube-prometheus
+  - kube-prometheus
   #  - loki
   #  - generic-rules
   - botkube
