@@ -26,6 +26,7 @@ spec:
     alertmanager:
       config:
         global:
+          slack_api_url: "${SECRET_DISCORD_PROMETHEUS_WEBHOOK}"
           resolve_timeout: 5m
         receivers:
           - name: "null"
