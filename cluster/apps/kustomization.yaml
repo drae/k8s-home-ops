@@ -7,7 +7,6 @@ resources:
   #  - starboard-system
   - kube-system
   - flux-system
-  #  - system-upgrade
   - downloads
   - media
   - home
