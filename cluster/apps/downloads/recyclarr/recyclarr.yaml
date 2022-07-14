@@ -74,6 +74,7 @@ radarr:
           - 26fa26253af4001701fedb56cec376dc # HQ-Webdl
           - 5153ec7413d9dae44e24275589b5e944 # BHDStudio
           - e7718d7a3ce595f289bfee26adc178f5 # Repack/Proper
+          - ae43b294509409a6a13919dedd4764c4 # Repack2
           - ed38b889b31be83fda192888e2286d83 # BR-DISK -10000
           - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) -10000
           - 90a6f9a284dff5103f6346090e6280c8 # LQ -10000
@@ -82,6 +83,7 @@ radarr:
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup removed do avoid multiple downloads
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) without fallback to HDR -10000
+          - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - 10000
         quality_profiles:
           - name: HD_REMUX
             reset_unmatched_scores: true
@@ -146,6 +148,7 @@ radarr:
           - 4da96773192a51cf96178212642ca3bb # UHD (LEGi0N)
           - ac49fdbf6a662d380556f40ff4856f29 # UHD (WEBDV)
           - e7718d7a3ce595f289bfee26adc178f5 # Repack
+          - ae43b294509409a6a13919dedd4764c4 # Repack2
           - ed38b889b31be83fda192888e2286d83 # BR-DISK -10000
           - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) -10000
           - 90a6f9a284dff5103f6346090e6280c8 # LQ -10000
@@ -154,6 +157,7 @@ radarr:
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup removed do avoid multiple downloads
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) without fallback to HDR -10000
+          - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - 100000
         quality_profiles:
           - name: UHD
             reset_unmatched_scores: true
