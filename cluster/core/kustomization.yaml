@@ -5,7 +5,7 @@ resources:
   - metallb
   - rook-ceph
   - cert-manager
-  - vpn-gateway
+  #  - vpn-gateway
   - ingress-nginx
   - cloudflared
   - node-feature-discovery
