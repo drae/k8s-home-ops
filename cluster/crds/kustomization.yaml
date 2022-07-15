@@ -7,3 +7,4 @@ resources:
   - external-snapshotter
   - kube-prometheus-stack
   - system-upgrade-controller
+  - kyverno
