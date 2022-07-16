@@ -3,5 +3,7 @@ kind: Namespace
 metadata:
   name: downloads
   labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
     #    routed-gateway: "true"
     goldilocks.fairwinds.com/enabled: "true"
