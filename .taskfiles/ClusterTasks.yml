@@ -69,8 +69,8 @@ tasks:
                 {
                   "name": "backups",
                   "nfs": {
-                    "server": '{{.NAS_ADDRESS | default "expanse"}}',
-                    "path": '{{.NAS_PATH | default "/tycho/Apps/External/Backups"}}'
+                    "server": '{{.NAS_ADDRESS | default "10.1.10.110"}}',
+                    "path": '{{.NAS_PATH | default "/mnt/zstore/backups/kube-cluster"}}'
                   }
                 },
                 {
@@ -113,10 +113,9 @@ tasks:
   talos-apply:
     desc: Apply manifests to talos nodes
     cmds:
-      - talosctl -n 10.8.20.30 apply-config -f k8s/talos/hegira/machineConfigs/leela.yaml --insecure
-      - talosctl -n 10.8.20.40 apply-config -f k8s/talos/hegira/machineConfigs/xerxes.yaml --insecure
-      - talosctl -n 10.8.20.42 apply-config -f k8s/talos/hegira/machineConfigs/shodan.yaml --insecure
-      - talosctl -n 10.8.20.44 apply-config -f k8s/talos/hegira/machineConfigs/icarus.yaml --insecure
+      - talosctl -n 10.1.10.21 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-01.yaml --insecure
+      - talosctl -n 10.8.20.22 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-02.yaml --insecure
+      - talosctl -n 10.8.20.23 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-03.yaml --insecure
 
   bootstrap-wipe-rook:
     desc: Wipe rook disks in talos
