@@ -58,43 +58,32 @@ spec:
                       - name: backup
                         image: ghcr.io/onedr0p/kopia:0.11.3@sha256:2ae9ede0edac68c09d517abd71fa12c96efcf19f27ce7ffca968cebb10ed0e2d
                         env:
-                          - name: APP
-                            value: "{{ appName }}"
-                          - name: BACKUP_DIR
-                            value: /data/backups/\$(APP)
                           - name: KOPIA_CACHE_DIRECTORY
-                            value: \$(BACKUP_DIR)/cache
+                            value: /data/backups/{{ appName }}/cache
                           - name: KOPIA_LOG_DIR
-                            value: \$(BACKUP_DIR)/logs
+                            value: /data/backups/{{ appName }}/logs
                           - name: KOPIA_PASSWORD
                             value: "none"
                         command:
                           - /bin/bash
                           - -c
                           - |-
-                            printf "\e[1;34m%-6s\e[m\n" "[01/10] Setting up directories ..."         && mkdir -p "\$(BACKUP_DIR)"/{cache,logs,repo}
-                            printf "\e[1;34m%-6s\e[m\n" "[02/10] Creating kopia repository ..."      && [[ ! -f "\$(BACKUP_DIR)/repo/kopia.repository.f" ]] && kopia repository create filesystem --path="\$(BACKUP_DIR)/repo"
-                            printf "\e[1;34m%-6s\e[m\n" "[03/10] Connecting to kopia repository ..." && kopia repository connect filesystem --path="\$(BACKUP_DIR)/repo" --override-hostname=cluster --override-username=cronjob
-                            printf "\e[1;34m%-6s\e[m\n" "[04/10] Setting kopia policies ..."         && kopia policy set "\$(BACKUP_DIR)/repo" --compression=zstd --keep-latest 14 --keep-hourly 0 --keep-daily 7 --keep-weekly 2 --keep-monthly 0 --keep-annual 0
-                            printf "\e[1;34m%-6s\e[m\n" "[05/10] Freezing config volume ..."         && fsfreeze --freeze /data/config
-                            printf "\e[1;34m%-6s\e[m\n" "[06/10] Backing up config volume ..."       && kopia snapshot create /data/config
-                            printf "\e[1;34m%-6s\e[m\n" "[07/10] Unfreezing config volume ..."       && fsfreeze --unfreeze /data/config
-                            printf "\e[1;34m%-6s\e[m\n" "[08/10] Listing snapshots ..."              && kopia snapshot list
-                            printf "\e[1;34m%-6s\e[m\n" "[09/10] Printing stats ..."                 && kopia content stats
-                            printf "\e[1;34m%-6s\e[m\n" "[10/10] Disconnecting from kopia repo ..."  && kopia repository disconnect
+                            printf "\e[1;32m%-6s\e[m\n" "[01/09] Create repo ..."          && [[ ! -f /data/backups/kopia.repository.f ]] && kopia repository create filesystem --path=/data/backups
+                            printf "\e[1;32m%-6s\e[m\n" "[02/09] Connect to repo ..."      && kopia repo connect filesystem --path=/data/backups --override-hostname=cluster --override-username=root
+                            printf "\e[1;32m%-6s\e[m\n" "[03/09] Set policies ..."         && kopia policy set /{{ appName }} --compression=zstd --keep-latest 14 --keep-hourly 0 --keep-daily 7 --keep-weekly 2 --keep-monthly 0 --keep-annual 0
+                            printf "\e[1;32m%-6s\e[m\n" "[04/09] Freeze config vol ..."    && fsfreeze -f /{{ appName }}
+                            printf "\e[1;32m%-6s\e[m\n" "[05/09] Back up config vol ..."   && kopia snap create /{{ appName }}
+                            printf "\e[1;32m%-6s\e[m\n" "[06/09] Unfreeze config vol ..."  && fsfreeze -u /{{ appName }}
+                            printf "\e[1;32m%-6s\e[m\n" "[07/09] List snaps ..."           && kopia snap list /{{ appName }}
+                            printf "\e[1;32m%-6s\e[m\n" "[08/09] Show stats ..."           && kopia content stats
+                            printf "\e[1;32m%-6s\e[m\n" "[09/09] Disconnect from repo ..." && kopia repo disconnect
                         volumeMounts:
                           - name: config
-                            mountPath: /data/config
+                            mountPath: "/{{ appName }}"
                           - name: backups
                             mountPath: /data/backups
                         securityContext:
-                          readOnlyRootFilesystem: true
-                          runAsGroup: 0
-                          runAsNonRoot: false
-                          runAsUser: 0
                           privileged: true
-                        podSecurityContext:
-                          fsGroup: 0
                     volumes:
                       - name: config
                         persistentVolumeClaim:
@@ -102,7 +91,7 @@ spec:
                       - name: backups
                         nfs:
                           server: "${IP_ADDR_LAN_NAS}"
-                          path: /mnt/zstore/backups
+                          path: /mnt/zstore/backups/kube-cluster
                     affinity:
                       podAffinity:
                         requiredDuringSchedulingIgnoredDuringExecution:
