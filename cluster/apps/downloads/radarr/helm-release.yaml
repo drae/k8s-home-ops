@@ -20,6 +20,9 @@ spec:
   values:
     global:
       nameOverride: *app
+    controller:
+      labels:
+        pmb.home.arpa/backup-claim: &claimName "radarr-config"
     image:
       repository: ghcr.io/k8s-at-home/radarr
       tag: v4.1.0.6175

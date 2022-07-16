@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: &app home-assistant
   namespace: home
 spec:
   interval: 5m
@@ -19,6 +19,11 @@ spec:
   install:
     createNamespace: true
   values:
+    global:
+      nameOverride: *app
+    controller:
+      labels:
+        pmb.home.arpa/backup-claim: &claimName "home-assistant-config"
     image:
       repository: ghcr.io/home-assistant/home-assistant
       tag: 2022.7.5
