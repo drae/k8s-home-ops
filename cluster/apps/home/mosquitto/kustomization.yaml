@@ -4,3 +4,10 @@ resources:
   - config-pvc.yaml
   - secret.sops.yaml
   - helm-release.yaml
+namespace: home
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+  - name: mqtt-conf
+    files:
+      - mqtt.conf
