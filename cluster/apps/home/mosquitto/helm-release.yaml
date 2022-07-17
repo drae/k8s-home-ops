@@ -40,10 +40,14 @@ spec:
     persistence:
       data:
         enabled: true
-        existingClaim: mosquitto-config
+        existingClaim: mosquitto-data
       configinc:
         enabled: true
-        type: custom
-        volumeSpec:
-          secret:
-            secretName: mosquitto-config
+        type: configMap
+        mountPath: /mosquitto/configinc
+        name: mqtt-conf
+      mosquitto-pwd:
+        enabled: true
+        type: secret
+        mountPath: /mosquitto/configinc/auth
+        name: mosquitto-pwd
