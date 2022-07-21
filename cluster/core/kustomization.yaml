@@ -6,8 +6,8 @@ resources:
   - metallb
   - rook-ceph
   - cert-manager
-  - vpn-gateway
   - ingress-nginx
   - cloudflared
   - node-feature-discovery
   - intel-gpu-plugin
+  # - vpn-gateway
