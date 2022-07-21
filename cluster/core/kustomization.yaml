@@ -10,4 +10,5 @@ resources:
   - cloudflared
   - node-feature-discovery
   - intel-gpu-plugin
+  - kyverno
   # - vpn-gateway
