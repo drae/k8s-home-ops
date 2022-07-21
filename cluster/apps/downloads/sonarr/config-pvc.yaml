@@ -5,7 +5,9 @@ metadata:
   name: sonarr-config
   namespace: downloads
   labels:
-    kasten.io/backup-volume: "enabled"
+    app.kubernetes.io/name: &name sonarr
+    app.kubernetes.io/instance: *name
+    policy.home.arpa/snapshot: "true"
 spec:
   accessModes:
     - ReadWriteOnce

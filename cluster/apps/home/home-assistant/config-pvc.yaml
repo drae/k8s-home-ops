@@ -5,7 +5,9 @@ metadata:
   name: home-assistant-config
   namespace: home
   labels:
-    kasten.io/backup-volume: "enabled"
+    app.kubernetes.io/name: &name home-assistant
+    app.kubernetes.io/instance: *name
+    policy.home.arpa/snapshot: "true"
 spec:
   accessModes:
     - ReadWriteOnce
