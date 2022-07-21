@@ -2,11 +2,11 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
-  - default
-  - monitoring
-  #  - starboard-system
+  - calico-system
   - kube-system
   - flux-system
+  - default
+  - monitoring
   - downloads
   - media
   - home
