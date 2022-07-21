@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tigera-operator
+helmCharts:
+  - name: tigera-operator
+    repo: https://projectcalico.docs.tigera.io/charts
+    version: 3.23.2
+    releaseName: tigera-operator
+    namespace: tigera-operator
+    valuesFile: values.yaml
+commonAnnotations:
+  meta.helm.sh/release-name: tigera-operator
+  meta.helm.sh/release-namespace: tigera-operator
+commonLabels:
+  app.kubernetes.io/managed-by: Helm

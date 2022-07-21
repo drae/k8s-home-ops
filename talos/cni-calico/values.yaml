@@ -1,0 +1,20 @@
+---
+installation:
+  enabled: true
+  calicoNetwork:
+    ipPools:
+      - blockSize: 26
+        cidr: 10.200.0.0/16
+        encapsulation: VXLANCrossSubnet
+        natOutgoing: Enabled
+        nodeSelector: all()
+    linuxDataplane: Iptables
+    multiInterfaceMode: None
+    nodeAddressAutodetectionV4:
+      cidrs:
+        - 10.1.10.0/24
+  nodeMetricsPort: 9091
+  typhaMetricsPort: 9093
+
+apiServer:
+  enabled: true
