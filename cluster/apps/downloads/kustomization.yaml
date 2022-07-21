@@ -9,4 +9,5 @@ resources:
   - sonarr-uhd
   - radarr
   - radarr-uhd
+  - lidarr
   - recyclarr
