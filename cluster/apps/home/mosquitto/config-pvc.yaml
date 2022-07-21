@@ -4,6 +4,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: mosquitto-data
   namespace: home
+  labels:
+    app.kubernetes.io/name: &name mosquitto
+    app.kubernetes.io/instance: *name
+    policy.home.arpa/snapshot: "true"
 spec:
   accessModes:
     - ReadWriteOnce
