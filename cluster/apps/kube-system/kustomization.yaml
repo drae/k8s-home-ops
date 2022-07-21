@@ -6,5 +6,3 @@ resources:
   - reloader
   - kube-cleanup-operator
   - reflector
-  - kyverno
-  - policies
