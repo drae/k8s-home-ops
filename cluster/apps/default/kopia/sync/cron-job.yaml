@@ -47,8 +47,8 @@ spec:
           volumes:
             - name: snapshots
               nfs:
-              server: "${IP_ADDR_LAN_NAS}"
-              path: /mnt/zstore/backups/kube-cluster
+                server: "${IP_ADDR_LAN_NAS}"
+                path: /mnt/zstore/backups/kube-cluster
             - name: remote-config
               secret:
                 secretName: *app
