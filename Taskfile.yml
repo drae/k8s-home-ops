@@ -12,9 +12,10 @@ env:
 includes:
   ansible: .taskfiles/AnsibleTasks.yml
   cluster: .taskfiles/ClusterTasks.yml
-  format: .taskfiles/FormatTasks.yml
-  linter: .taskfiles/LintTasks.yml
+  debug: .taskfiles/DebugTasks.yml
   precommit: .taskfiles/PreCommitTasks.yml
+  rook: .taskfiles/RookTasks.yml
+  snapshot: .taskfiles/SnapshotTasks.yml
 
 tasks:
   kubeconfig:

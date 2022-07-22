@@ -7,15 +7,16 @@ tasks:
     cmds:
       - kubectl get pods --all-namespaces -o=jsonpath="{range .items[*]}{'\n'}{range .spec.containers[*]}{.image}{'\n'}{end}{end}" | sort | uniq | grep -Ev 'quay|gcr|ghcr|ecr|us-docker' | grep -Ev 'bitnami|rook|intel|grafana' |  sed -e 's/docker\.io\///g' | sort | uniq
 
+  git-check-yaml:
+    desc: Check yaml for kustomize/kube errors
+    cmds:
+      - git diff --name-only origin/main.. | grep --color kustomization.yaml | sed 's/kustomization.yaml//' | xargs -I{} kustomize build {}
+      - git diff --name-only origin/main.. | grep --color .yaml | xargs cat | kubectl apply -f - --dry-run=server
+
   delete-failed-pods:
     desc: Deletes failed pods
     cmds:
       - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
-
-  netshoot:
-    desc: Create a netshoot container for debugging
-    cmds:
-      - kubectl run tmp-shell --rm -i --tty --image ghcr.io/nicolaka/netshoot:latest {{.CLI_ARGS}}
 
   hr-restart:
     desc: Restart all failed Helm Releases
@@ -23,110 +24,11 @@ tasks:
       - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux suspend hr $0 -n $1'
       - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux resume hr $0 -n $1'
 
-  debug-volume:
-    desc: Attach a volume to a container for debugging, ex. VOLUME=zigbee2mqtt-config-v1 NAMESPACE=home task debug-volume
-    interactive: true
-    silent: true
-    cmds:
-      - |
-        kubectl run debug-{{.VOLUME}} -n {{.NAMESPACE}} -i --tty --rm --image=null --overrides='
-          {
-            "spec": {
-              "containers": [
-                {
-                  "name": "debug",
-                  "image": "docker.io/library/alpine:3.15",
-                  "command": [
-                    "/bin/sh"
-                  ],
-                  "stdin": true,
-                  "stdinOnce": true,
-                  "tty": true,
-                  "lifecycle": {
-                    "postStart": {
-                      "exec": {
-                        "command": [
-                          "/bin/sh",
-                          "-c",
-                          "apk add --no-cache curl vim"
-                        ]
-                      }
-                    }
-                  },
-                  "volumeMounts": [
-                    {
-                      "name": "backups",
-                      "mountPath": "/mnt/backups/"
-                    },
-                    {
-                      "name": "debug-volume",
-                      "mountPath": "/mnt/volume/"
-                    }
-                  ]
-                }
-              ],
-              "volumes": [
-                {
-                  "name": "backups",
-                  "nfs": {
-                    "server": '{{.NAS_ADDRESS | default "10.1.10.110"}}',
-                    "path": '{{.NAS_PATH | default "/mnt/zstore/backups/kube-cluster"}}'
-                  }
-                },
-                {
-                  "name": "debug-volume",
-                  "persistentVolumeClaim": {
-                    "claimName": "{{.VOLUME}}"
-                  }
-                }
-              ],
-              "restartPolicy": "Never"
-            }
-          }'
-
-  debug-node:
-    desc: Create a privileged container on a node for debugging, ex. NODE=anvil task debug-node
-    interactive: true
-    cmds:
-      - |
-        kubectl run debug-{{.NODE}} -i --tty --rm --image="docker.io/library/alpine:3.15" --privileged --overrides='
-          {
-            "spec": {
-              "nodeSelector": {
-                "kubernetes.io/hostname": "{{.NODE}}"
-              },
-              "restartPolicy": "Never"
-            }
-          }'
-
-  rook-ceph-toolbox:
-    desc: Exec into the Rook Ceph toolbox
-    cmds:
-      - kubectl -n rook-ceph exec -it (kubectl -n rook-ceph get pod -l "app=rook-direct-mount" -o jsonpath='{.items[0].metadata.name}') bash
-    silent: true
-
-  rook-password:
-    desc: Retrieve the rook-ceph password
-    cmds:
-      - kubectl -n rook-ceph get secret rook-ceph-dashboard-password -o jsonpath="{['data']['password']}" | base64 --decode && echo
-
-  talos-apply:
-    desc: Apply manifests to talos nodes
-    cmds:
-      - talosctl -n 10.1.10.21 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-01.yaml --insecure
-      - talosctl -n 10.8.20.22 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-02.yaml --insecure
-      - talosctl -n 10.8.20.23 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-03.yaml --insecure
-
+  # Bootstrap
   bootstrap-wipe-rook:
     desc: Wipe rook disks in talos
     cmds:
       - kubectl apply -f tools/wipe-rook.yaml
-
-  git-check-yaml:
-    desc: Check yaml for kustomize/kube errors
-    cmds:
-      - git diff --name-only origin/main.. | grep --color kustomization.yaml | sed 's/kustomization.yaml//' | xargs -I{} kustomize build {}
-      - git diff --name-only origin/main.. | grep --color .yaml | xargs cat | kubectl apply -f - --dry-run=server
 
   bootstrap-sops:
     desc: Bootstrap cluster
@@ -150,3 +52,11 @@ tasks:
     cmds:
       - flux resume hr -n media plex
       - kubectl scale -n media deploy/plex --replicas 1
+
+  # talos
+  talos-apply:
+    desc: Apply manifests to talos nodes
+    cmds:
+      - talosctl -n 10.1.10.21 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-01.yaml --insecure
+      - talosctl -n 10.8.20.22 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-02.yaml --insecure
+      - talosctl -n 10.8.20.23 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-03.yaml --insecure
