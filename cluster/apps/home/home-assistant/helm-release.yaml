@@ -32,8 +32,6 @@ spec:
     envFrom:
       - secretRef:
           name: home-assistant
-    hostNetwork: true
-    dnsPolicy: ClusterFirstWithHostNet
     service:
       main:
         type: LoadBalancer
@@ -59,11 +57,6 @@ spec:
         enabled: false
       startup:
         enabled: false
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
     persistence:
       config:
         enabled: true
