@@ -4,3 +4,7 @@ kind: Kustomization
 namespace: calico-system
 resources:
   - namespace.yaml
+  - dashboard
+  - kube-controllers-metrics
+  - felix-metrics
+  - typha-metrics
