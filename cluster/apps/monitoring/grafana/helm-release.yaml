@@ -76,9 +76,6 @@ spec:
             isDefault: true
     dashboards:
       default:
-        node_exporter:
-          gnetId: 1860
-          datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/7845
         zfs:
           gnetId: 7845

@@ -23,8 +23,6 @@ spec:
     env:
       TZ: ${TZ}
       ESPHOME_DASHBOARD_USE_PING: true
-    podAnnotations:
-      backup.velero.io/backup-volumes: config
     ingress:
       main:
         enabled: true
