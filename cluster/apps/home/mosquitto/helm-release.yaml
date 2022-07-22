@@ -23,10 +23,12 @@ spec:
     env:
       TZ: ${TZ}
     podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
       fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
     podAnnotations:
       secret.reloader.stakater.com/reload: mosquitto-config
-      backup.velero.io/backup-volumes: data
     service:
       main:
         type: LoadBalancer
