@@ -42,9 +42,9 @@ spec:
         - 109
     service:
       main:
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: ${SVC_LB_PLEX}
         type: LoadBalancer
-        externalIPs:
-          - "${SVC_LB_PLEX}"
         externalTrafficPolicy: Local
         ports:
           http:

@@ -34,9 +34,9 @@ spec:
           name: home-assistant
     service:
       main:
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: ${SVC_LB_HASS}
         type: LoadBalancer
-        externalIPs:
-          - "${SVC_LB_HASS}"
         externalTrafficPolicy: Local
     ingress:
       main:

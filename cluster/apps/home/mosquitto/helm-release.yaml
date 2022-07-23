@@ -31,11 +31,10 @@ spec:
       secret.reloader.stakater.com/reload: mosquitto-config
     service:
       main:
-        type: LoadBalancer
         annotations:
           coredns.io/hostname: "mqtt.p.lan.${SECRET_DOMAIN}"
-        externalIPs:
-          - "${SVB_LB_MOSQUITO}"
+          metallb.universe.tf/loadBalancerIPs: ${SVB_LB_MOSQUITO}
+        type: LoadBalancer
         externalTrafficPolicy: Local
     auth:
       enabled: true
