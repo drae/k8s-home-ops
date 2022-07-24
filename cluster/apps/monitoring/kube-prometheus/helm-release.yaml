@@ -169,3 +169,4 @@ spec:
               - targets:
                   - "${IP_ADDR_LAN_NAS}:9100"
                   - "${IP_ADDR_LAN_GW}:9100"
+                  - "${IP_ADDR_LAN_ECLIPSE}:9100"
