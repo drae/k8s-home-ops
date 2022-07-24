@@ -1,4 +1,3 @@
----
 version: "3"
 
 x-preconditions: &preconditions
@@ -12,8 +11,8 @@ x-preconditions: &preconditions
     sh: kubectl get pvc -n {{.NAMESPACE}} {{.VOLUME}}
     msg: "PersistentVolumeClaim '{{.VOLUME}}' in namespace '{{.NAMESPACE}}' not found"
   - &has-restore-job
-    msg: "File '{{.PROJECT_DIR}}/hack/restore-job.yaml' not found"
-    sh: "test -f {{.PROJECT_DIR}}/hack/restore-job.yaml"
+    msg: "File '{{.PROJECT_DIR}}/tools/restore-job.yaml' not found"
+    sh: "test -f {{.PROJECT_DIR}}/tools/restore-job.yaml"
 
 x-vars: &vars
   NAMESPACE:
@@ -26,7 +25,6 @@ x-vars: &vars
   TS: '{{now | date "20060102150405"}}'
 
 tasks:
-
   list:
     desc: List all existing snapshots for an app (task snapshot:list APP=plex [KOPIA_NAMESPACE=<namespace>])
     cmds:
@@ -57,7 +55,7 @@ tasks:
       - flux -n {{.NAMESPACE}} suspend helmrelease {{.APP}}
       - kubectl -n {{.NAMESPACE}} scale {{.NAME}} --replicas 0
       - kubectl -n {{.NAMESPACE}} wait pod --for delete --selector="app.kubernetes.io/name={{.APP}}" --timeout=2m
-      - envsubst < <(cat ./hack/restore-job.yaml) | kubectl apply -f -
+      - envsubst < <(cat ./tools/restore-job.yaml) | kubectl apply -f -
       - sleep 2
       - kubectl -n {{.NAMESPACE}} wait job --for condition=complete {{.APP}}-restore-snapshot --timeout={{.TIMEOUT | default "60m"}}
       - flux -n {{.NAMESPACE}} resume helmrelease {{.APP}}
