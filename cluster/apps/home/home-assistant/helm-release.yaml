@@ -26,7 +26,7 @@ spec:
         pmb.home.arpa/backup-claim: &claimName "home-assistant-config"
     image:
       repository: ghcr.io/home-assistant/home-assistant
-      tag: 2022.7.6
+      tag: 2022.7.7
     env:
       TZ: ${TZ}
     envFrom:
