@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: &app nzbget
+  namespace: downloads
+  labels:
+    app.kubernetes.io/name: *app
+    app.kubernetes.io/instance: *app
+spec:
+  type: ExternalName
+  externalName: ${IP_ADDR_LAN_NAS}
+  ports:
+    - name: http
+      port: &port 6789
+      protocol: TCP
+      targetPort: *port

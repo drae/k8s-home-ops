@@ -11,3 +11,5 @@ resources:
   - radarr-uhd
   - lidarr
   - recyclarr
+  - nzbget
+  - qbittorrent
