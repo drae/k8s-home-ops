@@ -81,7 +81,7 @@ controlPlane:
     - op: add
       path: /machine/kubelet/extraArgs
       value:
-        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true,EphemeralContainers=true,ServerSideApply=true
+        feature-gates: GracefulNodeShutdown=true,EphemeralContainers=true,ServerSideApply=true
         rotate-server-certificates: "false"
 
   inlinePatch:
@@ -108,6 +108,9 @@ controlPlane:
       token: ${clusterToken}
 
     machine:
+      install:
+        extraKernelArgs:
+          - nvme_core.default_ps_max_latency_us=5500
       ca:
         crt: ${machineCert}
         key: ${machineCertKey}
@@ -140,7 +143,7 @@ worker:
     - op: add
       path: /machine/kubelet/extraArgs
       value:
-        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true,EphemeralContainers=true,ServerSideApply=true
+        feature-gates: GracefulNodeShutdown=true,EphemeralContainers=true,ServerSideApply=true
         rotate-server-certificates: "false"
 
   inlinePatch:
@@ -153,6 +156,9 @@ worker:
       token: ${clusterToken}
 
     machine:
+      install:
+        extraKernelArgs:
+          - nvme_core.default_ps_max_latency_us=5500
       ca:
         crt: ${machineCert}
         key: ${machineCertKey}
