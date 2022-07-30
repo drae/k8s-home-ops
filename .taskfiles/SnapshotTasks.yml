@@ -1,3 +1,4 @@
+---
 version: "3"
 
 x-preconditions: &preconditions
@@ -5,8 +6,8 @@ x-preconditions: &preconditions
     sh: kubectl get deploy,sts -A | awk '/{{.APP}}\s/{print $1}' | grep .
     msg: "App '{{.APP}}' not found"
   - &has-cronjob
-    sh: kubectl get cronjob -n {{.NAMESPACE}} {{.APP}}-snapshot
-    msg: "CronJob '{{.APP}}-snapshot' in namespace '{{.NAMESPACE}}' not found"
+    sh: kubectl get cronjob -n {{.NAMESPACE}} {{.APP}}-{{.VOLUME}}-snapshot
+    msg: "CronJob '{{.APP}}-{{.VOLUME}}-snapshot' in namespace '{{.NAMESPACE}}' not found"
   - &has-volume
     sh: kubectl get pvc -n {{.NAMESPACE}} {{.VOLUME}}
     msg: "PersistentVolumeClaim '{{.VOLUME}}' in namespace '{{.NAMESPACE}}' not found"
@@ -39,7 +40,7 @@ tasks:
     desc: Spawn a job to create a snapshot for an app (task snapshot:create APP=plex [TIMEOUT=<timeout>])
     cmds:
       - |
-        kubectl -n {{.NAMESPACE}} create job --from=cronjob/{{.APP}}-snapshot {{.APP}}-snapshot-{{.TS}} --dry-run=client --output yaml \
+        kubectl -n {{.NAMESPACE}} create job --from=cronjob/{{.APP}}-{{.VOLUME}}-snapshot {{.APP}}-snapshot-{{.TS}} --dry-run=client --output yaml \
           | yq eval "del(.spec.template.spec.initContainers)" - \
           | kubectl apply -f -
       - sleep 2

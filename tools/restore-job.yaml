@@ -38,5 +38,5 @@ spec:
             claimName: ${VOLUME}
         - name: snapshots
           nfs:
-            server: apollo
+            server: 10.1.10.10
             path: /mnt/zstore/backups/kube-cluster
