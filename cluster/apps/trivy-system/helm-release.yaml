@@ -27,7 +27,7 @@ spec:
     excludeNamespaces: "{{ .Release.Namespace }}"
     operator:
       replicas: 3
-      scanJobsConcurrentLimit: 3
+      scanJobsConcurrentLimit: 1
       vulnerabilityScannerScanOnlyCurrentRevisions: true
       configAuditScannerScanOnlyCurrentRevisions: true
     trivy:
