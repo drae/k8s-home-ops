@@ -42,6 +42,7 @@ spec:
       allowUnsupported: true
     configOverride: |
       [global]
+      osd_pool_default_size = 1
       bdev_enable_discard = true
       bdev_async_discard = true
       bluefs_buffered_io = false
