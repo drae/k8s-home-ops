@@ -25,7 +25,7 @@ spec:
         pmb.home.arpa/backup-claim: &claimName "prowlarr-config"
     image:
       repository: ghcr.io/k8s-at-home/prowlarr-nightly
-      tag: v0.4.4.1926
+      tag: v0.4.4.1928
     env:
       TZ: "${TZ}"
     podAnnotations:
