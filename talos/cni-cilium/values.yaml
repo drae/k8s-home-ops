@@ -1,20 +1,34 @@
 ---
-# kubeProxyReplacement enables kube-proxy replacement in Cilium BPF datapath
+cluster:
+  name: kube-cluster
+  id: 1
+rollOutCiliumPods: true
+localRedirectPolicy: true
 kubeProxyReplacement: "strict"
-
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+ipv4NativeRoutingCIDR: 10.200.0.0/16
 k8sServiceHost: 10.1.10.20
 k8sServicePort: 6443
-
+loadBalancer:
+  algorithm: "maglev"
+  mode: "dsr"
+tunnel: "disabled"
+autoDirectNodeRoutes: true
+endpointRoutes:
+  enabled: true
 ipam:
   mode: "kubernetes"
-
+ipv6:
+  enabled: false
+operator:
+  replicas: 1
+containerRuntime:
+  integration: containerd
+securityContext:
+  privileged: true
+hubble:
+  enabled: false
 bgp:
   enabled: false
   announce:
     loadbalancerIP: true
-
-hubble:
-  enabled: false
-
-ipv6:
-  enabled: false

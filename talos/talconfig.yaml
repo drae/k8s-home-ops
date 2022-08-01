@@ -1,22 +1,14 @@
 clusterName: kube-cluster
-
-talosVersion: v1.1.0
-kubernetesVersion: v1.24.2
-
+talosVersion: v1.1.2
+kubernetesVersion: v1.24.3
 endpoint: https://${clusterEndpointIP}:6443
-
 allowSchedulingOnMasters: true
-
 clusterPodNets:
   - 10.200.0.0/16
 clusterSvcNets:
   - 10.210.0.0/12
-
 cniConfig:
-  name: custom
-  urls:
-    - https://raw.githubusercontent.com/drae/gitops-starstreak.net/main/talos/cni-calico/install.yaml
-
+  name: none
 nodes:
   - hostname: kube-cp-01
     ipAddress: 10.1.10.21
@@ -97,28 +89,43 @@ controlPlane:
       ca:
         crt: ${clusterCert}
         key: ${clusterCertKey}
-      etcd:
-        ca:
-          crt: ${etcdCert}
-          key: ${etcdCertKey}
-      secret: ${clusterSecret}
-      serviceAccount:
-        key: ${k8sServiceAccountKey}
-      token: ${clusterToken}
-      extraManifests:
-        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+      controllerManager:
+        extraArgs:
+          bind-address: 0.0.0.0
       discovery:
         registries:
           service:
             disabled: true
+      etcd:
+        ca:
+          crt: ${etcdCert}
+          key: ${etcdCertKey}
+      extraManifests:
+        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+      proxy:
+        disabled: true
+      scheduler:
+        extraArgs:
+          bind-address: 0.0.0.0
+      secret: ${clusterSecret}
+      serviceAccount:
+        key: ${k8sServiceAccountKey}
+      token: ${clusterToken}
     machine:
+      ca:
+        crt: ${machineCert}
+        key: ${machineCertKey}
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          op: create
       install:
         extraKernelArgs:
           - nvme_core.default_ps_max_latency_us=5500
           - pci=noaer
-      ca:
-        crt: ${machineCert}
-        key: ${machineCertKey}
       network:
         extraHostEntries:
           - ip: ${clusterEndpointIP}
@@ -166,6 +173,13 @@ worker:
       ca:
         crt: ${machineCert}
         key: ${machineCertKey}
+      files:
+        - content: |
+            [plugins."io.containerd.grpc.v1.cri"]
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+          path: /var/cri/conf.d/allow-unpriv-ports.toml
+          op: create
       network:
         extraHostEntries:
           - ip:
