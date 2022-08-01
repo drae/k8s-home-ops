@@ -80,7 +80,7 @@ spec:
         ingress:
           enabled: true
           hosts:
-            - &host "hubble.${SECRET_DOMAIN}"
+            - &host "hubble-ui.p.lan.${SECRET_DOMAIN}"
           tls:
             - hosts:
                 - *host
