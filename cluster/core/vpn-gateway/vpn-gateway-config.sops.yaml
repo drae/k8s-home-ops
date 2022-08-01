@@ -1,0 +1,42 @@
+# yamllint disable
+apiVersion: v1
+kind: Secret
+metadata:
+    name: vpn-gateway-config
+    namespace: vpn-gateway
+stringData:
+    VPN_SERVICE_PROVIDER: ENC[AES256_GCM,data:f8S12AMWSw==,iv:fZ4NHbkGISsLw3a5dhiNwfoknZUPxH85uDD+rLuhONI=,tag:suyT74GvZZOer06rO+JrSw==,type:str]
+    WIREGUARD_PRIVATE_KEY: ENC[AES256_GCM,data:Hkm/sfQnbx4ccHtPQInUee+n7YySn8rhSkTAZZxiGZ8nUws2lEKJoJensGQ=,iv:YUQ3fWOT5YpvK67lFMjnNnBkETstFoyg7eVoU+Ky/JA=,tag:kIlXKTCMZG9IYsraQoHCow==,type:str]
+    WIREGUARD_ADDRESSES: ENC[AES256_GCM,data:DrJ1ohWvcHNPI8TIvbYX,iv:Xl1a57g63gCSihfXpAbWRKTLa/4KiSkZKo0Cur2+DNU=,tag:c+WhNdSznQkpHc9VPh6P4g==,type:str]
+    SERVER_HOSTNAMES: ENC[AES256_GCM,data:vLQ+BL3fj7Zt5WdfcQ==,iv:30ppg7QKMVNQ3BtS7F8bPXBdx9F2wngdcKqqgmNqY5g=,tag:5MmxcFA0Nevze4OHpD9wcQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2022-07-31T17:20:56Z"
+    mac: ENC[AES256_GCM,data:MIlkqp8FkyqYP1LaBVv4V8a+oW+XpTF0xat8DQhjBKhyMyAlha90ISSM8W3pECfQVWUAInV3YMHweFmT7YHNRXJxGIwHYICZIywbd4JBmGBT/tXhwq5mI/3BzVPpgxxFqwXH7cy6OJW7FMPeDoC5IDJZQLH55vSaH83OZpkgOxs=,iv:jo+brgebYm24BGHvxaYup5OXnkgOjlI1ykKaGleLzxs=,tag:QJsgdoxePsBiofQxxJ8+LA==,type:str]
+    pgp:
+        - created_at: "2022-07-31T17:10:01Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            wcFMA1fr/5wrlRWyAQ/9HJf+gUfURUI4fhN7TTeYj14iJMQ23AsYoCV1MtkV2i1d
+            4UXOeHjgVwcU46cInbbwy24MGG3ZRWQot11n3WHauqh260sbss5JxzoaDgbWCfnc
+            U5EBjGrfNArNMWyhrAJBrZh5tAhmB5bjWGhiG5GTWDf/rA2UgWIo0l1OdhdcecCR
+            pDz2BDS0j+s9ZT/TBWnnmZ+qf3TeE8cmQMCXzEJpz+PG9fVpyPdP+1M7rWRFl9hz
+            hBDivaErS7W3EvKIecD3WdydaPDyNo0hw44qWJYofvIzaqFsI1mXK4fbOmI9ROdI
+            ghwdUR0CVN9C3kGlUVYIyYABQZdCUScQ83D5NLpTdFmYBNqzrkr+T4SNmwIeivLc
+            OLCb4T1GmmaQzV5/wwv8K52rrIOVhxEV7Lk5/s7qYToZLLKdBiObGEMLxuJhWy2M
+            oF5/OT6/J5fnOj9i8z2T7e1AoMIQoLH/+754qxTilz3NqSmkoBpXBuRxHgCtX7TD
+            mjnyFxiUUpDYhsNCQBiAvemQOely8lIgj62wyTxkgfqmWzieFkYcKJ82kID+072e
+            dIupQBfHl+M4I7xXmNwJhhRrDl82bTthwLaRQvybxqdTTqzBNrCrJowyvWZ1L57Q
+            8Iw7yW6ngvDZo9x+I5xK2jZE5VBudHLOi5CDXBrKZRlPd13aYqIUfSfnbtyAkhjS
+            UQHOWrVANf6n+uMcYqJMY1XZ1Ea++HiUEtb+Vk5oz7Q0V8Bso/+quxUDAiQtZhl0
+            V9yYjHxvigsqFeminsLyJ6jWB8Fd92m7IKgHrLJk5Zvjng==
+            =pyuM
+            -----END PGP MESSAGE-----
+          fp: 4CF588582D481BB5C1927F275BB27F59F87ABCA3
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

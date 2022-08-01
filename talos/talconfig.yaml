@@ -21,7 +21,7 @@ nodes:
   - hostname: kube-cp-01
     ipAddress: 10.1.10.21
     controlPlane: true
-    installDisk: /dev/nvme1n1
+    installDisk: /dev/sda
     nameservers:
       - 10.1.10.1
     networkInterfaces:
@@ -37,44 +37,44 @@ nodes:
           - 10.1.10.20
           - kube-cp-01
           - kube-cluster.${domainName}
-  - hostname: kube-cp-02
-    ipAddress: 10.1.10.22
-    controlPlane: true
-    installDisk: /dev/nvme0n1
-    nameservers:
-      - 10.1.10.1
-    networkInterfaces:
-      - interface: eth0
-        mtu: 1500
-        dhcp: true
-        vip:
-          ip: ${clusterEndpointIP}
-    configPatches:
-      - op: add
-        path: /cluster/apiServer/certSANs
-        value:
-          - 10.1.10.20
-          - kube-cp-02
-          - kube-cluster.${domainName}
-  - hostname: kube-cp-03
-    ipAddress: 10.1.10.23
-    controlPlane: true
-    installDisk: /dev/nvme0n1
-    nameservers:
-      - 10.1.10.1
-    networkInterfaces:
-      - interface: eth0
-        mtu: 1500
-        dhcp: true
-        vip:
-          ip: ${clusterEndpointIP}
-    configPatches:
-      - op: add
-        path: /cluster/apiServer/certSANs
-        value:
-          - 10.1.10.20
-          - kube-cp-03
-          - kube-cluster.${domainName}
+#  - hostname: kube-cp-02
+#    ipAddress: 10.1.10.22
+#    controlPlane: true
+#    installDisk: /dev/sda
+#    nameservers:
+#      - 10.1.10.1
+#    networkInterfaces:
+#      - interface: eth0
+#        mtu: 1500
+#        dhcp: true
+#        vip:
+#          ip: ${clusterEndpointIP}
+#    configPatches:
+#      - op: add
+#        path: /cluster/apiServer/certSANs
+#        value:
+#          - 10.1.10.20
+#          - kube-cp-02
+#          - kube-cluster.${domainName}
+#  - hostname: kube-cp-03
+#    ipAddress: 10.1.10.23
+#    controlPlane: true
+#    installDisk: /dev/sda
+#    nameservers:
+#      - 10.1.10.1
+#    networkInterfaces:
+#      - interface: eth0
+#        mtu: 1500
+#        dhcp: true
+#        vip:
+#          ip: ${clusterEndpointIP}
+#    configPatches:
+#      - op: add
+#        path: /cluster/apiServer/certSANs
+#        value:
+#          - 10.1.10.20
+#          - kube-cp-03
+#          - kube-cluster.${domainName}
 
 controlPlane:
   configPatches:
@@ -82,8 +82,7 @@ controlPlane:
       path: /machine/kubelet/extraArgs
       value:
         feature-gates: GracefulNodeShutdown=true,EphemeralContainers=true,ServerSideApply=true
-        rotate-server-certificates: "false"
-
+        rotate-server-certificates: "true"
   inlinePatch:
     cluster:
       aescbcEncryptionSecret: ${aescbcEncryptionKey}
@@ -106,11 +105,17 @@ controlPlane:
       serviceAccount:
         key: ${k8sServiceAccountKey}
       token: ${clusterToken}
-
+      extraManifests:
+        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+      discovery:
+        registries:
+          service:
+            disabled: true
     machine:
       install:
         extraKernelArgs:
           - nvme_core.default_ps_max_latency_us=5500
+          - pci=noaer
       ca:
         crt: ${machineCert}
         key: ${machineCertKey}
@@ -144,8 +149,7 @@ worker:
       path: /machine/kubelet/extraArgs
       value:
         feature-gates: GracefulNodeShutdown=true,EphemeralContainers=true,ServerSideApply=true
-        rotate-server-certificates: "false"
-
+        rotate-server-certificates: "true"
   inlinePatch:
     cluster:
       aescbcEncryptionSecret: ${aescbcEncryptionKey}
@@ -154,11 +158,11 @@ worker:
         key: ${clusterCertKey}
       secret: ${clusterSecret}
       token: ${clusterToken}
-
     machine:
       install:
         extraKernelArgs:
           - nvme_core.default_ps_max_latency_us=5500
+          - pci=noaer
       ca:
         crt: ${machineCert}
         key: ${machineCertKey}
