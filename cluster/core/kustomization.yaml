@@ -2,13 +2,12 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
-  - tigera-operator
-  - metallb
-  - rook-ceph
   - cert-manager
-  - ingress-nginx
   - cloudflared
-  - node-feature-discovery
+  - ingress-nginx
   - intel-gpu-plugin
   - kyverno
-  # - vpn-gateway
+  - metallb
+  - node-feature-discovery
+  - rook-ceph
+  - vpn-gateway
