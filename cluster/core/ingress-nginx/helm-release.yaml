@@ -17,9 +17,6 @@ spec:
       interval: 15m
   values:
     controller:
-      extraEnvs:
-        - name: TZ
-          value: "${TZ}"
       publishService:
         enabled: true
       ingressClassResource:
