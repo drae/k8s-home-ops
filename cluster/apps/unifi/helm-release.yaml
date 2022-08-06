@@ -21,8 +21,6 @@ spec:
     image:
       repository: jacobalberty/unifi
       tag: v7.1.68
-    env:
-      TZ: "${TZ}"
     service:
       main:
         annotations:

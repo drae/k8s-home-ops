@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - snapshot-cronjob-controller.yaml
   - delete-cpu-limits.yaml
+  - inject-tz.yaml

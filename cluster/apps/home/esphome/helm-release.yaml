@@ -21,7 +21,6 @@ spec:
       repository: ghcr.io/esphome/esphome
       tag: 2022.6.2
     env:
-      TZ: ${TZ}
       ESPHOME_DASHBOARD_USE_PING: true
     ingress:
       main:
