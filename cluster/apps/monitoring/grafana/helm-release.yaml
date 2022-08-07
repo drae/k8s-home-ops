@@ -81,6 +81,11 @@ spec:
           gnetId: 7845
           revision: 4
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/13133
+        cloudflare:
+          gnetId: 13133
+          revision: 3
+          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
