@@ -46,6 +46,7 @@ spec:
       bdev_async_discard = true
       bluefs_buffered_io = false
       mon_warn_on_pool_no_redundancy = false
+      osd_pool_default_size = 1
     cephClusterSpec:
       mon:
         count: 1
