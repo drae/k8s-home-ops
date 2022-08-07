@@ -76,7 +76,7 @@ spec:
           - hosts:
               - "alert-manager.p.lan.${SECRET_DOMAIN}"
       alertmanagerSpec:
-        replicas: 3
+        replicas: 1
         storage:
           volumeClaimTemplate:
             spec:
