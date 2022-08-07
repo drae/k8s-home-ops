@@ -79,7 +79,7 @@ spec:
             jobTemplate:
               spec:
                 # Keep at least one job in completed state in accordance to the schedule
-                ttlSecondsAfterFinished: 86400
+                ttlSecondsAfterFinished: 64800
                 template:
                   spec:
                     automountServiceAccountToken: false
