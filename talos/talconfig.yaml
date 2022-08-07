@@ -14,59 +14,28 @@ nodes:
     ipAddress: 10.1.10.21
     controlPlane: true
     installDisk: /dev/sda
-    nameservers:
-      - 10.1.10.1
     networkInterfaces:
       - interface: eth0
         mtu: 1500
         dhcp: true
         vip:
           ip: ${clusterEndpointIP}
-    configPatches:
-      - op: add
-        path: /cluster/apiServer/certSANs
-        value:
-          - 10.1.10.20
-          - kube-cp-01
-          - kube-cluster.${domainName}
 #  - hostname: kube-cp-02
 #    ipAddress: 10.1.10.22
 #    controlPlane: true
 #    installDisk: /dev/sda
-#    nameservers:
-#      - 10.1.10.1
 #    networkInterfaces:
 #      - interface: eth0
 #        mtu: 1500
 #        dhcp: true
-#        vip:
-#          ip: ${clusterEndpointIP}
-#    configPatches:
-#      - op: add
-#        path: /cluster/apiServer/certSANs
-#        value:
-#          - 10.1.10.20
-#          - kube-cp-02
-#          - kube-cluster.${domainName}
 #  - hostname: kube-cp-03
 #    ipAddress: 10.1.10.23
 #    controlPlane: true
 #    installDisk: /dev/sda
-#    nameservers:
-#      - 10.1.10.1
 #    networkInterfaces:
 #      - interface: eth0
 #        mtu: 1500
 #        dhcp: true
-#        vip:
-#          ip: ${clusterEndpointIP}
-#    configPatches:
-#      - op: add
-#        path: /cluster/apiServer/certSANs
-#        value:
-#          - 10.1.10.20
-#          - kube-cp-03
-#          - kube-cluster.${domainName}
 
 controlPlane:
   configPatches:
@@ -115,6 +84,9 @@ controlPlane:
       ca:
         crt: ${machineCert}
         key: ${machineCertKey}
+      certSANs:
+        - kube-cluster
+        - kube-cluster.${domainName}
       files:
         - content: |
             [plugins."io.containerd.grpc.v1.cri"]
@@ -128,14 +100,6 @@ controlPlane:
           - pci=noaer
       network:
         extraHostEntries:
-          - ip: ${clusterEndpointIP}
-            aliases:
-              - kube-cluster
-              - kube-cluster.${domainName}
-          - ip: 10.1.10.1
-            aliases:
-              - gw
-              - gw.${domainName}
           - ip: 10.1.10.10
             aliases:
               - apollo
@@ -166,13 +130,12 @@ worker:
       secret: ${clusterSecret}
       token: ${clusterToken}
     machine:
-      install:
-        extraKernelArgs:
-          - nvme_core.default_ps_max_latency_us=5500
-          - pci=noaer
       ca:
         crt: ${machineCert}
         key: ${machineCertKey}
+      certSANs:
+        - kube-cluster
+        - kube-cluster.${domainName}
       files:
         - content: |
             [plugins."io.containerd.grpc.v1.cri"]
@@ -180,13 +143,12 @@ worker:
               enable_unprivileged_icmp = true
           path: /var/cri/conf.d/allow-unpriv-ports.toml
           op: create
+      install:
+        extraKernelArgs:
+          - nvme_core.default_ps_max_latency_us=5500
+          - pci=noaer
       network:
         extraHostEntries:
-          - ip:
-          - ip: 10.1.10.1
-            aliases:
-              - gw
-              - gw.${domainName}
           - ip: 10.1.10.10
             aliases:
               - apollo
