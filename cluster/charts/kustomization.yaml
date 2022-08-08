@@ -20,3 +20,4 @@ resources:
   - aqua-charts.yaml
   - rook-ceph.yaml
   - kyverno-charts.yaml
+  - vector-charts.yaml

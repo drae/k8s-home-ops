@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - kube-prometheus
   - loki
+  - vector
   - grafana
   - generic-rules
   - botkube
