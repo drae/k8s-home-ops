@@ -85,10 +85,6 @@ spec:
       tls:
         - hosts:
             - *host
-    service:
-      type: LoadBalancer # Setting Ip external to cluster for easy port forward
-      externalTrafficPolicy: Local
-      loadBalancerIP: "${SVC_LB_LOKI}"
     persistence:
       enabled: true
       existingClaim: loki-data
