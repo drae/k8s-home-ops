@@ -34,29 +34,12 @@ tasks:
     desc: Bootstrap cluster
     cmds:
       - kubectl create ns flux-system
-      - cat ~/.config/sops/age/keys.txt | kubectl -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
-
-  bootstrap-flux:
-    desc: Bootstrap flux (as per version in manifest)
-    cmds:
-      - yq '.spec.ref.tag' k8s/global/flux/repositories/git/flux.yaml | xargs -I{} flux install --version={} --export | kubectl apply -f -
-
-  nfs-deps-pause:
-    desc: Pause all Helm Releases that rely on NFS storage
-    cmds:
-      - flux suspend hr -n media plex
-      - kubectl scale -n media deploy/plex --replicas 0
-
-  nfs-deps-resume:
-    desc: Resume all Helm Releases that rely on NFS storage
-    cmds:
-      - flux resume hr -n media plex
-      - kubectl scale -n media deploy/plex --replicas 1
+      - gpg --export-secret-keys --armor "4CF588582D481BB5C1927F275BB27F59F87ABCA3" | kubectl -n flux-system create secret generic sops-gpg --from-file=sops.asc=/dev/stdin
 
   # talos
   talos-apply:
     desc: Apply manifests to talos nodes
     cmds:
-      - talosctl -n 10.1.10.21 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-01.yaml --insecure
-      - talosctl -n 10.8.20.22 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-02.yaml --insecure
-      - talosctl -n 10.8.20.23 apply-config -f talos/clusterconfig/kube-cluster-kube-cp-03.yaml --insecure
+      - talosctl -n 10.1.10.21 apply-config -f infrastructure/talos/clusterconfig/kube-cluster-kube-cp-01.yaml --insecure
+      - talosctl -n 10.8.20.22 apply-config -f infrastructure/talos/clusterconfig/kube-cluster-kube-cp-02.yaml --insecure
+      - talosctl -n 10.8.20.23 apply-config -f infrastructure/talos/clusterconfig/kube-cluster-kube-cp-03.yaml --insecure
