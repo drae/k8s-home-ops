@@ -85,10 +85,10 @@ spec:
           gnetId: 7845
           revision: 4
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/13133
-        cloudflare:
-          gnetId: 13133
-          revision: 3
+        # Ref: https://grafana.com/grafana/dashboards/11147
+        openwrt:
+          gnetId: 11147
+          revision: 1
           datasource: Prometheus
     sidecar:
       dashboards:
@@ -98,6 +98,7 @@ spec:
         enabled: true
         searchNamespace: ALL
     plugins:
+      - grafana-singlestat-panel
       - natel-discrete-panel
       - pr0ps-trackmap-panel
       - grafana-piechart-panel
