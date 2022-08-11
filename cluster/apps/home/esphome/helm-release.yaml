@@ -20,11 +20,8 @@ spec:
     image:
       repository: ghcr.io/esphome/esphome
       tag: 2022.6.3
-    service:
-      main:
-        ports:
-          http:
-            port: 6052
+    env:
+      ESPHOME_DASHBOARD_USE_PING: true
     ingress:
       main:
         enabled: true
