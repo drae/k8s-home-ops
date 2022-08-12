@@ -23,8 +23,20 @@ spec:
     remediation:
       retries: 5
   values:
-    global:
-      nameOverride: *app
+    initContainers:
+      wait-for-repo:
+        image: ghcr.io/onedr0p/kopia:0.11.3@sha256:46eefda38f842c3f03c4329e68f1f8c3be36ea324f11d458724719d8ab2fb53d
+        command:
+          - /bin/bash
+          - -c
+          - |-
+            until [ -f /snapshots/kopia.repository.f ]; do
+                printf "\e[1;32m%-6s\e[m\n" "Awaiting for the Kopia repo to become ready ..."
+                sleep 1
+            done
+        volumeMounts:
+          - name: snapshots
+            mountPath: /snapshots
     image:
       repository: ghcr.io/onedr0p/kopia
       tag: 0.11.3@sha256:46eefda38f842c3f03c4329e68f1f8c3be36ea324f11d458724719d8ab2fb53d
