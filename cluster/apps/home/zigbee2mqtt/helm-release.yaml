@@ -8,19 +8,17 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: zigbee2mqtt
-      version: 9.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 15m
   dependsOn:
     - name: mosquitto
       namespace: home
   values:
-    global:
-      nameOverride: *app
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
       tag: 1.27.0
@@ -31,6 +29,11 @@ spec:
       runAsGroup: 568
       fsGroup: 568
       fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
     ingress:
       main:
         enabled: true

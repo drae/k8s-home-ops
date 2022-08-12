@@ -8,19 +8,23 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: unifi
-      version: 5.1.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 15m
   values:
-    global:
-      nameOverride: *app
     image:
       repository: jacobalberty/unifi
       tag: v7.2.92
+    env:
+      RUNAS_UID0: "false"
+      UNIFI_UID: "999"
+      UNIFI_GID: "999"
+      UNIFI_STDOUT: "true"
+      JVM_INIT_HEAP_SIZE:
+      JVM_MAX_HEAP_SIZE: 1024M
     service:
       main:
         annotations:
@@ -28,6 +32,26 @@ spec:
           metallb.universe.tf/allow-shared-ip: unifi
         type: LoadBalancer
         externalTrafficPolicy: Local
+        ports:
+          http:
+            port: 8443
+            protocol: HTTPS
+          controller:
+            enabled: true
+            port: 8080
+            protocol: TCP
+          stun:
+            enabled: true
+            port: 3478
+            protocol: UDP
+          syslog:
+            enabled: true
+            port: 5514
+            protocol: UDP
+          discovery:
+            enabled: true
+            port: 10001
+            protocol: UDP
     ingress:
       main:
         enabled: true
