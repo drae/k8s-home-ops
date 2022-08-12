@@ -21,3 +21,4 @@ resources:
   - rook-ceph.yaml
   - kyverno-charts.yaml
   - vector-charts.yaml
+  - bjw-s-charts.yaml

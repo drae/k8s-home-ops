@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: kah-common-chart
-      version: 1.2.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 15m
   install:
@@ -23,11 +23,9 @@ spec:
     - name: node-feature-discovery
       namespace: kube-system
   values:
-    global:
-      nameOverride: *app
     image:
-      repository: ghcr.io/k8s-at-home/plex
-      tag: v1.27.2.5929-a806c5905
+      repository: ghcr.io/onedr0p/plex
+      tag: 1.28.0.5999-97678ded3@sha256:b31303a77f363d19b1ff2946c106abf58a456b2cc939616711f394fc83dfdd96
     env:
       ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,https://plex.${SECRET_DOMAIN}:443"
       ALLOWED_NETWORKS: "10.200.0.0/16,10.210.0.0/16,10.1.10.0/23"

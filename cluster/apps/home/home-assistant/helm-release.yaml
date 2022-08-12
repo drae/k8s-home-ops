@@ -5,25 +5,19 @@ metadata:
   name: &app home-assistant
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
-      chart: home-assistant
-      version: 13.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
   install:
     createNamespace: true
   values:
-    global:
-      nameOverride: *app
-    controller:
-      labels:
-        pmb.home.arpa/backup-claim: &claimName "home-assistant-config"
     image:
       repository: ghcr.io/home-assistant/home-assistant
       tag: 2022.8.3
@@ -36,6 +30,9 @@ spec:
           metallb.universe.tf/loadBalancerIPs: ${SVC_LB_HASS}
         type: LoadBalancer
         externalTrafficPolicy: Local
+        ports:
+          http:
+            port: 8123
     ingress:
       main:
         enabled: true
