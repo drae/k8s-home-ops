@@ -69,6 +69,7 @@ spec:
       data:
         enabled: true
         existingClaim: unifi-config
+        mountPath: /unifi
     resources:
       requests:
         memory: 2Gi
