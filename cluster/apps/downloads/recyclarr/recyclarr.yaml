@@ -21,8 +21,11 @@ sonarr:
       - trash_ids: [76e060895c5b8a765c310933da0a5357] # Optionals
         filter:
           include:
+            - cec8880b847dd5d31d29167ee0112b57 # Golden rule
             - 436f5a7d08fbf02ba25cb5e5dfe98e55 # Ignore Dolby Vision without HDR10 fallback
             - f3f0f3691c6a1988d4a02963e69d11f2 # Ignore The Group -SCENE
+            - 5bc23c3a055a1a5d8bbe4fb49d80e0cb # So called "scene"
+            - 538bad00ee6f8aced8e0db5218b8484c # Dual audio
 
   - base_url: http://sonarr-uhd.downloads:8989
     api_key: ${SONARR_UHD_APIKEY}
@@ -36,8 +39,11 @@ sonarr:
       - trash_ids: [76e060895c5b8a765c310933da0a5357] # Optionals
         filter:
           include:
+            - cec8880b847dd5d31d29167ee0112b57 # Golden rule
             - 436f5a7d08fbf02ba25cb5e5dfe98e55 # Ignore Dolby Vision without HDR10 fallback
             - f3f0f3691c6a1988d4a02963e69d11f2 # Ignore The Group -SCENE
+            - 5bc23c3a055a1a5d8bbe4fb49d80e0cb # So called "scene"
+            - 538bad00ee6f8aced8e0db5218b8484c # Dual audio
 
 radarr:
   - base_url: http://radarr.downloads:7878
@@ -67,12 +73,11 @@ radarr:
           - eca37840c13c6ef2dd0262b141a5482f # 4K Remaster
           - e0c07d59beb37348e975a930d5e50319 # Criterion Collection
           - 957d0f44b592285f26449575e8b1167e # Special Edition
-          - eecf3a857724171f968a66cb5719e152 # IMAX
-          - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
-          - 403f3f6266b90439cacc1e07cae4dc2d # HQ-Remux
-          - 1d433e1e075704f1a8a1ae3e1c371460 # Flights (no IMAX)
           - 26fa26253af4001701fedb56cec376dc # HQ-Webdl
+          - 403f3f6266b90439cacc1e07cae4dc2d # HQ-Remux
+          - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ
           - 5153ec7413d9dae44e24275589b5e944 # BHDStudio
+          - 820b09bb9acbfde9c35c71e0e565dad8 # 1080p
           - e7718d7a3ce595f289bfee26adc178f5 # Repack/Proper
           - ae43b294509409a6a13919dedd4764c4 # Repack2
           - ed38b889b31be83fda192888e2286d83 # BR-DISK -10000
@@ -82,8 +87,9 @@ radarr:
           - b8cd450cbfa689c0259a01d9e29ba3d6 # 3D -10000
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup removed do avoid multiple downloads
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
-          - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) without fallback to HDR -10000
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - 10000
+          - b6832f586342ef70d9c128d40c07b872 # Bad dual groups
+          - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) without fallback to HDR -10000
         quality_profiles:
           - name: HD_REMUX
             reset_unmatched_scores: true
@@ -140,6 +146,7 @@ radarr:
           - 403f3f6266b90439cacc1e07cae4dc2d # HQ-Remux
           - 1d433e1e075704f1a8a1ae3e1c371460 # Flights (no IMAX)
           - 26fa26253af4001701fedb56cec376dc # HQ-Webdl
+          - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ (0)
           - 66aaa8c2c03c0191a95f0d655b75ab10 # UHD (CtrlHD)
           - afeb99e5db09290546f742503ce1cdb6 # UHD (DON)
           - ffebc267e9c98d3d383f37b238550079 # UHD (W4NK3R)
@@ -156,8 +163,9 @@ radarr:
           - b8cd450cbfa689c0259a01d9e29ba3d6 # 3D -10000
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup removed do avoid multiple downloads
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
-          - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) without fallback to HDR -10000
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - 100000
+          - b6832f586342ef70d9c128d40c07b872 # Bad dual groups
+          - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) without fallback to HDR -10000
         quality_profiles:
           - name: UHD
             reset_unmatched_scores: true
