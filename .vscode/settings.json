@@ -1,10 +1,11 @@
 {
     "ansible.ansibleLint.arguments": "-c .github/linters/.ansible-lint",
     "files.associations": {
-        "*.json5": "jsonc",
         "**/ansible/**/*.yml": "ansible",
         "**/ansible/**/*.sops.yml": "yaml",
         "**/ansible/**/inventory/**/*.yml": "yaml",
+        "**/terraform/**/*.tf": "terraform",
+        "**/cluster/**/*.sops.toml": "plaintext"
     },
     "material-icon-theme.folders.associations": {
         ".taskfiles": "utils",
