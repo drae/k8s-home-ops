@@ -1,0 +1,13 @@
+---
+#
+# SECRET* vars are encrypted with sops
+#
+
+# -- Base Docker Directory
+docker_base_dir: /opt/docker
+
+# -- Vector Aggregator Address
+vector_aggregator_addr: "10.1.10.49"
+
+# -- Vector Aggregator Port
+vector_aggregator_port: "6000"
