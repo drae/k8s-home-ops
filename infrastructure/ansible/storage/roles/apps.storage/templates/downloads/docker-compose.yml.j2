@@ -3,7 +3,7 @@ version: "3.8"
 
 services:
   gluetun:
-    image: qmcgaw/gluetun
+    image: docker.io/qmcgaw/gluetun:v3.30.0
     container_name: gluetun
     cap_add:
       - NET_ADMIN
@@ -40,7 +40,7 @@ services:
 
   # NZBGet
   nzbget:
-    image: linuxserver/nzbget:21.1.20220721
+    image: docker.io/linuxserver/nzbget:21.1.20220721
     container_name: nzbget
     environment:
       - PUID=568
@@ -57,7 +57,7 @@ services:
 
   # qBittorrent
   qbittorrent:
-    image: linuxserver/qbittorrent:4.4.3
+    image: docker.io/linuxserver/qbittorrent:4.4.3
     container_name: qbittorrent
     environment:
       - PUID=568
