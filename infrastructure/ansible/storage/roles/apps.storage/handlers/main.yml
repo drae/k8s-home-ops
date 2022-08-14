@@ -1,0 +1,31 @@
+---
+- name: Restart docker-cleanup
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  loop:
+    - docker-cleanup.service
+    - docker-cleanup.timer
+
+- name: Restart downloads
+  ansible.builtin.systemd:
+    name: "docker-compose@downloads.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Restart node-exporter
+  ansible.builtin.systemd:
+    name: "docker-compose@node-exporter.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Restart vector
+  ansible.builtin.systemd:
+    name: "docker-compose@vector.service"
+    state: restarted
+    enabled: true
+    daemon_reload: true

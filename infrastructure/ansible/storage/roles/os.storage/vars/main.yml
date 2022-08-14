@@ -1,0 +1,47 @@
+---
+#
+# SECRET* vars are encrypted with sops
+#
+
+os_smtp_account_name: mailgun
+os_smtp_port: 587
+os_timezone: "Europe/London"
+os_ssh_authorized_keys:
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnp4n7WX1FgQozEi6qY+E/6y3yg6eqnAdpQHp1MkMTH paul@LAPTOP"
+os_packages_repositories:
+  - ppa:neovim-ppa/unstable
+os_packages_install:
+  - apt-transport-https
+  - ca-certificates
+  - containerd.io
+  - curl
+  - gettext
+  - git
+  - htop
+  - neofetch
+  - neovim
+  - ntpdate
+  - psmisc
+  - samba
+  - software-properties-common
+  - tmux
+  - tree
+  - uidmap
+  - unzip
+  - wsdd2
+  - zfs-zed
+  - zfsutils-linux
+os_packages_remove:
+  - apparmor
+  - apport
+  - byobu
+  - friendly-recovery
+  - landscape-common
+  - lxd-agent-loader
+  - plymouth
+  - plymouth-theme-ubuntu-text
+  - popularity-contest
+  - snapd
+  - sosreport
+  - ubuntu-advantage-tools
+  - ufw
