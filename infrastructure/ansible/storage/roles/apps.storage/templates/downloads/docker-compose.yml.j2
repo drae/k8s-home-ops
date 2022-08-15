@@ -37,8 +37,8 @@ services:
       - PUBLICIP_PERIOD=12h
       - VERSION_INFORMATION=on
       - UPDATER_PERIOD=24h
+    restart: unless-stopped
 
-  # NZBGet
   nzbget:
     image: docker.io/linuxserver/nzbget:21.1.20220721
     container_name: nzbget
@@ -55,7 +55,6 @@ services:
       - /mnt/zstore/media/.downloads:/downloads
     restart: unless-stopped
 
-  # qBittorrent
   qbittorrent:
     image: docker.io/linuxserver/qbittorrent:4.4.3
     container_name: qbittorrent
