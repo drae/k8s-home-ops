@@ -34,11 +34,3 @@
   loop:
     - swap
     - none
-
-- name: Power saving on hdd's
-  ansible.builtin.copy:
-    dest: /etc/udev/rules.d/hdparm.rules
-    mode: 0644
-    content: |
-      ACTION=="add|change", KERNEL=="sd[a-z]", ATTRS{queue/rotational}=="1", RUN+="/usr/sbin/hdparm -B 150 -S 180 /dev/%k"
-  notify: Update initramfs

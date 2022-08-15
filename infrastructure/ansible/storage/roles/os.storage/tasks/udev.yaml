@@ -1,0 +1,14 @@
+---
+- name: Power saving on hdd's
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/hdparm.rules
+    mode: 0644
+    content: |
+      ACTION=="add|change", KERNEL=="sd[a-z]", ATTRS{queue/rotational}=="1", RUN+="/usr/sbin/hdparm -B 150 -S 180 /dev/%k"
+
+- name: Set cpu governor to powersaving
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/cpu.rules
+    mode: 0644
+    content: |
+      KERNEL=="cpu", SUBSYSTEM=="event_source", ACTION=="add", RUN+="/bin/sh -c 'echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor'"
