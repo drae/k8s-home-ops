@@ -8,3 +8,4 @@ docker_users: "{{ ansible_user }}"
 docker_install_compose_plugin: true
 docker_daemon_options:
   log-driver: journald
+  dns: ["10.1.10.1"]
