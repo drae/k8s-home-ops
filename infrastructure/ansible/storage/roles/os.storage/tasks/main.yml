@@ -26,3 +26,8 @@
 - import_tasks: rootless.yml
   tags:
     - rootless
+
+- import_tasks: udev.yaml
+  tags:
+    - udev
+  notify: Update initramfs
