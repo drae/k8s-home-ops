@@ -1,11 +1,13 @@
 {
   "extends": [
     "config:base",
+    "docker:enableMajor",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
-    "docker:enableMajor",
     ":enablePreCommit",
+    ":automergeDigest",
+    ":automergeBranchPush",
     "github>Drae/gitops-starstreak.net//.github/renovate/allowedVersions.json5",
     "github>Drae/gitops-starstreak.net//.github/renovate/autoMerge.json5",
     "github>Drae/gitops-starstreak.net//.github/renovate/commitMessage.json5",
@@ -23,7 +25,7 @@
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
   "commitBodyTable": true,
-  "ignorePaths": ["archive/**"],
+  "ignorePaths": ["_archivd/**"],
   "docker-compose": {
     "fileMatch": ["infrastructure/ansible/.+/docker-compose.*\\.ya?ml(\\.j2)?$"]
   },
@@ -51,7 +53,7 @@
     {
       "description": "Process various dependencies",
       "fileMatch": [
-        "ansible/.+\\.ya?ml$",
+        "infrastrucutre/ansible/.+\\.ya?ml$",
         "cluster/.+\\.ya?ml$"
       ],
       "matchStrings": [
