@@ -26,6 +26,10 @@ sonarr:
             - f3f0f3691c6a1988d4a02963e69d11f2 # Ignore The Group -SCENE
             - 5bc23c3a055a1a5d8bbe4fb49d80e0cb # So called "scene"
             - 538bad00ee6f8aced8e0db5218b8484c # Dual audio
+            - 6f2aefa61342a63387f2a90489e90790 # Dislike retags
+            - 19cd5ecc0a24bf493a75e80a51974cdd # Dislike retagged groups
+            - 6a7b462c6caee4a991a9d8aa38ce2405 # Dislike endingin in 'en'
+            - 236a3626a07cacf5692c73cc947bc280 # Dislike containing 1-
 
   - base_url: http://sonarr-uhd.downloads:8989
     api_key: ${SONARR_UHD_APIKEY}
@@ -40,10 +44,16 @@ sonarr:
         filter:
           include:
             - cec8880b847dd5d31d29167ee0112b57 # Golden rule
+            - fa47da3377076d82d07c4e95b3f13d07 # Prefer Dolby Vision
+            - bc7a6383cbe88c3ee2d6396e1aacc0b3 # Prefer HDR
             - 436f5a7d08fbf02ba25cb5e5dfe98e55 # Ignore Dolby Vision without HDR10 fallback
             - f3f0f3691c6a1988d4a02963e69d11f2 # Ignore The Group -SCENE
             - 5bc23c3a055a1a5d8bbe4fb49d80e0cb # So called "scene"
             - 538bad00ee6f8aced8e0db5218b8484c # Dual audio
+            - 6f2aefa61342a63387f2a90489e90790 # Dislike retags
+            - 19cd5ecc0a24bf493a75e80a51974cdd # Dislike retagged groups
+            - 6a7b462c6caee4a991a9d8aa38ce2405 # Dislike endingin in 'en'
+            - 236a3626a07cacf5692c73cc947bc280 # Dislike containing 1-
 
 radarr:
   - base_url: http://radarr.downloads:7878
