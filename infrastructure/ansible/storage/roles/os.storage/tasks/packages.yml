@@ -16,6 +16,17 @@
     update_cache: true
   loop: "{{ os_packages_repositories | default([]) }}"
 
+- name: Add Opensuse repo for latest podman builds
+  block:
+    - name: Install the Opensuse kubic repo key for 22.04
+      ansible.builtin.get_url:
+        url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/unstable/xUbuntu_22.04/Release.key
+        dest: /etc/apt/trusted.gpg.d/opensuse_kubic_podman.asc
+    - name: Install the Opensuse kubic repo for 22.04 podman
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/opensuse_kubic_podman.asc] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/unstable/xUbuntu_22.04/ ./"
+        state: present
+
 - name: Upgrade all system packages
   ansible.builtin.apt:
     upgrade: full
