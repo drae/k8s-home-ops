@@ -14,28 +14,43 @@ nodes:
     ipAddress: 10.1.10.21
     controlPlane: true
     installDisk: /dev/sda
+    nameservers:
+      - 10.1.10.1
     networkInterfaces:
       - interface: eth0
         mtu: 1500
         dhcp: true
+        dhcpOptions:
+          ipv4: true
+          ipv6: true
         vip:
           ip: ${clusterEndpointIP}
-#  - hostname: kube-cp-02
-#    ipAddress: 10.1.10.22
-#    controlPlane: true
-#    installDisk: /dev/sda
-#    networkInterfaces:
-#      - interface: eth0
-#        mtu: 1500
-#        dhcp: true
-#  - hostname: kube-cp-03
-#    ipAddress: 10.1.10.23
-#    controlPlane: true
-#    installDisk: /dev/sda
-#    networkInterfaces:
-#      - interface: eth0
-#        mtu: 1500
-#        dhcp: true
+  - hostname: kube-cp-02
+    ipAddress: 10.1.10.22
+    controlPlane: true
+    installDisk: /dev/nvme0n1
+    nameservers:
+      - 10.1.10.1
+    networkInterfaces:
+      - interface: eth0
+        mtu: 1500
+        dhcp: true
+        dhcpOptions:
+          ipv4: true
+          ipv6: true
+  - hostname: kube-cp-03
+    ipAddress: 10.1.10.23
+    controlPlane: true
+    installDisk: /dev/nvme0n1
+    nameservers:
+      - 10.1.10.1
+    networkInterfaces:
+      - interface: eth0
+        mtu: 1500
+        dhcp: true
+        dhcpOptions:
+          ipv4: true
+          ipv6: true
 
 controlPlane:
   configPatches:
