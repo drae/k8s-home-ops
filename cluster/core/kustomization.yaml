@@ -5,9 +5,7 @@ resources:
   - cert-manager
   - cloudflared
   - ingress-nginx
-  - intel-gpu-plugin
   - kyverno
   - metallb
-  - node-feature-discovery
   - rook-ceph
   - vpn-gateway
