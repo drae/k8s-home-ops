@@ -1,0 +1,8 @@
+zfs_install_update: false
+zfs_enable_nfs: true
+zfs_manage_filesystem_permissions: true
+zfs_enable_samba: true
+zfs_enable_performance_tuning: false # Not idempotent
+zfs_create_pools: false
+zfs_create_filesystems: false
+zfs_monitoring_capacity_threshold: 92

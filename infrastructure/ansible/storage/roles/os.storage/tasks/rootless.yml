@@ -1,4 +1,6 @@
 ---
+# Configure to allow full rootless operation of podman
+
 - name: check if linger is enabled
   stat:
     path: "/var/lib/systemd/linger/{{ ansible_user }}"

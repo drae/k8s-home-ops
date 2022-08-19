@@ -3,8 +3,6 @@
 # SECRET* vars are encrypted with sops
 #
 
-os_smtp_account_name: mailgun
-os_smtp_port: 587
 os_timezone: "Europe/London"
 os_ssh_authorized_keys:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnp4n7WX1FgQozEi6qY+E/6y3yg6eqnAdpQHp1MkMTH paul@LAPTOP"
@@ -12,20 +10,22 @@ os_packages_repositories:
   - ppa:neovim-ppa/unstable
 os_packages_install:
   - apt-transport-https
+  - aardvark-dns
   - ca-certificates
-  - containerd.io
   - curl
   - gettext
   - git
   - htop
+  - netavark
   - neofetch
   - neovim
   - ntpdate
+  - podman
+  - podman-plugins
   - psmisc
   - samba
   - software-properties-common
   - tmux
-  - tree
   - uidmap
   - unzip
   - wsdd2

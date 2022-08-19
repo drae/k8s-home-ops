@@ -1,10 +1,5 @@
 ---
-#
-- name: Add user to sudoers
-  ansible.builtin.copy:
-    content: "{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
-    dest: "/etc/sudoers.d/{{ ansible_user }}_nopasswd"
-    mode: 0440
+# Configure localadmin
 
 - name: Add additional user SSH public keys
   ansible.posix.authorized_key:
@@ -25,3 +20,35 @@
     mode: "0775"
   when:
     - not hushlogin_status.stat.exists
+
+- name: Add user to sudoers
+  ansible.builtin.copy:
+    content: "{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    dest: "/etc/sudoers.d/{{ ansible_user }}_nopasswd"
+    mode: "0440"
+
+- name: Add user to users
+  ansible.builtin.user:
+    name: localadmin
+    groups: users
+    append: yes
+
+# Add kah user
+
+- name: Add the group 'kah'
+  ansible.builtin.group:
+    name: kah
+    gid: 568
+    state: present
+
+- name: Add the user 'kah'
+  ansible.builtin.user:
+    name: kah
+    uid: 568
+    group: kah
+    groups: users
+    append: yes
+    create_home: no
+    home: /nonexistent
+    shell: /bin/nologin
+    state: present
