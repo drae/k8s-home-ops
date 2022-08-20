@@ -72,21 +72,21 @@ spec:
         mgr:
           requests:
             cpu: "125m"
-            memory: "512Mi"
+            memory: "549M"
           limits:
-            memory: "1Gi"
+            memory: "1219M"
         mon:
           requests:
-            cpu: "50m"
-            memory: "512Mi"
+            cpu: "49m"
+            memory: "477M"
           limits:
-            memory: "1Gi"
+            memory: "1059M"
         osd:
           requests:
-            cpu: "300m"
-            memory: "512Mi"
+            cpu: "442m"
+            memory: "2678M"
           limits:
-            memory: "6Gi"
+            memory: "5944M"
         prepareosd:
           requests:
             cpu: "250m"
@@ -95,28 +95,28 @@ spec:
             memory: "200Mi"
         mgr-sidecar:
           requests:
-            cpu: "50m"
-            memory: "100Mi"
+            cpu: "49m"
+            memory: "94M"
           limits:
-            memory: "200Mi"
+            memory: "208M"
         crashcollector:
           requests:
             cpu: "15m"
-            memory: "64Mi"
+            memory: "64M"
           limits:
-            memory: "128Mi"
+            memory: "64M"
         logcollector:
           requests:
             cpu: "100m"
-            memory: "100Mi"
+            memory: "100M"
           limits:
-            memory: "1Gi"
+            memory: "1G"
         cleanup:
           requests:
             cpu: "250m"
-            memory: "100Mi"
+            memory: "100M"
           limits:
-            memory: "1Gi"
+            memory: "1G"
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-rbdplugin-snapclass
@@ -158,10 +158,10 @@ spec:
             activeStandby: true
             resources:
               requests:
-                cpu: 1000m
-                memory: 4Gi
+                cpu: "35m"
+                memory: "64M"
               limits:
-                memory: 4Gi
+                memory: "144M"
         storageClass:
           enabled: true
           isDefault: false
