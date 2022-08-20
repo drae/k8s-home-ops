@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-wipe-kube-cp-01
+spec:
+  restartPolicy: Never
+  nodeName: kube-cp-01
+  containers:
+    - name: disk-wipe
+      image: quay.io/ceph/ceph:v16.2.10
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "-c", "sgdisk -Z /dev/nvme0n1"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-wipe-kube-cp-02
+spec:
+  restartPolicy: Never
+  nodeName: kube-cp-02
+  containers:
+    - name: disk-wipe
+      image: quay.io/ceph/ceph:v16.2.10
+      securityContext:
+        privileged: true
+      command: ["/bin/sh", "-c", "sgdisk -Z /dev/nvme0n1"]
