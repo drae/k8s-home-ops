@@ -125,7 +125,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
-            size: 1
+            size: 2
         storageClass:
           enabled: true
           name: rook-ceph-block
@@ -151,10 +151,10 @@ spec:
           dataPools:
             - failureDomain: host
               replicated:
-                size: 1
+                size: 2
               name: data0
           metadataServer:
-            activeCount: 1
+            activeCount: 2
             activeStandby: true
             resources:
               requests:
