@@ -58,6 +58,12 @@ spec:
         existingClaim: home-assistant-config
     podAnnotations:
       secret.reloader.stakater.com/reload: "home-assistant"
+    resources:
+      requests:
+        cpu: 126m
+        memory: 411M
+      limits:
+        memory: 4417M
     addons:
       codeserver:
         enabled: true
@@ -88,9 +94,9 @@ spec:
         volumeMounts:
           - name: config
             mountPath: /config
-    resources:
-      requests:
-        cpu: 100m
-        memory: 100Mi
-      limits:
-        memory: 2048Mi
+        resources:
+          requests:
+            cpu: 11m
+            memory: 94M
+          limits:
+            memory: 1007M
