@@ -56,6 +56,13 @@ spec:
           host_key: __host
       # Transformations
       transforms:
+        kubernetes_logs_remap:
+          type: remap
+          inputs:
+            - kubernetes_logs
+          source: |
+            # Standardize 'app' index
+            .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
         talos_kernel_logs_xform:
           type: remap
           inputs:
@@ -88,19 +95,15 @@ spec:
           remove_timestamp: true
           labels:
             k8s_app: >-
-              {{`{{ "kubernetes.pod_labels.app\.kubernetes\.io/name" }}`}}
+              {{`{{ custom_app_name }}`}}
             k8s_container: >-
-              {{`{{ "kubernetes.container_name" }}`}}
-            k8s_filename: >-
-              {{`{{ "kubernetes.file" }}`}}
-            k8s_instance: >-
-              {{`{{ "kubernetes.pod_labels.app\.kubernetes\.io/instance" }}`}}
+              {{`{{ kubernetes.container_name }}`}}
             k8s_namespace: >-
-              {{`{{ "kubernetes.pod_namespace" }}`}}
+              {{`{{ kubernetes.pod_namespace }}`}}
             k8s_node: >-
-              {{`{{ "kubernetes.pod_node_name" }}`}}
+              {{`{{ kubernetes.pod_node_name }}`}}
             k8s_pod: >-
-              {{`{{ "kubernetes.pod_name" }}`}}
+              {{`{{ kubernetes.pod_name }}`}}
         loki_journal:
           type: loki
           inputs:
