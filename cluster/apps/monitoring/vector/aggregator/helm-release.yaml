@@ -32,10 +32,6 @@ spec:
           address: 0.0.0.0:6000
           type: vector
           version: "2"
-        vyos_logs:
-          address: 0.0.0.0:6001
-          type: vector
-          version: "2"
         journal_logs:
           type: vector
           address: 0.0.0.0:6002
@@ -66,12 +62,16 @@ spec:
             - talos_kernel_logs
           source: |-
             .__host, .err = replace(.__host, "10.1.10.21", "kube-cp-01")
+            .__host = replace(.__host, "10.1.10.22", "kube-cp-02")
+            .__host = replace(.__host, "10.1.10.23", "kube-cp-03")
         talos_service_logs_xform:
           type: remap
           inputs:
             - talos_service_logs
           source: |-
             .__host, .err = replace(.__host, "10.1.10.21", "kube-cp-01")
+            .__host = replace(.__host, "10.1.10.22", "kube-cp-02")
+            .__host = replace(.__host, "10.1.10.23", "kube-cp-03")
       # Sinks
       sinks:
         loki_kubernetes:
@@ -101,21 +101,6 @@ spec:
               {{`{{ "kubernetes.pod_node_name" }}`}}
             k8s_pod: >-
               {{`{{ "kubernetes.pod_name" }}`}}
-        loki_vyos:
-          type: loki
-          inputs:
-            - vyos_logs
-          endpoint: http://loki.monitoring:3100
-          encoding:
-            codec: json
-          batch:
-            max_bytes: 400000
-          out_of_order_action: rewrite_timestamp
-          labels:
-            hostname: >-
-              {{`{{ host }}`}}
-            syslog_identifier: >-
-              {{`{{ SYSLOG_IDENTIFIER }}`}}
         loki_journal:
           type: loki
           inputs:
