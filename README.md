@@ -20,20 +20,87 @@ This repo contains my flux2 based gitops workflow for maintaining my [talos](htt
 The following applications are used to install and manage the cluster:
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+- [helm](https://helm.sh/)
+- [kustomize](https://kustomize.io/)
 - [flux](https://fluxcd.io/docs/installation/)
 - [gpg](https://gnupg.org/)
 - [sops](https://github.com/mozilla/sops/)
+- [direnv](https://direnv.net/)
 - [task](https://taskfile.dev/)
 - [talhelper](https://github.com/budimanjojo/talhelper)
 ## 💻 Hardware
 
 The cluster comprises 3 identical Lenovo M720Q Thinkcentres, specs: Intel Core i5-9500T, 16GB DDR4, 240GB SATA SSD (OS), and 500GB NVME SSD (Data). 
 
-Other hardware includes an increasingly aging self built NAS (Celeron based, 16GB DDR3 in a neat [U-NAS 800](https://www.u-nas.com/xcart/cart.php?target=product&product_id=17617) case) and, currently, a [Raspberry Pi 4B](https://www.raspberrypi.org/) as my router running [OpenWRT](https://openwrt.org). I did tinker with [VyOS](https://www.vyos.com/) but the boot sequence needs work and I had real issues getting anything working following a reinstall. Something for the future!
+Other hardware includes an aging self built NAS (Celeron based, 16GB DDR3 in a neat [U-NAS 800](https://www.u-nas.com/xcart/cart.php?target=product&product_id=17617) case) and, currently, a [Raspberry Pi 4B](https://www.raspberrypi.org/) router running [OpenWRT](https://openwrt.org). I did tinker with [VyOS](https://vyos.io/) but the boot sequence needs work and I had real issues getting anything working following a reinstall. Something for the future!
 
-The Pi replaces an older Atom based self-built router who's external PSU went 💥 after many years of service. Given that router pulled nearly 20W, and with rising energy costs in mind, I thought I'd try the Pi 4. It works surprisingly well - and sips power. I should note my internet connectivity is limited to 80/20 VDSL2 as, for some reason, the local [XGS-PON based fibre provider](https://www.communityfibre.co.uk) has decided to ignore my road (gigabit for everyone else!) and Openreach (one of the national incumbent providers) has my phone exchange listed for FTTP as "by 2025". Still, others have benchmarked the Pi 4B as maintaining >800Mbps up/down with SQM, pretty impressive.
+The Pi replaces an older Atom based self-built router who's external PSU went 💥 after many years of service. Given that router pulled nearly 20W, and with rising energy costs in mind, I thought I'd try the Pi 4. It works surprisingly well - and sips power. I should note my internet connectivity is limited to 80/20 VDSL2 as, for some reason, the local [XGS-PON based fibre provider](https://www.communityfibre.co.uk) has decided to ignore my road (all the surrounding roads have it or will do soon ... 😔) and BT/Openreach (the major national incumbent network owner) has my phone exchange listed for FTTP as "by 2025". Still, others have benchmarked the Pi 4B as maintaining >800Mbps up/down with SQM, pretty impressive.
 
-Power use varies from around 75-85W (with disks spundown and cluster idling), 95-120W with [Plex](https://plex.tv) direct playing or (hardware) transcoding, to 150-165W if the cluster/NAS are very busy (scrubing, etc.). 
+Total power use (for the cluster, nas, router, switch, ap, etc.) varies from around **75-90W** (with disks spundown and cluster idling), **105-120W** with [Plex](https://plex.tv) direct playing or (hardware) transcoding, to **150-165W** when the cluster/NAS are particularly busy (scrubing, etc.). I would say it averages out over 24 hours to probably **100-110W**.
+
+## 🤔 Before we start
+
+Obviously keep in mind my repo has lots of encrypted data that is tied to my own GPG private key. You cannot simply clone this repo, follow this walkthrough, and have a functioning cluster. You will need to use your own key, update the ```.sops.yaml``` file in the root of the repo, replacing my public gpg key(s) with your own public key. 
+
+Then you will need to re-create all the individual ```XXXXX.sops.yaml``` files in the repo (```infrastructure/*``` and ```cluster/*```) with your own data and encrypt them with your own gpg, age, azure, ... or other key.
+
+Creating your own key is "out of scope" for this readme, a quick [google](https://www.google.com/) will get you sorted!
+
+## 💾 Installing the cluster
+
+Clone the repo, change to the new folder and run ```direnv``` to enable the loading of certain environment variables:
+
+```
+git clone https://github.com/Drae/gitops-starstreak.net.git && cd gitops-starstreak.net && direnv allow
+```
+
+I use the stable version of [talos](https://talos.dev) as the operating system for running my home cluster. I do not use pxe booting or anything fancy, I just burn the [.iso](https://github.com/siderolabs/talos/releases) to a usb and install directly. Each nodes needs booting with this image. 
+
+[talhelper](https://github.com/budimanjojo/talhelper), a great tool by [budimanjojo](https://github.com/budimanjojo/) simplifies creation of the necessary configuration. I simply:
+
+```
+cd infrastructure/talos
+talhelper gensecret --patch-configfile > talenv.sops.yaml
+sops -e -i talenv.sops.yaml
+talhelper genconfig
+cd ../..
+```
+
+All the necessary node and talosconfig files are created in the ```infrastructure/talos/clusterconfig``` folder. Note that I add additional parameters to the ```talenv.sops.yaml``` file, see the ```talconfig.yaml``` for more info (look for variables of the form ```${<VAR NAME>}``` and replicate any missing in talenv file with relevant values). 
+
+I then apply the configuration to each prepared node (i.e. booted with the talos usb flash drive):
+
+```
+talosctl -n <NODE IP> apply-config infrastructure/talos/clusterconfig/<NODE CONFIG>.yaml --insecure
+```
+
+Then sit back and watch the node prepare itself, rinse and repeat for all the nodes. With the nodes prepared it is time to issue the bootstrap command to just one of the nodes:
+
+```
+talosctl -n <NODE IP> bootstrap
+```
+
+This initiates the installation of kubernetes cluster wide. Once bootstraped I can download the ```kubeconfig``` and apply a "temporary" CNI configuration (I use [cillium](https://cillium.io/) as my CNI). This is just enough configuration to enable networking (full configuration is managed by flux):
+
+```
+talosctl kubeconfig > cluster/kubeconfig
+kubectl apply -f infrastructure/talos/cni/install.yaml
+```
+
+and that should be it, cluster is ready 🎉🎉🎉
+
+
+✳️ See the following folder for more details on the talos configuration: [/infrastructure/talos](https://github.com/Drae/gitops-starstreak.net/tree/main/infrastructure/talos). Note that sops is used to encrypt some of the more sensitive information!
+
+✳️ I use [haproxy](https://haproxy.io) as the load balancer for both the talos and kubernetes control planes. Previously I have used the [shared layer-2 vip](https://www.talos.dev/v1.1/introduction/getting-started/#decide-the-kubernetes-endpoint) method but it can sometimes throw a fit that is difficult or even impossible to recover from (probably due to my lack of knowledge and pushing capabilities). An example configuration for haproxy can be found [here](https://gist.github.com/Drae/1208b28545c3c164e10e05915b36bfcc)
+
+✳️ To create the bootstrap CNI ```install.yaml``` I use kustomize: 
+
+```
+kustomize build infrastructure/talos/cni --enable-helm > infrastructure/talos/cni/install.yaml
+```
+
+This applies the ```values.yaml``` to the ```kustomization.yaml``` in ```infrastructure/talos/cni```, which downloads the necessary cillium helm chart and produces the ```install.yaml``` manifest. Doing it this way ensures all the relevant helm annotations are included in the manifest. Without these flux will fail to take over management of the installation!
 
 ## 🥾 Bootstraping the cluster
 
@@ -46,13 +113,16 @@ kubectl create namespace flux-system
 Export the SOPS secret key from GPG and import to the cluster:
 
 ```
-gpg --export-secret-keys --armor "4CF588582D481BB5C1927F275BB27F59F87ABCA3" | kubectl create secret generic sops-gpg --namespace=flux-system --from-file=sops.asc=/dev/stdin
+gpg --export-secret-keys --armor "<GPG>" | kubectl create secret \
+  generic sops-gpg --namespace=flux-system --from-file=sops.asc=/dev/stdin
 ```
 
 These commands can also be invoked using ```task```:
+
 ```
 task cluster:bootstrap-sops KEY=<GPG>
 ```
+
 where ```GPG``` is the relevant key from your gpg keyring. If you do not specify a key mine  will be used (and will fail because you do not have my private key ... I hope!). 
 
 If this is a new installation or no pre-existing github token is available run (replacing ```<REPO URL>``` as appropriate):
@@ -68,6 +138,15 @@ kubectl apply -k cluster/base/flux-system
 ```
 
 This will need to be run twice due to race conditions. Sit back and watch the cluster install itself, magic 🪄.
+
+## 💽 Backup and recovery
+
+Previously I have tried all the main/usual backup and recovery solutions for K8S. Every one of them has had some kind of issue. 
+
+Fortunately, the [k8s-at-home](https://discord.gg/DNCynrJ) peeps (specifically [onedr0p](https://github.com/onedr0p)) have devised a really simple, yet incredibly effective "Poor Mans Backup" (PMB) solution. It uses a [Kyverno](https://kyverno.io) deployed cronjob to directly backup (using [kopia](https://kopia.io)) specifically labelled PVC's to a user defined location (in my case, my NAS). Recovery is incredibly simple, a [task](https://taskfile.dev/) routine is called with the name of the app to be recovered and tada, recovery. I've tried this out *cough* many times now and it has worked successfully every single time. A++ would recommend 👍
+
+✳️ See the following files for more information: [snapshot-cronjob-controller.yaml](https://github.com/Drae/gitops-starstreak.net/blob/main/cluster/core/kyverno/policies/snapshot-cronjob-controller.yaml) and [SnapshotTasks.yml](https://github.com/Drae/gitops-starstreak.net/blob/main/.taskfiles/SnapshotTasks.yml)
+
 
 ## 🤝 Thanks
 
