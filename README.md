@@ -24,12 +24,18 @@ The following applications are used to install and manage the cluster:
 - [gpg](https://gnupg.org/)
 - [sops](https://github.com/mozilla/sops/)
 - [task](https://taskfile.dev/)
-
+- [talhelper](https://github.com/budimanjojo/talhelper)
 ## 💻 Hardware
 
-The cluster comprises 3 identical Lenovo M720Q Thinkcentres, specs: Intel Core i5-9500T, 16GB DDR4, 240GB SATA SSD (OS), and 500GB NVME SSD (Data).
+The cluster comprises 3 identical Lenovo M720Q Thinkcentres, specs: Intel Core i5-9500T, 16GB DDR4, 240GB SATA SSD (OS), and 500GB NVME SSD (Data). 
 
-## 🥾 Bootstrap the cluster
+Other hardware includes an increasingly aging self built NAS (Celeron based, 16GB DDR3 in a neat [U-NAS 800](https://www.u-nas.com/xcart/cart.php?target=product&product_id=17617) case) and, currently, a [Raspberry Pi 4B](https://www.raspberrypi.org/) as my router running [OpenWRT](https://openwrt.org). I did tinker with [VyOS](https://www.vyos.com/) but the boot sequence needs work and I had real issues getting anything working following a reinstall. Something for the future!
+
+The Pi replaces an older Atom based self-built router who's external PSU went 💥 after many years of service. Given that router pulled nearly 20W, and with rising energy costs in mind, I thought I'd try the Pi 4. It works surprisingly well - and sips power. I should note my internet connectivity is limited to 80/20 VDSL2 as, for some reason, the local [XGS-PON based fibre provider](https://www.communityfibre.co.uk) has decided to ignore my road (gigabit for everyone else!) and Openreach (one of the national incumbent providers) has my phone exchange listed for FTTP as "by 2025". Still, others have benchmarked the Pi 4B as maintaining >800Mbps up/down with SQM, pretty impressive.
+
+Power use varies from around 75-85W (with disks spundown and cluster idling), 95-120W with [Plex](https://plex.tv) direct playing or (hardware) transcoding, to 150-165W if the cluster/NAS are very busy (scrubing, etc.). 
+
+## 🥾 Bootstraping the cluster
 
 Create the flux-system namespace:
 
@@ -45,12 +51,14 @@ gpg --export-secret-keys --armor "4CF588582D481BB5C1927F275BB27F59F87ABCA3" | ku
 
 These commands can also be invoked using ```task```:
 ```
-task cluster:bootstrap-sops KEY=<GPG KEY>
+task cluster:bootstrap-sops KEY=<GPG>
 ```
-where ```GPG-KEY``` is the relevant key from your gpg keyring, if you omit ```KEY=``` my key will be used (and will fail because you do not have my private key ... I hope!). If this is a new installation or no pre-existing github token is available run:
+where ```GPG``` is the relevant key from your gpg keyring. If you do not specify a key mine  will be used (and will fail because you do not have my private key ... I hope!). 
+
+If this is a new installation or no pre-existing github token is available run (replacing ```<REPO URL>``` as appropriate):
 
 ```
-flux create source git flux-system --url=https://github.com/Drae/gitops-starstreak.net --branch=main -n flux-system
+flux create source git flux-system --url=<REPO URL> --branch=main -n flux-system
 ```
 
 Now apply the flux manifests using kustomize:
@@ -59,7 +67,7 @@ Now apply the flux manifests using kustomize:
 kubectl apply -k cluster/base/flux-system
 ```
 
-This will need to be run twice due to race conditions. 
+This will need to be run twice due to race conditions. Sit back and watch the cluster install itself, magic 🪄.
 
 ## 🤝 Thanks
 
