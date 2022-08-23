@@ -15,7 +15,7 @@
 
 This repo contains my flux2 based gitops workflow for maintaining my [talos](https://talos.dev/) home cluster. Storage for stateful containers utilises [rook-ceph](https://rook.io/), and nfs is used for accessing data stored on my white box, Ubuntu powered, ZFS backed NAS.
 
-🤖 [Renovate](https://renovatebot.com) and [Github actions](https://github.com/features/actions) are used to automatically open pull requests, produce diffs, and do security checks for updated charts, images, and other resources.
+🤖 [Renovate](https://www.mend.io/free-developer-tools/renovate/) and [Github actions](https://github.com/features/actions) are used to automatically open pull requests, produce diffs, and do security checks for updated charts, images, and other resources.
 
 The following applications are used to install and manage the cluster:
 
@@ -80,7 +80,7 @@ Then sit back and watch the node prepare itself, rinse and repeat for all the no
 talosctl -n <NODE IP> bootstrap
 ```
 
-This initiates the installation of kubernetes cluster wide. Once bootstraped I can download the ```kubeconfig``` and apply a "temporary" CNI configuration (I use [cillium](https://cillium.io/) as my CNI). This is just enough configuration to enable networking (full configuration is managed by flux):
+This initiates the installation of kubernetes cluster wide. Once bootstraped I can download the ```kubeconfig``` and apply a "temporary" CNI configuration (I use [cilium](https://cilium.io/) as my CNI). This is just enough configuration to enable networking (full configuration is managed by flux):
 
 ```
 talosctl kubeconfig > cluster/kubeconfig
@@ -92,7 +92,7 @@ and that should be it, cluster is ready 🎉🎉🎉
 
 ✳️ See the following folder for more details on the talos configuration: [/infrastructure/talos](https://github.com/Drae/gitops-starstreak.net/tree/main/infrastructure/talos). Note that sops is used to encrypt some of the more sensitive information!
 
-✳️ I use [haproxy](https://haproxy.io) as the load balancer for both the talos and kubernetes control planes. Previously I have used the [shared layer-2 vip](https://www.talos.dev/v1.1/introduction/getting-started/#decide-the-kubernetes-endpoint) method but it can sometimes throw a fit that is difficult or even impossible to recover from (probably due to my lack of knowledge and pushing capabilities). An example configuration for haproxy can be found [here](https://gist.github.com/Drae/1208b28545c3c164e10e05915b36bfcc)
+✳️ I use [haproxy](https://haproxy.org) as the load balancer for both the talos and kubernetes control planes. Previously I have used the [shared layer-2 vip](https://www.talos.dev/v1.1/introduction/getting-started/#decide-the-kubernetes-endpoint) method but it can sometimes throw a fit that is difficult or even impossible to recover from (probably due to my lack of knowledge and pushing capabilities). An example configuration for haproxy can be found [here](https://gist.github.com/Drae/1208b28545c3c164e10e05915b36bfcc)
 
 ✳️ To create the bootstrap CNI ```install.yaml``` I use kustomize: 
 
