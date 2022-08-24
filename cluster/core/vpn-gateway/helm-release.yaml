@@ -50,7 +50,7 @@ spec:
       secret.reloader.stakater.com/reload: vpn-gateway-config
     additionalContainers:
       gluetun:
-        image: qmcgaw/gluetun:v3.30.0@sha256:6bbc9ae5975dac7745a2fadee196f3456d2916adb1736f15a11896e599ba2a7d
+        image: qmcgaw/gluetun:v3.30.1@sha256:d67f224cbe78b2f51a1e9447e414539da88dfbf06c01d40c49bc04e55f42b412
         env:
           - name: VPN_TYPE
             value: wireguard
