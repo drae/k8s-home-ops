@@ -1,6 +1,6 @@
 <img src="https://www.starstreak.net/kube+star.png" align="left" height="150px">
 
-#### gitops-starstreak.net
+#### k8s-home-ops
 
 > Flux management of my home cluster
 
@@ -51,7 +51,7 @@ Creating your own key is "out of scope" for this readme, a quick [google](https:
 Clone the repo, change to the new folder and run ```direnv``` to enable the loading of certain environment variables:
 
 ```
-git clone https://github.com/Drae/gitops-starstreak.net.git && cd gitops-starstreak.net && direnv allow
+git clone https://github.com/Drae/k8s-home-ops.git && cd k8s-home-ops && direnv allow
 ```
 
 I use the stable version of [talos](https://talos.dev) as the operating system for running my home cluster. I do not use pxe booting or anything fancy, I just burn the [.iso](https://github.com/siderolabs/talos/releases) to a usb and install directly. Each nodes needs booting with this image. 
@@ -90,7 +90,7 @@ kubectl apply -f infrastructure/talos/cni/install.yaml
 and that should be it, cluster is ready 🎉🎉🎉
 
 
-✳️ See the following folder for more details on the talos configuration: [/infrastructure/talos](https://github.com/Drae/gitops-starstreak.net/tree/main/infrastructure/talos). Note that sops is used to encrypt some of the more sensitive information!
+✳️ See the following folder for more details on the talos configuration: [/infrastructure/talos](https://github.com/Drae/k8s-home-ops/tree/main/infrastructure/talos). Note that sops is used to encrypt some of the more sensitive information!
 
 ✳️ I use [haproxy](https://haproxy.org) as the load balancer for both the talos and kubernetes control planes. Previously I have used the [shared layer-2 vip](https://www.talos.dev/v1.1/introduction/getting-started/#decide-the-kubernetes-endpoint) method but it can sometimes throw a fit that is difficult or even impossible to recover from (probably due to my lack of knowledge and pushing capabilities). An example configuration for haproxy can be found [here](https://gist.github.com/Drae/1208b28545c3c164e10e05915b36bfcc)
 
@@ -145,7 +145,7 @@ Previously I have tried all the main/usual backup and recovery solutions for K8S
 
 Fortunately, the [k8s-at-home](https://discord.gg/DNCynrJ) peeps (specifically [onedr0p](https://github.com/onedr0p)) have devised a really simple, yet incredibly effective "Poor Mans Backup" (PMB) solution. It uses a [Kyverno](https://kyverno.io) deployed cronjob to directly backup (using [kopia](https://kopia.io)) specifically labelled PVC's to a user defined location (in my case, my NAS). Recovery is incredibly simple, a [task](https://taskfile.dev/) routine is called with the name of the app to be recovered and tada, recovery. I've tried this out *cough* many times now and it has worked successfully every single time. A++ would recommend 👍
 
-✳️ See the following files for more information: [snapshot-cronjob-controller.yaml](https://github.com/Drae/gitops-starstreak.net/blob/main/cluster/core/kyverno/policies/snapshot-cronjob-controller.yaml) and [SnapshotTasks.yml](https://github.com/Drae/gitops-starstreak.net/blob/main/.taskfiles/SnapshotTasks.yml)
+✳️ See the following files for more information: [snapshot-cronjob-controller.yaml](https://github.com/Drae/k8s-home-ops/blob/main/cluster/core/kyverno/policies/snapshot-cronjob-controller.yaml) and [SnapshotTasks.yml](https://github.com/Drae/k8s-home-ops/blob/main/.taskfiles/SnapshotTasks.yml)
 
 
 ## 🤝 Thanks
