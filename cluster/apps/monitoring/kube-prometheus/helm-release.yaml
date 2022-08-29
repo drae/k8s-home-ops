@@ -161,7 +161,7 @@ spec:
         replicas: 1
         replicaExternalLabelName: __replica__
         externalLabels:
-          cluster: starstreak
+          cluster: ${CLUSTER_NAME}
         podAntiAffinity: hard
         retentionSize: 65GB
         ruleSelectorNilUsesHelmValues: false
