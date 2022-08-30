@@ -18,6 +18,8 @@ spec:
           - resources:
               kinds: [Pod]
       exclude:
+        namespaces:
+          - kube-system
         any:
           - resources:
               kinds: [Pod]
