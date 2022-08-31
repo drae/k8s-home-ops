@@ -8,11 +8,11 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: mosquitto
-      version: 4.8.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
       interval: 15m
   values:
@@ -31,20 +31,25 @@ spec:
         annotations:
           metallb.universe.tf/loadBalancerIPs: ${SVB_LB_MOSQUITO}
         type: LoadBalancer
+        ports:
+          http:
+            enabled: false
+          mqtt:
+            enabled: true
+            primary: true
+            port: 1883
+            protocol: TCP
         externalTrafficPolicy: Local
-    auth:
-      enabled: true
     persistence:
       data:
         enabled: true
+        mountPath: /mosquitto/data
         existingClaim: mosquitto-data
-      configinc:
+      config:
         enabled: true
-        type: configMap
-        mountPath: /mosquitto/configinc
-        name: mqtt-conf
-      mosquitto-pwd:
-        enabled: true
-        type: secret
-        mountPath: /mosquitto/configinc/auth
-        name: mosquitto-pwd
+        mountPath: /mosquitto/config/mosquitto.conf
+        subPath: mosquitto.conf
+        type: custom
+        volumeSpec:
+          configMap:
+            name: mosquitto-config

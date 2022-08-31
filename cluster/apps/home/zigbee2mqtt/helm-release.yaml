@@ -39,13 +39,13 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         hosts:
-          - host: "zigbee2mqtt.p.lan.${SECRET_DOMAIN}"
+          - host: "zigbee2mqtt.${SECRET_DOMAIN_PROXY}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "zigbee2mqtt.p.lan.${SECRET_DOMAIN}"
+              - "zigbee2mqtt.${SECRET_DOMAIN_PROXY}"
     persistence:
       config:
         enabled: true
@@ -63,8 +63,6 @@ spec:
       mqtt:
         base_topic: zigbee2mqtt
         server: "mqtt://mosquitto.home:1883"
-        user: "${SECRET_MQTT_USERNAME}"
-        password: "${SECRET_MQTT_PASSWORD}"
       serial:
         port: "tcp://${IP_ADDR_IOT_ZIGBEE}:6638"
       advanced:
@@ -109,13 +107,13 @@ spec:
           enabled: true
           ingressClassName: "nginx"
           hosts:
-            - host: "zigbee2mqtt-config.p.lan.${SECRET_DOMAIN}"
+            - host: "zigbee2mqtt-config.${SECRET_DOMAIN_PROXY}"
               paths:
                 - path: /
                   pathType: Prefix
           tls:
             - hosts:
-                - "zigbee2mqtt-config.p.lan.${SECRET_DOMAIN}"
+                - "zigbee2mqtt-config.${SECRET_DOMAIN_PROXY}"
         volumeMounts:
           - name: config
             mountPath: /data
