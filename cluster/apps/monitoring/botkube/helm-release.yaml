@@ -25,7 +25,7 @@ spec:
         channel: ${SECRET_DISCORD_BOTKUBE_CHANNEL}
     config:
       settings:
-        clustername: ${CLUSTER_NAME}
+        clustername: ${SECRET_CLUSTER_NAME}
       recommendations: false
       resources:
         - name: v1/pods # Name of the resources e.g pod, deployment, ingress, etc. (Resource name must be in singular form)

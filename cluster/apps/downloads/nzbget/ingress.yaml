@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: &host "nzbget.p.lan.${SECRET_DOMAIN}"
+    - host: &host "nzbget.${SECRET_DOMAIN_PROXY}"
       http:
         paths:
           - path: /
