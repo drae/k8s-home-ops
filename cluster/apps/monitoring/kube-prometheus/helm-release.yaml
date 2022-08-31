@@ -191,6 +191,7 @@ spec:
             honor_timestamps: true
             static_configs:
               - targets:
-                  - "${IP_ADDR_LAN_NAS}:9100"
                   - "${IP_ADDR_LAN_GW}:9100"
+                  - "${IP_ADDR_LAN_PLASMA}:9100"
+                  - "${IP_ADDR_LAN_NAS}:9100"
                   - "${IP_ADDR_LAN_GRAVITY}:9100"
