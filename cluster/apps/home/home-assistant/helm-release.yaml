@@ -38,7 +38,7 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         hosts:
-          - host: &host "hass.p.lan.${SECRET_DOMAIN}"
+          - host: &host "hass.${SECRET_DOMAIN_PROXY}"
             paths:
               - path: /
                 pathType: Prefix
@@ -84,7 +84,7 @@ spec:
           enabled: true
           ingressClassName: "nginx"
           hosts:
-            - host: &host "hass-config.p.lan.${SECRET_DOMAIN}"
+            - host: &host "hass-config.${SECRET_DOMAIN_PROXY}"
               paths:
                 - path: /
                   pathType: Prefix

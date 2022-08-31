@@ -31,7 +31,7 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         hosts:
-          - host: &host "{{ .Release.Name }}.p.lan.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN_PROXY}"
             paths:
               - path: /
                 pathType: Prefix

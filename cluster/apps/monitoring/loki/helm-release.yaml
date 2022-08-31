@@ -79,7 +79,7 @@ spec:
       enabled: true
       ingressClassName: nginx
       hosts:
-        - host: &host "loki.p.lan.${SECRET_DOMAIN}"
+        - host: &host "loki.${SECRET_DOMAIN_PROXY}"
           paths:
             - /
       tls:
