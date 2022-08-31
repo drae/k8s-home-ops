@@ -1,7 +1,7 @@
 clusterName: kube-cluster
 talosVersion: v1.1.2
 kubernetesVersion: v1.24.3
-endpoint: https://${clusterEndpointIP}:6443
+endpoint: https://10.1.10.20:6443
 allowSchedulingOnMasters: true
 clusterPodNets:
   - 10.200.0.0/16
@@ -109,7 +109,7 @@ controlPlane:
           op: create
       install:
         extraKernelArgs:
-          - talos.logging.kernel=udp://10.45.0.2:6050/
+          - talos.logging.kernel=udp://10.1.10.49:6050/
           - nvme_core.default_ps_max_latency_us=5500
           - pci=noaer
       logging:
@@ -163,7 +163,7 @@ worker:
           op: create
       install:
         extraKernelArgs:
-          - talos.logging.kernel=udp://10.45.0.2:6050/
+          - talos.logging.kernel=udp://10.1.10.49:6050/
           - nvme_core.default_ps_max_latency_us=5500
           - pci=noaer
       logging:
