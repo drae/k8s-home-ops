@@ -31,13 +31,13 @@ spec:
         enabled: true
         ingressClassName: "nginx"
         hosts:
-          - host: "esphome.p.lan.${SECRET_DOMAIN}"
+          - host: "esphome.${SECRET_DOMAIN_PROXY}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
-              - "esphome.p.lan.${SECRET_DOMAIN}"
+              - "esphome.${SECRET_DOMAIN_PROXY}"
     persistence:
       config:
         enabled: true

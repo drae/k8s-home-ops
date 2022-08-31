@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: &host "qb.p.lan.${SECRET_DOMAIN}"
+    - host: &host "qb.${SECRET_DOMAIN_PROXY}"
       http:
         paths:
           - path: /

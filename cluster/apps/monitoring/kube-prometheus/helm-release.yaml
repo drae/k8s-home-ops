@@ -96,10 +96,10 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         hosts:
-          - "alert-manager.p.lan.${SECRET_DOMAIN}"
+          - "alert-manager.${SECRET_DOMAIN_PROXY}"
         tls:
           - hosts:
-              - "alert-manager.p.lan.${SECRET_DOMAIN}"
+              - "alert-manager.${SECRET_DOMAIN_PROXY}"
       alertmanagerSpec:
         replicas: 1
         storage:
@@ -153,15 +153,15 @@ spec:
         pathType: Prefix
         ingressClassName: "nginx"
         hosts:
-          - "prometheus.p.lan.${SECRET_DOMAIN}"
+          - "prometheus.${SECRET_DOMAIN_PROXY}"
         tls:
           - hosts:
-              - "prometheus.p.lan.${SECRET_DOMAIN}"
+              - "prometheus.${SECRET_DOMAIN_PROXY}"
       prometheusSpec:
         replicas: 1
         replicaExternalLabelName: __replica__
         externalLabels:
-          cluster: ${CLUSTER_NAME}
+          cluster: ${SECRET_CLUSTER_NAME}
         podAntiAffinity: hard
         retentionSize: 65GB
         ruleSelectorNilUsesHelmValues: false

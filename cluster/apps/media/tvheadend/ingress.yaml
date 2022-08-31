@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: &host "tvheadend.p.lan.${SECRET_DOMAIN}"
+    - host: &host "tvheadend.${SECRET_DOMAIN_PROXY}"
       http:
         paths:
           - path: /

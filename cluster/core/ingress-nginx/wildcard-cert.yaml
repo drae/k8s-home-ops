@@ -17,5 +17,5 @@ spec:
   dnsNames:
     - "${SECRET_DOMAIN}"
     - "*.${SECRET_DOMAIN}"
-    - "*.lan.${SECRET_DOMAIN}"
-    - "*.p.lan.${SECRET_DOMAIN}"
+    - "*.${SECRET_DOMAIN_HARDWARE}"
+    - "*.${SECRET_DOMAIN_PROXY}"
