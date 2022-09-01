@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: mailrise-config
+    namespace: default
+data:
+  mailrise.conf: |
+    smtp:
+      hostname: ${SECRET_CLUSTER_NAME}
+    listen:
+      port: 8025
+    configs:
+      discord:
+        urls:
+          - discord://${SECRET_DISCORD_MAILRISE_WEBHOOK}
