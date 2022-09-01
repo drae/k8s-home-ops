@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: mailrise-config
+    namespace: default
+data:
+  mailrise.conf: |
+    configs:
+      discord:
+        urls:
+          - discord://${SECRET_DISCORD_MAILRISE_WEBHOOK}
