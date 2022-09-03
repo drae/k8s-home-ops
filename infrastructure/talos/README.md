@@ -2,7 +2,7 @@
 
 ## 🥾 Bootstrapping
 
-See the repo [README](https://github.com/Drae/k8s-home-ops/) for information on how to setup and bootstrap talos.
+See the repo [README](https://github.com/drae/k8s-home-ops/) for information on how to setup and bootstrap talos.
 
 ## 👆 Upgrading
 
