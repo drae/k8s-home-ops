@@ -10,4 +10,3 @@ resources:
   - media
   - home
   - unifi
-  - trivy-system
