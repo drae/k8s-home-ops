@@ -2,7 +2,7 @@ clusterName: kube-cluster
 talosVersion: v1.1.2
 kubernetesVersion: v1.24.3
 endpoint: https://10.1.10.20:6443
-allowSchedulingOnMasters: true
+allowSchedulingOnControlPlanes: true
 clusterPodNets:
   - 10.200.0.0/16
 clusterSvcNets:
@@ -59,18 +59,6 @@ controlPlane:
         rotate-server-certificates: "true"
   inlinePatch:
     cluster:
-      aescbcEncryptionSecret: ${aescbcEncryptionKey}
-      aggregatorCA:
-        crt: ${k8sAggregatorCert}
-        key: ${k8sAggregatorCertKey}
-      apiServer:
-        admissionControl: []
-        certSANs:
-          - kube-cluster
-          - kube-cluster.${domainName}
-      ca:
-        crt: ${clusterCert}
-        key: ${clusterCertKey}
       controllerManager:
         extraArgs:
           bind-address: 0.0.0.0
@@ -78,10 +66,6 @@ controlPlane:
         registries:
           service:
             disabled: true
-      etcd:
-        ca:
-          crt: ${etcdCert}
-          key: ${etcdCertKey}
       extraManifests:
         - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
       proxy:
@@ -89,14 +73,7 @@ controlPlane:
       scheduler:
         extraArgs:
           bind-address: 0.0.0.0
-      secret: ${clusterSecret}
-      serviceAccount:
-        key: ${k8sServiceAccountKey}
-      token: ${clusterToken}
     machine:
-      ca:
-        crt: ${machineCert}
-        key: ${machineCertKey}
       certSANs:
         - kube-cluster
         - kube-cluster.${domainName}
@@ -126,7 +103,6 @@ controlPlane:
         servers:
           - 10.1.10.5
           - time.cloudflare.com
-      token: ${machineToken}
       udev:
         rules:
           - SUBSYSTEM=="drm", KERNEL=="card*", GROUP="44", MODE="0660"
@@ -140,17 +116,7 @@ worker:
         feature-gates: GracefulNodeShutdown=true,EphemeralContainers=true,ServerSideApply=true
         rotate-server-certificates: "true"
   inlinePatch:
-    cluster:
-      aescbcEncryptionSecret: ${aescbcEncryptionKey}
-      ca:
-        crt: ${clusterCert}
-        key: ${clusterCertKey}
-      secret: ${clusterSecret}
-      token: ${clusterToken}
     machine:
-      ca:
-        crt: ${machineCert}
-        key: ${machineCertKey}
       certSANs:
         - kube-cluster
         - kube-cluster.${domainName}
@@ -180,7 +146,6 @@ worker:
         servers:
           - 10.1.10.5
           - time.cloudflare.com
-      token: ${machineToken}
       udev:
         rules:
           - SUBSYSTEM=="drm", KERNEL=="card*", GROUP="44", MODE="0660"
