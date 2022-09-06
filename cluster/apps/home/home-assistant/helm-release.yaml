@@ -24,6 +24,8 @@ spec:
     envFrom:
       - secretRef:
           name: home-assistant
+    hostNetwork: true
+    dnsPolicy: ClusterFirstWithHostNet
     service:
       main:
         annotations:
