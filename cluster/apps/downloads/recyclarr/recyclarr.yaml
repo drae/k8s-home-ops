@@ -154,7 +154,6 @@ radarr:
           - eecf3a857724171f968a66cb5719e152 # IMAX
           - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
           - 403f3f6266b90439cacc1e07cae4dc2d # HQ-Remux
-          - 1d433e1e075704f1a8a1ae3e1c371460 # Flights (no IMAX)
           - 26fa26253af4001701fedb56cec376dc # HQ-Webdl
           - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ (0)
           - 66aaa8c2c03c0191a95f0d655b75ab10 # UHD (CtrlHD)
