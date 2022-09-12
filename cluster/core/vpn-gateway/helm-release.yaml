@@ -18,8 +18,8 @@ spec:
       interval: 5m
   values:
     image:
-      repository: ghcr.io/k8s-at-home/pod-gateway
-      tag: v1.7.0
+      repository: ghcr.io/angelnu/pod-gateway
+      tag: v1.8.0@sha256:91a51d0cfcec00834ba3878e07fca2d7c3ce72ac259e2a2787600d0222dbdd9b
     DNS: 172.16.1.1
     routed_namespaces:
       - downloads
@@ -33,8 +33,8 @@ spec:
       NOT_ROUTED_TO_GATEWAY_CIDRS: "172.16.0.0/12 10.0.0.0/8 192.168.1.0/24"
     webhook:
       image:
-        repository: ghcr.io/k8s-at-home/gateway-admision-controller
-        tag: v3.6.0
+        repository: ghcr.io/angelnu/gateway-admision-controller
+        tag: v3.6.1@sha256:d607e73a3d9254b05123d252ffae9fdeb754e1f9ae9c1f64b093b07415f54359
       gatewayDefault: false
     livenessProbe:
       exec:
