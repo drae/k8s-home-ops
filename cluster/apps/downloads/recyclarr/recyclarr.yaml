@@ -17,9 +17,16 @@ sonarr:
       # Scores from TRaSH json
       - trash_ids:
           # HDR
+          - 7878c33f1963fefb3d6c8657d46c2f0a # DV HDR10 - 1500
+          - 6d0d8de7b57e35518ac0308b0ddf404e # DV - 1500
+          - 1f733af03141f068a540eec352589a89 # DV HLG - 1500
+          - 27954b0a80aab882522a88a4d9eae1cd # DV SDR - 1500
+          - a3d82cbef5039f8d295478d28a887159 # HDR10+ - 600
           - 3497799d29a085e2ac2df9d468413c94 # HDR10 - 500
           - 3e2c4e748b64a1a1118e0ea3f4cf6875 # HDR - 500
           - bb019e1cd00f304f80971c965de064dc # HDR (undefined) - 500
+          - 2a7e3be05d3861d6df7171ec74cad727 # PQ - 500
+          - 17e889ce13117940092308f48b48b45b # HLG - 500
           # HQ Web Source Groups
           - e6258996055b9fbab7e9cb2f75819294 # WEB Tier 01 - 1700
           - 58790d4e2fdcd9733aa7ae68ba2bb503 # WEB Tier 02 - 1650
@@ -41,7 +48,7 @@ sonarr:
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated - -10000
           - 06d66ab109d4d2eddb2794d21526d140 # Retags - -10000
           - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups - -10000
-          # - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - ??????
+          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - ??????
           - 1b3994c551cbb92a2c781af061f4ab44 # Scene - -10000
           # Streaming Services
           - d660701077794679fd59e8bdf4ce3a29 # AMZN - 100
@@ -100,7 +107,7 @@ sonarr:
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated - -10000
           - 06d66ab109d4d2eddb2794d21526d140 # Retags - -10000
           - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups - -10000
-          # - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - ??????
+          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - ??????
           - 1b3994c551cbb92a2c781af061f4ab44 # Scene - -10000
           # Streaming Services
           - d660701077794679fd59e8bdf4ce3a29 # AMZN - 100
