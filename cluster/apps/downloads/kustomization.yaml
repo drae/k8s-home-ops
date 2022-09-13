@@ -6,9 +6,7 @@ resources:
   - config-pvc.yaml
   - prowlarr
   - sonarr
-  - sonarr-uhd
   - radarr
-  - radarr-uhd
   - lidarr
   - recyclarr
   - nzbget
