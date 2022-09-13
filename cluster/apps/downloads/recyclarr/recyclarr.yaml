@@ -259,8 +259,8 @@ radarr:
           - ed38b889b31be83fda192888e2286d83 # BR-DISK - -10000
           - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) - -10000
           - 90a6f9a284dff5103f6346090e6280c8 # LQ - -10000
-          # - dc98083864ea246d05a42df0d05f81cc # x265 (HD) - -10000
-          - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) - -10000
+          - dc98083864ea246d05a42df0d05f81cc # x265 (HD) - -10000
+          # - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) - -10000
           - b8cd450cbfa689c0259a01d9e29ba3d6 # 3D - -10000
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup - -10000
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated - -10000
