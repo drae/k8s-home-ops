@@ -8,9 +8,9 @@ sonarr:
     quality_definition: series
     delete_old_custom_formats: true
     custom_formats:
-        #
-        # HD
-        #
+      #
+      # HD
+      #
       - trash_ids:
           # HQ Web Source Groups
           - e6258996055b9fbab7e9cb2f75819294 # WEB Tier 01 - 1700
@@ -169,12 +169,25 @@ radarr:
           - 1c1a4c5e823891c75bc50380a6866f73 # DTS
           - 240770601cc226190c367ef59aba7463 # ACC
           - c2998bd0d90ed5621d8df281e839436e # DD
+          # - 6ba9033150e7896bdc9ec4b44f2b230f # MP3 - 500
+          # - a061e2e700f81932daf888599f8a8273 # Opus - 250
+          # - b124be9b146540f8e62f98fe32e49a2a # 1.0 Mono - 0
+          # - 89dac1be53d5268a7e10a19d3c896826 # 2.0 Stereo - 0
+          # - 373b58bd188fc00c817bd8c7470ea285 # 4.0 Sound - 0
+          # - 205125755c411c3b8622ca3175d27b37 # 3.0 Sound - 0
+          # - 77ff61788dfe1097194fd8743d7b4524 # 5.1 Surround - 0
+          # - e77382bcfeba57cb83744c9c5449b401 # 7.1 Surround - 0
+          # - 6fd7b090c3f7317502ab3b63cc7f51e3 # 6.1 Surround - 0
+          # - f2aacebe2c932337fe352fa6e42c1611 # 9.1 Surround - 0
           # Movie Versions
           - 0f12c086e289cf966fa5948eac571f44 # Hybrid
           - 570bc9ebecd92723d2d21500f4be314c # Remaster
           - eca37840c13c6ef2dd0262b141a5482f # 4K Remaster
           - e0c07d59beb37348e975a930d5e50319 # Criterion Collection
           - 957d0f44b592285f26449575e8b1167e # Special Edition
+          # HQ Remux Source Groups
+          - 3a3ff47579026e76d6504ebea39390de # Remux Tier 01 - 1900
+          - 9f98181fe5a3fbeb0cc29340da2a468a # Remux Tier 02 - 1850
           # HQ Web Source Groups
           - c20f169ef63c5f40c2def54abaf4438e # WEB Tier 01 - 1700
           - 403816d65392c79236dcb6dd591aeda4 # WEB Tier 02 - 1650
@@ -201,17 +214,36 @@ radarr:
         quality_profiles:
           - name: HD_REMUX
             reset_unmatched_scores: true
-      - trash_ids:
-          - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ
-        quality_profiles:
-          - name: HD_REMUX
-            reset_unmatched_scores: true
-            score: 0
 
       #
       # UHD (SQP)
       #
       - trash_ids:
+          # Audio
+          - 496f355514737f7d83bf7aa4d24f8169 # TrueHD Atmos
+          - 2f22d89048b01681dde8afe203bf2e95 # DTS X
+          - 417804f7f2c4308c1f4c5d380d4c4475 # ATMOS (undefined)
+          - 1af239278386be2919e1bcee0bde047e # DD+ Atmos
+          - 3cafb66171b47f226146a0770576870f # TrueHD
+          - dcf3ec6938fa32445f590a4da84256cd # DTS-HD MA
+          - a570d4a0e56a2874b64e5bfa55202a1b # FLAC
+          - e7c2fcae07cbada050a0af3357491d7b # PCM
+          - 8e109e50e0a0b83a5098b056e13bf6db # DTS-HD HRA
+          - 185f1dd7264c4562b9022d963ac37424 # DD+
+          - f9f847ac70a0af62ea4a08280b859636 # DTS-ES
+          - 1c1a4c5e823891c75bc50380a6866f73 # DTS
+          - 240770601cc226190c367ef59aba7463 # ACC
+          - c2998bd0d90ed5621d8df281e839436e # DD
+          # - 6ba9033150e7896bdc9ec4b44f2b230f # MP3 - 500
+          # - a061e2e700f81932daf888599f8a8273 # Opus - 250
+          # - b124be9b146540f8e62f98fe32e49a2a # 1.0 Mono - 0
+          # - 89dac1be53d5268a7e10a19d3c896826 # 2.0 Stereo - 0
+          # - 373b58bd188fc00c817bd8c7470ea285 # 4.0 Sound - 0
+          # - 205125755c411c3b8622ca3175d27b37 # 3.0 Sound - 0
+          # - 77ff61788dfe1097194fd8743d7b4524 # 5.1 Surround - 0
+          # - e77382bcfeba57cb83744c9c5449b401 # 7.1 Surround - 0
+          # - 6fd7b090c3f7317502ab3b63cc7f51e3 # 6.1 Surround - 0
+          # - f2aacebe2c932337fe352fa6e42c1611 # 9.1 Surround - 0
           # HDR Metadata
           - e23edd2482476e595fb990b12e7c609c # DV HDR10 - 1500
           - 58d6a88f13e2db7f5059c41047876f00 # DV - 1500
@@ -267,31 +299,6 @@ radarr:
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - -10000
           - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups - -10000
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) - -10000
-          # Audio
-          # - 496f355514737f7d83bf7aa4d24f8169 # TrueHD Atmos
-          # - 2f22d89048b01681dde8afe203bf2e95 # DTS X
-          # - 417804f7f2c4308c1f4c5d380d4c4475 # ATMOS (undefined)
-          # - 1af239278386be2919e1bcee0bde047e # DD+ Atmos
-          # - 3cafb66171b47f226146a0770576870f # TrueHD
-          # - dcf3ec6938fa32445f590a4da84256cd # DTS-HD MA
-          # - a570d4a0e56a2874b64e5bfa55202a1b # FLAC
-          # - e7c2fcae07cbada050a0af3357491d7b # PCM
-          # - 8e109e50e0a0b83a5098b056e13bf6db # DTS-HD HRA
-          # - 185f1dd7264c4562b9022d963ac37424 # DD+
-          # - f9f847ac70a0af62ea4a08280b859636 # DTS-ES
-          # - 1c1a4c5e823891c75bc50380a6866f73 # DTS
-          # - 240770601cc226190c367ef59aba7463 # ACC
-          # - c2998bd0d90ed5621d8df281e839436e # DD
-          # - 6ba9033150e7896bdc9ec4b44f2b230f # MP3 - 500
-          # - a061e2e700f81932daf888599f8a8273 # Opus - 250
-          # - b124be9b146540f8e62f98fe32e49a2a # 1.0 Mono - 0
-          # - 89dac1be53d5268a7e10a19d3c896826 # 2.0 Stereo - 0
-          # - 373b58bd188fc00c817bd8c7470ea285 # 4.0 Sound - 0
-          # - 205125755c411c3b8622ca3175d27b37 # 3.0 Sound - 0
-          # - 77ff61788dfe1097194fd8743d7b4524 # 5.1 Surround - 0
-          # - e77382bcfeba57cb83744c9c5449b401 # 7.1 Surround - 0
-          # - 6fd7b090c3f7317502ab3b63cc7f51e3 # 6.1 Surround - 0
-          # - f2aacebe2c932337fe352fa6e42c1611 # 9.1 Surround - 0
           # Misc
           # - 9de657fd3d327ecf144ec73dfe3a3e9a # Dutch Groups - 0
           # - 0a3f082873eb454bde444150b70253cc # Extras - -10000
@@ -338,73 +345,3 @@ radarr:
         quality_profiles:
           - name: UHD
             score: 0
-      - trash_ids:
-          - 240770601cc226190c367ef59aba7463 # AAC - 1000
-        quality_profiles:
-          - name: UHD
-            score: 100
-      - trash_ids:
-          - 417804f7f2c4308c1f4c5d380d4c4475 # ATMOS (undefined) - 3000
-        quality_profiles:
-          - name: UHD
-            score: 300
-      - trash_ids:
-          - c2998bd0d90ed5621d8df281e839436e # DD - 750
-        quality_profiles:
-          - name: UHD
-            score: 75
-      - trash_ids:
-          - 1af239278386be2919e1bcee0bde047e # DD+ ATMOS - 3000
-        quality_profiles:
-          - name: UHD
-            score: 300
-      - trash_ids:
-          - 185f1dd7264c4562b9022d963ac37424 # DD+ - 1750
-        quality_profiles:
-          - name: UHD
-            score: 175
-      - trash_ids:
-          - f9f847ac70a0af62ea4a08280b859636 # DTS-ES - 1500
-        quality_profiles:
-          - name: UHD
-            score: 150
-      - trash_ids:
-          - 8e109e50e0a0b83a5098b056e13bf6db # DTS-HD HRA - 2000
-        quality_profiles:
-          - name: UHD
-            score: 200
-      - trash_ids:
-          - dcf3ec6938fa32445f590a4da84256cd # DTS-HD MA - 2500
-        quality_profiles:
-          - name: UHD
-            score: 250
-      - trash_ids:
-          - 1c1a4c5e823891c75bc50380a6866f73 # DTS - 1250
-        quality_profiles:
-          - name: UHD
-            score: 125
-      - trash_ids:
-          - 2f22d89048b01681dde8afe203bf2e95 # DTS X - 4500
-        quality_profiles:
-          - name: UHD
-            score: 450
-      - trash_ids:
-          - a570d4a0e56a2874b64e5bfa55202a1b # FLAC - 2250
-        quality_profiles:
-          - name: UHD
-            score: 225
-      - trash_ids:
-          - e7c2fcae07cbada050a0af3357491d7b # PCM - 2250
-        quality_profiles:
-          - name: UHD
-            score: 225
-      - trash_ids:
-          - 496f355514737f7d83bf7aa4d24f8169 # TrueHD ATMOS - 5000
-        quality_profiles:
-          - name: UHD
-            score: 500
-      - trash_ids:
-          - 3cafb66171b47f226146a0770576870f # TrueHD - 2750
-        quality_profiles:
-          - name: UHD
-            score: 275            
