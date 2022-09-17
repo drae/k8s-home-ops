@@ -271,13 +271,13 @@ radarr:
           - ed27ebfef2f323e964fb1f61391bcb35 # HD Bluray Tier 01 - 1800
           - c20c8647f2746a1f4c4262b0fbbeeeae # HD Bluray Tier 02 - 1750
           # HQ 4K Encodes
-          - 66aaa8c2c03c0191a95f0d655b75ab10 # UHD (CtrlHD) - 2300
-          - afeb99e5db09290546f742503ce1cdb6 # UHD (DON) - 2300
-          - ffebc267e9c98d3d383f37b238550079 # UHD (W4NK3R) - 2300
-          - 65be7ce5ec4c31e684c7b8368b8bd6bb # UHD (SPHD) - 2250
-          - 96848626e1570c122aba8642fe2714a2 # UHD (HQMUX) - 2200
-          - 4da96773192a51cf96178212642ca3bb # UHD (LEGi0N) - 2150
-          - ac49fdbf6a662d380556f40ff4856f29 # UHD (WEBDV) - 1800
+          # - 66aaa8c2c03c0191a95f0d655b75ab10 # UHD (CtrlHD) - 2300
+          # - afeb99e5db09290546f742503ce1cdb6 # UHD (DON) - 2300
+          # - ffebc267e9c98d3d383f37b238550079 # UHD (W4NK3R) - 2300
+          # - 65be7ce5ec4c31e684c7b8368b8bd6bb # UHD (SPHD) - 2250
+          # - 96848626e1570c122aba8642fe2714a2 # UHD (HQMUX) - 2200
+          # - 4da96773192a51cf96178212642ca3bb # UHD (LEGi0N) - 2150
+          # - ac49fdbf6a662d380556f40ff4856f29 # UHD (WEBDV) - 1800
           # Other Groups
           - ff5bc9e8ce91d46c997ca3ac6994d6f8 # FraMeSToR - 101
           - 8cd3ac70db7ac318cf9a0e01333940a4 # SiC - 51
@@ -291,7 +291,7 @@ radarr:
           - ed38b889b31be83fda192888e2286d83 # BR-DISK - -10000
           - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) - -10000
           - 90a6f9a284dff5103f6346090e6280c8 # LQ - -10000
-          - dc98083864ea246d05a42df0d05f81cc # x265 (HD) - -10000
+          # - dc98083864ea246d05a42df0d05f81cc # x265 (HD) - -10000
           # - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) - -10000
           - b8cd450cbfa689c0259a01d9e29ba3d6 # 3D - -10000
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup - -10000
@@ -345,3 +345,9 @@ radarr:
         quality_profiles:
           - name: UHD
             score: 0
+      - trash_ids:
+          - 2899d84dc9372de3408e6d8cc18e9666 # x264
+        quality_profiles:
+          - name: UHD
+            score: -10000
+
