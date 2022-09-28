@@ -73,16 +73,6 @@ sonarr:
           # - 5964f2a8b3be407d083498e4459d05d0 # DTS - 1250
           # - a50b8a0c62274a7c38b09a9619ba9d86 # AAC - 1000
           # - dbe00161b08a25ac6154c55f95e6318d # DD - 750
-          # - 3e8b714263b26f486972ee1e0fe7606c # MP3 - 500
-          # - 28f6ef16d61e2d1adfce3156ed8257e3 # Opus - 250
-          # - bd6dd5e043aa27ff4696a08d011c7d96 # 1.0 Mono - 0
-          # - 834e534f103938853ffced4203b53e72 # 2.0 Stereo - 0
-          # - 42cba7e38c7947a6d1d0a62580ee6d62 # 3.0 Sound - 0
-          # - 1895195e84767de180653914ce207245 # 4.0 Sound - 0
-          # - 3fbafa924f361e66fbc6187af82dfa85 # 5.1 Surround - 0
-          # - 9fb6d778592c293467437593ef394bf1 # 6.1 Surround - 0
-          # - 204c8c3e7315bb0ea81332774fa888d6 # 7.1 Surround - 0
-          # - a377864de6228b252d6e28962673cedd # 9.1 Surround - 0
           # HDR Formats
           - 7878c33f1963fefb3d6c8657d46c2f0a # DV HDR10 - 1500
           - 6d0d8de7b57e35518ac0308b0ddf404e # DV - 1500
@@ -151,7 +141,7 @@ radarr:
       type: movie
     custom_formats:
       #
-      # HD_REMUX
+      # HD|REMUX
       #
       - trash_ids:
           # Audio
@@ -169,16 +159,6 @@ radarr:
           - 1c1a4c5e823891c75bc50380a6866f73 # DTS
           - 240770601cc226190c367ef59aba7463 # ACC
           - c2998bd0d90ed5621d8df281e839436e # DD
-          # - 6ba9033150e7896bdc9ec4b44f2b230f # MP3 - 500
-          # - a061e2e700f81932daf888599f8a8273 # Opus - 250
-          # - b124be9b146540f8e62f98fe32e49a2a # 1.0 Mono - 0
-          # - 89dac1be53d5268a7e10a19d3c896826 # 2.0 Stereo - 0
-          # - 373b58bd188fc00c817bd8c7470ea285 # 4.0 Sound - 0
-          # - 205125755c411c3b8622ca3175d27b37 # 3.0 Sound - 0
-          # - 77ff61788dfe1097194fd8743d7b4524 # 5.1 Surround - 0
-          # - e77382bcfeba57cb83744c9c5449b401 # 7.1 Surround - 0
-          # - 6fd7b090c3f7317502ab3b63cc7f51e3 # 6.1 Surround - 0
-          # - f2aacebe2c932337fe352fa6e42c1611 # 9.1 Surround - 0
           # Movie Versions
           - 0f12c086e289cf966fa5948eac571f44 # Hybrid
           - 570bc9ebecd92723d2d21500f4be314c # Remaster
@@ -196,7 +176,6 @@ radarr:
           # - 26fa26253af4001701fedb56cec376dc # HQ-Webdl
           # - 403f3f6266b90439cacc1e07cae4dc2d # HQ-Remux
           # - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ
-          # - 5153ec7413d9dae44e24275589b5e944 # BHDStudio
           # Release Version
           - e7718d7a3ce595f289bfee26adc178f5 # Repack/Proper
           - ae43b294509409a6a13919dedd4764c4 # Repack2
@@ -212,11 +191,11 @@ radarr:
           - b6832f586342ef70d9c128d40c07b872 # Bad dual groups
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) without fallback to HDR -10000
         quality_profiles:
-          - name: HD_REMUX
+          - name: HD|REMUX
             reset_unmatched_scores: true
 
       #
-      # UHD (SQP)
+      # UHD|Remux|Bluray|IMAX-E (SQP2)
       #
       - trash_ids:
           # Audio
@@ -234,16 +213,6 @@ radarr:
           - 1c1a4c5e823891c75bc50380a6866f73 # DTS
           - 240770601cc226190c367ef59aba7463 # ACC
           - c2998bd0d90ed5621d8df281e839436e # DD
-          # - 6ba9033150e7896bdc9ec4b44f2b230f # MP3 - 500
-          # - a061e2e700f81932daf888599f8a8273 # Opus - 250
-          # - b124be9b146540f8e62f98fe32e49a2a # 1.0 Mono - 0
-          # - 89dac1be53d5268a7e10a19d3c896826 # 2.0 Stereo - 0
-          # - 373b58bd188fc00c817bd8c7470ea285 # 4.0 Sound - 0
-          # - 205125755c411c3b8622ca3175d27b37 # 3.0 Sound - 0
-          # - 77ff61788dfe1097194fd8743d7b4524 # 5.1 Surround - 0
-          # - e77382bcfeba57cb83744c9c5449b401 # 7.1 Surround - 0
-          # - 6fd7b090c3f7317502ab3b63cc7f51e3 # 6.1 Surround - 0
-          # - f2aacebe2c932337fe352fa6e42c1611 # 9.1 Surround - 0
           # HDR Metadata
           - e23edd2482476e595fb990b12e7c609c # DV HDR10 - 1500
           - 58d6a88f13e2db7f5059c41047876f00 # DV - 1500
@@ -270,14 +239,13 @@ radarr:
           # HQ Bluray Source Groups
           - ed27ebfef2f323e964fb1f61391bcb35 # HD Bluray Tier 01 - 1800
           - c20c8647f2746a1f4c4262b0fbbeeeae # HD Bluray Tier 02 - 1750
-          # HQ 4K Encodes
-          # - 66aaa8c2c03c0191a95f0d655b75ab10 # UHD (CtrlHD) - 2300
-          # - afeb99e5db09290546f742503ce1cdb6 # UHD (DON) - 2300
-          # - ffebc267e9c98d3d383f37b238550079 # UHD (W4NK3R) - 2300
-          # - 65be7ce5ec4c31e684c7b8368b8bd6bb # UHD (SPHD) - 2250
-          # - 96848626e1570c122aba8642fe2714a2 # UHD (HQMUX) - 2200
-          # - 4da96773192a51cf96178212642ca3bb # UHD (LEGi0N) - 2150
-          # - ac49fdbf6a662d380556f40ff4856f29 # UHD (WEBDV) - 1800
+          # UHD HQ Bluray Source Groups
+          - 4d74ac4c4db0b64bff6ce0cffef99bf0 # UHD Bluray Tier 01 - 2300
+          - a58f517a70193f8e578056642178419d # UHD Bluray Tier 02 - 2200
+          - e71939fae578037e7aed3ee219bbe7c1 # UHD Bluray Tier 03 - 2100
+          # HQ Remux Source groups
+          - 3a3ff47579026e76d6504ebea39390de # Remux Tier 01 - 1900
+          - 9f98181fe5a3fbeb0cc29340da2a468a # Remux Tier 02 - 1850
           # Other Groups
           - ff5bc9e8ce91d46c997ca3ac6994d6f8 # FraMeSToR - 101
           - 8cd3ac70db7ac318cf9a0e01333940a4 # SiC - 51
@@ -292,7 +260,7 @@ radarr:
           - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) - -10000
           - 90a6f9a284dff5103f6346090e6280c8 # LQ - -10000
           # - dc98083864ea246d05a42df0d05f81cc # x265 (HD) - -10000
-          # - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) - -10000
+          - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) - -10000
           - b8cd450cbfa689c0259a01d9e29ba3d6 # 3D - -10000
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup - -10000
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated - -10000
@@ -302,52 +270,129 @@ radarr:
           # Misc
           # - 9de657fd3d327ecf144ec73dfe3a3e9a # Dutch Groups - 0
           # - 0a3f082873eb454bde444150b70253cc # Extras - -10000
-          # - 0d91270a7255a1e388fa85e959f359d8 # FreeLeech - 1
           # - 403f3f6266b90439cacc1e07cae4dc2d # HQ-Remux - 1900
           # - 26fa26253af4001701fedb56cec376dc # HQ-WEBDL - 1750
           # - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ - 1800
-          # - ff86c4326018682f817830ced463332b # MPEG2 - 0
-          # - 4b900e171accbfb172729b63323ea8ca # Multi - 0
-          # - 3a3ff47579026e76d6504ebea39390de # Remux Tier 01 - 1900
-          # - 9f98181fe5a3fbeb0cc29340da2a468a # Remux Tier 02 - 1850
         quality_profiles:
-          - name: UHD
+          - name: UHD|Remux|Bluray|IMAX-E
             reset_unmatched_scores: true
-      # Just to avoid the messages on recyclarr log
-      - trash_ids:
-          # Movie Versions
-          - e9001909a4c88013a359d0b9920d7bea # Theatrical Cut - 0
-          # Streaming Services
-          - b3b3a6ac74ecbd56bcdbefa4799fb9df # AMZN - 0
-          - 40e9380490e748672c2522eaaeb692f7 # ATVP - 0
-          - 84272245b2988854bfb76a16e60baea5 # DSNP - 0
-          - 5763d1b0ce84aff3b21038eea8e9b8ad # HMAX - 0
-          - 526d445d4c16214309f0fd2b3be18a89 # Hulu - 0
-          - 2a6039655313bf5dab1e43523b62c374 # MA - 0
-          - 170b1d363bd8516fbf3a3eb05d4faff6 # NF - 0
-          - c9fd353f8f5f1baf56dc601c4cb29920 # PCOK - 0
-          - e36a0ba1bc902b26ee40818a1d59b8bd # PMTP - 0
-          # Encode
-          - 2899d84dc9372de3408e6d8cc18e9666 # x264 - 0
-          - 9170d55c319f4fe40da8711ba9d8050d # x265 - 0
-        quality_profiles:
-          - name: UHD
-            reset_unmatched_scores: true
-            score: 0
       # Custom scoring
       - trash_ids:
           - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ
-        quality_profiles:
-          - name: UHD
-            score: 0
-      - trash_ids:
           - 4b900e171accbfb172729b63323ea8ca # Optional: Multi
+          # Streaming Services
+          - b3b3a6ac74ecbd56bcdbefa4799fb9df # AMZN
+          - 40e9380490e748672c2522eaaeb692f7 # ATVP
+          - 84272245b2988854bfb76a16e60baea5 # DSNP
+          - 5763d1b0ce84aff3b21038eea8e9b8ad # HMAX
+          - 526d445d4c16214309f0fd2b3be18a89 # Hulu
+          - 170b1d363bd8516fbf3a3eb05d4faff6 # NF
+          - c9fd353f8f5f1baf56dc601c4cb29920 # PCOK
+          - e36a0ba1bc902b26ee40818a1d59b8bd # PMTP
         quality_profiles:
-          - name: UHD
+          - name: UHD|Remux|Bluray|IMAX-E
+            reset_unmatched_scores: true
             score: 0
       - trash_ids:
           - 2899d84dc9372de3408e6d8cc18e9666 # x264
         quality_profiles:
-          - name: UHD
+          - name: UHD|Remux|Bluray|IMAX-E
+            score: -10000
+
+      #
+      # UHD|Remux|IMAX-E (SQP3)
+      #
+      - trash_ids:
+          # Audio
+          - 496f355514737f7d83bf7aa4d24f8169 # TrueHD Atmos
+          - 2f22d89048b01681dde8afe203bf2e95 # DTS X
+          - 417804f7f2c4308c1f4c5d380d4c4475 # ATMOS (undefined)
+          - 1af239278386be2919e1bcee0bde047e # DD+ Atmos
+          - 3cafb66171b47f226146a0770576870f # TrueHD
+          - dcf3ec6938fa32445f590a4da84256cd # DTS-HD MA
+          - a570d4a0e56a2874b64e5bfa55202a1b # FLAC
+          - e7c2fcae07cbada050a0af3357491d7b # PCM
+          - 8e109e50e0a0b83a5098b056e13bf6db # DTS-HD HRA
+          - 185f1dd7264c4562b9022d963ac37424 # DD+
+          - f9f847ac70a0af62ea4a08280b859636 # DTS-ES
+          - 1c1a4c5e823891c75bc50380a6866f73 # DTS
+          - 240770601cc226190c367ef59aba7463 # ACC
+          - c2998bd0d90ed5621d8df281e839436e # DD
+          # HDR Metadata
+          - e23edd2482476e595fb990b12e7c609c # DV HDR10 - 1500
+          - 58d6a88f13e2db7f5059c41047876f00 # DV - 1500
+          - 55d53828b9d81cbe20b02efd00aa0efd # DV HLG - 1500
+          - a3e19f8f627608af0211acd02bf89735 # DV SDR - 1500
+          - b974a6cd08c1066250f1f177d7aa1225 # HDR10+ - 600
+          - dfb86d5941bc9075d6af23b09c2aeecd # HDR10 - 500
+          - e61e28db95d22bedcadf030b8f156d96 # HDR - 500
+          - 2a4d9069cc1fe3242ff9bdaebed239bb # HDR (undefined) - 500
+          - 08d6d8834ad9ec87b1dc7ec8148e7a1f # PQ - 500
+          - 9364dd386c9b4a1100dde8264690add7 # HLG - 500
+          # Movie Versions
+          - 0f12c086e289cf966fa5948eac571f44 # Hybrid - 100
+          - 570bc9ebecd92723d2d21500f4be314c # Remaster - 25
+          - eca37840c13c6ef2dd0262b141a5482f # 4K Remaster - 25
+          - e0c07d59beb37348e975a930d5e50319 # Criterion Collection - 25
+          - 957d0f44b592285f26449575e8b1167e # Special Edition - 25
+          - eecf3a857724171f968a66cb5719e152 # IMAX - 800
+          - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced - 800
+          # HQ Remux Source groups
+          - 3a3ff47579026e76d6504ebea39390de # Remux Tier 01 - 1900
+          - 9f98181fe5a3fbeb0cc29340da2a468a # Remux Tier 02 - 1850
+          # HQ Web Source Groups
+          - c20f169ef63c5f40c2def54abaf4438e # WEB Tier 01 - 1700
+          - 403816d65392c79236dcb6dd591aeda4 # WEB Tier 02 - 1650
+          - af94e0fe497124d1f9ce732069ec8c3b # WEB Tier 03 - 1600
+          # Other Groups
+          - ff5bc9e8ce91d46c997ca3ac6994d6f8 # FraMeSToR - 101
+          - 8cd3ac70db7ac318cf9a0e01333940a4 # SiC - 51
+          # Resolution
+          - 820b09bb9acbfde9c35c71e0e565dad8 # 1080p - 50
+          - fb392fb0d61a010ae38e49ceaa24a1ef # 2160p - 100
+          # Release Version
+          - e7718d7a3ce595f289bfee26adc178f5 # Repack/Proper - 5
+          - ae43b294509409a6a13919dedd4764c4 # Repack2 - 6
+          # Unwanted
+          - ed38b889b31be83fda192888e2286d83 # BR-DISK - -10000
+          - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) - -10000
+          - 90a6f9a284dff5103f6346090e6280c8 # LQ - -10000
+          # - dc98083864ea246d05a42df0d05f81cc # x265 (HD) - -10000
+          - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) - -10000
+          - b8cd450cbfa689c0259a01d9e29ba3d6 # 3D - -10000
+          - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup - -10000
+          - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated - -10000
+          - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - -10000
+          - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups - -10000
+          - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) - -10000
+          # Misc
+          # - 9de657fd3d327ecf144ec73dfe3a3e9a # Dutch Groups - 0
+          # - 0a3f082873eb454bde444150b70253cc # Extras - -10000
+          # - 403f3f6266b90439cacc1e07cae4dc2d # HQ-Remux - 1900
+          # - 26fa26253af4001701fedb56cec376dc # HQ-WEBDL - 1750
+          # - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ - 1800
+        quality_profiles:
+          - name: UHD|Remux|IMAX-E
+            reset_unmatched_scores: true
+      # Custom scoring
+      - trash_ids:
+          - 1c7d7b04b15cc53ea61204bebbcc1ee2 # HQ
+          - 4b900e171accbfb172729b63323ea8ca # Optional: Multi
+          # Streaming Services
+          - b3b3a6ac74ecbd56bcdbefa4799fb9df # AMZN
+          - 40e9380490e748672c2522eaaeb692f7 # ATVP
+          - 84272245b2988854bfb76a16e60baea5 # DSNP
+          - 5763d1b0ce84aff3b21038eea8e9b8ad # HMAX
+          - 526d445d4c16214309f0fd2b3be18a89 # Hulu
+          - 170b1d363bd8516fbf3a3eb05d4faff6 # NF
+          - c9fd353f8f5f1baf56dc601c4cb29920 # PCOK
+          - e36a0ba1bc902b26ee40818a1d59b8bd # PMTP
+        quality_profiles:
+          - name: UHD|Remux|IMAX-E
+            score: 0
+      - trash_ids:
+          - 2899d84dc9372de3408e6d8cc18e9666 # x264
+        quality_profiles:
+          - name: UHD|Remux|IMAX-E
             score: -10000
 
