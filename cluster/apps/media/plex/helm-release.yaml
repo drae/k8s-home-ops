@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: ghcr.io/drae/plex
-      tag: 1.28.2.6151-914ddd2b3@sha256:744d444bace954e8f52cae641ad71de39491a3d945a92af68aad54a51d8cdde5
+      tag: 1.29.0.6244-819d3678c@sha256:db4a3dcb43091bf6ef415a6845d6103aab805d232df92941599886e5ef8db652
     env:
       ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,https://plex.${SECRET_DOMAIN}:443"
       ALLOWED_NETWORKS: "10.200.0.0/16,10.210.0.0/16,10.1.10.0/23"
