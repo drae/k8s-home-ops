@@ -24,8 +24,8 @@ spec:
       namespace: kube-system
   values:
     image:
-      repository: ghcr.io/drae/plex
-      tag: 1.29.0.6244-819d3678c@sha256:db4a3dcb43091bf6ef415a6845d6103aab805d232df92941599886e5ef8db652
+      repository: ghcr.io/onedr0p/plex-beta
+      tag: 1.29.1.6260-420892357@sha256:07ddfa256be584c006127e5e450f48cd5e41b87c1d1f22f92cb2e696ec1c210b
     env:
       ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,https://plex.${SECRET_DOMAIN}:443"
       ALLOWED_NETWORKS: "10.200.0.0/16,10.210.0.0/16,10.1.10.0/23"
