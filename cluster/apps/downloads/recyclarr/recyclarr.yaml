@@ -187,6 +187,8 @@ radarr:
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - -10000
           - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups - -10000
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) - -10000
+          # Streaming Services
+          - 2a6039655313bf5dab1e43523b62c374 # MA (10)
         quality_profiles:
           - name: UHD|Remux|Bluray|IMAX-E
           - name: UHD|Remux|IMAX-E
@@ -234,17 +236,6 @@ radarr:
             score: 0
           - name: HD|Remux
             score: 0
-
-      - trash_ids:
-          # Streaming Services
-          - 2a6039655313bf5dab1e43523b62c374 # MA (10)
-        quality_profiles:
-          - name: UHD|Remux|Bluray|IMAX-E
-            score: 10
-          - name: UHD|Remux|IMAX-E
-            score: 10
-          - name: HD|Remux
-            score: 10
 
       - trash_ids:
           # Misc
