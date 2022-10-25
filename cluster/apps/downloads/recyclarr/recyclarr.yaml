@@ -194,8 +194,8 @@ radarr:
           - name: UHD|Remux|IMAX-E
           - name: HD|Remux
 
-      # HDR Metadata
       - trash_ids:
+          # HDR Metadata
           - e23edd2482476e595fb990b12e7c609c # DV HDR10 - 1500
           - 58d6a88f13e2db7f5059c41047876f00 # DV - 1500
           - 55d53828b9d81cbe20b02efd00aa0efd # DV HLG - 1500
@@ -206,6 +206,9 @@ radarr:
           - 2a4d9069cc1fe3242ff9bdaebed239bb # HDR (undefined) - 500
           - 08d6d8834ad9ec87b1dc7ec8148e7a1f # PQ - 500
           - 9364dd386c9b4a1100dde8264690add7 # HLG - 500
+          # Resolution
+          - 820b09bb9acbfde9c35c71e0e565dad8 # 1080p
+          - fb392fb0d61a010ae38e49ceaa24a1ef # 2160p
         quality_profiles:
           - name: UHD|Remux|Bluray|IMAX-E
           - name: UHD|Remux|IMAX-E
