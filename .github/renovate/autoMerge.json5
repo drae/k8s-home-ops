@@ -7,11 +7,7 @@
       "automergeType": "branch",
       "requiredStatusChecks": null,
       "matchUpdateTypes": ["digest"],
-      "matchPackagePattern": [
-        "ghcr.io/k8s-at-home",
-        "ghcr.io/onedr0p",
-        "ghcr.io/drae"
-      ]
+      "matchPackagePattern": ["ghcr.io/k8s-at-home","ghcr.io/onedr0p"]
     },
     {
       "description": "Auto merge containers",
@@ -29,10 +25,7 @@
       "automergeType": "branch",
       "requiredStatusChecks": null,
       "matchUpdateTypes": ["minor", "patch"],
-      "matchPackageNames": [
-        "lycheeverse/lychee-action",
-        "renovatebot/github-action"
-      ]
+      "matchPackageNames": ["lycheeverse/lychee-action", "renovatebot/github-action"]
     }
   ]
 }
