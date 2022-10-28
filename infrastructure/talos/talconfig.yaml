@@ -86,13 +86,8 @@ controlPlane:
           op: create
       install:
         extraKernelArgs:
-          - talos.logging.kernel=udp://10.1.10.49:6050/
           - nvme_core.default_ps_max_latency_us=5500
           - pci=noaer
-      logging:
-        destinations:
-          - endpoint: udp://10.1.10.49:6051/
-            format: json_lines
       network:
         extraHostEntries:
           - ip: 10.1.10.10
@@ -129,13 +124,8 @@ worker:
           op: create
       install:
         extraKernelArgs:
-          - talos.logging.kernel=udp://10.1.10.49:6050/
           - nvme_core.default_ps_max_latency_us=5500
           - pci=noaer
-      logging:
-        destinations:
-          - endpoint: udp://10.1.10.49:6051/
-            format: json_lines
       network:
         extraHostEntries:
           - ip: 10.1.10.10
