@@ -19,9 +19,9 @@ spec:
     createNamespace: true
   dependsOn:
     - name: intel-gpu-plugin
-      namespace: kube-system
+      namespace: system
     - name: node-feature-discovery
-      namespace: kube-system
+      namespace: system
   values:
     image:
       repository: ghcr.io/onedr0p/plex-beta
