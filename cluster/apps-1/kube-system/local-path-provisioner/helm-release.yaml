@@ -27,6 +27,7 @@ spec:
       tag: v0.0.23
     storageClass:
       reclaimPolicy: Retain
+      defaultClass: true
     nodePathMap:
       - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
         paths:
