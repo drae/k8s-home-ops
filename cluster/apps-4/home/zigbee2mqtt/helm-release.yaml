@@ -1,0 +1,119 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app zigbee2mqtt
+  namespace: home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 30m
+  dependsOn:
+    - name: mosquitto
+      namespace: home
+  values:
+    image:
+      repository: ghcr.io/koenkk/zigbee2mqtt
+      tag: 1.28.2
+    env:
+      ZIGBEE2MQTT_DATA: /data
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        hosts:
+          - host: "zigbee2mqtt.${SECRET_DOMAIN_PROXY}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "zigbee2mqtt.${SECRET_DOMAIN_PROXY}"
+    persistence:
+      config:
+        enabled: true
+        existingClaim: zigbee2mqtt-config
+        mountPath: "/data"
+    config:
+      homeassistant: true
+      device_options:
+        retain: true
+        transition: 0.4
+        temperature_precision: 1
+        humidity_precision: 0
+        pressure_precision: 0
+      permit_join: false
+      mqtt:
+        base_topic: zigbee2mqtt
+        server: "mqtt://mosquitto.home:1883"
+      serial:
+        port: "tcp://${IP_ADDR_IOT_ZIGBEE}:6638"
+      advanced:
+        log_output:
+          - console
+        network_key:
+          - 101
+          - 61
+          - 57
+          - 32
+          - 44
+          - 230
+          - 24
+          - 201
+          - 53
+          - 5
+          - 246
+          - 32
+          - 50
+          - 84
+          - 44
+          - 159
+      frontend:
+        port: 8080
+      experimental:
+        new_api: true
+    addons:
+      codeserver:
+        enabled: true
+        image:
+          repository: ghcr.io/k8s-at-home/code-server
+          tag: v4.6.0
+        workingDir: "/data"
+        args:
+          - --auth
+          - "none"
+          - --user-data-dir
+          - "/data/.vscode"
+          - --extensions-dir
+          - "/data/.vscode"
+        ingress:
+          enabled: true
+          ingressClassName: "nginx"
+          hosts:
+            - host: "zigbee2mqtt-config.${SECRET_DOMAIN_PROXY}"
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - "zigbee2mqtt-config.${SECRET_DOMAIN_PROXY}"
+        volumeMounts:
+          - name: config
+            mountPath: /data

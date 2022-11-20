@@ -80,11 +80,16 @@ Then sit back and watch the node prepare itself, rinse and repeat for all the no
 talosctl -n <NODE IP> bootstrap
 ```
 
-This initiates the installation of kubernetes cluster wide. Once bootstraped I can download the ```kubeconfig``` and apply a "temporary" CNI configuration (I use [cilium](https://cilium.io/) as my CNI). This is just enough configuration to enable networking (full configuration is managed by flux):
+This initiates the installation of kubernetes cluster wide. Once bootstraped I can download the ```kubeconfig```:
 
 ```
 talosctl kubeconfig > cluster/kubeconfig
-kubectl apply -f infrastructure/talos/cni/install.yaml
+```
+
+and apply a "temporary" CNI configuration (I use [cilium](https://cilium.io/) as my CNI) and the csr auto approver. This is just enough configuration to enable networking (full configuration is managed by flux):
+
+```
+kubectl kustomize infrastructure/talos --enable-helm | k apply -f -
 ```
 
 and that should be it, cluster is ready 🎉🎉🎉

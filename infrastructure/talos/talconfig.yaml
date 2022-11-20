@@ -1,7 +1,7 @@
 clusterName: kube-cluster
-talosVersion: v1.1.2
-kubernetesVersion: v1.24.3
-endpoint: https://10.1.10.20:6443
+talosVersion: v1.2.6
+kubernetesVersion: 1.25.3
+endpoint: https://10.1.10.21:6443
 allowSchedulingOnControlPlanes: true
 clusterPodNets:
   - 10.200.0.0/16
@@ -23,32 +23,6 @@ nodes:
         dhcpOptions:
           ipv4: true
           ipv6: true
-  - hostname: kube-cp-02
-    ipAddress: 10.1.10.22
-    controlPlane: true
-    installDisk: /dev/sda
-    nameservers:
-      - 10.1.10.1
-    networkInterfaces:
-      - interface: eth0
-        mtu: 1500
-        dhcp: true
-        dhcpOptions:
-          ipv4: true
-          ipv6: true
-  - hostname: kube-cp-03
-    ipAddress: 10.1.10.23
-    controlPlane: true
-    installDisk: /dev/sda
-    nameservers:
-      - 10.1.10.1
-    networkInterfaces:
-      - interface: eth0
-        mtu: 1500
-        dhcp: true
-        dhcpOptions:
-          ipv4: true
-          ipv6: true
 
 controlPlane:
   configPatches:
@@ -59,20 +33,12 @@ controlPlane:
         rotate-server-certificates: "true"
   inlinePatch:
     cluster:
-      controllerManager:
-        extraArgs:
-          bind-address: 0.0.0.0
       discovery:
         registries:
           service:
             disabled: true
-      extraManifests:
-        - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.6.2/deploy/standalone-install.yaml
       proxy:
         disabled: true
-      scheduler:
-        extraArgs:
-          bind-address: 0.0.0.0
     machine:
       certSANs:
         - kube-cluster
