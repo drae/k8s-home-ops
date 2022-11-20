@@ -1,0 +1,22 @@
+# yamllint disable
+apiVersion: v1
+kind: Secret
+metadata:
+    name: cf-token
+    namespace: cert-manager
+stringData:
+    cloudflare-token: ENC[AES256_GCM,data:RVdNfdE9gMlXMhTgYEilCRQgOJrEw4S+xNmhRBKfi9AfsbACmRQImA==,iv:ovWj8Y39zSqUkXnKVvNLOYnbRaReqMXGU5YQEVyStoQ=,tag:qvnxOcR+cy1nthyuULDHgw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2022-11-20T01:01:24Z"
+    mac: ENC[AES256_GCM,data:5LkEDusmnrqPT/8BXB/DgtuGNP9w0VK9psOAUgsNWeGlbQowpjjrSgGQzFeZeYhvMOhjw/79NSo9Xv08FeA4gHW5mboKp2a93iVv/FvY8RCFxD0hukns73+LimDkZKt4YZ33atVDQ6aolvA8y3oAndeJbGBf0wqv5upUJVm+krs=,iv:neN41RYIt0Z4tEci6bhUmO+D4yAMT2yQy/Mrcy/wfoU=,tag:m8FC6KeHnYXSudGqPTO5pg==,type:str]
+    pgp:
+        - created_at: "2021-07-10T19:47:13Z"
+          enc: "-----BEGIN PGP MESSAGE-----\r\n\r\nhQILA1fr/5wrlRWyAQ/3bRRyShUhmbypQlXCHX6u5g4p9qApIcARweDUUCrYvm90\r\nlFpWr+Z0SlZrRO9wbzn6aosZCYCgu9PDJSCRSbDpOD7twThi87GBfOwalAKFLryK\r\n0EohyiyQraKXlc9wbq4T+8ZEfd1kkWKhFCNOgEanTLE5vOgq9Jnr2XILU8wkKwDr\r\n3msrAslO6yCHxkvk2S0x8apWl18nqX/GKa75S1KW5o35/1pQAqHBq7QblpONbb8z\r\n2t3m1NeykiXxI8CqIE3rTTAIh/vco9s+6D1f+KA7HEOMld3qCDg/CI5h0EaL4AoF\r\nX6jO6+kGn19SVJugYC5IDWoG3gVA8Jws9occyVhyifo6wVQ3bhouFnDqlmKYQF+S\r\naG/D40JiJrXJXAos8jyhNCvXNiDxGyswsRCkRIY2lfdlL5WGLxd4rbTuTkiTQgWh\r\n0hcZKZiockZq7vdcY9X5cJzXvZGLzzQ/P/knOumL7EatNc3l+0NW1HITXVMTCQcJ\r\nXIwqKuYeqrTTq3Re2zOLcqjc/0mOA1IGGa97mR23iqd2wFYZXbLY8s/JWBjOuvxs\r\ncGP9tyk7CZBRKi+RaFpbdRWiseGaQXQ1DMm4K5gfUiOnodLZVu/lTOCrqKEiXrIX\r\njQZtrAiH+9utahWlNkylI0oHPOfcOaP5/pL82zB/+45m3f2j7ztrGC9Hu/yKUdJe\r\nAYuUGLa0kMoY6A5pAktkHxtEttV5a7Ko59oyYbEDDv11iwK/oUFAm6uHTL5hVmnF\r\nGPTWUDPpvpa0rg1qneHDUhmuxenp+rrdvGj9iiBu9FihdFr/lKdxNZvfwJamqg==\r\n=f0Va\r\n-----END PGP MESSAGE-----\r\n"
+          fp: 4CF588582D481BB5C1927F275BB27F59F87ABCA3
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

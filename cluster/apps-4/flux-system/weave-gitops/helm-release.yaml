@@ -1,0 +1,43 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: weave-gitops
+  namespace: flux-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: weave-gitops
+      version: 4.0.7
+      sourceRef:
+        kind: HelmRepository
+        name: weave-gitops-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    adminUser:
+      create: true
+      username: localadmin
+    ingress:
+      enabled: true
+      className: nginx
+      hosts:
+        - host: &host "gitops.${SECRET_DOMAIN_PROXY}"
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - *host
+  valuesFrom:
+    - kind: Secret
+      name: weave-gitops
+      valuesKey: adminPassword
+      targetPath: adminUser.passwordHash

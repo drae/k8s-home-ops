@@ -340,7 +340,7 @@ data:
   bpf-policy-map-max: "16384"
   bpf-root: /sys/fs/bpf
   cgroup-root: /run/cilium/cgroupv2
-  cilium-endpoint-gc-interval: 5m0s
+  cilium-endpoint-gc-interval: 30m0s
   cluster-id: "0"
   cluster-name: default
   custom-cni-conf: "false"
@@ -378,7 +378,7 @@ data:
   monitor-aggregation-flags: all
   monitor-aggregation-interval: 5s
   node-port-bind-protection: "true"
-  nodes-gc-interval: 5m0s
+  nodes-gc-interval: 30m0s
   operator-api-serve-addr: 127.0.0.1:9234
   preallocate-bpf-maps: "false"
   remove-cilium-node-taints: "true"
@@ -474,10 +474,10 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: 10.1.10.20
+          value: 10.1.10.21
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/operator-generic:v1.12.0@sha256:bb2a42eda766e5d4a87ee8a5433f089db81b72dd04acf6b59fcbb445a95f9410
+        image: quay.io/cilium/operator-generic:v1.12.4@sha256:071089ec5bca1f556afb8e541d9972a0dfb09d1e25504ae642ced021ecbedbd1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -489,6 +489,7 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 3
         name: cilium-operator
+        terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /tmp/cilium/config-map
           name: cilium-config-path
@@ -570,10 +571,10 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: 10.1.10.20
+          value: 10.1.10.21
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.12.0@sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade
+        image: quay.io/cilium/cilium:v1.12.4@sha256:4b074fcfba9325c18e97569ed1988464309a5ebf64bbc79bec6f3d58cafcb8cf
         imagePullPolicy: IfNotPresent
         lifecycle:
           postStart:
@@ -628,6 +629,7 @@ spec:
             scheme: HTTP
           periodSeconds: 2
           successThreshold: 1
+        terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /sys/fs/bpf
           mountPropagation: Bidirectional
@@ -663,11 +665,12 @@ spec:
           value: /run/cilium/cgroupv2
         - name: BIN_PATH
           value: /opt/cni/bin
-        image: quay.io/cilium/cilium:v1.12.0@sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade
+        image: quay.io/cilium/cilium:v1.12.4@sha256:4b074fcfba9325c18e97569ed1988464309a5ebf64bbc79bec6f3d58cafcb8cf
         imagePullPolicy: IfNotPresent
         name: mount-cgroup
         securityContext:
           privileged: true
+        terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /hostproc
           name: hostproc
@@ -683,11 +686,12 @@ spec:
         env:
         - name: BIN_PATH
           value: /opt/cni/bin
-        image: quay.io/cilium/cilium:v1.12.0@sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade
+        image: quay.io/cilium/cilium:v1.12.4@sha256:4b074fcfba9325c18e97569ed1988464309a5ebf64bbc79bec6f3d58cafcb8cf
         imagePullPolicy: IfNotPresent
         name: apply-sysctl-overwrites
         securityContext:
           privileged: true
+        terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /hostproc
           name: hostproc
@@ -709,10 +713,10 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: 10.1.10.20
+          value: 10.1.10.21
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.12.0@sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade
+        image: quay.io/cilium/cilium:v1.12.4@sha256:4b074fcfba9325c18e97569ed1988464309a5ebf64bbc79bec6f3d58cafcb8cf
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
         resources:
@@ -721,6 +725,7 @@ spec:
             memory: 100Mi
         securityContext:
           privileged: true
+        terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /sys/fs/bpf
           name: bpf-maps
