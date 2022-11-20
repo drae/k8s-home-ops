@@ -43,6 +43,10 @@ controlPlane:
       certSANs:
         - kube-cluster
         - kube-cluster.${domainName}
+      disks:
+        - device: /dev/nvme0n1
+          partitions:
+            - mountpoint: /var/mnt/storage
       files:
         - content: |
             [plugins."io.containerd.grpc.v1.cri"]
@@ -54,6 +58,15 @@ controlPlane:
         extraKernelArgs:
           - nvme_core.default_ps_max_latency_us=5500
           - pci=noaer
+      kubelet:
+        extraMounts:
+          - destination: /var/mnt/storage
+            type: bind
+            source: /var/mnt/storage
+            options:
+              - bind
+              - rshared
+              - rw
       network:
         extraHostEntries:
           - ip: 10.1.10.10
