@@ -2,11 +2,14 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
-  - kube-system
-  - flux-system
+  - cert-manager
   - default
-  - monitoring
   - downloads
-  - media
+  - flux-system
   - home
-  - unifi
+  - kube-system
+  - kyverno
+  - media
+  - monitoring
+  - networking
+  - system

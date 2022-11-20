@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: vpn-gateway-config
-    namespace: vpn-gateway
+    namespace: networking
 stringData:
     VPN_SERVICE_PROVIDER: ENC[AES256_GCM,data:f8S12AMWSw==,iv:fZ4NHbkGISsLw3a5dhiNwfoknZUPxH85uDD+rLuhONI=,tag:suyT74GvZZOer06rO+JrSw==,type:str]
     WIREGUARD_PRIVATE_KEY: ENC[AES256_GCM,data:hnhuazlDp/afPaoYVYE3+OE9SsD2qkXCLx8yscyjLL/fckrXpm739Qpo/9A=,iv:ZJtecgxDbxYthEWlop9CaXnx/DMEwl3hKU3Zbn0yQMk=,tag:EZ2m5BbbIASnsxyEQt0Nmw==,type:str]
@@ -15,8 +15,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2022-08-01T18:35:53Z"
-    mac: ENC[AES256_GCM,data:dtIdlkd4zMcWeghvscSmVFzgWy8e6On5il5/kHornk8SGBa8cx4ReYP05JSm6fV6Tsk4u0Np7NEpm2AOvRaKVxsZA8VIkOZ/omjlHJ38+VZupZgVkVm9GVvEnmTEzUZmdhQ4iNEsNIAZRt5WFAcp/2ykhx/vay8m351qb2F2HL0=,iv:mFwpLbOatG71VRyhRdBdQnrYcaLlFN9WyS4JA5ZqV/I=,tag:xmfVWqLWArayg2KNBvTrXw==,type:str]
+    lastmodified: "2022-11-20T00:09:49Z"
+    mac: ENC[AES256_GCM,data:J3kemuqo/xR/e6gD9qME7mHcnNBOnKH/bwThKH+9Armr903F06O+4rX9vcQ+MLbO+cQMLuS2CEJdJ60YWNHS9q8xmxOVET3uGj9fwZCZ/7VoRnHZFZ0NQpEQBPSlLompKRVb+IsKHZrF75Jt0gNZPgzI0In0RjIqFXqHtFU+M14=,iv:Il9K//29uuIf6WtovxNnt48QnEGRFPZkUdUlGHEpi2s=,tag:hb9dTpclznxUrFDr37CQXA==,type:str]
     pgp:
         - created_at: "2022-07-31T17:10:01Z"
           enc: |-

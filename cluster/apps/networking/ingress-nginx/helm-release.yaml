@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: ingress-nginx
-  namespace: ingress-nginx
+  namespace: networking
 spec:
   interval: 15m
   chart:
@@ -15,6 +15,15 @@ spec:
         name: ingress-nginx-charts
         namespace: flux-system
       interval: 15m
+  dependsOn:
+    - name: cert-manager
+      namespace: cert-manager
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5      
   values:
     controller:
       publishService:
@@ -40,13 +49,13 @@ spec:
         enabled: true
         serviceMonitor:
           enabled: true
-          namespace: ingress-nginx
+          namespace: networking
           namespaceSelector:
             any: true
         prometheusRule:
           enabled: false
       extraArgs:
-        default-ssl-certificate: "ingress-nginx/${SECRET_DOMAIN/./-}-tls"
+        default-ssl-certificate: "networking/${SECRET_DOMAIN/./-}-tls"
       resources:
         requests:
           memory: 100Mi
@@ -56,8 +65,10 @@ spec:
     defaultBackend:
       enabled: true
       image:
-        repository: ghcr.io/181192/custom-error-pages
-        tag: 1.2.1
+        repository: ghcr.io/tarampampam/error-pages
+        tag: 2.19.0
       extraEnvs:
-        - name: ERROR_FILES_PATH
-          value: ./themes/ghost
+        - name: TEMPLATE_NAME
+          value: ghost
+        - name: SHOW_DETAILS
+          value: "true"

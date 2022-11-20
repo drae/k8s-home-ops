@@ -5,12 +5,11 @@ metadata:
   name: rook-ceph-cluster
   namespace: rook-ceph
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://charts.rook.io/release
       chart: rook-ceph-cluster
-      version: v1.8.10
+      version: v1.9.7
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
@@ -44,14 +43,17 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
-      bluefs_buffered_io = false
-      mon_warn_on_pool_no_redundancy = false
-      osd_pool_default_size = 1
+#      mon_warn_on_pool_no_redundancy = false
+#      osd_pool_default_size = 1
     cephClusterSpec:
       mon:
+        count: 1        
         allowMultiplePerNode: true
       mgr:
+        count: 1
         allowMultiplePerNode: true
+      network:
+        provider: host
       dashboard:
         enabled: true
         urlPrefix: /
@@ -63,9 +65,6 @@ spec:
           osdsPerDevice: "1"
         nodes:
           - name: "kube-cp-01"
-            devices:
-              - name: "nvme0n1"
-          - name: "kube-cp-02"
             devices:
               - name: "nvme0n1"
       resources:
@@ -125,7 +124,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
-            size: 2
+            size: 1
         storageClass:
           enabled: true
           name: rook-ceph-block
@@ -142,39 +141,5 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
-    cephFileSystems:
-      - name: ceph-filesystem
-        spec:
-          metadataPool:
-            replicated:
-              size: 1
-          dataPools:
-            - failureDomain: host
-              replicated:
-                size: 2
-              name: data0
-          metadataServer:
-            activeCount: 2
-            activeStandby: true
-            resources:
-              requests:
-                cpu: "35m"
-                memory: "64M"
-              limits:
-                memory: "144M"
-        storageClass:
-          enabled: true
-          isDefault: false
-          name: ceph-filesystem
-          pool: data0
-          reclaimPolicy: Delete
-          allowVolumeExpansion: true
-          parameters:
-            csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-            csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-            csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-            csi.storage.k8s.io/fstype: ext4
+    cephFileSystems: []
     cephObjectStores: []

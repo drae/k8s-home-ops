@@ -5,25 +5,31 @@ metadata:
   name: rook-ceph-operator
   namespace: rook-ceph
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      # renovate: registryUrl=https://charts.rook.io/release
       chart: rook-ceph
-      version: v1.8.10
+      version: v1.9.7
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
         namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     crds:
-      enabled: false
+      enabled: true
+    pspEnable: false
     monitoring:
       enabled: true
     resources:
       requests:
-        cpu: 100m
+        cpu: 10m
         memory: 128Mi
       limits:
-        cpu: 1000m
         memory: 256Mi

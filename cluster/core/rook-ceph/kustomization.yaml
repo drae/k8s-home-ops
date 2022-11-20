@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: rook-ceph
 resources:
   - namespace.yaml
-  - dashboard
-  - rook-direct-mount
   - cluster
   - operator
+  - dashboard
+  - rook-direct-mount

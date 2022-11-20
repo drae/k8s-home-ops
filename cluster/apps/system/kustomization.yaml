@@ -2,6 +2,6 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
-  - namespace.yaml
-  - config-pvc.yaml
-  - helm-release.yaml
+  - intel-gpu-plugin
+  - node-feature-discovery
+  - reloader

@@ -2,6 +2,6 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
-  - namespace.yaml
-  - cloudflared-secret.sops.yaml
+  - vpn-gateway-config.sops.yaml
   - helm-release.yaml
+  - networkpolicy.yaml

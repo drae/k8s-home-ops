@@ -5,8 +5,8 @@ resources:
   - namespace.yaml
   - alertmanager-discord
   - kube-prometheus
-  - loki
-  - vector
   - grafana
-  - generic-rules
-  - botkube
+#  - loki
+#  - vector
+#  - generic-rules
+#  - botkube

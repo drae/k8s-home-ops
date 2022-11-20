@@ -7,7 +7,9 @@ metadata:
 spec:
   interval: 10m0s
   dependsOn:
-    - name: core
+    - name: metallb
+    - name: rook-ceph
+    - name: crds
   path: ./cluster/apps
   prune: true
   sourceRef:
