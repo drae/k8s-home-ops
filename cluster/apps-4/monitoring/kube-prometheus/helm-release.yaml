@@ -1,0 +1,197 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: monitoring
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      version: 41.9.0
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community-charts
+        namespace: flux-system
+      interval: 30m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    kubeApiServer:
+      enabled: true
+    kubeControllerManager:
+      enabled: false
+    kubeEtcd:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeStateMetrics:
+      enabled: true
+    kube-state-metrics:
+      metricLabelsAllowlist:
+        - "persistentvolumeclaims=[*]"
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+      resources:
+        requests:
+          cpu: 15m
+          memory: 127M
+        limits:
+          memory: 153M              
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
+    alertmanager:
+      config:
+        global:
+          resolve_timeout: 5m
+        receivers:
+          - name: "null"
+          - name: "discord"
+            webhook_configs:
+              - url: "http://alertmanager-discord:9094"
+        route:
+          group_by: ["alertname", "job"]
+          group_wait: 30s
+          group_interval: 30m
+          repeat_interval: 6h
+          receiver: "discord"
+          routes:
+            - receiver: "null"
+              matchers:
+                - alertname =~ "InfoInhibitor|Watchdog"
+            - receiver: "discord"
+              match_re:
+                severity: critical
+              continue: true
+        inhibit_rules:
+          - source_matchers:
+              - severity = "critical"
+            target_matchers:
+              - severity = "warning"
+            equal: ["alertname", "namespace"]
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: "nginx"
+        hosts:
+          - "alert-manager.${SECRET_DOMAIN_PROXY}"
+        tls:
+          - hosts:
+              - "alert-manager.${SECRET_DOMAIN_PROXY}"
+      alertmanagerSpec:
+        replicas: 1
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "rook-ceph-block"
+              resources:
+                requests:
+                  storage: 250Mi
+        resources:
+          requests:
+            cpu: 11m
+            memory: 50M
+          limits:
+            memory: 99M
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+      defaultDashboardsTimezone: "browser"
+      sidecar:
+        dashboards:
+          multicluster:
+            etcd:
+              enabled: true
+    nodeExporter:
+      enabled: true
+    prometheus-node-exporter:
+      resources:
+        requests:
+          cpu: 23m
+          memory: 64M
+        limits:
+          memory: 64M
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 35m
+          memory: 273M
+        limits:
+          memory: 326M
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 11m
+            memory: 32M
+          limits:
+            memory: 32M
+    prometheus:
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: "nginx"
+        hosts:
+          - "prometheus.${SECRET_DOMAIN_PROXY}"
+        tls:
+          - hosts:
+              - "prometheus.${SECRET_DOMAIN_PROXY}"
+      prometheusSpec:
+        replicas: 1
+        replicaExternalLabelName: __replica__
+        externalLabels:
+          cluster: ${SECRET_CLUSTER_NAME}
+        podAntiAffinity: hard
+        retentionSize: 65GB
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        retention: 14d
+        enableAdminAPI: true
+        walCompression: true
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: "rook-ceph-block"
+              resources:
+                requests:
+                  storage: 75Gi
+        resources:
+          requests:
+            cpu: 10m
+            memory: 2000Mi
+          limits:
+            memory: 6000Mi
+        additionalScrapeConfigs:
+          - job_name: node-exporter
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            honor_timestamps: true
+            static_configs:
+              - targets:
+                  - "${IP_ADDR_LAN_GW}:9100"
+                  - "${IP_ADDR_LAN_PLASMA}:9100"
+                  - "${IP_ADDR_LAN_NAS}:9100"
+                  - "${IP_ADDR_LAN_GRAVITY}:9100"
