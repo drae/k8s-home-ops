@@ -105,7 +105,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: "rook-ceph-block"
+              storageClassName: "local-path"
               resources:
                 requests:
                   storage: 250Mi
@@ -174,7 +174,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: "rook-ceph-block"
+              storageClassName: "local-path"
               resources:
                 requests:
                   storage: 75Gi

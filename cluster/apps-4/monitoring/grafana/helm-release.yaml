@@ -111,7 +111,7 @@ spec:
     persistence:
       enabled: true
       size: 10Gi
-      storageClassName: "rook-ceph-block"
+      storageClassName: "local-path"
     resources:
       limits:
         memory: 219M
