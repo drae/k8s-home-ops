@@ -2,11 +2,12 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
-  - default
   - downloads
   - flux-system
   - home
+  - selfhosted
   - kube-system
   - media
   - monitoring
+  - system
   - unifi
