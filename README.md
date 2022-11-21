@@ -5,8 +5,8 @@
 > Flux management of my home cluster
 
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/DNCynrJ)
-[![k3s](https://img.shields.io/badge/talos-1.1.2-orange?style=flat-square)](https://k3s.io/)
-[![k3s](https://img.shields.io/badge/k8s-1.24-orange?style=flat-square)](https://k3s.io/)
+[![talos](https://img.shields.io/badge/talos-1.2.6-orange?style=flat-square)](https://talos.dev/)
+[![k3s](https://img.shields.io/badge/k8s-1.25-orange?style=flat-square)](https://k3s.io/)
 [![Renovate](https://img.shields.io/badge/renovate-enabled-green?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjkgMzY5Ij48Y2lyY2xlIGN4PSIxODkuOSIgY3k9IjE5MC4yIiByPSIxODQuNSIgZmlsbD0iI2ZmZTQyZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTUgLTYpIi8+PHBhdGggZmlsbD0iIzhiYjViNSIgZD0iTTI1MSAyNTZsLTM4LTM4YTE3IDE3IDAgMDEwLTI0bDU2LTU2YzItMiAyLTYgMC03bC0yMC0yMWE1IDUgMCAwMC03IDBsLTEzIDEyLTktOCAxMy0xM2ExNyAxNyAwIDAxMjQgMGwyMSAyMWM3IDcgNyAxNyAwIDI0bC01NiA1N2E1IDUgMCAwMDAgN2wzOCAzOHoiLz48cGF0aCBmaWxsPSIjZDk1NjEyIiBkPSJNMzAwIDI4OGwtOCA4Yy00IDQtMTEgNC0xNiAwbC00Ni00NmMtNS01LTUtMTIgMC0xNmw4LThjNC00IDExLTQgMTUgMGw0NyA0N2M0IDQgNCAxMSAwIDE1eiIvPjxwYXRoIGZpbGw9IiMyNGJmYmUiIGQ9Ik04MSAxODVsMTgtMTggMTggMTgtMTggMTh6Ii8+PHBhdGggZmlsbD0iIzI1YzRjMyIgZD0iTTIyMCAxMDBsMjMgMjNjNCA0IDQgMTEgMCAxNkwxNDIgMjQwYy00IDQtMTEgNC0xNSAwbC0yNC0yNGMtNC00LTQtMTEgMC0xNWwxMDEtMTAxYzUtNSAxMi01IDE2IDB6Ii8+PHBhdGggZmlsbD0iIzFkZGVkZCIgZD0iTTk5IDE2N2wxOC0xOCAxOCAxOC0xOCAxOHoiLz48cGF0aCBmaWxsPSIjMDBhZmIzIiBkPSJNMjMwIDExMGwxMyAxM2M0IDQgNCAxMSAwIDE2TDE0MiAyNDBjLTQgNC0xMSA0LTE1IDBsLTEzLTEzYzQgNCAxMSA0IDE1IDBsMTAxLTEwMWM1LTUgNS0xMSAwLTE2eiIvPjxwYXRoIGZpbGw9IiMyNGJmYmUiIGQ9Ik0xMTYgMTQ5bDE4LTE4IDE4IDE4LTE4IDE4eiIvPjxwYXRoIGZpbGw9IiMxZGRlZGQiIGQ9Ik0xMzQgMTMxbDE4LTE4IDE4IDE4LTE4IDE4eiIvPjxwYXRoIGZpbGw9IiMxYmNmY2UiIGQ9Ik0xNTIgMTEzbDE4LTE4IDE4IDE4LTE4IDE4eiIvPjxwYXRoIGZpbGw9IiMyNGJmYmUiIGQ9Ik0xNzAgOTVsMTgtMTggMTggMTgtMTggMTh6Ii8+PHBhdGggZmlsbD0iIzFiY2ZjZSIgZD0iTTYzIDE2N2wxOC0xOCAxOCAxOC0xOCAxOHpNOTggMTMxbDE4LTE4IDE4IDE4LTE4IDE4eiIvPjxwYXRoIGZpbGw9IiMzNGVkZWIiIGQ9Ik0xMzQgOTVsMTgtMTggMTggMTgtMTggMTh6Ii8+PHBhdGggZmlsbD0iIzFiY2ZjZSIgZD0iTTE1MyA3OGwxOC0xOCAxOCAxOC0xOCAxOHoiLz48cGF0aCBmaWxsPSIjMzRlZGViIiBkPSJNODAgMTEzbDE4LTE3IDE4IDE3LTE4IDE4ek0xMzUgNjBsMTgtMTggMTggMTgtMTggMTh6Ii8+PHBhdGggZmlsbD0iIzk4ZWRlYiIgZD0iTTI3IDEzMWwxOC0xOCAxOCAxOC0xOCAxOHoiLz48cGF0aCBmaWxsPSIjYjUzZTAyIiBkPSJNMjg1IDI1OGw3IDdjNCA0IDQgMTEgMCAxNWwtOCA4Yy00IDQtMTEgNC0xNiAwbC02LTdjNCA1IDExIDUgMTUgMGw4LTdjNC01IDQtMTIgMC0xNnoiLz48cGF0aCBmaWxsPSIjOThlZGViIiBkPSJNODEgNzhsMTgtMTggMTggMTgtMTggMTh6Ii8+PHBhdGggZmlsbD0iIzAwYTNhMiIgZD0iTTIzNSAxMTVsOCA4YzQgNCA0IDExIDAgMTZMMTQyIDI0MGMtNCA0LTExIDQtMTUgMGwtOS05YzUgNSAxMiA1IDE2IDBsMTAxLTEwMWM0LTQgNC0xMSAwLTE1eiIvPjxwYXRoIGZpbGw9IiMzOWQ5ZDgiIGQ9Ik0yMjggMTA4bC04LThjLTQtNS0xMS01LTE2IDBMMTAzIDIwMWMtNCA0LTQgMTEgMCAxNWw4IDhjLTQtNC00LTExIDAtMTVsMTAxLTEwMWM1LTQgMTItNCAxNiAweiIvPjxwYXRoIGZpbGw9IiNhMzM5MDQiIGQ9Ik0yOTEgMjY0bDggOGM0IDQgNCAxMSAwIDE2bC04IDdjLTQgNS0xMSA1LTE1IDBsLTktOGM1IDUgMTIgNSAxNiAwbDgtOGM0LTQgNC0xMSAwLTE1eiIvPjxwYXRoIGZpbGw9IiNlYjZlMmQiIGQ9Ik0yNjAgMjMzbC00LTRjLTYtNi0xNy02LTIzIDAtNyA3LTcgMTcgMCAyNGw0IDRjLTQtNS00LTExIDAtMTZsOC04YzQtNCAxMS00IDE1IDB6Ii8+PHBhdGggZmlsbD0iIzEzYWNiZCIgZD0iTTEzNCAyNDhjLTQgMC04LTItMTEtNWwtMjMtMjNhMTYgMTYgMCAwMTAtMjNMMjAxIDk2YTE2IDE2IDAgMDEyMiAwbDI0IDI0YzYgNiA2IDE2IDAgMjJMMTQ2IDI0M2MtMyAzLTcgNS0xMiA1em03OC0xNDdsLTQgMi0xMDEgMTAxYTYgNiAwIDAwMCA5bDIzIDIzYTYgNiAwIDAwOSAwbDEwMS0xMDFhNiA2IDAgMDAwLTlsLTI0LTIzLTQtMnoiLz48cGF0aCBmaWxsPSIjYmY0NDA0IiBkPSJNMjg0IDMwNGMtNCAwLTgtMS0xMS00bC00Ny00N2MtNi02LTYtMTYgMC0yMmw4LThjNi02IDE2LTYgMjIgMGw0NyA0NmM2IDcgNiAxNyAwIDIzbC04IDhjLTMgMy03IDQtMTEgNHptLTM5LTc2Yy0xIDAtMyAwLTQgMmwtOCA3Yy0yIDMtMiA3IDAgOWw0NyA0N2E2IDYgMCAwMDkgMGw3LThjMy0yIDMtNiAwLTlsLTQ2LTQ2Yy0yLTItMy0yLTUtMnoiLz48L3N2Zz4=)](https://renovatebot.com)
 
 <br />
@@ -30,17 +30,17 @@ The following applications are used to install and manage the cluster:
 - [talhelper](https://github.com/budimanjojo/talhelper)
 ## 💻 Hardware
 
-The cluster comprises 3 identical Lenovo M720Q Thinkcentres, specs: Intel Core i5-9500T, 16GB DDR4, 240GB SATA SSD (OS), and 500GB NVME SSD (Data). 
+The single node cluster comprises ~~3 identical~~ a Lenovo M720Q Thinkcentre, specs: Intel Core i5-9500T, 16GB DDR4, 240GB SATA SSD (OS), and 500GB NVME SSD (Data). 
 
-Other hardware includes an aging self built NAS (Celeron based, 16GB DDR3 in a neat U-NAS 800 case) and, currently, a [Raspberry Pi 4B](https://www.raspberrypi.org/) router running [OpenWRT](https://openwrt.org). I did tinker with [VyOS](https://vyos.io/) but the boot sequence needs work and I had real issues getting anything working following a reinstall. Something for the future!
+Other hardware includes an aging self built NAS (Celeron based, 16GB DDR3 in a neat U-NAS 800 case) and, currently, a [Raspberry Pi 4B](https://www.raspberrypi.org/) router running [OpenWRT](https://openwrt.org). 
 
-The Pi replaces an older Atom based self-built router who's external PSU went 💥 after many years of service. Given that router pulled nearly 20W, and with rising energy costs in mind, I thought I'd try the Pi 4. It works surprisingly well - and sips power. I should note my internet connectivity is limited to 80/20 VDSL2 as, for some reason, the local [XGS-PON based fibre provider](https://www.communityfibre.co.uk) has decided to ignore my road (all the surrounding roads have it or will do soon ... 😔) and BT/Openreach (the major national incumbent network owner) has my phone exchange listed for FTTP as "by 2025". Still, others have benchmarked the Pi 4B as maintaining >800Mbps up/down with SQM, pretty impressive.
+The Pi replaces an older Atom based self-built router who's external PSU went 💥 after many years of service. Given that router pulled nearly 20W, and with rising energy costs in mind, I thought I'd try the Pi 4. It works surprisingly well - and sips power. 
 
-Total power use (for the cluster, nas, router, switch, ap, etc.) varies from around **75-90W** (with disks spundown and cluster idling), **105-120W** with [Plex](https://plex.tv) direct playing or (hardware) transcoding, to **150-165W** when the cluster/NAS are particularly busy (scrubing, etc.). I would say it averages out over 24 hours to probably **100-110W**.
+Total power use (inc. switch, zigbee transceivers, modem, etc.) varies from around **66-80W** (with disks spundown and cluster idling), **105-115W** with [Plex](https://plex.tv) direct playing or (hardware) transcoding, to **130-150W** when the cluster/NAS are particularly busy (scrubing, etc.). I would say it averages out over 24 hours to probably **90-110W**.
 
 ## 🤔 Before we start
 
-Obviously keep in mind my repo has lots of encrypted data that is tied to my own GPG private key. You cannot simply clone this repo, follow this walkthrough, and have a functioning cluster. You will need to use your own key, update the ```.sops.yaml``` file in the root of the repo, replacing my public gpg key(s) with your own public key. 
+The repo has lots of encrypted data that is tied to my  GPG private key. You cannot simply clone this repo, follow this walkthrough, and have a functioning cluster. You will need to use your own key (GPG, age, azure keystore, etc.), update the ```.sops.yaml``` file in the root of the repo, replacing my public gpg key(s) with your own key. 
 
 Then you will need to re-create all the individual ```XXXXX.sops.yaml``` files in the repo (```infrastructure/*``` and ```cluster/*```) with your own data and encrypt them with your own gpg, age, azure, ... or other key.
 
@@ -48,15 +48,15 @@ Creating your own key is "out of scope" for this readme, a quick [google](https:
 
 ## 💾 Installing the cluster
 
-Clone the repo, change to the new folder and run ```direnv``` to enable the loading of certain environment variables:
+Clone the repo, change to the new folder and run ```direnv allow``` to enable the loading of certain environment variables:
 
 ```
 git clone https://github.com/drae/k8s-home-ops.git && cd k8s-home-ops && direnv allow
 ```
 
-I use the stable version of [talos](https://talos.dev) as the operating system for running my home cluster. I do not use pxe booting or anything fancy, I just burn the [.iso](https://github.com/siderolabs/talos/releases) to a usb and install directly. Each nodes needs booting with this image. 
+I use the stable version of [talos](https://talos.dev) as the operating system for running my home cluster. I do not use pxe booting or anything fancy, I  burn the [.iso](https://github.com/siderolabs/talos/releases) to a usb and install directly.  
 
-[talhelper](https://github.com/budimanjojo/talhelper), a great tool by [budimanjojo](https://github.com/budimanjojo/) simplifies creation of the necessary configuration. I simply:
+[talhelper](https://github.com/budimanjojo/talhelper), a great tool by [budimanjojo](https://github.com/budimanjojo/) simplifies creation of the necessary configuration. From scratch run:
 
 ```
 cd infrastructure/talos
@@ -65,6 +65,8 @@ sops -e -i talenv.sops.yaml
 talhelper genconfig
 cd ../..
 ```
+
+Unless the secrets are updated, future updates of the configuration only requires ```talhelper genconfig``` to be run.
 
 All the necessary node and talosconfig files are created in the ```infrastructure/talos/clusterconfig``` folder. Note that I add additional parameters to the ```talenv.sops.yaml``` file, see the ```talconfig.yaml``` for more info (look for variables of the form ```${<VAR NAME>}``` and replicate any missing in talenv file with relevant values). 
 
@@ -92,20 +94,12 @@ and apply a "temporary" CNI configuration (I use [cilium](https://cilium.io/) as
 kubectl kustomize infrastructure/talos --enable-helm | k apply -f -
 ```
 
-and that should be it, cluster is ready 🎉🎉🎉
-
+Doing it this way ensures all the relevant helm annotations are included in the manifest. Without these flux will fail to take over management of the installation. With this complete that should be it, cluster is ready 🎉🎉🎉
 
 ✳️ See the following folder for more details on the talos configuration: [/infrastructure/talos](https://github.com/drae/k8s-home-ops/tree/main/infrastructure/talos). Note that sops is used to encrypt some of the more sensitive information!
 
-✳️ I use [haproxy](https://haproxy.org) as the load balancer for both the talos and kubernetes control planes. Previously I have used the [shared layer-2 vip](https://www.talos.dev/v1.1/introduction/getting-started/#decide-the-kubernetes-endpoint) method but it can sometimes throw a fit that is difficult or even impossible to recover from (probably due to my lack of knowledge and pushing capabilities). An example configuration for haproxy can be found [here](https://gist.github.com/drae/1208b28545c3c164e10e05915b36bfcc)
+~~✳️ I use [haproxy](https://haproxy.org) as the load balancer for both the talos and kubernetes control planes. Previously I have used the [shared layer-2 vip](https://www.talos.dev/v1.1/introduction/getting-started/#decide-the-kubernetes-endpoint) method but it can sometimes throw a fit that is difficult or even impossible to recover from (probably due to my lack of knowledge and pushing capabilities). An example configuration for haproxy can be found [here](https://gist.github.com/drae/1208b28545c3c164e10e05915b36bfcc)~~
 
-✳️ To create the bootstrap CNI ```install.yaml``` I use kustomize: 
-
-```
-kustomize build infrastructure/talos/cni --enable-helm > infrastructure/talos/cni/install.yaml
-```
-
-This applies the ```values.yaml``` to the ```kustomization.yaml``` in ```infrastructure/talos/cni```, which downloads the necessary cillium helm chart and produces the ```install.yaml``` manifest. Doing it this way ensures all the relevant helm annotations are included in the manifest. Without these flux will fail to take over management of the installation!
 
 ## 🥾 Bootstraping the cluster
 
@@ -122,7 +116,7 @@ gpg --export-secret-keys --armor "<GPG>" | kubectl create secret \
   generic sops-gpg --namespace=flux-system --from-file=sops.asc=/dev/stdin
 ```
 
-These commands can also be invoked using ```task```:
+The above commands can also be invoked using ```task```:
 
 ```
 task cluster:bootstrap-sops KEY=<GPG>
@@ -150,7 +144,7 @@ Previously I have tried all the main/usual backup and recovery solutions for K8S
 
 Fortunately, the [k8s-at-home](https://discord.gg/DNCynrJ) peeps (specifically [onedr0p](https://github.com/onedr0p)) have devised a really simple, yet incredibly effective "Poor Mans Backup" (PMB) solution. It uses a [Kyverno](https://kyverno.io) deployed cronjob to directly backup (using [kopia](https://kopia.io)) specifically labelled PVC's to a user defined location (in my case, my NAS). Recovery is incredibly simple, a [task](https://taskfile.dev/) routine is called with the name of the app to be recovered and tada, recovery. I've tried this out *cough* many times now and it has worked successfully every single time. A++ would recommend 👍
 
-✳️ See the following files for more information: [snapshot-cronjob-controller.yaml](https://github.com/drae/k8s-home-ops/blob/main/cluster/core/kyverno/policies/snapshot-cronjob-controller.yaml) and [SnapshotTasks.yml](https://github.com/drae/k8s-home-ops/blob/main/.taskfiles/SnapshotTasks.yml)
+✳️ See the following files for more information: [snapshot-cronjob-controller.yaml](https://github.com/drae/k8s-home-ops/blob/main/cluster/apps-1/kyverno/policies/snapshot-cronjob-controller.yaml) and [SnapshotTasks.yml](https://github.com/drae/k8s-home-ops/blob/main/.taskfiles/SnapshotTasks.yml)
 
 
 ## 🤝 Thanks
