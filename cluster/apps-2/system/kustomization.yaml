@@ -5,4 +5,5 @@ resources:
   - namespace.yaml
   - node-feature-discovery
   - intel-gpu-plugin
+  - intel-gpu-exporter
   - reloader
