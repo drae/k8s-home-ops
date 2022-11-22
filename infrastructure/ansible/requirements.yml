@@ -9,7 +9,7 @@ collections:
   - name: community.sops
     version: 1.4.1
   - name: containers.podman
-    version: "1.10.0"
+    version: "1.10.1"
 roles:
   - src: geerlingguy.pip
     version: 2.2.0
