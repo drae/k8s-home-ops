@@ -3,10 +3,12 @@
 # https://github.com/rcdailey/trash-updater/wiki/Configuration-Reference
 
 sonarr:
-  - base_url: http://sonarr.downloads:8989
-    api_key: ${SONARR_APIKEY}
-    quality_definition: series
+  main:
+    base_url: http://sonarr.downloads.svc.cluster.local:8989
+    api_key: !env_var SONARR_APIKEY
     delete_old_custom_formats: true
+    quality_definition:
+      type: series
     custom_formats:
       #
       # HD
@@ -134,11 +136,12 @@ sonarr:
             reset_unmatched_scores: true
 
 radarr:
-  - base_url: http://radarr.downloads:7878
-    api_key: ${RADARR_APIKEY}
+  main:
+    base_url: http://radarr.downloads.svc.cluster.local:7878
+    api_key: !env_var RADARR_APIKEY
     delete_old_custom_formats: true
     quality_definition:
-      type: sqp-uhd
+      type: movie
     custom_formats:
       - trash_ids:
           # Audio
