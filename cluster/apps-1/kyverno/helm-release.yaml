@@ -24,11 +24,19 @@ spec:
   values:
     installCRDs: false
     replicaCount: 1
-    extraArgs:
-      - --clientRateLimitQPS=30
-      - --clientRateLimitBurst=60
+    grafana:
+      enabled: true
     serviceMonitor:
       enabled: true
+    backgroundController:
+      serviceMonitor:
+        enabled: true
+    cleanupController:
+      serviceMonitor:
+        enabled: true
+    reportsController:
+      serviceMonitor:
+        enabled: true
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
