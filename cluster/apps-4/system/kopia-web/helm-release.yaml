@@ -45,14 +45,13 @@ spec:
     command: kopia
     args:
       - server
+      - start
       - --insecure
       - --address
       - 0.0.0.0:80
       - --metrics-listen-addr
       - 0.0.0.0:8080
       - --without-password
-      - --log-level
-      - debug
     service:
       main:
         ports:
