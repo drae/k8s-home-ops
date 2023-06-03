@@ -7,7 +7,6 @@ resources:
   - prowlarr
   - sonarr
   - radarr
-  - lidarr
   - recyclarr
   - nzbget
   - qbittorrent
