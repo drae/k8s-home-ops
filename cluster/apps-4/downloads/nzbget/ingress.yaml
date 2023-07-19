@@ -9,6 +9,11 @@ metadata:
     app.kubernetes.io/instance: *app
 spec:
   ingressClassName: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Accept-Encoding "";
+      sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN_PROXY}/css/base/nzbget/plex.css"></head>';
+      sub_filter_once on;
   rules:
     - host: &host "nzbget.${SECRET_DOMAIN_PROXY}"
       http:
