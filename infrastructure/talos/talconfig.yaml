@@ -67,6 +67,8 @@ controlPlane:
           extraKernelArgs:
             - nvme_core.default_ps_max_latency_us=5500
             - pci=noaer
+          extensions:
+            - image: ghcr.io/siderolabs/i915-ucode:20230310
         kubelet:
           extraArgs:
             feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
