@@ -4,6 +4,8 @@ kind: HelmRelease
 metadata:
   name: mailrise
   namespace: default
+  annotations:
+    io.cilium/lb-ipam-ips: ${SVC_LB_MAILRISE}
 spec:
   interval: 30m
   chart:
@@ -23,8 +25,6 @@ spec:
       secret.reloader.stakater.com/reload: "mailrise-config"
     service:
       main:
-        annotations:
-          metallb.universe.tf/loadBalancerIPs: ${SVC_LB_MAILRISE}
         type: LoadBalancer
         externalTrafficPolicy: Local
         ports:
