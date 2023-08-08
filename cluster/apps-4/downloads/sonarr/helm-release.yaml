@@ -26,8 +26,8 @@ spec:
         ports:
           http:
             port: 8989
-    podAnnotations:
-      setGateway: "true"
+#    podAnnotations:
+#      setGateway: "true"
     ingress:
       main:
         enabled: true
