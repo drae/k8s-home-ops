@@ -22,7 +22,14 @@ spec:
     remediation:
       retries: 5
   values:
+    crds: 
+      install: true
+    grafana:
+      enabled: true
     admissionController:
+      replicas: 1
+      serviceMonitor:
+        enabled: true
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -30,19 +37,34 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/instance: kyverno
-      replicas: 1
-      serviceMonitor:
-        enabled: true
+      rbac:
+        clusterRole:
+          extraResources:
+            - apiGroups:
+                - ""
+              resources:
+                - pods
+              verbs:
+                - create
+                - update
+                - delete
     backgroundController:
       serviceMonitor:
         enabled: true
+      rbac:
+        clusterRole:
+          extraResources:
+            - apiGroups:
+                - ""
+              resources:
+                - pods
+                - cronjobs
+                - jobs
+              verbs:
+                - '*'
     cleanupController:
       serviceMonitor:
         enabled: true
-    crds: 
-      install: true
-    grafana:
-      enabled: true
     reportsController:
       serviceMonitor:
         enabled: true
