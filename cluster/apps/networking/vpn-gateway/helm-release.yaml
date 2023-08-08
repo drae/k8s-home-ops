@@ -20,8 +20,8 @@ spec:
       repository: ghcr.io/bjw-s/pod-gateway
       tag: dev@sha256:cb3644a1e8a42b00537c8f9a265bb708a7d43b3382d82f40174bba5eea036449
     podAnnotations:
-      configmap.reloader.stakater.com/reload: downloads-gateway-pod-gateway
-      secret.reloader.stakater.com/reload: downloads-gateway-vpnconfig
+      configmap.reloader.stakater.com/reload: vpn-gateway-pod-gateway
+      secret.reloader.stakater.com/reload: vpn-gateway-config
     DNS: 172.16.1.1
     routed_namespaces:
       - downloads
@@ -37,12 +37,12 @@ spec:
             enabled: true
             port: 8388
     settings:
-      NOT_ROUTED_TO_GATEWAY_CIDRS: "10.0.0.0/8 172.16.0.0/12 192.168.1.0/24"
+      NOT_ROUTED_TO_GATEWAY_CIDRS: "10.0.0.0/8 192.168.1.0/24"
       VPN_INTERFACE: wg0
       VPN_INTERFACE_MTU: "1400"
       VPN_BLOCK_OTHER_TRAFFIC: true
       VPN_TRAFFIC_PORT: "${SECRET_VPN_PORT}"
-      VPN_LOCAL_CIDRS: "10.0.0.0/8 172.16.0.0/12 192.168.1.0/24"
+      VPN_LOCAL_CIDRS: "10.0.0.0/8 192.168.1.0/24"
       VXLAN_ID: 43
       VXLAN_IP_NETWORK: 172.16.1
     addons:
