@@ -2,13 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: apps
+  name: policies
   namespace: flux-system
 spec:
   interval: 10m0s
   dependsOn:
-    - name: policies
-  path: ./cluster/apps
+    - name: core
+  path: ./cluster/policies
   prune: true
   sourceRef:
     kind: GitRepository
