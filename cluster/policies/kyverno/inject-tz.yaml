@@ -11,8 +11,6 @@ metadata:
       environment variable so the container will have the correct
       time.
 spec:
-  mutateExistingOnPolicyUpdate: true
-  generateExistingOnPolicyUpdate: true
   rules:
     - name: inject-timezone
       match:
@@ -20,6 +18,11 @@ spec:
           - resources:
               kinds:
                 - Pod
+      exclude:
+        any:
+          - resources:
+              annotations:
+                kyverno-no-tz: "true"
       mutate:
         patchStrategicMerge:
           spec:
