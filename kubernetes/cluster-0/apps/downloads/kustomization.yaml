@@ -1,0 +1,12 @@
+---
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+resources:
+  - ./namespace.yaml
+  - ./config-pvc.yaml
+  - ./prowlarr/ks.yaml
+  - ./sonarr/ks.yaml
+  - ./radarr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./nzbget/ks.yaml
+  - ./qbittorrent/ks.yaml
