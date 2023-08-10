@@ -1,0 +1,36 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: k8s-home-ops
+  namespace: flux-system
+spec:
+  interval: 30m
+  ref:
+    branch: main
+  url: https://github.com/drae/k8s-home-ops
+  ignore: |
+    # exclude all
+    /*
+    # include gitops dirs
+    !/kubernetes
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-0
+  namespace: flux-system
+spec:
+  interval: 30m
+  path: ./kubernetes/cluster-0/flux
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-gpg
+  dependsOn:
+    - name: flux

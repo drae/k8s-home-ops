@@ -12,5 +12,15 @@
     },
     "prettier.configPath": ".github/linters/.prettierrc.yaml",
     "prettier.ignorePath": ".github/linters/.prettierignore",
-    "ansible.python.interpreterPath": "/bin/python3"
+    "ansible.python.interpreterPath": "/bin/python3",
+    "yaml.schemas": {
+        "ansible": [
+            "infrastructure/ansible/*.yml",
+            "infrastructure/ansible/*.yaml"
+        ],
+        "kubernetes": [
+            "cluster/*.yml",
+            "cluster/*.yaml"
+        ],
+    },
 }

@@ -2,3 +2,5 @@ kube-cluster-kube-cp-01.yaml
 kube-cluster-kube-cp-02.yaml
 kube-cluster-kube-cp-03.yaml
 talosconfig
+cluster-0-cluster-0-alpha.lan.drae.foo.yaml
+cluster-0-alpha.lan.drae.foo.yaml
