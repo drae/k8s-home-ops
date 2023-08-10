@@ -22,7 +22,7 @@ spec:
       tag: "2023.7.3"
     cloudflared:
       # Tunnel ID should be unique per instance of running cloudflared
-      tunnelID: cfe0d676-2bcf-4cc9-9b9c-820ca86e3602
+      tunnelID: f543ebab-9416-44ea-be54-5954cb4d9eb2
       # This is a reference to an existing secret containing the credentials;
       existingSecret: cloudflared-secret
       # Ingress hosts are directly copied into the configmap;
