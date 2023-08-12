@@ -17,6 +17,7 @@ resources:
   - ./intel-charts.yaml
   - ./jetstack-charts.yaml
   - ./k8tz-charts.yaml
+  - ./kubernetes-sigs-external-dns.yaml
   - ./lwolf-charts.yaml
   - ./metrics-server-charts.yaml
   - ./node-feature-discovery-charts.yaml
