@@ -36,4 +36,8 @@ spec:
           service: https://ingress-nginx-ext-controller.network.svc.cluster.local:443
           originRequest:
             originServerName: ingress.${SECRET_DOMAIN}
+        - hostname: gh-flux-receiver.${SECRET_DOMAIN}
+          service: https://ingress-nginx-ext-controller.network.svc.cluster.local:443
+          originRequest:
+            originServerName: ingress.${SECRET_DOMAIN}
         - service: http_status:404
