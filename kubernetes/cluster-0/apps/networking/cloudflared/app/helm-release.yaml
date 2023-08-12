@@ -33,5 +33,6 @@ spec:
         - hostname: hass.${SECRET_DOMAIN}
           service: http://home-assistant.home.svc.cluster.local:8123
         - service: http_status:404
-        - hostname: gh-webhook.${SECRET_DOMAIN}
-          service: http://webhook-receiver.flux-system.svc.cluster.local:80
+        - hostname: gh-flux-receiver.${SECRET_DOMAIN}
+          service: http://webhook-receiver.flux-system.svc.cluster.local:80/hook/
+          path: /hook/*
