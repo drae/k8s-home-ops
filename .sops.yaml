@@ -4,7 +4,7 @@ creation_rules:
     unencrypted_regex: "^(kind)$"
     pgp: >-
       4CF588582D481BB5C1927F275BB27F59F87ABCA3
-  - path_regex: cluster/.*\.sops\.ya?ml
+  - path_regex: kubernetes/.*\.sops\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     pgp: >-
       4CF588582D481BB5C1927F275BB27F59F87ABCA3
