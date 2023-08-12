@@ -31,7 +31,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: ingress-nginx-int
         hosts:
           - host: "esphome.${SECRET_DOMAIN_PROXY}"
             paths:

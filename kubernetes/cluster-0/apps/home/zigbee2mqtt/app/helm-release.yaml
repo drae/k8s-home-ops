@@ -37,7 +37,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: ingress-nginx-int
         hosts:
           - host: "zigbee2mqtt.${SECRET_DOMAIN_PROXY}"
             paths:
@@ -105,7 +105,7 @@ spec:
 #          - "/data/.vscode"
 #        ingress:
 #          enabled: true
-#          ingressClassName: "nginx"
+#          ingressClassName: ingress-nginx-int
 #          hosts:
 #            - host: "zigbee2mqtt-config.${SECRET_DOMAIN_PROXY}"
 #              paths:

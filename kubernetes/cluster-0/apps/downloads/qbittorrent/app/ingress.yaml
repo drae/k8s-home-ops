@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
 spec:
-  ingressClassName: nginx
+  ingressClassName: ingress-nginx-int
   rules:
     - host: &host "qb.${SECRET_DOMAIN_PROXY}"
       http:

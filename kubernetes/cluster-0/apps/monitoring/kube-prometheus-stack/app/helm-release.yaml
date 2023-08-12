@@ -94,7 +94,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: "nginx"
+        ingressClassName: ingress-nginx-int
         hosts:
           - "alert-manager.${SECRET_DOMAIN_PROXY}"
         tls:
@@ -151,7 +151,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: "nginx"
+        ingressClassName: ingress-nginx-int
         hosts:
           - "prometheus.${SECRET_DOMAIN_PROXY}"
         tls:
