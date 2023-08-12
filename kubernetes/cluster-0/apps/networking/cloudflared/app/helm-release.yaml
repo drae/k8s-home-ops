@@ -32,7 +32,8 @@ spec:
           service: http://plex.media.svc.cluster.local:32400
         - hostname: hass.${SECRET_DOMAIN}
           service: http://home-assistant.home.svc.cluster.local:8123
+        - hostname: ingress.${SECRET_DOMAIN}
+          service: https://ingress-nginx-ext-controller.network.svc.cluster.local:443
+          originRequest:
+            originServerName: ingress.${SECRET_DOMAIN}
         - service: http_status:404
-        - hostname: gh-flux-receiver.${SECRET_DOMAIN}
-          service: http://webhook-receiver.flux-system.svc.cluster.local:80/hook/
-          path: /hook/*
