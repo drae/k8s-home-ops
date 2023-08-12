@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: ingress-nginx-int
+  name: ingress-nginx-ext
   namespace: networking
 spec:
   interval: 30m
@@ -25,7 +25,7 @@ spec:
     remediation:
       retries: 5
   values:
-    fullnameOverride: ingress-nginx-int
+    fullnameOverride: ingress-nginx-ext
     controller:
       publishService:
         enabled: true
@@ -33,19 +33,20 @@ spec:
       service:
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${SVC_LB_INGRESS_NGINX_INT}
+          io.cilium/lb-ipam-ips: ${SVC_LB_INGRESS_NGINX_EXT}
+          external-dns.alpha.kubernetes.io/hostname: "ingress.${SECRET_DOMAIN}"
         externalTrafficPolicy: Cluster
       ingressClassResource:
-        name: ingress-nginx-int
-        default: true
-        controllerValue: k8s.io/ingress-nginx-int
+        name: ingress-nginx-ext
+        default: false
+        controllerValue: k8s.io/ingress-nginx-ext
       admissionWebhooks:
         objectSelector:
           matchExpressions:
             - key: ingress-class
               operator: In
               values:
-                - ingress-nginx-int
+                - ingress-nginx-ext
       config:
         custom-http-errors: >-
           401,403,404,500,501,502,503
@@ -80,5 +81,3 @@ spec:
       extraEnvs:
         - name: TEMPLATE_NAME
           value: ghost
-        - name: SHOW_DETAILS
-          value: "true"

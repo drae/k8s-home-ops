@@ -38,7 +38,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: ingress-nginx-int
         hosts:
           - host: &host "hass.${SECRET_DOMAIN_PROXY}"
             paths:
@@ -84,7 +84,7 @@ spec:
           - "/config/.vscode"
         ingress:
           enabled: true
-          ingressClassName: "nginx"
+          ingressClassName: ingress-nginx-int
           hosts:
             - host: &host "hass-config.${SECRET_DOMAIN_PROXY}"
               paths:

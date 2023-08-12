@@ -21,7 +21,7 @@ spec:
       enabled: true
     ingress:
       dashboard:
-        ingressClassName: nginx
+        ingressClassName: ingress-nginx-int
         host:
           name: &host "rook.${SECRET_DOMAIN_PROXY}"
           path: "/"
