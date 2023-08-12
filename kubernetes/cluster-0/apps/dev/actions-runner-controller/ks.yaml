@@ -10,7 +10,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: k8s-home-ops
   wait: true
 
 ---
@@ -25,7 +25,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops-kubernetes
+    name: k8s-home-ops
   wait: false # no flux ks dependents
   dependsOn:
     - name: cluster-apps-actions-runner-controller
