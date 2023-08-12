@@ -5,13 +5,17 @@
         "**/ansible/**/*.sops.yml": "yaml",
         "**/ansible/**/inventory/**/*.yml": "yaml",
         "**/terraform/**/*.tf": "terraform",
-        "**/cluster/**/*.sops.toml": "plaintext"
     },
     "material-icon-theme.folders.associations": {
         ".taskfiles": "utils",
+        "app": "",
+        "apps": "",
+        "downloads": "",
+        "home": "",
+        "settings": "",
     },
-    "prettier.configPath": ".github/linters/.prettierrc.yaml",
-    "prettier.ignorePath": ".github/linters/.prettierignore",
+    "prettier.configPath": ".ci/prettier/.prettierrc.yaml",
+    "prettier.ignorePath": ".ci/prettier/.prettierignore",
     "ansible.python.interpreterPath": "/bin/python3",
     "yaml.schemas": {
         "ansible": [
@@ -19,8 +23,8 @@
             "infrastructure/ansible/*.yaml"
         ],
         "kubernetes": [
-            "cluster/*.yml",
-            "cluster/*.yaml"
+            "kubernetes/**/*.yml",
+            "kubernetes/**/*.yaml"
         ],
     },
 }
