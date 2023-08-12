@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: arc-home-ops
+  name: arc-k8s-home-ops
   namespace: dev
 spec:
   interval: 30m
@@ -26,7 +26,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/actions/actions-runner:2.307.1@sha256:5703960b0e91cb0101e69aab55ee9e9fbd4a870adcdf906f63c3fff2342cccc4
+            image: ghcr.io/onedr0p/github-actions-runner:rolling@sha256:5dd8a766e3791be80c9d91a38185926fef5da9da9f6111d5b57f27d9e2e16bff
   valuesFrom:
     - kind: Secret
       name: actions-runner-controller-auth
