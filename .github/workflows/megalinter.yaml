@@ -39,6 +39,7 @@ jobs:
                   [
                     "ACTION_ACTIONLINT",
                     "ANSIBLE_ANSIBLE_LINT",
+                    "COPYPASTE_JSCPD",
                     "KUBERNETES_KUBEVAL",
                     "MARKDOWN_MARKDOWNLINT",
                     "REPOSITORY_GIT_DIFF",
@@ -51,7 +52,8 @@ jobs:
                 ','
               )
             }}
-          KUBERNETES_DIRECTORY: cluster
+          COPYPASTE_JSCPD_CONFIG_FILE: .ci/jscpd/jscpd.json
+          KUBERNETES_DIRECTORY: kubernetes
           KUBERNETES_KUBEVAL_ARGUMENTS: --ignore-missing-schemas
           KUBERNETES_KUBEVAL_FILTER_REGEX_INCLUDE: "(kubernetes)"
           ANSIBLE_DIRECTORY: infrastructure/ansible
@@ -59,5 +61,5 @@ jobs:
           MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .github/linters/.markdownlint.yaml
           MARKDOWN_MARKDOWNLINT_RULES_PATH: .github/
           YAML_YAMLLINT_CONFIG_FILE: .github/linters/.yamllint.yaml
-          YAML_PRETTIER_CONFIG_FILE: .github/linters/.prettierrc.yaml
+          YAML_PRETTIER_CONFIG_FILE: .ci/prettier/.prettierrc.yaml
           YAML_PRETTIER_FILTER_REGEX_EXCLUDE: "(.*\\.sops\\.ya?ml)"
