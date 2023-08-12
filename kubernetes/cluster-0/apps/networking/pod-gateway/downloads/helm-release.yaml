@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: ghcr.io/bjw-s/pod-gateway
-      tag: dev@sha256:cb3644a1e8a42b00537c8f9a265bb708a7d43b3382d82f40174bba5eea036449
+      tag: dev@sha256:3a59e65e26e09cc9d0c21ed14fbf31cebe4b08752d7157b0934a4662e54a2639
     podAnnotations:
       configmap.reloader.stakater.com/reload: vpn-gateway-pod-gateway
       secret.reloader.stakater.com/reload: vpn-gateway-config
