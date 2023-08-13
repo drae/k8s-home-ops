@@ -46,11 +46,12 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: ingress-nginx-int
+        ingressClassName: ingress-nginx-ext
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN_PROXY}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
