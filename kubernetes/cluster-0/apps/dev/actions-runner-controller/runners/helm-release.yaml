@@ -19,8 +19,8 @@ spec:
     runnerScaleSetName: arc-k8s-home
     githubConfigSecret: actions-runner-controller-auth
     githubConfigUrl: https://github.com/drae/k8s-home-ops
-    minRunners: 1
-    maxRunners: 2
+    minRunners: 0
+    maxRunners: 3
     containerMode:
       type: "dind"
     template:
