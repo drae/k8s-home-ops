@@ -23,8 +23,8 @@
             "infrastructure/ansible/*.yaml"
         ],
         "kubernetes": [
-            "kubernetes/**/*.yml",
-            "kubernetes/**/*.yaml"
+            "kubernetes/*.yml",
+            "kubernetes/*.yaml"
         ],
     },
 }
