@@ -28,8 +28,6 @@ spec:
       # Ingress hosts are directly copied into the configmap;
       # Read: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress
       ingress:
-        - hostname: "plex.${SECRET_DOMAIN}"
-          service: http://plex.media.svc.cluster.local:32400
         - hostname: "ingress.${SECRET_DOMAIN}"
           service: https://ingress-nginx-ext-controller.networking.svc.cluster.local:443
           originRequest:

@@ -18,14 +18,16 @@ spec:
   install:
     createNamespace: true
   values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/home-assistant/home-assistant
       tag: 2023.8.2
     envFrom:
       - secretRef:
           name: home-assistant
-    hostNetwork: true
-    dnsPolicy: ClusterFirstWithHostNet
     service:
       main:
         type: LoadBalancer
@@ -38,9 +40,12 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: ingress-nginx-int
+        ingressClassName: ingress-nginx-ext
+        annotations:
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
         hosts:
-          - host: &host "hass.${SECRET_DOMAIN_PROXY}"
+          - host: &host "hass.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -58,8 +63,6 @@ spec:
       config:
         enabled: true
         existingClaim: home-assistant-config
-    podAnnotations:
-      secret.reloader.stakater.com/reload: "home-assistant"
     resources:
       requests:
         cpu: 126m
