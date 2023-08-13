@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: arc-runner
+  name: arc-k8s-home
   namespace: dev
 spec:
   interval: 30m
@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    runnerScaleSetName: arc-runner
+    runnerScaleSetName: arc-k8s-home
     githubConfigSecret: actions-runner-controller-auth
     githubConfigUrl: https://github.com/drae/k8s-home-ops
     minRunners: 1
