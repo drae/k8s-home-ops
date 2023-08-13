@@ -30,7 +30,7 @@ spec:
       strategy: RollingUpdate
     image:
       repository: ghcr.io/drae/kubernetes-schemas
-      tag: latest@sha256:c8d90bf27c62614ab754a68c2503ac8af92b5faa6b4bfaab3f6dc9ebd707fb92
+      tag: latest@sha256:4d059453be7846e4cacd813f9539da49c38f47635df242b530e85b0cae696a43
     service:
       main:
         ports:
