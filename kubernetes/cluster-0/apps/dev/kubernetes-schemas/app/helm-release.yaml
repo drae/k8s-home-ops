@@ -26,8 +26,7 @@ spec:
     keepHistory: false
   values:
     controller:
-      replicas: 2
-      strategy: RollingUpdate
+      replicas: 1
     image:
       repository: ghcr.io/drae/kubernetes-schemas
       tag: latest@sha256:4d059453be7846e4cacd813f9539da49c38f47635df242b530e85b0cae696a43
