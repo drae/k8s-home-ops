@@ -22,40 +22,38 @@ sonarr:
           - e6258996055b9fbab7e9cb2f75819294 # WEB Tier 01 - 1700
           - 58790d4e2fdcd9733aa7ae68ba2bb503 # WEB Tier 02 - 1650
           - d84935abd3f8556dcd51d4f27e22d0a6 # WEB Tier 03 - 1600
-          - d0c516558625b04b363fa6c5c2c7cfd4 # WEB Scene - 1800
-          # Release Version
-          - ec8fa7296b64e8cd390a1600981f3923 # Repack/Proper - 11
-          - eb3d5cc0a2be0db205fb823640db6a3c # Repack2 - 12
-          - 44e7c4de10ae50265753082e5dc76047 # Repack v3 - 13
-          # Series Versions
-          - 3a4127d8aa781b44120d907f2cd62627 # Hybrid - 100
-          - b735f09d3c025cbb7d75a5d38325b73b # Remaster - 25
+          - d0c516558625b04b363fa6c5c2c7cfd4 # WEB Scene - 1600
+          # Misc
+          - ec8fa7296b64e8cd390a1600981f3923 # Repack/Proper - 5
+          - eb3d5cc0a2be0db205fb823640db6a3c # Repack2 - 6
+          - 44e7c4de10ae50265753082e5dc76047 # Repack v3 - 7
+          # Streaming Services
+          - f67c9ca88f463a48346062e8ad07713f # ATVP - 100
+          - 89358767a60cc28783cdc3d0be9388a4 # DSNP - 100
+          - 81d1fbf600e2540cee87f3a23f9d3c1c # MAX - 90
+          - a880d6abc21e7c16884f3ae393f84179 # HMAX - 90
+          - 3ac5d84fce98bab1b531393e9c82f467 # QIBI - 90
+          - d660701077794679fd59e8bdf4ce3a29 # AMZN - 70
+          - d34870697c9db575f17700212167be23 # NF - 60
+          - 1656adc6d7bb2c8cca6acfb6592db421 # PCOK - 60
+          - c67a75ae4a1715f2bb4d492755ba4195 # PMTP - 60
+          - 1efe8da11bfd74fbbcd4d8117ddb9213 # STAN - 60
+          - 77a7b25585c18af08f60b1547bb9b4fb # CC - 50
+          - 4e9a630db98d5391aec1368a0256e2fe # CRAV - 50
+          - 36b72f59f4ea20aad9316f475f2d9fbb # DCU - 50
+          - 7a235133c87f7da4c8cccceca7e3c7a6 # HBO - 50
+          - f6cce30f1733d5c8194222a7507909bb # HULU - 50
+          - 0ac24a2a68a9700bcb7eeca8e5cd644c # iT - 50
+          - b2b980877494b560443631eb1f473867 # NLZ - 50
+          - c30d2958827d1867c73318a5a2957eb1 # RED - 50
+          - ae58039e1319178e6be73caab5c42166 # SHO - 50
+          - 5d2317d99af813b6529c7ebf01c83533 # VDL - 50
+          - fb1a91cdc0f26f7ca0696e0e95274645 # OViD - 50
           # Unwanted
           - 85c61753df5da1fb2aab6f2a47426b09 # BR-DISK - -10000
           - 9c11cd3f07101cdba90a2d81cf0e56b4 # LQ - -10000
           - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD) - -10000
-          # - 9b64dff695c2115facf1b6ea59c9bd07 # x265 (no HDR/DV) - -10000
-          - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup - -10000
-          - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated - -10000
-          - 06d66ab109d4d2eddb2794d21526d140 # Retags - -10000
-          - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups - -10000
-          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - ??????
-          # - 1b3994c551cbb92a2c781af061f4ab44 # Scene - -10000
-          # Streaming Services
-          - d660701077794679fd59e8bdf4ce3a29 # AMZN - 100
-          - f67c9ca88f463a48346062e8ad07713f # ATVP - 100
-          - ae58039e1319178e6be73caab5c42166 # SHO - 95
-          - 89358767a60cc28783cdc3d0be9388a4 # DSNP - 90
-          - d34870697c9db575f17700212167be23 # NF - 90
-          - 3ac5d84fce98bab1b531393e9c82f467 # QIBI - 90
-          - a880d6abc21e7c16884f3ae393f84179 # HMAX - 90
-          - f6cce30f1733d5c8194222a7507909bb # HULU - 85
-          - 1656adc6d7bb2c8cca6acfb6592db421 # PCOK - 85
-          - 36b72f59f4ea20aad9316f475f2d9fbb # DCU - 75
-          - 7a235133c87f7da4c8cccceca7e3c7a6 # HBO - 75
-          - c30d2958827d1867c73318a5a2957eb1 # RED - 75
-          - 0ac24a2a68a9700bcb7eeca8e5cd644c # iT - 75
-          - c67a75ae4a1715f2bb4d492755ba4195 # PMTP - 75
+          - fbcb31d8dabd2a319072b84fc0b7249c # Extras - -10000
         quality_profiles:
           - name: WEB-DL (1080p)
 
@@ -64,76 +62,59 @@ sonarr:
       #
       - trash_ids:
           # Audio
-          # - 0d7824bb924701997f874e7ff7d4844a # TrueHD ATMOS - 5000
-          # - 9d00418ba386a083fbf4d58235fc37ef # DTS X - 4500
-          # - b6fbafa7942952a13e17e2b1152b539a # ATMOS (undefined) - 3000
           - 4232a509ce60c4e208d13825b7c06264 # DD+ ATMOS - 3000
-          # - 1808e4b9cee74e064dfae3f1db99dbfe # TrueHD - 2750
-          # - c429417a57ea8c41d57e6990a8b0033f # DTS-HD MA - 2500
-          # - 851bd64e04c9374c51102be3dd9ae4cc # FLAC - 2250
-          # - 30f70576671ca933adbdcfc736a69718 # PCM - 2250
-          # - cfa5fbd8f02a86fc55d8d223d06a5e1f # DTS-HD HRA - 2000
           - 63487786a8b01b7f20dd2bc90dd4a477 # DD+ - 1750
-          # - c1a25cd67b5d2e08287c957b1eb903ec # DTS-ES - 1500
-          # - 5964f2a8b3be407d083498e4459d05d0 # DTS - 1250
-          # - a50b8a0c62274a7c38b09a9619ba9d86 # AAC - 1000
-          # - dbe00161b08a25ac6154c55f95e6318d # DD - 750
           # HDR Formats
           - 7878c33f1963fefb3d6c8657d46c2f0a # DV HDR10 - 1500
           - 6d0d8de7b57e35518ac0308b0ddf404e # DV - 1500
           - 1f733af03141f068a540eec352589a89 # DV HLG - 1500
           - 27954b0a80aab882522a88a4d9eae1cd # DV SDR - 1500
-          - a3d82cbef5039f8d295478d28a887159 # HDR10+ - 600
           - 3497799d29a085e2ac2df9d468413c94 # HDR10 - 500
           - 3e2c4e748b64a1a1118e0ea3f4cf6875 # HDR - 500
           - bb019e1cd00f304f80971c965de064dc # HDR (undefined) - 500
           - 2a7e3be05d3861d6df7171ec74cad727 # PQ - 500
           - 17e889ce13117940092308f48b48b45b # HLG - 500
+          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - -10000
           # HQ Web Source Groups
           - e6258996055b9fbab7e9cb2f75819294 # WEB Tier 01 - 1700
           - 58790d4e2fdcd9733aa7ae68ba2bb503 # WEB Tier 02 - 1650
           - d84935abd3f8556dcd51d4f27e22d0a6 # WEB Tier 03 - 1600
-          - d0c516558625b04b363fa6c5c2c7cfd4 # WEB Scene - 1800
+          - d0c516558625b04b363fa6c5c2c7cfd4 # WEB Scene - 1600
           # Release Version
-          - ec8fa7296b64e8cd390a1600981f3923 # Repack/Proper - 11
-          - eb3d5cc0a2be0db205fb823640db6a3c # Repack2 - 12
-          - 44e7c4de10ae50265753082e5dc76047 # Repack v3 - 13
-          # Series Versions
-          - 3a4127d8aa781b44120d907f2cd62627 # Hybrid - 100
-          - b735f09d3c025cbb7d75a5d38325b73b # Remaster - 25
+          - ec8fa7296b64e8cd390a1600981f3923 # Repack/Proper - 5
+          - eb3d5cc0a2be0db205fb823640db6a3c # Repack2 - 6
+          - 44e7c4de10ae50265753082e5dc76047 # Repack v3 - 7
+          # Streaming Services
+          - f67c9ca88f463a48346062e8ad07713f # ATVP - 100
+          - 89358767a60cc28783cdc3d0be9388a4 # DSNP - 100
+          - 81d1fbf600e2540cee87f3a23f9d3c1c # MAX - 90
+          - a880d6abc21e7c16884f3ae393f84179 # HMAX - 90
+          - 3ac5d84fce98bab1b531393e9c82f467 # QIBI - 90
+          - d660701077794679fd59e8bdf4ce3a29 # AMZN - 70
+          - d34870697c9db575f17700212167be23 # NF - 60
+          - 1656adc6d7bb2c8cca6acfb6592db421 # PCOK - 60
+          - c67a75ae4a1715f2bb4d492755ba4195 # PMTP - 60
+          - 1efe8da11bfd74fbbcd4d8117ddb9213 # STAN - 60
+          - 77a7b25585c18af08f60b1547bb9b4fb # CC - 50
+          - 4e9a630db98d5391aec1368a0256e2fe # CRAV - 50
+          - 36b72f59f4ea20aad9316f475f2d9fbb # DCU - 50
+          - 7a235133c87f7da4c8cccceca7e3c7a6 # HBO - 50
+          - f6cce30f1733d5c8194222a7507909bb # HULU - 50
+          - 0ac24a2a68a9700bcb7eeca8e5cd644c # iT - 50
+          - b2b980877494b560443631eb1f473867 # NLZ - 50
+          - c30d2958827d1867c73318a5a2957eb1 # RED - 50
+          - ae58039e1319178e6be73caab5c42166 # SHO - 50
+          - 5d2317d99af813b6529c7ebf01c83533 # VDL - 50
+          - fb1a91cdc0f26f7ca0696e0e95274645 # OViD - 50
+          - 43b3cf48cb385cd3eac608ee6bca7f09 # UHD Streaming Boost - 20
+          - d2d299244a92b8a52d4921ce3897a256 # UHD Streaming Cut - -20
+          # Optional
+          - 2016d1676f5ee13a5b7257ff86ac9a93 # SDR - -10000
           # Unwanted
           - 85c61753df5da1fb2aab6f2a47426b09 # BR-DISK - -10000
           - 9c11cd3f07101cdba90a2d81cf0e56b4 # LQ - -10000
-          # - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD) - -10000
-          - 9b64dff695c2115facf1b6ea59c9bd07 # x265 (no HDR/DV) - -10000
-          - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup - -10000
-          - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated - -10000
-          - 06d66ab109d4d2eddb2794d21526d140 # Retags - -10000
-          - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups - -10000
-          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - ??????
-          - 1b3994c551cbb92a2c781af061f4ab44 # Scene - -10000
-          # Streaming Services
-          - d660701077794679fd59e8bdf4ce3a29 # AMZN - 100
-          - f67c9ca88f463a48346062e8ad07713f # ATVP - 100
-          - ae58039e1319178e6be73caab5c42166 # SHO - 95
-          - 89358767a60cc28783cdc3d0be9388a4 # DSNP - 90
-          - d34870697c9db575f17700212167be23 # NF - 90
-          - 3ac5d84fce98bab1b531393e9c82f467 # QIBI - 90
-          - a880d6abc21e7c16884f3ae393f84179 # HMAX - 90
-          - f6cce30f1733d5c8194222a7507909bb # HULU - 85
-          - 1656adc6d7bb2c8cca6acfb6592db421 # PCOK - 85
-          - 36b72f59f4ea20aad9316f475f2d9fbb # DCU - 75
-          - 7a235133c87f7da4c8cccceca7e3c7a6 # HBO - 75
-          - c30d2958827d1867c73318a5a2957eb1 # RED - 75
-          - 0ac24a2a68a9700bcb7eeca8e5cd644c # iT - 75
-          - c67a75ae4a1715f2bb4d492755ba4195 # PMTP - 75
-          # Misc
-          # - cddfb4e32db826151d97352b8e37c648 # x264 - 0
-          # - c9eafd50846d299b862ca9bb6ea91950 # x265 - 0
-          # - 4aee45b0868229c4fbd8bad3e315f1d0 # MPEG2 - 0
-          # - 7ba05c6e0e14e793538174c679126996 # Multi - 0
-          # - d7c747094a7c65f4c2de083c24899e8b # FreeLeech - 1
-          # - 3bc5f395426614e155e585a2f056cdf1 # Season Pack - 0 CHECK -> https://trash-guides.info/Sonarr/sonarr-collection-of-custom-formats/#season-pack
+          - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD) - -10000
+          - fbcb31d8dabd2a319072b84fc0b7249c # Extras - -10000
         quality_profiles:
           - name: WEB-DL (2160p)
 
