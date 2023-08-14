@@ -6,5 +6,5 @@ tasks:
     desc: install/upgrade ansible deps
     dir: infrastructure/ansible
     cmds:
-      - "ansible-galaxy install -r requirements.yml --roles-path ~/.ansible/roles --force"
-      - "ansible-galaxy collection install -r requirements.yml --collections-path ~/.ansible/collections --force"
+      - "ansible-galaxy install -r requirements.yml --force"
+      - "ansible-galaxy collection install -r requirements.yml --force"
