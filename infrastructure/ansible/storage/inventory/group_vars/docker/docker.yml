@@ -1,0 +1,13 @@
+---
+docker_add_repo: true
+
+docker_edition: ce
+docker_packages:
+  - "docker-{{ docker_edition }}"
+  - "docker-{{ docker_edition }}-cli"
+
+docker_users: "{{ ansible_user }}"
+docker_install_compose_plugin: true
+
+docker_daemon_options:
+  log-driver: journald
