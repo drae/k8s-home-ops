@@ -5,3 +5,5 @@ resources:
   - ./code-server.sops.yaml
   - ./home-assistant.sops.yaml
   - ./helm-release.yaml
+  - ./volsync-secret.sops.yaml
+  - ./volsync.yaml

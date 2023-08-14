@@ -1,17 +1,17 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: prowlarr
+  name: sonarr
   namespace: downloads
 spec:
-  sourcePVC: prowlarr-config
+  sourcePVC: sonarr-config
   trigger:
     schedule: "0 */12 * * *"
   restic:
     cacheCapacity: 3G
     copyMethod: Snapshot
     pruneIntervalDays: 14
-    repository: prowlarr-restic-secret
+    repository: sonarr-restic-secret
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568

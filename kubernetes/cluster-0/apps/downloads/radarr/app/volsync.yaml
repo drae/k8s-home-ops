@@ -1,17 +1,17 @@
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: prowlarr
+  name: radarr
   namespace: downloads
 spec:
-  sourcePVC: prowlarr-config
+  sourcePVC: radarr-config
   trigger:
     schedule: "0 */12 * * *"
   restic:
     cacheCapacity: 3G
     copyMethod: Snapshot
     pruneIntervalDays: 14
-    repository: prowlarr-restic-secret
+    repository: radarr-restic-secret
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568
