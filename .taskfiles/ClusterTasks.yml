@@ -25,18 +25,7 @@ tasks:
       - kubectl get hr --all-namespaces | grep False | awk '{print $2, $1}' | xargs -l bash -c 'flux resume hr $0 -n $1'
 
   # Bootstrap
-  bootstrap-wipe-rook:
-    desc: Wipe rook disks in talos
-    cmds:
-      - kubectl apply -f tools/wipe-rook.yaml
-
   bootstrap-sops:
     desc: Bootstrap cluster
     cmds:
       - gpg --export-secret-keys --armor '{{.KEY | default "4CF588582D481BB5C1927F275BB27F59F87ABCA3" }}' | kubectl -n flux-system create secret generic sops-gpg --from-file=sops.asc=/dev/stdin
-
-  # talos
-  talos-apply:
-    desc: Apply manifests to talos nodes
-    cmds:
-      - talosctl -n 10.1.10.21 apply-config -f infrastructure/talos/clusterconfig/kube-cluster-kube-cp-01.yaml --insecure
