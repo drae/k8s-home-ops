@@ -3,16 +3,13 @@ version: "3.8"
 
 services:
   gluetun:
-    image: docker.io/qmcgaw/gluetun:v3.30.0
+    image: docker.io/qmcgaw/gluetun:v3.35.0
     container_name: gluetun
     cap_add:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
     ports:
-      - 8888:8888/tcp # HTTP proxy
-      - 8388:8388/tcp # Shadowsocks
-      - 8388:8388/udp # Shadowsocks
       - 6789:6789/tcp # nzbget web
       - 8080:8080/tcp # qbittorrent web
     volumes:
@@ -40,7 +37,7 @@ services:
     restart: unless-stopped
 
   nzbget:
-    image: docker.io/linuxserver/nzbget:21.1.20220721
+    image: docker.io/linuxserver/nzbget:21.1.20230119
     container_name: nzbget
     environment:
       - PUID=568
@@ -48,7 +45,7 @@ services:
       - TZ=Europe/London
       - DOCKER_MODS=ghcr.io/gilbn/theme.park:nzbget
       - TP_COMMUNITY_THEME=true
-      - TP_THEME=onedark
+      - TP_THEME=plex
     network_mode: "service:gluetun"
     volumes:
       - {{ docker_base_dir }}/downloads/nzbget:/config
@@ -56,7 +53,7 @@ services:
     restart: unless-stopped
 
   qbittorrent:
-    image: docker.io/linuxserver/qbittorrent:4.4.3
+    image: docker.io/linuxserver/qbittorrent:4.5.4
     container_name: qbittorrent
     environment:
       - PUID=568
@@ -65,7 +62,7 @@ services:
       - WEBUI_PORT=8080
       - DOCKER_MODS=ghcr.io/gilbn/theme.park:qbittorrent
       - TP_COMMUNITY_THEME=true
-      - TP_THEME=onedark
+      - TP_THEME=plex
     network_mode: "service:gluetun"
     volumes:
       - {{ docker_base_dir }}/downloads/qbittorrent:/config
