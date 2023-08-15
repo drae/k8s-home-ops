@@ -13,7 +13,7 @@ services:
       - 6789:6789/tcp # nzbget web
       - 8080:8080/tcp # qbittorrent web
     volumes:
-      - {{ docker_base_dir }}/downloads/gluetun:/gluetun
+      - "{{ docker_base_dir }}/downloads/gluetun:/gluetun"
     environment:
       # See https://github.com/qdm12/gluetun/wiki
       - VPN_SERVICE_PROVIDER={{ GLUETUN_VPN_PROVIDER }}
@@ -45,7 +45,7 @@ services:
       - TZ=Europe/London
     network_mode: "service:gluetun"
     volumes:
-      - {{ docker_base_dir }}/downloads/nzbget:/config
+      - "{{ docker_base_dir }}/downloads/nzbget:/config"
       - /mnt/zstore/media/.downloads:/downloads
     restart: unless-stopped
 
@@ -59,6 +59,6 @@ services:
       - WEBUI_PORT=8080
     network_mode: "service:gluetun"
     volumes:
-      - {{ docker_base_dir }}/downloads/qbittorrent:/config
+      - "{{ docker_base_dir }}/downloads/qbittorrent:/config"
       - /mnt/zstore/media/.downloads:/downloads
     restart: unless-stopped
