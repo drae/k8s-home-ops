@@ -44,6 +44,8 @@
         "ghcr.io/onedr0p/plex",
         "ghcr.io/onedr0p/plex-beta",
         "ghcr.io/onedr0p/qbittorrent",
+        "docker.io/linuxserver/nzbget",
+        "docker.io/linuxserver/qbittorrent",
       ],
     },
     {
