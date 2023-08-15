@@ -9,14 +9,15 @@ GLUETUN_VPN_HOSTNAMES: ENC[AES256_GCM,data:EsWhGavUPMpA1kquYw==,iv:IVdxVnVzv64om
 GLUETUN_VPN_ENDPOINT_PORT: ENC[AES256_GCM,data:IHfIzGw=,iv:ETlNcd6Xutr9hoPDbU+UYJoHIpqDRNzdty5DAK2lmUc=,tag:cGCOS0TM67MQUejsEvXz4w==,type:str]
 MINIO_ROOT_USER: ENC[AES256_GCM,data:qNPBPu3cfJtTQg==,iv:z8u1vJ1FECKszGzE24t50rEyrre+CWl8MijlcwUruHE=,tag:YHFLhd8uZj0y81faZjAteA==,type:str]
 MINIO_ROOT_PASSWORD: ENC[AES256_GCM,data:oHXC0ArN0Gs=,iv:03bCOd1YqqBvhi4nvcEvLzneN8KES5cn2kFsy5gjyqU=,tag:E0C8wZ77g9ymM7/VFIidiQ==,type:str]
+MINIO_PROMETHEUS_URL: ENC[AES256_GCM,data:WdPULkV3O0fyh9k+0G0CbGBZ/q1lt3zcGUl4jnHCjvLsDA==,iv:4CdEb7pT9fSBi0XiKj9246pJOx1YW1yRyO+WiEmQC18=,tag:iNc7Fm92wynMN5nOcwm2Cg==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2023-08-14T23:31:06Z"
-    mac: ENC[AES256_GCM,data:YtAhRWHySh5bD5pIC5KTxbCI9m72eFaT6mfhtFxCBOO5k61+UtfhsVKBBD3+ZU6qkuReUjJ18OF85STjLzcYySYKxZ0+ut9qA+lfGegdwAaaAju1WR0+VYPunHM6ycCcokTB7jO8ruY0zOp4x4Epwet2PHaWe4blSUaozMxxW/0=,iv:9a0kRdclbaNmDsOj1fHVzCs1epB83nrUY3zEqggmVUk=,tag:FzWFuUgp7cB2QoDIGawO2g==,type:str]
+    lastmodified: "2023-08-15T00:18:36Z"
+    mac: ENC[AES256_GCM,data:ebpibCEglzKvbqXjCyTNNflQs1HFTHVhm5ZdEnOvtHIfkeLl7/3ihOibOuQ5L5O8SMBMLhlu63YBYJAKeEtzzqR0TejEsc5HeL0iIFF6VsirAaSdL4ekF9HKBFByKK3M/frXgZZo/0CcyP2wlEK/zDDiRQRPOaJRB4/xE9CTn8s=,iv:k08QimYvSa7n199OZS8WnqVwV1Py/alvl4lmg8Cau90=,tag:1rDrQGU8QRF1iq6BhnyEkw==,type:str]
     pgp:
         - created_at: "2022-08-14T15:55:47Z"
           enc: |-
