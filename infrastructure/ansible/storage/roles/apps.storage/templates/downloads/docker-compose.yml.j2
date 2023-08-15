@@ -43,9 +43,6 @@ services:
       - PUID=568
       - PGID=568
       - TZ=Europe/London
-      - DOCKER_MODS=ghcr.io/gilbn/theme.park:nzbget
-      - TP_COMMUNITY_THEME=true
-      - TP_THEME=plex
     network_mode: "service:gluetun"
     volumes:
       - {{ docker_base_dir }}/downloads/nzbget:/config
@@ -60,9 +57,6 @@ services:
       - PGID=568
       - TZ=Europe/London
       - WEBUI_PORT=8080
-      - DOCKER_MODS=ghcr.io/gilbn/theme.park:qbittorrent
-      - TP_COMMUNITY_THEME=true
-      - TP_THEME=plex
     network_mode: "service:gluetun"
     volumes:
       - {{ docker_base_dir }}/downloads/qbittorrent:/config
