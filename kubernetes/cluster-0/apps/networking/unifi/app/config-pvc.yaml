@@ -3,11 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: unifi-config
-  namespace: unifi
-  labels:
-    app.kubernetes.io/name: &name unifi
-    app.kubernetes.io/instance: *name
-    snapshot.home.arpa/enabled: "true"
+  namespace: networking
 spec:
   accessModes:
     - ReadWriteOnce
