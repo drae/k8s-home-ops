@@ -16,6 +16,6 @@
 
 # Manage applications
 - import_tasks: downloads.yml
-- import_tasks: minio.yml
+#- import_tasks: minio.yml
 - import_tasks: node-exporter.yml
 - import_tasks: vector.yml
