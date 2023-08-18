@@ -4,5 +4,4 @@ resources:
   - ./config-pvc.yaml
   - ./mosquitto-config.yaml
   - ./helm-release.yaml
-  - ./volsync-secret.sops.yaml
   - ./volsync.yaml

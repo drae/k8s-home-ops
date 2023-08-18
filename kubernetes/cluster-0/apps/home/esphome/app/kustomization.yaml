@@ -3,5 +3,4 @@ kind: Kustomization
 resources:
   - ./config-pvc.yaml
   - ./helm-release.yaml
-  - ./volsync-secret.sops.yaml
   - ./volsync.yaml

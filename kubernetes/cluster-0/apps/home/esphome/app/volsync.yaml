@@ -1,3 +1,15 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: esphome-restic-secret
+  namespace: home
+stringData:
+  RESTIC_REPOSITORY: "${RESTIC_REPOSITORY}/esphome"
+  RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
@@ -6,18 +18,19 @@ metadata:
 spec:
   sourcePVC: esphome-config
   trigger:
-    schedule: "0 */12 * * *"
+    schedule: "0 5 * * *"
   restic:
     cacheCapacity: 3G
     copyMethod: Snapshot
-    pruneIntervalDays: 14
+    pruneIntervalDays: 7
     repository: esphome-restic-secret
     moverSecurityContext:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
     retain:
-      daily: 14
+      daily: 7
+      within: 3d
     volumeSnapshotClassName: csi-ceph-blockpool
     storageClassName: rook-ceph-block
     cacheStorageClassName: local-hostpath
