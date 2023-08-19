@@ -2,11 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-nzbget
+  name: cluster-apps-sabnzbd
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/downloads/nzbget/app"
+  path: "./kubernetes/cluster-0/apps/downloads/sabnzbd/app"
   prune: true
   sourceRef:
     kind: GitRepository

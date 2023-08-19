@@ -2,23 +2,20 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app qbittorrent
+  name: &app sabnzbd
   namespace: downloads
   labels:
     app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_hide_header "x-webkit-csp";
-      proxy_hide_header "content-security-policy";
-      proxy_hide_header "X-Frame-Options";
       proxy_set_header Accept-Encoding "";
-      sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN_PROXY}/css/base/qbittorrent/plex.css"></head>';
+      sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN_PROXY}/css/base/sabnzbd/plex.css"></head>';
       sub_filter_once on;
 spec:
   ingressClassName: ingress-nginx-int
   rules:
-    - host: &host "qb.${SECRET_DOMAIN_PROXY}"
+    - host: &host "sabnzbd.${SECRET_DOMAIN_PROXY}"
       http:
         paths:
           - path: /
