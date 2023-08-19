@@ -8,6 +8,7 @@
     mode: 0775
   loop:
     - "{{ docker_base_dir }}/downloads/nzbget"
+    - "{{ docker_base_dir }}/downloads/sabnzbd"
     - "{{ docker_base_dir }}/downloads/qbittorrent"
     - "{{ docker_base_dir }}/downloads/gluetun"
 
