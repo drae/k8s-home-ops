@@ -2,22 +2,18 @@ kind: Secret
 ansible_become_pass: ENC[AES256_GCM,data:NqkygcrMSkA=,iv:KIdb/KjaAuqyEx2miyUw87GSZqPzGICLxz+O5c982Lc=,tag:YZmqoG3LnDYFy8HhilNskA==,type:str]
 GLUETUN_VPN_PROVIDER: ENC[AES256_GCM,data:3nmyg37e9A==,iv:SQLpfIkwtFvq1Q4urwrxHhIX35HlhuNUYaG2ga2Z3+o=,tag:S04P2tPnWpKEJeSGyMZFjA==,type:str]
 GLUETUN_VPN_DNS: ENC[AES256_GCM,data:RPFf5EUL9g==,iv:46aKEvXJF/cy2XADBfLyiRgV8wrUM6R+pjbRqzdAjfM=,tag:SE3rHRFLfVHjkIk8Glqp/w==,type:str]
-GLUETUN_VPN_INPUT_PORTS: ENC[AES256_GCM,data:09bnVGo=,iv:doc3yfE8nJz9yLIiEztKFcSI02UKVJjD0LMVZuDNfk0=,tag:1xKMqQGoeDxw6bl47doWZg==,type:str]
 GLUETUN_VPN_KEY: ENC[AES256_GCM,data:U1GLgdpYt06yoMedRCj2nh/aI6j2vKw8BH9r7Pevmu1nbQ5XrpDl8eCs9jc=,iv:JeDSlX/WOSRI0nF0dkh34baLT3oTavtGcAE8bloAILc=,tag:Qv59l6BhjL3IxLcfRXMcDQ==,type:str]
 GLUETUN_VPN_ADDRESSES: ENC[AES256_GCM,data:7HZt5iz2Y39+uPjim9o=,iv:bslVMjQ0UxjnVW49xSAVF4XZE+23EbawOLPHwZ6rMhw=,tag:wqACTqexjWOw3ou8WU/ynQ==,type:str]
 GLUETUN_VPN_HOSTNAMES: ENC[AES256_GCM,data:EsWhGavUPMpA1kquYw==,iv:IVdxVnVzv64omA3lE20Km+nuX1woJIuutP4SijxoxlY=,tag:17EcnJ5l5M+qKR76GfAhBg==,type:str]
 GLUETUN_VPN_ENDPOINT_PORT: ENC[AES256_GCM,data:IHfIzGw=,iv:ETlNcd6Xutr9hoPDbU+UYJoHIpqDRNzdty5DAK2lmUc=,tag:cGCOS0TM67MQUejsEvXz4w==,type:str]
-MINIO_ROOT_USER: ENC[AES256_GCM,data:qNPBPu3cfJtTQg==,iv:z8u1vJ1FECKszGzE24t50rEyrre+CWl8MijlcwUruHE=,tag:YHFLhd8uZj0y81faZjAteA==,type:str]
-MINIO_ROOT_PASSWORD: ENC[AES256_GCM,data:oHXC0ArN0Gs=,iv:03bCOd1YqqBvhi4nvcEvLzneN8KES5cn2kFsy5gjyqU=,tag:E0C8wZ77g9ymM7/VFIidiQ==,type:str]
-MINIO_PROMETHEUS_URL: ENC[AES256_GCM,data:WdPULkV3O0fyh9k+0G0CbGBZ/q1lt3zcGUl4jnHCjvLsDA==,iv:4CdEb7pT9fSBi0XiKj9246pJOx1YW1yRyO+WiEmQC18=,tag:iNc7Fm92wynMN5nOcwm2Cg==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2023-08-15T00:18:36Z"
-    mac: ENC[AES256_GCM,data:ebpibCEglzKvbqXjCyTNNflQs1HFTHVhm5ZdEnOvtHIfkeLl7/3ihOibOuQ5L5O8SMBMLhlu63YBYJAKeEtzzqR0TejEsc5HeL0iIFF6VsirAaSdL4ekF9HKBFByKK3M/frXgZZo/0CcyP2wlEK/zDDiRQRPOaJRB4/xE9CTn8s=,iv:k08QimYvSa7n199OZS8WnqVwV1Py/alvl4lmg8Cau90=,tag:1rDrQGU8QRF1iq6BhnyEkw==,type:str]
+    lastmodified: "2023-08-20T07:46:38Z"
+    mac: ENC[AES256_GCM,data:4OQfILzc4R48UHqSNVH3wh/l1AP/G9mdIWmulepTxTgtSoYocdyT9zhaHT+/TWkk7kOBnkIZn1V60t6UjOkcleY/YBP5eWUIONUkpr8Qrdvwx3qEc+b7zeyCorin2OPaR4+HCiZDPbCINmStO0+nX5ZPg36n79vs38iAb5lAMcc=,iv:E3OwzrPDHC1YDhW4un6k/BqUQOIg/dPUkDWQOV8WZh8=,tag:CfKqoh5nXEX6gQ9kE4sP7g==,type:str]
     pgp:
         - created_at: "2022-08-14T15:55:47Z"
           enc: |-
