@@ -171,15 +171,6 @@ spec:
         retention: 14d
         enableAdminAPI: true
         walCompression: true
-        remoteWrite:
-          - url: https://prometheus-prod-05-gb-south-0.grafana.net/api/prom/push
-            basicAuth:
-              username:
-                name: grafana-remote-cloud-secret
-                key: username
-              password:
-                name: grafana-remote-cloud-secret
-                key: password
         storageSpec:
           volumeClaimTemplate:
             spec:
