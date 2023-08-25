@@ -82,7 +82,6 @@ controlPlane:
         time:
           disabled: false
           servers:
-            - 10.1.10.5
             - time.cloudflare.com
         udev:
           rules:
