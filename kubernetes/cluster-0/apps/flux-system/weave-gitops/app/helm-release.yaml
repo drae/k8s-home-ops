@@ -27,7 +27,7 @@ spec:
       username: localadmin
     ingress:
       enabled: true
-      className: nginx
+      className: ingress-nginx-int
       hosts:
         - host: &host "gitops.${SECRET_DOMAIN_PROXY}"
           paths:
