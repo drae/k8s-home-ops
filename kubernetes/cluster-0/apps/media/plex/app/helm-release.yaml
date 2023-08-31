@@ -21,8 +21,8 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
     image:
-      repository: ghcr.io/onedr0p/plex-beta
-      tag: 1.32.6.7468-07e0d4a7e@sha256:291c517bf4709566b21445fbd9e3aad15627f4d4c14aa9e3d70c9be646d14ff4
+      repository: ghcr.io/onedr0p/plex
+      tag: 1.32.5.7349-8f4248874@sha256:805ad80226d54f03c21efe84979558e7c3d0b07f345b9c929ff11de8cc216151
     env:
       ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,https://plex.${SECRET_DOMAIN}:443"
       ALLOWED_NETWORKS: "10.200.0.0/16,10.210.0.0/16,10.1.10.0/23"
