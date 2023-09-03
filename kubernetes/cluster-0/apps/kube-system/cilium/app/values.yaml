@@ -48,6 +48,10 @@ operator:
 containerRuntime:
   integration: containerd
 
+bandwidthManager:
+  enabled: true
+  bbr: true
+
 bpf:
   masquerade: true
 
