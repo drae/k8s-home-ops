@@ -24,7 +24,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: ghcr.io/home-assistant/home-assistant
-      tag: 2023.9.0
+      tag: 2023.9.1
     envFrom:
       - secretRef:
           name: home-assistant
