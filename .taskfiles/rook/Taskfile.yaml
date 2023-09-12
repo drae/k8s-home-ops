@@ -13,7 +13,7 @@ vars:
 
 tasks:
   wipe-node-alpha:
-    desc: Trigger a wipe of Rook-Ceph data on node "delta"
+    desc: Trigger a wipe of Rook-Ceph data on node "alpha"
     cmds:
       - task: wipe-disk
         vars:
@@ -26,7 +26,7 @@ tasks:
       node: alpha
 
   wipe-disk:
-    desc: Wipe all remnants of rook-ceph from a given disk (ex. task rook:wipe-disk node=delta ceph_disk="/dev/nvme0n1")
+    desc: Wipe all remnants of rook-ceph from a given disk (ex. task rook:wipe-disk node=alpha ceph_disk="/dev/nvme0n1")
     silent: true
     internal: true
     cmds:
@@ -46,7 +46,7 @@ tasks:
       - sh: test -f {{.wipeRookDiskJobTemplate}}
 
   wipe-data:
-    desc: Wipe all remnants of rook-ceph from a given disk (ex. task rook:wipe-data node=delta)
+    desc: Wipe all remnants of rook-ceph from a given disk (ex. task rook:wipe-data node=alpha)
     silent: true
     internal: true
     cmds:
