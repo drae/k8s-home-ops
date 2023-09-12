@@ -14,7 +14,7 @@ spec:
   wait: true
   dependsOn:
     - name: cluster-apps-alertmanager-discord
-    - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-zfs-localpv-storage
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

@@ -31,6 +31,6 @@ spec:
     retain:
       daily: 7
       within: 3d
-    volumeSnapshotClassName: csi-ceph-blockpool
+    volumeSnapshotClassName: zfs-alpha-snap
     storageClassName: rook-ceph-block
     cacheStorageClassName: local-hostpath

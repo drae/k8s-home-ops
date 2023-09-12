@@ -14,4 +14,4 @@ spec:
   wait: false # no flux ks dependents
   dependsOn:
     - name: cluster-apps-mosquitto
-    - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-zfs-localpv-storage
