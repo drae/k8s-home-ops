@@ -9,19 +9,14 @@ spec:
   chart:
     spec:
       chart: rook-ceph-cluster
-      version: v1.8.9
+      version: v1.12.3
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
         namespace: flux-system
-  install:
-    createNamespace: true
-    remediation:
-      retries: 5
-  upgrade:
-    remediation:
-      retries: 5
   values:
+    toolbox:
+      enabled: false
     monitoring:
       enabled: true
     ingress:
@@ -39,9 +34,14 @@ spec:
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
+      bluefs_buffered_io = false
       mon_warn_on_pool_no_redundancy = false
-    #      osd_pool_default_size = 1
+      osd_pool_default_size = 1
     cephClusterSpec:
+      dataDirHostPath: /var/lib/rook
+      skipUpgradeChecks: false
+      continueUpgradeAfterChecksEvenIfNotHealthy: false
+      waitTimeoutForHealthyOSDInMinutes: 10
       mon:
         count: 1
         allowMultiplePerNode: true
@@ -50,19 +50,24 @@ spec:
         allowMultiplePerNode: true
       network:
         provider: host
+      crashCollector:
+        disable: false
+      cleanupPolicy:
+        confirmation: ""
+        sanitizeDisks:
+          method: quick
+          dataSource: zero
+          iteration: 1
+        allowUninstallWithVolumes: false
+      removeOSDsIfOutAndSafeToRemove: false
+      priorityClassNames:
+        mon: system-node-critical
+        osd: system-node-critical
+        mgr: system-cluster-critical
       dashboard:
         enabled: true
         urlPrefix: /
         ssl: false
-      storage:
-        useAllNodes: false
-        useAllDevices: false
-        config:
-          osdsPerDevice: "1"
-        nodes:
-          - name: alpha
-            devices:
-              - name: "nvme0n1"
       resources:
         mgr:
           requests:
@@ -112,9 +117,17 @@ spec:
             memory: "100M"
           limits:
             memory: "1G"
+      storage:
+        useAllNodes: false
+        useAllDevices: false
+        config:
+          osdsPerDevice: "1"
+        nodes:
+          - name: alpha
+            devices:
+              - name: nvme0n1
     cephBlockPoolsVolumeSnapshotClass:
-      enabled: true
-      name: csi-rbdplugin-snapclass
+      enabled: false
     cephBlockPools:
       - name: replicapool
         spec:
