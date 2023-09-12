@@ -6,131 +6,30 @@ metadata:
   namespace: rook-ceph
 spec:
   interval: 30m
-  releaseName: rook-ceph
   chart:
     spec:
       chart: rook-ceph
-      version: v1.8.10
+      version: v1.9.7
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
         namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     crds:
       enabled: true
+    pspEnable: false
     monitoring:
       enabled: true
-    pspEnable: false
-    csi:
-      enableCephfsDriver: false
-      enableCephfsSnapshotter: false
-      csiAddons:
-        enabled: true
-      kubeletDirPath: /var/lib/kubelet
-      enableCSIHostNetwork: true
-
-      pluginTolerations:
-        - effect: "NoExecute"
-          operator: "Exists"
-        - effect: "NoSchedule"
-          operator: "Exists"
-      csiRBDProvisionerResource: |
-        - name : csi-provisioner
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
-        - name : csi-resizer
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
-        - name : csi-attacher
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
-        - name : csi-snapshotter
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
-        - name : csi-rbdplugin
-          resource:
-            requests:
-              memory: 512Mi
-              cpu: 50m
-            limits:
-              memory: 1Gi
-        - name : csi-omap-generator
-          resource:
-            requests:
-              memory: 512Mi
-              cpu: 50m
-            limits:
-              memory: 1Gi
-        - name : liveness-prometheus
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
-
-      csiCephFSProvisionerResource: |
-        - name : csi-provisioner
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
-        - name : csi-resizer
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
-        - name : csi-attacher
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
-        - name : csi-snapshotter
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
-        - name : csi-cephfsplugin
-          resource:
-            requests:
-              memory: 512Mi
-              cpu: 50m
-            limits:
-              memory: 1Gi
-        - name : liveness-prometheus
-          resource:
-            requests:
-              memory: 128Mi
-              cpu: 25m
-            limits:
-              memory: 256Mi
     resources:
       requests:
-        cpu: 109m
-        memory: 204M
+        cpu: 10m
+        memory: 128Mi
       limits:
-        memory: 453M
+        memory: 256Mi
