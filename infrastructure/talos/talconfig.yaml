@@ -1,6 +1,6 @@
 clusterName: cluster-0
-talosVersion: v1.4.7
-kubernetesVersion: 1.27.3
+talosVersion: v1.5.2
+kubernetesVersion: 1.28.1
 endpoint: https://10.1.10.21:6443
 allowSchedulingOnControlPlanes: true
 clusterPodNets:
@@ -18,7 +18,7 @@ nodes:
     nameservers:
       - 10.1.10.1
     networkInterfaces:
-      - interface: eth0
+      - interface: eno0
         mtu: 1500
         dhcp: true
         dhcpOptions:
