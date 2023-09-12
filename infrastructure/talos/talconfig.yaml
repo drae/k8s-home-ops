@@ -55,7 +55,7 @@ controlPlane:
             - nvme_core.default_ps_max_latency_us=5500
             - pci=noaer
           extensions:
-            - image: ghcr.io/siderolabs/i915-ucode:20230310
+            - image: ghcr.io/siderolabs/i915-ucode:20230804
             - image: ghcr.io/siderolabs/intel-ucode:20230512
         kubelet:
           extraArgs:
