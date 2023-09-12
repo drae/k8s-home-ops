@@ -3,7 +3,7 @@ version: "3"
 
 tasks:
   init:
-    desc: install/upgrade ansible deps
+    desc: Install/Upgrade required ansible collections
     dir: infrastructure/ansible
     cmds:
       - "ansible-galaxy install -r requirements.yml --force"
