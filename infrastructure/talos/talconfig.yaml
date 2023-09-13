@@ -57,6 +57,18 @@ controlPlane:
           extensions:
             - image: ghcr.io/siderolabs/i915-ucode:20230804
             - image: ghcr.io/siderolabs/intel-ucode:20230512
+            - image: ghcr.io/siderolabs/zfs:2.1.12-v1.5.2
+        kernel:
+          modules:
+            - name: spl
+            - name: znvpair
+            - name: zcommon
+            - name: icp
+            - name: zavl
+            - name: zlua
+            - name: zzstd
+            - name: zunicode
+            - name: zfs
         kubelet:
           extraArgs:
             feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
