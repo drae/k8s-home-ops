@@ -5,6 +5,7 @@ tasks:
   sops-key:
     desc: Add the flux cluster key for sops
     cmds:
+      - kubectl create ns flux-system
       - gpg --export-secret-keys --armor '{{.KEY | default "4CF588582D481BB5C1927F275BB27F59F87ABCA3" }}' | kubectl -n flux-system create secret generic sops-gpg --from-file=sops.asc=/dev/stdin
 
   gr-sync:
