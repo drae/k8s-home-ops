@@ -1,0 +1,72 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: zfs-local-dataset-provisioner
+  namespace: system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: democratic-csi
+      version: 0.14.1
+      sourceRef:
+        name: democratic-csi-charts
+        kind: HelmRepository
+        namespace: flux-system
+  values:
+    csiDriver:
+      name: "org.democratic-csi.zfs-local-dataset"
+      attachRequired: false
+      storageCapacity: false # With storage capacity tracking, the scheduler filters out nodes which do not have enough capacity.
+      fsGroupPolicy: File # fsGroupChangePolicy
+    storageClasses:
+      - name: local-zfs-dataset
+        defaultClass: false
+        reclaimPolicy: Retain
+        volumeBindingMode: Immediate
+        # distributed support is not yet ready for expansion
+        allowVolumeExpansion: false
+        parameters:
+          fsType: zfs
+    volumeSnapshotClasses:
+      - name: local-zfs-dataset
+        deletionPolicy: Delete
+        parameters:
+          dummy: {}
+
+    controller:
+      enabled: true
+      strategy: node
+      externalProvisioner:
+        extraArgs:
+          - --leader-election=false
+          - --node-deployment=true
+          - --node-deployment-immediate-binding=false
+          - --feature-gates=Topology=true
+          - --strict-topology=true
+          - --enable-capacity=false
+          - --capacity-ownerref-level=1
+      externalAttacher:
+        enabled: false
+      # distributed support is not yet ready
+      externalResizer:
+        enabled: false
+      externalSnapshotter:
+        enabled: true
+        extraArgs:
+          - --leader-election=false
+          - --node-deployment=true
+    driver:
+      config:
+        driver: zfs-local-dataset
+        zfs:
+          datasetParentName: alpha/k8s/local/v
+          detachedSnapshotsDatasetParentName: alpha/k8s/local/s
+          datasetEnableQuotas: true
+          datasetEnableReservation: false
+          cli:
+            sudoEnabled: false
+            paths:
+              zfs: /usr/local/sbin/zfs
+              zpool: /usr/local/sbin/zpool
