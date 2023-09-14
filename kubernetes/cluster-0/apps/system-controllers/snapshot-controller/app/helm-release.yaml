@@ -31,6 +31,11 @@ spec:
           csi.storage.k8s.io/snapshotter-secret-name: rook-csi-rbd-provisioner
           csi.storage.k8s.io/snapshotter-secret-namespace: rook-ceph
         deletionPolicy: Delete
+      - name: csi-openebs-zfs-localpv
+        driver: zfs.csi.openebs.io
+        annotations:
+          snapshot.storage.kubernetes.io/is-default-class: "false"
+        deletionPolicy: Delete
     serviceMonitor:
       create: true
 ---

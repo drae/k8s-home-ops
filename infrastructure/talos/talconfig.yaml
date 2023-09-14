@@ -1,5 +1,5 @@
 clusterName: cluster-0
-talosVersion: v1.5.2
+talosVersion: v1.6.0-alpha.0
 kubernetesVersion: 1.28.1
 endpoint: https://10.1.10.21:6443
 allowSchedulingOnControlPlanes: true
@@ -24,7 +24,18 @@ nodes:
         dhcpOptions:
           ipv4: true
           ipv6: true
-
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/openebs/keys
+                type: bind
+                source: /var/openebs/keys
+                options:
+                  - rbind
+                  - rshared
+                  - rw
 controlPlane:
   patches:
     - |-
@@ -57,7 +68,7 @@ controlPlane:
           extensions:
             - image: ghcr.io/siderolabs/i915-ucode:20230804
             - image: ghcr.io/siderolabs/intel-ucode:20230512
-            - image: ghcr.io/siderolabs/zfs:2.1.12-v1.5.2
+            - image: ghcr.io/siderolabs/zfs:2.1.12-v1.6.0-alpha.0
         kernel:
           modules:
             - name: spl
