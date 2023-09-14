@@ -22,19 +22,10 @@ spec:
   values:
     replicaCount: 1
     volumeSnapshotClasses:
-      - name: csi-ceph-blockpool
-        driver: rook-ceph.rbd.csi.ceph.com
-        annotations:
-          snapshot.storage.kubernetes.io/is-default-class: "true"
-        parameters:
-          clusterID: rook-ceph
-          csi.storage.k8s.io/snapshotter-secret-name: rook-csi-rbd-provisioner
-          csi.storage.k8s.io/snapshotter-secret-namespace: rook-ceph
-        deletionPolicy: Delete
-      - name: csi-openebs-zfs-localpv
+      - name: csi-openebs-zfspv
         driver: zfs.csi.openebs.io
         annotations:
-          snapshot.storage.kubernetes.io/is-default-class: "false"
+          snapshot.storage.kubernetes.io/is-default-class: "true"
         deletionPolicy: Delete
     serviceMonitor:
       create: true
