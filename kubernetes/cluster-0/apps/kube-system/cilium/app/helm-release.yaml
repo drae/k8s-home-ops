@@ -43,6 +43,7 @@ spec:
       ui:
         ingress:
           enabled: true
+          className: ingress-nginx-int
           hosts:
             - &host "hubble-ui.${SECRET_DOMAIN_PROXY}"
           tls:
@@ -51,7 +52,7 @@ spec:
     prometheus:
       serviceMonitor:
         enabled: true
-        trustCRDsExist: true        
+        trustCRDsExist: true
     operator:
       prometheus:
         serviceMonitor:
