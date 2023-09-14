@@ -13,6 +13,6 @@ spec:
     name: k8s-home-ops
   wait: true
   dependsOn:
-    - name: cluster-apps-rook-ceph-cluster
+    - name: cluster-apps-zfs-localpv-storage
     - name: cluster-apps-node-feature-discovery-rules
     - name: cluster-apps-intel-device-plugins-operator
