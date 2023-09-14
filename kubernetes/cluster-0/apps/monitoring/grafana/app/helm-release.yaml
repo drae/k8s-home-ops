@@ -110,7 +110,7 @@ spec:
     persistence:
       enabled: true
       size: 10Gi
-      storageClassName: rook-ceph-block
+      storageClassName: openebs-zfspv
     resources:
       limits:
         memory: 219M
