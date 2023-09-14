@@ -29,3 +29,4 @@ resources:
   - ./vector-charts.yaml
   - ./weave-gitops.yaml
   - ./xunholy-charts.yaml
+  - ./zfs-localpv-charts.yaml
