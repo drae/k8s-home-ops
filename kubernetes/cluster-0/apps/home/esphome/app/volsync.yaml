@@ -21,7 +21,7 @@ spec:
     schedule: "0 5 * * *"
   restic:
     cacheCapacity: 3G
-    copyMethod: Snapshot
+    copyMethod: Clone
     pruneIntervalDays: 7
     repository: esphome-restic-secret
     moverSecurityContext:
@@ -32,5 +32,6 @@ spec:
       daily: 7
       within: 3d
     volumeSnapshotClassName: csi-openebs-zfspv
+    capacity: 20Gi
     storageClassName: openebs-zfspv
     cacheStorageClassName: local-hostpath
