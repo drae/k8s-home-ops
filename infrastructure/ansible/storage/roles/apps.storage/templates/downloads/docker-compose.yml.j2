@@ -48,17 +48,21 @@ services:
       - "{{ docker_base_dir }}/downloads/sabnzbd:/config"
       - /mnt/zstore/media/.downloads:/downloads
     restart: unless-stopped
-#
-#  qbittorrent:
-#    image: quay.io/linuxserver.io/qbittorrent:4.5.4
-#    container_name: qbittorrent
-#    environment:
-#      - PUID=568
-#      - PGID=568
-#      - TZ=Europe/London
-#      - WEBUI_PORT=8080
+
+  qbittorrent:
+    image: quay.io/linuxserver.io/qbittorrent:4.5.4
+    container_name: qbittorrent
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=Europe/London
+      - WEBUI_PORT=8080
 #    network_mode: "service:gluetun"
-#    volumes:
-#      - "{{ docker_base_dir }}/downloads/qbittorrent:/config"
-#      - /mnt/zstore/media/.downloads:/downloads
-#    restart: unless-stopped
+    ports:
+      - 8088:8080
+      - 6881:6881
+      - 6881:6881/udp
+    volumes:
+      - "{{ docker_base_dir }}/downloads/qbittorrent:/config"
+      - /mnt/zstore/media/.downloads:/downloads
+    restart: unless-stopped
