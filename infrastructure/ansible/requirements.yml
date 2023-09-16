@@ -2,20 +2,26 @@
 collections:
   - name: ansible.posix
     version: 1.5.4
+  - name: ansible.utils
+    version: 2.11.0
   - name: community.general
     version: 7.4.0
-  - name: kubernetes.core
-    version: 2.4.0
   - name: community.sops
     version: 1.6.6
   - name: community.docker
     version: 3.4.8
+  - name: kubernetes.core
+    version: 2.4.0
 roles:
-  - src: geerlingguy.pip
+  - name: geerlingguy.pip
     version: 2.2.0
-  - src: https://github.com/mrlesmithjr/ansible-zfs.git
+  - name: mrlesmithjr.zfs
     scm: git
-    name: mrlesmithjr.zfs
+    src: https://github.com/mrlesmithjr/ansible-zfs.git
     version: b80e84d6938eb7730faeffc7ff7d8aa06ad5bef7
-  - src: geerlingguy.docker
+  - name: geerlingguy.docker
     version: 6.2.0
+  - name: bodsch.snapd
+    version: 1.2.2
+  - name: xanmanning.k3s
+    version: v3.4.2

@@ -1,7 +1,5 @@
 ---
-# Define the host as control plane nodes
 k3s_control_node: true
-# k3s settings for all control-plane nodes
 k3s_server:
   node-ip: "{{ ansible_host }}"
   tls-san:
@@ -11,10 +9,10 @@ k3s_server:
   flannel-backend: "none" # This needs to be in quotes
   disable:
     - flannel
-    - traefik
-    - servicelb
-    - metrics-server
     - local-storage
+    - metrics-server
+    - servicelb
+    - traefik
   disable-network-policy: true
   disable-cloud-controller: true
   disable-kube-proxy: true
