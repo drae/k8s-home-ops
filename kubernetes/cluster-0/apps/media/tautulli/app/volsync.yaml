@@ -31,7 +31,7 @@ spec:
     retain:
       daily: 7
       within: 3d
-    volumeSnapshotClassName: csi-openebs-zfspv
+    volumeSnapshotClassName: zfs-local-dataset-snap
     capacity: 10Gi
-    storageClassName: openebs-zfspv
+    storageClassName: zfs-local-dataset
     cacheStorageClassName: local-hostpath

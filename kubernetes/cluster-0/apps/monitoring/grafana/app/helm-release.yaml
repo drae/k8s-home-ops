@@ -110,7 +110,7 @@ spec:
     persistence:
       enabled: true
       size: 10Gi
-      storageClassName: openebs-zfspv
+      storageClassName: zfs-local-dataset
     resources:
       limits:
         memory: 219M

@@ -1,0 +1,64 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: zfs-local-dataset-provisioner
+  namespace: system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: democratic-csi
+      version: 0.14.1
+      sourceRef:
+        name: democratic-csi-charts
+        kind: HelmRepository
+        namespace: flux-system
+  values:
+    csiDriver:
+      name: "org.democratic-csi.zfs-local-dataset"
+      attachRequired: false
+      storageCapacity: true # With storage capacity tracking, the scheduler filters out nodes which do not have enough capacity.
+      fsGroupPolicy: File # fsGroupChangePolicy
+    storageClasses:
+      - name: zfs-local-dataset
+        defaultClass: true
+        reclaimPolicy: Delete
+        volumeBindingMode: WaitForFirstConsumer
+        # distributed support is not yet ready for expansion
+        allowVolumeExpansion: false
+    volumeSnapshotClasses:
+      - name: zfs-local-dataset
+        deletionPolicy: Delete
+        parameters:
+          dummy: {}
+    controller:
+      enabled: true
+      strategy: node
+      externalAttacher:
+        enabled: false
+      externalProvisioner:
+        enabled: true
+        extraArgs:
+          - --leader-election=false
+          - --node-deployment=true
+          - --node-deployment-immediate-binding=false
+          - --feature-gates=Topology=true
+          - --strict-topology=true
+          - --enable-capacity=true
+          - --capacity-ownerref-level=1
+      externalResizer:
+        enabled: false
+      externalSnapshotter:
+        enabled: true
+        extraArgs:
+          - --leader-election=false
+          - --node-deployment=true
+    driver:
+      config:
+        driver: zfs-local-dataset
+        zfs:
+          datasetParentName: alpha/k8s/local/v
+          detachedSnapshotsDatasetParentName: alpha/k8s/local/s
+          datasetEnableQuotas: true
+          datasetEnableReservation: false
