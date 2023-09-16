@@ -1,0 +1,34 @@
+---
+- name: K3S Installation
+  hosts: all
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+  pre_tasks:
+    - name: Pausing for 2 seconds...
+      ansible.builtin.pause:
+        seconds: 2
+  tasks:
+    - name: Check if k3s is installed
+      check_mode: false
+      ansible.builtin.stat:
+        path: /etc/rancher/k3s/config.yaml
+      register: k3s_installed
+
+    - name: Ignore manifests templates and urls if the k3s is already installed
+      when: k3s_installed.stat.exists
+      ansible.builtin.set_fact:
+        k3s_server_manifests_templates: []
+        k3s_server_manifests_urls: []
+
+    - name: Install Kubernetes
+      ansible.builtin.include_role:
+        name: xanmanning.k3s
+        public: true
+      vars:
+        k3s_state: installed
+
+    - name: Stale Containers
+      ansible.builtin.include_tasks: tasks/stale_containers.yaml
+      vars:
+        stale_containers_state: enabled
