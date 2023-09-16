@@ -30,8 +30,7 @@ spec:
     volumeSnapshotClasses:
       - name: zfs-local-dataset
         deletionPolicy: Delete
-        parameters:
-          dummy: {}
+        parameters: {}
     controller:
       enabled: true
       strategy: node
