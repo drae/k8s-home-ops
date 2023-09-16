@@ -23,6 +23,10 @@ ipv4NativeRoutingCIDR: 10.200.0.0/16
 k8sServiceHost: 10.1.10.21
 k8sServicePort: 6443
 
+bandwidthManager:
+  enabled: true
+  bbr: true
+
 loadBalancer:
   algorithm: "maglev"
   mode: "dsr"
@@ -47,10 +51,7 @@ operator:
 
 containerRuntime:
   integration: containerd
-
-bandwidthManager:
-  enabled: true
-  bbr: true
+  socketPath: /var/run/k3s/containerd/containerd.sock
 
 bpf:
   masquerade: true

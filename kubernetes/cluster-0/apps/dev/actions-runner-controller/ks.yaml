@@ -29,4 +29,4 @@ spec:
   wait: false # no flux ks dependents
   dependsOn:
     - name: cluster-apps-actions-runner-controller
-    - name: cluster-apps-zfs-localpv-storage
+    - name: cluster-apps-democratic-csi-zfs-local-dataset

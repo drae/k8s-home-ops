@@ -11,7 +11,7 @@ spec:
     repository: "${rsrc}-restic-secret"
     destinationPVC: "${claim}"
     copyMethod: Direct
-    storageClassName: openebs-zfspv
+    storageClassName: zfs-local-dataset
     # IMPORTANT NOTE:
     #   Set to the last X number of snapshots to restore from
     # previous: 2
