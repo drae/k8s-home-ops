@@ -21,7 +21,7 @@ spec:
     schedule: "0 5 * * *"
   restic:
     cacheCapacity: 3G
-    copyMethod: Clone
+    copyMethod: Snapshot
     pruneIntervalDays: 7
     repository: zigbee2mqtt-restic-secret
     moverSecurityContext:
