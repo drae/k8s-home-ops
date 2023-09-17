@@ -31,7 +31,7 @@ spec:
     retain:
       daily: 7
       within: 3d
-    volumeSnapshotClassName: zfs-local-dataset-snap
+    volumeSnapshotClassName: zfs-local-dataset
     capacity: 20Gi
     storageClassName: zfs-local-dataset
     cacheStorageClassName: local-hostpath
