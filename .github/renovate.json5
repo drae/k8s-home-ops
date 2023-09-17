@@ -34,6 +34,19 @@
   "docker-compose": {
     fileMatch: ["(^|/)(?:docker-)?compose[^/]*\\.ya?ml(.j2)?$"],
   },
+  regexManagers: [
+    {
+      description: "Custom dependencies",
+      fileMatch: [
+        "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
+        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
+      ],
+      matchStrings: [
+        // Example: `k3s_release_version: "v1.27.3+k3s1"`
+        'datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?"(?<currentValue>.*)"\n',
+      ],
+    },
+  ],
   packageRules: [
     // Version strategies
     {
