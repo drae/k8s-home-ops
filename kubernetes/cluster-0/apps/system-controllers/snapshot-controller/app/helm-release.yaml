@@ -9,10 +9,10 @@ spec:
   chart:
     spec:
       chart: snapshot-controller
-      version: 1.8.3
+      version: 0.2.4
       sourceRef:
         kind: HelmRepository
-        name: piraeus-charts
+        name: democratic-csi-charts
         namespace: flux-system
       interval: 30m
   install:
@@ -20,35 +20,5 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    replicaCount: 1
-    volumeSnapshotClasses:
-      - name: zfs-local-dataset-snap
-        driver: org.democratic-csi.zfs-local-dataset
-        annotations:
-          snapshot.storage.kubernetes.io/is-default-class: "true"
-        deletionPolicy: Delete
-    serviceMonitor:
-      create: true
----
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: snapshot-validation-webhook
-  namespace: system-controllers
-spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: snapshot-validation-webhook
-      version: 1.7.4
-      sourceRef:
-        kind: HelmRepository
-        name: piraeus-charts
-        namespace: flux-system
-      interval: 30m
-  install:
-    crds: Skip
-  upgrade:
-    crds: Skip
-  dependsOn:
-    - name: snapshot-controller
+    controller:
+      replicaCount: 1
