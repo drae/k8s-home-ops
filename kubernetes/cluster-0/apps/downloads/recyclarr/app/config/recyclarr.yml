@@ -254,7 +254,6 @@ radarr:
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - -10000
           - f537cf427b64c38c8e36298f657e4828 # Scene - -10000
           - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) - -10000
-          - f700d29429c023a5734505e77daeaea7 # DV (FEL) - 101
           # Resolution
           - 820b09bb9acbfde9c35c71e0e565dad8 # 1080p - 50
           # Streaming Services
