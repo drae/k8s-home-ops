@@ -14,3 +14,6 @@ spec:
   wait: false # no flux ks dependents
   dependsOn:
     - name: cluster-apps-democratic-csi-zfs-local-dataset
+    - name: cluster-apps-k8s-ycl
+    - name: cluster-apps-k8tz
+    - name: cluster-apps-volsync
