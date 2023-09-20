@@ -15,6 +15,8 @@ spec:
   dependsOn:
     - name: cluster-apps-alertmanager-discord
     - name: cluster-apps-democratic-csi-zfs-local-dataset
+    - name: cluster-apps-k8s-ycl
+    - name: cluster-apps-k8tz
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -31,3 +33,5 @@ spec:
   wait: true
   dependsOn:
     - name: cluster-apps-kube-prometheus-stack
+    - name: cluster-apps-k8s-ycl
+    - name: cluster-apps-k8tz

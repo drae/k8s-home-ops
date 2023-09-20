@@ -12,7 +12,9 @@ spec:
     kind: GitRepository
     name: k8s-home-ops
   wait: true
-
+  dependsOn:
+    - name: cluster-apps-k8s-ycl
+    - name: cluster-apps-k8tz
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -30,3 +32,5 @@ spec:
   dependsOn:
     - name: cluster-apps-actions-runner-controller
     - name: cluster-apps-democratic-csi-zfs-local-dataset
+    - name: cluster-apps-k8s-ycl
+    - name: cluster-apps-k8tz

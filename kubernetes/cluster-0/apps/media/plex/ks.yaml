@@ -16,3 +16,6 @@ spec:
     - name: cluster-apps-democratic-csi-zfs-local-dataset
     - name: cluster-apps-node-feature-discovery-rules
     - name: cluster-apps-intel-device-plugins-operator
+    - name: cluster-apps-k8s-ycl
+    - name: cluster-apps-k8tz
+    - name: cluster-apps-volsync
