@@ -7,11 +7,6 @@ metadata:
   labels:
     app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
-  annotations:
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Accept-Encoding "";
-      sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${SECRET_DOMAIN_PROXY}/css/base/sabnzbd/plex.css"></head>';
-      sub_filter_once on;
 spec:
   ingressClassName: ingress-nginx-int
   rules:
