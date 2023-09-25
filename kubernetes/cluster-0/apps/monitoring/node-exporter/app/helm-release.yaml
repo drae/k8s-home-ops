@@ -31,12 +31,6 @@ spec:
             sourceLabels:
               - __meta_kubernetes_pod_node_name
             targetLabel: kubernetes_node
-          - action: replace
-            regex: (.*)
-            replacement: $1.${SECRET_DOMAIN_PROXY}:9100
-            sourceLabels:
-              - kubernetes_node
-            targetLabel: instance
     resources:
       requests:
         cpu: 23m
