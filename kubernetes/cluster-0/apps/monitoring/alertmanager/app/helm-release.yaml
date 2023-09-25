@@ -1,0 +1,63 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: alertmanager
+  namespace: monitoring
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  values:
+    controller:
+      type: statefulset
+      annotations:
+        reloader.stakater.com/auto: "true"
+    image:
+      repository: quay.io/prometheus/alertmanager
+      tag: main@sha256:a40b0f4839bb5c49504056a16b529818f5150d3e3d0dbd5c105c46600e996aa8
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+    service:
+      main:
+        ports:
+          http:
+            port: 9093
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: ingress-nginx-int
+        hosts:
+          - host: &host "alert-manager.${SECRET_DOMAIN_PROXY}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: alertmanager-configmap
+        mountPath: /etc/alertmanager
+        readOnly: true
+    resources:
+      requests:
+        cpu: 11m
+        memory: 50M
+      limits:
+        memory: 99M
+    volumeClaimTemplates:
+      - name: storage
+        mountPath: /alertmanager
+        accessMode: ReadWriteOnce
+        size: 50Mi
+        storageClass: zfs-local-dataset
