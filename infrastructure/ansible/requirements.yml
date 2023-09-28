@@ -20,7 +20,7 @@ roles:
     src: https://github.com/mrlesmithjr/ansible-zfs.git
     version: b80e84d6938eb7730faeffc7ff7d8aa06ad5bef7
   - name: geerlingguy.docker
-    version: 6.2.0
+    version: 7.0.0
   - name: bodsch.snapd
     version: 1.2.2
   - name: xanmanning.k3s
