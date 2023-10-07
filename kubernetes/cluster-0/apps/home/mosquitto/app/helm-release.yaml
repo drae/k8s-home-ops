@@ -4,8 +4,6 @@ kind: HelmRelease
 metadata:
   name: mosquitto
   namespace: home
-  annotations:
-    io.cilium/lb-ipam-ips: ${SVB_LB_MOSQUITO}
 spec:
   interval: 30m
   chart:
@@ -18,19 +16,36 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    image:
-      repository: ghcr.io/k8s-at-home/eclipse-mosquitto
-      tag: v2.0.15
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-    podAnnotations:
-      secret.reloader.stakater.com/reload: mosquitto-config
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              accessMode: ReadWriteOnce
+              size: 512Mi
+              storageClass: zfs-local-dataset
+              globalMounts:
+                - path: /data
+        containers:
+          main:
+            image:
+              repository: ghcr.io/k8s-at-home/eclipse-mosquitto
+              tag: v2.0.15
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10M
+              limits:
+                memory: 10M
     service:
       main:
         type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SVB_LB_MOSQUITO}
+        externalTrafficPolicy: Cluster
         ports:
           http:
             enabled: false
@@ -39,17 +54,13 @@ spec:
             primary: true
             port: 1883
             protocol: TCP
-        externalTrafficPolicy: Local
     persistence:
-      data:
-        enabled: true
-        mountPath: /mosquitto/data
-        existingClaim: mosquitto-data
       config:
         enabled: true
-        mountPath: /mosquitto/config/mosquitto.conf
-        subPath: mosquitto.conf
-        type: custom
-        volumeSpec:
-          configMap:
-            name: mosquitto-config
+        type: configMap
+        name: mosquitto-config
+        advancedMounts:
+          main:
+            main:
+              - path: /mosquitto/config/mosquitto.conf
+                subPath: mosquitto.conf
