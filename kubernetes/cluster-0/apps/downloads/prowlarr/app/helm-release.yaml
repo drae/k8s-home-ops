@@ -53,7 +53,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: ingress-nginx-int
+        className: ingress-nginx-int
         hosts:
           - host: &host "prowlarr.${SECRET_DOMAIN_PROXY}"
             paths:
