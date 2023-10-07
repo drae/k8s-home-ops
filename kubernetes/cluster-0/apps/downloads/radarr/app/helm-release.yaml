@@ -70,4 +70,5 @@ spec:
       media:
         enabled: true
         existingClaim: nfs-apollo--media
-        mountPath: /mnt/media/
+        globalMounts:
+          - path: /mnt/media/
