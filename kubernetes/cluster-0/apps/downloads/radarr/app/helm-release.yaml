@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app radarr
+  name: radarr
   namespace: downloads
 spec:
   interval: 30m
@@ -15,19 +15,40 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
       interval: 30m
-  install:
-    createNamespace: true
   values:
-    image:
-      repository: ghcr.io/onedr0p/radarr-develop
-      tag: 5.0.3.8107@sha256:2c4fca668420dfa87b286da9b0a43f6dc64fd26329f9e914bc2de58887091eaf
-    podAnnotations:
-      setGateway: "true"
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/radarr-develop
+              tag: 5.0.3.8107@sha256:2c4fca668420dfa87b286da9b0a43f6dc64fd26329f9e914bc2de58887091eaf
+            env:
+              RADARR__INSTANCE_NAME: Radarr
+              RADARR__PORT: &port 7878
+              RADARR__AUTHENTICATION_METHOD: External
+              RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+            pod:
+              annotations:
+                setGateway: "true"
+              securityContext:
+                runAsUser: 568
+                runAsGroup: 568
+                fsGroup: 568
+                fsGroupChangePolicy: "OnRootMismatch"
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 25m
+              limits:
+                memory: 500Mi
     service:
       main:
         ports:
           http:
-            port: 7878
+            port: *port
     ingress:
       main:
         enabled: true
@@ -36,20 +57,12 @@ spec:
           - host: &host "radarr.${SECRET_DOMAIN_PROXY}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-    metrics:
-      enabled: true
-      serviceMonitor:
-        interval: 3m
-        scrapeTimeout: 1m
     persistence:
       config:
         enabled: true
@@ -58,9 +71,3 @@ spec:
         enabled: true
         existingClaim: nfs-apollo--media
         mountPath: /mnt/media/
-    resources:
-      requests:
-        memory: 250Mi
-        cpu: 25m
-      limits:
-        memory: 500Mi
