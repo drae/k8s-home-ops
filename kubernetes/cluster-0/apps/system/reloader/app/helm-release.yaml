@@ -16,11 +16,10 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
-    fullnameOverride: reloader
     reloader:
       podMonitor:
-        enabled: false
-        namespace: *namespace
+        enabled: true
+      reloadStrategy: annotations
       deployment:
         resources:
           requests:
