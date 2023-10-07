@@ -20,18 +20,13 @@ spec:
   trigger:
     schedule: "0 5 * * *"
   restic:
-    cacheCapacity: 3G
     copyMethod: Snapshot
     pruneIntervalDays: 7
     repository: prowlarr-restic-secret
-    moverSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
     retain:
       daily: 7
       within: 3d
     volumeSnapshotClassName: zfs-local-dataset
-    capacity: 1Gi
     storageClassName: zfs-local-dataset
+    cacheCapacity: 3G
     cacheStorageClassName: local-hostpath
