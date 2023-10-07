@@ -135,12 +135,13 @@ spec:
               resources:
                 requests:
                   storage: 75Gi
-        resources:
-          requests:
-            cpu: 10m
-            memory: 2000Mi
-          limits:
-            memory: 6000Mi
+        additionalAlertManagerConfigs:
+          - scheme: http
+            static_configs:
+              - targets:
+                  - "alertmanager.monitoring:9093"
+                labels:
+                  server: alertmanager.monitoring
         additionalScrapeConfigs:
           - job_name: node-exporter
             scrape_interval: 1m
@@ -151,6 +152,12 @@ spec:
                   - "${IP_ADDR_LAN_GW}:9100"
                   - "${IP_ADDR_LAN_NAS}:9100"
                   - "${IP_ADDR_LAN_GRAVITY}:9100"
+        resources:
+          requests:
+            cpu: 10m
+            memory: 2000Mi
+          limits:
+            memory: 6000Mi
   postRenderers:
     - kustomize:
         patches:
