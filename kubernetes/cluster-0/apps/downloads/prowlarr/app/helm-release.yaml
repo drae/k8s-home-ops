@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app prowlarr
+  name: prowlarr
   namespace: downloads
 spec:
   interval: 30m
@@ -15,43 +15,56 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
       interval: 30m
-  install:
-    createNamespace: true
   values:
-    image:
-      repository: ghcr.io/onedr0p/prowlarr-nightly
-      tag: 1.9.3.4012@sha256:2a7a89fd77965fe9f0b3cc95128593bcf9a3ea984231deb9857bfa9099e62c2e
-    podAnnotations:
-      setGateway: "true"
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/prowlarr-nightly
+              tag: 1.9.3.4012@sha256:2a7a89fd77965fe9f0b3cc95128593bcf9a3ea984231deb9857bfa9099e62c2e
+            env:
+              PROWLARR__INSTANCE_NAME: Prowlarr
+              PROWLARR__PORT: &port 9696
+              PROWLARR__LOG_LEVEL: info
+              PROWLARR__ANALYTICS_ENABLED: "False"
+              PROWLARR__AUTHENTICATION_METHOD: External
+            pod:
+              annotations:
+                setGateway: "true"
+              securityContext:
+                runAsUser: 568
+                runAsGroup: 568
+                fsGroup: 568
+                fsGroupChangePolicy: "OnRootMismatch"
+            resources:
+              requests:
+                cpu: 25m
+                memory: 100Mi
+              limits:
+                memory: 250Mi
     service:
       main:
         ports:
           http:
-            port: 9696
+            port: *port
     ingress:
       main:
         enabled: true
         ingressClassName: ingress-nginx-int
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN_PROXY}"
+          - host: &host "prowlarr.${SECRET_DOMAIN_PROXY}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
     persistence:
       config:
         enabled: true
         existingClaim: prowlarr-config
-    resources:
-      requests:
-        memory: 100Mi
-        cpu: 25m
-      limits:
-        memory: 250Mi
