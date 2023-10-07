@@ -37,7 +37,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/plex
-              tag: 1.32.6.7557-1cf77d501@sha256:4dc9b6a3890d83b7a3a775c1249e4f28db2810086180feccc07629eb7df70c79
+              tag: 1.32.6.7557-1cf77d501@sha256:9460bb24ecf881c6a4e6696c971ed7c060d101cc346a133d97aeca675ac9572c
             env:
               ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,https://plex.${SECRET_DOMAIN}:443"
               ALLOWED_NETWORKS: "10.200.0.0/16,10.210.0.0/16,10.1.10.0/23"
