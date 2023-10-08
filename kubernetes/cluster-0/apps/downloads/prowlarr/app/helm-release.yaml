@@ -18,8 +18,16 @@ spec:
   values:
     controllers:
       main:
+        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+          setGateway: "true"
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           main:
             image:
@@ -32,14 +40,6 @@ spec:
               PROWLARR__ANALYTICS_ENABLED: "False"
               PROWLARR__AUTHENTICATION_METHOD: External
               PROWLARR__THEME: dark
-            pod:
-              annotations:
-                setGateway: "true"
-              securityContext:
-                runAsUser: 568
-                runAsGroup: 568
-                fsGroup: 568
-                fsGroupChangePolicy: "OnRootMismatch"
             resources:
               requests:
                 cpu: 25m
