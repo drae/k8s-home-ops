@@ -4,4 +4,4 @@ dbs:
       - type: s3
         bucket: litestream
         path: radarr/radarr.db
-        endpoint: ${LITESTREAM_REPOSITORY}
+        endpoint: ${R2_REPOSITORY}
