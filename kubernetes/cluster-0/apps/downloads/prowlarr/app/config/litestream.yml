@@ -1,0 +1,8 @@
+addr: ":9090"
+dbs:
+  - path: /config/prowlarr.db
+    replicas:
+      - type: s3
+        bucket: litestream
+        path: prowlarr/prowlarr.db
+        endpoint: ${R2_REPOSITORY}
