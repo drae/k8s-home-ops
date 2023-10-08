@@ -5,7 +5,7 @@ metadata:
   name: recyclarr-restic-secret
   namespace: downloads
 stringData:
-  RESTIC_REPOSITORY: "s3:{$R2_REPOSITORY}/volsync/recyclarr"
+  RESTIC_REPOSITORY: "s3:${R2_REPOSITORY}volsync/recyclarr"
   RESTIC_PASSWORD: ${RESTIC_PASSWORD}
   AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
   AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
