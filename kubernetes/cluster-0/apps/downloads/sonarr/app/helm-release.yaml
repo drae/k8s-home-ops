@@ -34,6 +34,7 @@ spec:
               repository: ghcr.io/onedr0p/sonarr-develop
               tag: 4.0.0.688@sha256:cc88687162269b73c0e9bd6f147d4f7957639a4bdae3741cffe4bcabd7978e1f
             env:
+              SONARR__API_KEY: ${SONARR_API_KEY}
               SONARR__INSTANCE_NAME: Sonarr
               SONARR__PORT: &port 8989
               SONARR__AUTHENTICATION_METHOD: External
