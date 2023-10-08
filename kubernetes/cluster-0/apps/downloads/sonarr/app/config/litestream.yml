@@ -4,6 +4,4 @@ dbs:
       - type: s3
         bucket: litestream
         path: sonarr/sonarr.db
-        endpoint: ${LITESTREAM_REPOSITORY}
-        access-key-id: ${AWS_ACCESS_KEY_ID}
-        secret-access-key: ${AWS_SECRET_ACCESS_KEY}
+        endpoint: ${R2_REPOSITORY}
