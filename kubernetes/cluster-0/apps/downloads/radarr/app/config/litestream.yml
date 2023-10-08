@@ -1,3 +1,4 @@
+addr: ":9090"
 dbs:
   - path: /config/radarr.db
     replicas:
