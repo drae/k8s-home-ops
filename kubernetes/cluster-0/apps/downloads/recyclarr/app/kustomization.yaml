@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./secret.sops.yaml
   - ./helm-release.yaml
+  - ./volsync.yaml
 namespace: downloads
 configMapGenerator:
   - name: recyclarr-configmap
