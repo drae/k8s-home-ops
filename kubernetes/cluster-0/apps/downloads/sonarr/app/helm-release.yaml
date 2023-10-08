@@ -29,6 +29,22 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
+          initContainers:
+            01-litestream-init:
+              image:
+                repository: litestream/litestream
+                tag: 0.3.9
+              args:
+                [
+                  "restore",
+                  "-if-db-not-exists",
+                  "-if-replica-exists",
+                  "-v",
+                  "/config/radarr.db",
+                ]
+              env:
+                LITESTREAM_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+                LITESTREAM_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_ID}
           main:
             image:
               repository: ghcr.io/onedr0p/sonarr-develop
@@ -46,11 +62,23 @@ spec:
                 cpu: 25m
               limits:
                 memory: 500Mi
+          litestream:
+            image:
+              repository: litestream/litestream
+              tag: 0.3.9
+            args: ["replicate"]
+            env:
+              LITESTREAM_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+              LITESTREAM_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY_ID}
     service:
       main:
         ports:
           http:
             port: *port
+      litestream:
+        ports:
+          metrics:
+            port: 9090
     ingress:
       main:
         enabled: true
@@ -74,3 +102,35 @@ spec:
         existingClaim: nfs-apollo--media
         globalMounts:
           - path: /mnt/media/
+      litestream-init-config:
+        enabled: true
+        type: configMap
+        name: radarr-litestream
+        advancedMounts:
+          main:
+            01-litestream-init:
+              - path: /etc/litestream.yml
+                subPath: litestream.yml
+      litestream-init-data:
+        enabled: true
+        existingClaim: sonarr-config
+        advancedMounts:
+          main:
+            01-litestream-init:
+              - path: /config
+      litestream-config:
+        enabled: true
+        type: configMap
+        name: radarr-litestream
+        advancedMounts:
+          main:
+            litestream:
+              - path: /etc/litestream.yml
+                subPath: litestream.yml
+      litestream-data:
+        enabled: true
+        existingClaim: sonarr-config
+        advancedMounts:
+          main:
+            litestream:
+              - path: /config

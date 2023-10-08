@@ -1,0 +1,4 @@
+dbs:
+  - path: /config/radarr.db
+    replicas:
+      - url: ${LITESTREAM_REPOSITORY}/radarr/radarr.db
