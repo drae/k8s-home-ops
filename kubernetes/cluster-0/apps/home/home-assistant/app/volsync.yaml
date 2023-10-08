@@ -5,7 +5,7 @@ metadata:
   name: home-assistant-restic-secret
   namespace: home
 stringData:
-  RESTIC_REPOSITORY: "s3:${R2_REPOSITORY}volsync/home-assistant"
+  RESTIC_REPOSITORY: "s3:${R2_REPOSITORY}volsync//home-assistant"
   RESTIC_PASSWORD: ${RESTIC_PASSWORD}
   AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
   AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
