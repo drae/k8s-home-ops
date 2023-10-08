@@ -1,0 +1,7 @@
+dbs:
+  - path: /config/radarr.db
+    replicas:
+      - type: s3
+        bucket: litestream
+        path: radarr/radarr.db
+        endpoint: ${LITESTREAM_REPOSITORY}
