@@ -34,6 +34,7 @@ spec:
               repository: ghcr.io/onedr0p/radarr-develop
               tag: 5.0.3.8127@sha256:704c63f0b16e01d0d0489e0536616a2e2aa3506141bceb4d97c5c4cfd319e32b
             env:
+              RADARR__API_KEY: ${RADARR_API_KEY}
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 7878
               RADARR__AUTHENTICATION_METHOD: External
