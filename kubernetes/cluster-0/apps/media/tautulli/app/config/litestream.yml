@@ -1,0 +1,8 @@
+addr: ":9090"
+dbs:
+  - path: /config/tautulli.db
+    replicas:
+      - type: s3
+        bucket: litestream
+        path: tautulli/tautulli.db
+        endpoint: ${R2_REPOSITORY}
