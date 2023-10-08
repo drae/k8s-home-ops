@@ -31,6 +31,7 @@ spec:
               PROWLARR__LOG_LEVEL: info
               PROWLARR__ANALYTICS_ENABLED: "False"
               PROWLARR__AUTHENTICATION_METHOD: External
+              PROWLARR__THEME: dark
             pod:
               annotations:
                 setGateway: "true"

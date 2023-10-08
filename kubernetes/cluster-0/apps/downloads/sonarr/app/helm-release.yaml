@@ -30,6 +30,7 @@ spec:
               SONARR__PORT: &port 8989
               SONARR__AUTHENTICATION_METHOD: External
               SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              SONARR__THEME: dark
             pod:
               annotations:
                 setGateway: "true"
