@@ -26,6 +26,10 @@ spec:
     retain:
       daily: 7
       within: 3d
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
     volumeSnapshotClassName: zfs-local-dataset
     storageClassName: zfs-local-dataset
     cacheCapacity: 3G
