@@ -27,11 +27,11 @@ spec:
         volumeBindingMode: WaitForFirstConsumer
         # distributed support is not yet ready for expansion
         allowVolumeExpansion: false
-    volumeSnapshotClasses:
-      - name: zfs-local-dataset
-        deletionPolicy: Delete
-        parameters:
-          dummy: {}
+    #    volumeSnapshotClasses:
+    #      - name: zfs-local-dataset
+    #        deletionPolicy: Delete
+    #        parameters:
+    #          dummy: {}
     controller:
       enabled: true
       strategy: node
@@ -51,9 +51,9 @@ spec:
         enabled: false
       externalSnapshotter:
         enabled: true
-        extraArgs:
-          - --leader-election=false
-          - --node-deployment=true
+    #        extraArgs:
+    #          - --leader-election=false
+    #          - --node-deployment=true
     driver:
       config:
         driver: zfs-local-dataset
