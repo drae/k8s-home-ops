@@ -19,8 +19,6 @@ spec:
     controllers:
       main:
         type: statefulset
-        annotations:
-          reloader.stakater.com/auto: "true"
         statefulset:
           volumeClaimTemplates:
             - name: data
@@ -29,6 +27,14 @@ spec:
               storageClass: zfs-local-dataset
               globalMounts:
                 - path: /data
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           main:
             image:
