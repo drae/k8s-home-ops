@@ -19,6 +19,14 @@ spec:
     controllers:
       main:
         type: statefulset
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 100Gi
+              storageClass: zfs-local-dataset
+              globalMounts:
+                - path: /config
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -33,6 +41,7 @@ spec:
             supplementalGroups:
               - 44
               - 109
+              - 65539
         containers:
           main:
             image:
@@ -75,9 +84,6 @@ spec:
           - hosts:
               - *host
     persistence:
-      config:
-        enabled: true
-        existingClaim: plex-config
       transcode:
         enabled: true
         type: emptyDir
