@@ -21,4 +21,12 @@ spec:
     crds: CreateReplace
   values:
     controller:
+      enabled: true
+      rbac:
+        enabled: true
+      replicaCount: 1
+    validatingWebhook:
+      enabled: true
+      rbac:
+        enabled: true
       replicaCount: 1
