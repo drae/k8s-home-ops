@@ -19,6 +19,14 @@ spec:
     controllers:
       main:
         type: statefulset
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              accessMode: ReadWriteOnce
+              size: 1Gi
+              storageClass: zfs-local-dataset
+              globalMounts:
+                - path: /data
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -83,9 +91,3 @@ spec:
         tls:
           - hosts:
               - *host
-    persistence:
-      config:
-        enabled: true
-        existingClaim: zigbee2mqtt-config
-        globalMounts:
-          - path: /data

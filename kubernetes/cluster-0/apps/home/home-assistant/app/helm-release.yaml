@@ -19,6 +19,14 @@ spec:
     controllers:
       main:
         type: statefulset
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              accessMode: ReadWriteOnce
+              size: 5Gi
+              storageClass: zfs-local-dataset
+              globalMounts:
+                - path: /config
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -42,10 +50,6 @@ spec:
                 memory: 411M
               limits:
                 memory: 4417M
-    persistence:
-      config:
-        enabled: true
-        existingClaim: home-assistant-config
     service:
       main:
         type: LoadBalancer
