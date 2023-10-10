@@ -29,7 +29,11 @@
     fileMatch: ["kubernetes/.+\\.ya?ml$"],
   },
   kubernetes: {
-    fileMatch: ["kubernetes/.+\\.ya?ml$"],
+    fileMatch: [
+      "(^|/)\\.taskfiles/.+\\.ya?ml(\\.j2)?$",
+      "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
+      "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$",
+    ],
   },
   "docker-compose": {
     fileMatch: ["(^|/)(?:docker-)?compose[^/]*\\.ya?ml(.j2)?$"],
@@ -53,19 +57,7 @@
       description: "Use loose versioning for certain dependencies",
       matchDatasources: ["docker", "github-releases"],
       versioning: "loose",
-      matchPackageNames: [
-        "ghcr.io/onedr0p/plex",
-        "ghcr.io/onedr0p/plex-beta",
-        "ghcr.io/onedr0p/qbittorrent",
-        "docker.io/linuxserver/nzbget",
-        "docker.io/linuxserver/qbittorrent",
-      ],
-    },
-    {
-      description: "Use custom versioning for Minio",
-      matchDatasources: ["docker"],
-      versioning: "regex:^RELEASE\\.(?<major>\\d+)-(?<minor>\\d+)-(?<patch>\\d+)T.*Z(-(?<compatibility>.*))?$",
-      matchPackageNames: ["quay.io/minio/minio"],
+      matchPackageNames: ["ghcr.io/onedr0p/plex"],
     },
   ],
 }
