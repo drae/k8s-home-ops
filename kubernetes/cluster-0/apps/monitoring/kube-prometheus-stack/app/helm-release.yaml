@@ -120,7 +120,7 @@ spec:
         externalLabels:
           cluster: ${SECRET_CLUSTER_NAME}
         podAntiAffinity: hard
-        retentionSize: 65GB
+        retentionSize: 22GB
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
@@ -134,7 +134,7 @@ spec:
               storageClassName: zfs-local-dataset
               resources:
                 requests:
-                  storage: 75Gi
+                  storage: 25Gi
         additionalAlertManagerConfigs:
           - scheme: http
             static_configs:
