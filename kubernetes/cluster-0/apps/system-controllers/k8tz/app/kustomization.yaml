@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: system-controllers
 resources:
   - ./pki.yaml
-  - ./helmrelease.yaml
+  - ./helm-release.yaml
 commonLabels:
   app.kubernetes.io/name: k8tz
   app.kubernetes.io/instance: k8tz
