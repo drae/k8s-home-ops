@@ -39,7 +39,7 @@ spec:
           01-litestream-init:
             image:
               repository: docker.io/litestream/litestream
-              tag: "0.3.11"
+              tag: "0.3.12"
             args:
               [
                 "restore",
@@ -65,7 +65,7 @@ spec:
           litestream:
             image:
               repository: docker.io/litestream/litestream
-              tag: "0.3.11"
+              tag: "0.3.12"
             args: ["replicate"]
             env:
               LITESTREAM_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
