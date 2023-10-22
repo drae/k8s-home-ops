@@ -35,22 +35,6 @@ spec:
             runAsGroup: 568
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
-        initContainers:
-          01-litestream-init:
-            image:
-              repository: docker.io/litestream/litestream
-              tag: "0.3.12"
-            args:
-              [
-                "restore",
-                "-if-db-not-exists",
-                "-if-replica-exists",
-                "-v",
-                "/config/tautulli.db",
-              ]
-            env:
-              LITESTREAM_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-              LITESTREAM_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
         containers:
           main:
             image:
@@ -62,14 +46,6 @@ spec:
                 cpu: 500m
               limits:
                 memory: 1500Mi
-          litestream:
-            image:
-              repository: docker.io/litestream/litestream
-              tag: "0.3.12"
-            args: ["replicate"]
-            env:
-              LITESTREAM_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-              LITESTREAM_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     service:
       main:
         ports:
@@ -101,24 +77,3 @@ spec:
         tls:
           - hosts:
               - *host
-    persistence:
-      litestream-init-config:
-        enabled: true
-        type: configMap
-        name: tautulli-litestream
-        advancedMounts:
-          main:
-            01-litestream-init:
-              - path: /etc/litestream.yml
-                subPath: litestream.yml
-                readOnly: true
-      litestream-config:
-        enabled: true
-        type: configMap
-        name: tautulli-litestream
-        advancedMounts:
-          main:
-            litestream:
-              - path: /etc/litestream.yml
-                subPath: litestream.yml
-                readOnly: true
