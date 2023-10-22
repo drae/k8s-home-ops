@@ -58,14 +58,6 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 6000Mi
-          litestream:
-            image:
-              repository: docker.io/litestream/litestream
-              tag: "0.3.12"
-            args: ["replicate"]
-            env:
-              LITESTREAM_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-              LITESTREAM_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     service:
       main:
         type: LoadBalancer
@@ -104,13 +96,3 @@ spec:
         path: /mnt/zstore/media
         globalMounts:
           - path: /mnt/media
-      litestream-config:
-        enabled: true
-        type: configMap
-        name: plex-litestream
-        advancedMounts:
-          main:
-            litestream:
-              - path: /etc/litestream.yml
-                subPath: litestream.yml
-                readOnly: true
