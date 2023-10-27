@@ -6,14 +6,15 @@ metadata:
     namespace: monitoring
 stringData:
     DISCORD_WEBHOOK: ENC[AES256_GCM,data:18bpSe/NAKGVWZw8Iy2XlVEtgTAtcSvtod7spNWIQ6jKpexXOk9bvs3oWswcBkyrC7IwcgBjVrwYZObxpSEye4TEYhFSz16PjTUuO7C50cG8MQnKDVEBPzU3BZad1T6tltsvufQx6M0Agv122F+u7CEMJ2IiIj1s,iv:olw1Rte2EIm9NqpSmHgn9xVGZXogxIM1oIfS0U39ULQ=,tag:To3NM+xYlS5t9vxQ8E/tXg==,type:str]
+    DISCORD_USERNAME: ENC[AES256_GCM,data:qO1Oc9elucv44Q==,iv:d20VFDGO8JOggJ5hwBdW21RBxXL0zTKrVYrgi+YsQm0=,tag:ts3pc1jlfbOyF6u3o3bKqA==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2022-08-31T09:43:31Z"
-    mac: ENC[AES256_GCM,data:8h3t/DAmtPkgRv/AvcPOeaT0FWbYIfZuZBHxXfHNRlCzwPfKH8bK3QBJYZ2LJniHWGEUGQlth8KQk3Fv01cPXVq3iwSz/bnvtl72/4dcqrAW/ShLdMEnnh2V2p7amhxSsbFLEsH+FvAEp4+7khIh1q2kkSadunOmnq2UEwdBLgA=,iv:HMx8jolCOr08BdctrIPIVGBeWDK6Nj/HDr6hLXrQTjo=,tag:PRm1OGZXcLNwJWYH9nbuGQ==,type:str]
+    lastmodified: "2023-10-27T17:11:49Z"
+    mac: ENC[AES256_GCM,data:Rk/jb+cOGpaK3xJTTK2G52aogzmJB57FxlHE/gK01iazRVCCpXdsF5CGGR4MhvBJk/JmRScuGGi454TiqDsJHpc7usuS1KXMfuMSVs0W07VF3y0d/pyD85SV9zvql8hXa1O2A/hAJI30qgk59Yh2qumg61KbAZbV7Fn9zUeigqw=,iv:PlJgQgrLisLyAFiAEukKJ6gUuWmIItIlH8NAhonu+h0=,tag:v7gymFq8wlau9y0bNcpq8w==,type:str]
     pgp:
         - created_at: "2022-07-14T23:01:11Z"
           enc: |-
@@ -36,4 +37,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 4CF588582D481BB5C1927F275BB27F59F87ABCA3
     encrypted_regex: ^(data|stringData)$
-    version: 3.7.3
+    version: 3.8.1
