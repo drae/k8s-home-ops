@@ -21,15 +21,16 @@ spec:
   upgrade:
     crds: CreateReplace
   values:
-    replicaCount: 1
-    volumeSnapshotClasses:
-      - name: zfs-local-dataset
-        driver: org.democratic-csi.zfs-local-dataset
-        annotations:
-          snapshot.storage.kubernetes.io/is-default-class: "true"
-        deletionPolicy: Delete
-      - name: local-hostpath
-        driver: org.democratic-csi.local-hostpath
-        deletionPolicy: Delete
-    serviceMonitor:
-      create: true
+    controller:
+      replicaCount: 1
+      volumeSnapshotClasses:
+        - name: zfs-local-dataset
+          driver: org.democratic-csi.zfs-local-dataset
+          annotations:
+            snapshot.storage.kubernetes.io/is-default-class: "true"
+          deletionPolicy: Delete
+        - name: local-hostpath
+          driver: org.democratic-csi.local-hostpath
+          deletionPolicy: Delete
+      serviceMonitor:
+        create: true
