@@ -24,7 +24,7 @@ spec:
         reloader.stakater.com/auto: "true"
     image:
       repository: cloudflare/cloudflared
-      tag: "2023.8.2"
+      tag: "2023.10.0"
     cloudflared:
       # Tunnel ID should be unique per instance of running cloudflared
       tunnelID: f543ebab-9416-44ea-be54-5954cb4d9eb2
