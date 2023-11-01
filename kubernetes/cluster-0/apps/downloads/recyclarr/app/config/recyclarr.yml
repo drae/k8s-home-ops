@@ -89,9 +89,6 @@ sonarr:
 
       # UHD
       - trash_ids:
-          # Audio
-          - 4232a509ce60c4e208d13825b7c06264 # DD+ ATMOS - 3000
-          - 63487786a8b01b7f20dd2bc90dd4a477 # DD+ - 1750
           # HDR Formats
           - 7878c33f1963fefb3d6c8657d46c2f0a # DV HDR10 - 1500
           - 6d0d8de7b57e35518ac0308b0ddf404e # DV - 1500
@@ -179,9 +176,11 @@ radarr:
               - WEBRip-2160p
               - Bluray-2160p
               - Remux-2160p
+          - name: WEBDL-1080p
+            qualities:
               - WEBDL-1080p
               - WEBRip-1080p
-          - name: Remux-1080p
+              - Remux-1080p
       - name: SQP-3
         reset_unmatched_scores:
           enabled: true
@@ -198,9 +197,11 @@ radarr:
               - WEBDL-2160p
               - WEBRip-2160p
               - Remux-2160p
+          - name: WEBDL-1080p
+            qualities:
               - WEBDL-1080p
               - WEBRip-1080p
-          - name: Remux-1080p
+              - Remux-1080p
       - name: SQP-5
         reset_unmatched_scores:
           enabled: true
@@ -217,27 +218,14 @@ radarr:
               - WEBDL-2160p
               - WEBRip-2160p
               - Bluray-2160p
+          - name: WEBDL-1080p
+            qualities:
               - WEBDL-1080p
               - WEBRip-1080p
-          - name: Remux-1080p
+              - Remux-1080p
 
     custom_formats:
       - trash_ids:
-          # Audio
-          - 496f355514737f7d83bf7aa4d24f8169 # TrueHD Atmos - 5000
-          - 2f22d89048b01681dde8afe203bf2e95 # DTS X - 4500
-          - 417804f7f2c4308c1f4c5d380d4c4475 # ATMOS (undefined) - 3000
-          - 1af239278386be2919e1bcee0bde047e # DD+ Atmos - 3000
-          - 3cafb66171b47f226146a0770576870f # TrueHD - 2750
-          - dcf3ec6938fa32445f590a4da84256cd # DTS-HD MA - 2500
-          - a570d4a0e56a2874b64e5bfa55202a1b # FLAC - 2250
-          - e7c2fcae07cbada050a0af3357491d7b # PCM - 2250
-          - 8e109e50e0a0b83a5098b056e13bf6db # DTS-HD HRA - 2000
-          - 185f1dd7264c4562b9022d963ac37424 # DD+ - 1750
-          - f9f847ac70a0af62ea4a08280b859636 # DTS-ES - 1500
-          - 1c1a4c5e823891c75bc50380a6866f73 # DTS - 1250
-          - 240770601cc226190c367ef59aba7463 # ACC - 1000
-          - c2998bd0d90ed5621d8df281e839436e # DD - 750
           # All HDR Formats
           - e23edd2482476e595fb990b12e7c609c # DV HDR10 - 1500
           - 58d6a88f13e2db7f5059c41047876f00 # DV - 1500
@@ -311,7 +299,7 @@ radarr:
           - name: SQP-5
           - name: HD|Remux
 
-      # Resolution (2160p SQP-2/SQP-3 only)
+      # Resolution (2160p SQP-2/SQP-3/SQP-5 only)
       - trash_ids:
           - fb392fb0d61a010ae38e49ceaa24a1ef # 2160p
         quality_profiles:
@@ -319,7 +307,7 @@ radarr:
           - name: SQP-3
           - name: SQP-5
 
-      # HQ Release Groups (SQP-2 only)
+      # HQ Release Groups (SQP-2/SQP-5 only)
       - trash_ids:
           - 4d74ac4c4db0b64bff6ce0cffef99bf0 # UHD Bluray Tier 01 - 2300
           - a58f517a70193f8e578056642178419d # UHD Bluray Tier 02 - 2200
