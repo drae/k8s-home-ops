@@ -94,7 +94,6 @@ sonarr:
           - 6d0d8de7b57e35518ac0308b0ddf404e # DV - 1500
           - 1f733af03141f068a540eec352589a89 # DV HLG - 1500
           - 27954b0a80aab882522a88a4d9eae1cd # DV SDR - 1500
-          - a3d82cbef5039f8d295478d28a887159 # HD10+ - 600
           - 3497799d29a085e2ac2df9d468413c94 # HDR10 - 500
           - 3e2c4e748b64a1a1118e0ea3f4cf6875 # HDR - 500
           - bb019e1cd00f304f80971c965de064dc # HDR (undefined) - 500
@@ -231,7 +230,6 @@ radarr:
           - 58d6a88f13e2db7f5059c41047876f00 # DV - 1500
           - 55d53828b9d81cbe20b02efd00aa0efd # DV HLG - 1500
           - a3e19f8f627608af0211acd02bf89735 # DV SDR - 1500
-          - b974a6cd08c1066250f1f177d7aa1225 # HDR10+ - 600
           - dfb86d5941bc9075d6af23b09c2aeecd # HDR10 - 500
           - e61e28db95d22bedcadf030b8f156d96 # HDR - 500
           - 2a4d9069cc1fe3242ff9bdaebed239bb # HDR (undefined) - 500
@@ -266,7 +264,6 @@ radarr:
           # Optional
           - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups - -10000
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL) - -10000
-          - b17886cb4158d9fea189859409975758 # HDR10+ Boost - 901
           - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) - -10000
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup - -10000
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated - -10000
