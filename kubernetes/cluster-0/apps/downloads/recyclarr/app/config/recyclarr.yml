@@ -158,6 +158,21 @@ radarr:
 
     # Quality Profiles
     quality_profiles:
+      - name: Remux + Web 1080p
+        reset_unmatched_scores:
+          enabled: true
+        upgrade:
+          allowed: true
+          until_quality: Remux-1080p
+          until_score: 10000
+        min_format_score: 0
+        quality_sort: top
+        qualities:
+          - name: Remux-1080p
+          - name: WEB-1080p
+            qualities:
+              - WEBRip-1080p
+              - WEBDL-1080p
       - name: SQP-2
         reset_unmatched_scores:
           enabled: true
@@ -225,16 +240,6 @@ radarr:
 
     custom_formats:
       - trash_ids:
-          # All HDR Formats
-          - e23edd2482476e595fb990b12e7c609c # DV HDR10 - 1500
-          - 58d6a88f13e2db7f5059c41047876f00 # DV - 1500
-          - 55d53828b9d81cbe20b02efd00aa0efd # DV HLG - 1500
-          - a3e19f8f627608af0211acd02bf89735 # DV SDR - 1500
-          - dfb86d5941bc9075d6af23b09c2aeecd # HDR10 - 500
-          - e61e28db95d22bedcadf030b8f156d96 # HDR - 500
-          - 2a4d9069cc1fe3242ff9bdaebed239bb # HDR (undefined) - 500
-          - 08d6d8834ad9ec87b1dc7ec8148e7a1f # PQ - 500
-          - 9364dd386c9b4a1100dde8264690add7 # HLG - 500
           # Movie Versions
           - 0f12c086e289cf966fa5948eac571f44 # Hybrid - 100
           - 570bc9ebecd92723d2d21500f4be314c # Remaster - 25
@@ -246,9 +251,6 @@ radarr:
           - eecf3a857724171f968a66cb5719e152 # IMAX - 800
           - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced - 800
           # HQ Release Groups
-          - 3a3ff47579026e76d6504ebea39390de # Remux Tier 01 - 1950
-          - 9f98181fe5a3fbeb0cc29340da2a468a # Remux Tier 02 - 1900
-          - 8baaf0b3142bf4d94c42a724f034e27a # Remux Tier 03 - 1850
           - c20f169ef63c5f40c2def54abaf4438e # WEB Tier 01 - 1700
           - 403816d65392c79236dcb6dd591aeda4 # WEB Tier 02 - 1650
           - af94e0fe497124d1f9ce732069ec8c3b # WEB Tier 03 - 1600
@@ -257,7 +259,6 @@ radarr:
           - ae43b294509409a6a13919dedd4764c4 # Repack2 - 6
           # Unwanted
           - ed38b889b31be83fda192888e2286d83 # BR-DISK - -10000
-          - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) - -10000
           - 90a6f9a284dff5103f6346090e6280c8 # LQ - -10000
           - b8cd450cbfa689c0259a01d9e29ba3d6 # 3D - -10000
           - bfd8eb01832d646a0a89c4deb46f8564 # Upscaled
@@ -269,9 +270,6 @@ radarr:
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated - -10000
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - -10000
           - f537cf427b64c38c8e36298f657e4828 # Scene - -10000
-          - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) - -10000
-          # Resolution
-          - 820b09bb9acbfde9c35c71e0e565dad8 # 1080p - 50
           # Streaming Services
           - b3b3a6ac74ecbd56bcdbefa4799fb9df # AMZN - 0
           - 40e9380490e748672c2522eaaeb692f7 # ATVP - 0
@@ -294,17 +292,35 @@ radarr:
           - name: SQP-2
           - name: SQP-3
           - name: SQP-5
-          - name: HD|Remux
+          - name: Remux + Web 1080p
+
+      # All HDR Formats
+      - trash_ids:
+          - e23edd2482476e595fb990b12e7c609c # DV HDR10 - 1500
+          - 58d6a88f13e2db7f5059c41047876f00 # DV - 1500
+          - 55d53828b9d81cbe20b02efd00aa0efd # DV HLG - 1500
+          - a3e19f8f627608af0211acd02bf89735 # DV SDR - 1500
+          - b974a6cd08c1066250f1f177d7aa1225 # HDR10+ - 600
+          - dfb86d5941bc9075d6af23b09c2aeecd # HDR10 - 500
+          - e61e28db95d22bedcadf030b8f156d96 # HDR - 500
+          - 2a4d9069cc1fe3242ff9bdaebed239bb # HDR (undefined) - 500
+          - 08d6d8834ad9ec87b1dc7ec8148e7a1f # PQ - 500
+          - 9364dd386c9b4a1100dde8264690add7 # HLG - 500
+        quality_profiles:
+          - name: SQP-2
+          - name: SQP-3
+          - name: SQP-5
 
       # Resolution (2160p SQP-2/SQP-3/SQP-5 only)
       - trash_ids:
+          - 820b09bb9acbfde9c35c71e0e565dad8 # 1080p - 50
           - fb392fb0d61a010ae38e49ceaa24a1ef # 2160p
         quality_profiles:
           - name: SQP-2
           - name: SQP-3
           - name: SQP-5
 
-      # HQ Release Groups (SQP-2/SQP-5 only)
+      # HQ Release Groups
       - trash_ids:
           - 4d74ac4c4db0b64bff6ce0cffef99bf0 # UHD Bluray Tier 01 - 2300
           - a58f517a70193f8e578056642178419d # UHD Bluray Tier 02 - 2200
@@ -312,13 +328,29 @@ radarr:
         quality_profiles:
           - name: SQP-2
           - name: SQP-5
+      - trash_ids:
+          - 3a3ff47579026e76d6504ebea39390de # Remux Tier 01 - 1950
+          - 9f98181fe5a3fbeb0cc29340da2a468a # Remux Tier 02 - 1900
+          - 8baaf0b3142bf4d94c42a724f034e27a # Remux Tier 03 - 1850
+        quality_profiles:
+          - name: SQP-2
+          - name: SQP-3
+          - name: Remux + Web 1080p
 
       - trash_ids:
           # Misc
           - 2899d84dc9372de3408e6d8cc18e9666 # x264
+          # Unwanted
+          - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV) - -10000
           # Optional
           - 9c38ebb7384dada637be8899efa68e6f # SDR
         quality_profiles:
           - name: SQP-2
           - name: SQP-3
           - name: SQP-5
+
+      - trash_ids:
+          # Unwanted
+          - dc98083864ea246d05a42df0d05f81cc # x265(HD)
+        quality_profiles:
+          - name: Remux + Web 1080p
