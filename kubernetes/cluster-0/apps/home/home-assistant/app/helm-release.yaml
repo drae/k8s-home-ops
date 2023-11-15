@@ -50,6 +50,44 @@ spec:
                 memory: 411M
               limits:
                 memory: 4417M
+          piper:
+            image:
+              repository: docker.io/rhasspy/wyoming-piper
+              tag: 1.4.0
+            args:
+              - --voice
+              - "en_GB-alan-medium"
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+          whisper:
+            image:
+              repository: docker.io/rhasspy/wyoming-whisper
+              tag: 1.0.0
+            args:
+              - --model
+              - "small-int8"
+              - --language
+              - "en"
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+          wakeword:
+            image:
+              repository: docker.io/rhasspy/wyoming-openwakeword
+              tag: 1.8.1
+            args:
+              - --preload-model
+              - "alexa"
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
     service:
       main:
         type: LoadBalancer
@@ -58,6 +96,19 @@ spec:
         ports:
           http:
             port: 8123
+            primary: true
+          piper:
+            enabled: true
+            port: 10200
+            protocol: TCP
+          whisper:
+            enabled: true
+            port: 10300
+            protocol: TCP
+          wakeword:
+            enabled: true
+            port: 10400
+            protocol: TCP
     ingress:
       main:
         enabled: true
