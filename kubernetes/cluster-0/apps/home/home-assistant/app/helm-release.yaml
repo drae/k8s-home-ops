@@ -56,7 +56,7 @@ spec:
               tag: 1.4.0
             args:
               - --voice
-              - "en_GB-alan-medium"
+              - "en_GB-jenny_dioco-medium"
             probes:
               liveness:
                 enabled: false
