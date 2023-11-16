@@ -29,6 +29,9 @@ spec:
                 - path: /config
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
         containers:
           main:
             image:
