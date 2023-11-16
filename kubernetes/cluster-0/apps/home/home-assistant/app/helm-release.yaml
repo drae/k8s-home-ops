@@ -181,7 +181,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  name: codeserver
                   port: http
         tls:
           - hosts:
