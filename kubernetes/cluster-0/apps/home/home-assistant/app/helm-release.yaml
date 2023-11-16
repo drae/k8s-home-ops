@@ -64,7 +64,7 @@ spec:
               - --user-data-dir
               - "/config/.vscode"
               - --auth
-              - "password"
+              - "none"
               - --port
               - "12321"
               - "/config"
