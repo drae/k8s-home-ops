@@ -16,6 +16,12 @@ spec:
         namespace: flux-system
       interval: 30m
   values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
     controllers:
       main:
         type: statefulset
