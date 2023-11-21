@@ -159,21 +159,6 @@ radarr:
 
     # Quality Profiles
     quality_profiles:
-      - name: Remux + Web 1080p
-        reset_unmatched_scores:
-          enabled: true
-        upgrade:
-          allowed: true
-          until_quality: Remux-1080p
-          until_score: 10000
-        min_format_score: 0
-        quality_sort: top
-        qualities:
-          - name: Remux-1080p
-          - name: WEB-1080p
-            qualities:
-              - WEBRip-1080p
-              - WEBDL-1080p
       - name: SQP-1 (1080p)
         reset_unmatched_scores:
           enabled: true
@@ -310,7 +295,6 @@ radarr:
           - name: SQP-2
           - name: SQP-3
           - name: SQP-5
-          - name: Remux + Web 1080p
 
       # Movie version (all but SQP-1)
       - trash_ids:
@@ -321,7 +305,6 @@ radarr:
           - name: SQP-2
           - name: SQP-3
           - name: SQP-5
-          - name: Remux + Web 1080p
 
       # All HDR Formats
       - trash_ids:
@@ -376,7 +359,6 @@ radarr:
         quality_profiles:
           - name: SQP-2
           - name: SQP-3
-          - name: Remux + Web 1080p
 
       - trash_ids:
           # Misc
@@ -395,4 +377,3 @@ radarr:
           - dc98083864ea246d05a42df0d05f81cc # x265(HD)
         quality_profiles:
           - name: SQP-1 (1080p)
-          - name: Remux + Web 1080p
