@@ -33,7 +33,7 @@ spec:
           main:
             image:
               repository: quay.io/prometheus/alertmanager
-              tag: main@sha256:3352d971f4ecdca14d2fc32ba8791926293059f841329e4aec2c2408dcdc4e6b
+              tag: main@sha256:81346ecc1bf09a5a652f5f6e24567bac7914c6534bb79093ddadbaf3b8cfd1ae
             resources:
               requests:
                 cpu: 11m
