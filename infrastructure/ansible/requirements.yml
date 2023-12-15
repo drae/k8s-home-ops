@@ -24,4 +24,4 @@ roles:
   - name: bodsch.snapd
     version: 1.3.0
   - name: xanmanning.k3s
-    version: v3.4.2
+    version: v3.4.3
