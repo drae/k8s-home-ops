@@ -42,7 +42,7 @@ spec:
           main:
             image:
               repository: ghcr.io/home-assistant/home-assistant
-              tag: 2023.12.2
+              tag: 2023.12.3
             envFrom:
               - secretRef:
                   name: home-assistant
