@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/instance: *app
 spec:
   type: ExternalName
-  externalName: ${IP_ADDR_LAN_NAS}
+  externalName: apollo.${SECRET_DOMAIN_LAN}
   ports:
     - name: http
       port: &port 8080
