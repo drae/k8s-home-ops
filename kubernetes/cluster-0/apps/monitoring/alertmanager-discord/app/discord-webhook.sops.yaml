@@ -5,7 +5,7 @@ metadata:
     name: discord-webhook
     namespace: monitoring
 stringData:
-    DISCORD_WEBHOOK: ENC[AES256_GCM,data:18bpSe/NAKGVWZw8Iy2XlVEtgTAtcSvtod7spNWIQ6jKpexXOk9bvs3oWswcBkyrC7IwcgBjVrwYZObxpSEye4TEYhFSz16PjTUuO7C50cG8MQnKDVEBPzU3BZad1T6tltsvufQx6M0Agv122F+u7CEMJ2IiIj1s,iv:olw1Rte2EIm9NqpSmHgn9xVGZXogxIM1oIfS0U39ULQ=,tag:To3NM+xYlS5t9vxQ8E/tXg==,type:str]
+    DISCORD_WEBHOOK: ENC[AES256_GCM,data:YLMP57qLr0BnsWJiH8NnFCCL7e1C29+gdhnjl/3idWHPwHa9zMdqrp/hBJuPin1AOzrTDDaqR3ogGhEo0kcQNlPJVO1pfMSvWlqI1IPvE+ubl41GyxmI3+L4H+FqyjGzAp0ho77M76mSeGTAr7GhJr0wtL0HLNZ/Zg==,iv:yQcNMDjt4rmEyzPPC2CluRhQfQNAM9PYee33g48Nq2A=,tag:GqeC/YDUNz0iZ7FoSPKDjw==,type:str]
     DISCORD_USERNAME: ENC[AES256_GCM,data:qO1Oc9elucv44Q==,iv:d20VFDGO8JOggJ5hwBdW21RBxXL0zTKrVYrgi+YsQm0=,tag:ts3pc1jlfbOyF6u3o3bKqA==,type:str]
 sops:
     kms: []
@@ -13,8 +13,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2023-10-27T17:11:49Z"
-    mac: ENC[AES256_GCM,data:Rk/jb+cOGpaK3xJTTK2G52aogzmJB57FxlHE/gK01iazRVCCpXdsF5CGGR4MhvBJk/JmRScuGGi454TiqDsJHpc7usuS1KXMfuMSVs0W07VF3y0d/pyD85SV9zvql8hXa1O2A/hAJI30qgk59Yh2qumg61KbAZbV7Fn9zUeigqw=,iv:PlJgQgrLisLyAFiAEukKJ6gUuWmIItIlH8NAhonu+h0=,tag:v7gymFq8wlau9y0bNcpq8w==,type:str]
+    lastmodified: "2023-12-21T11:38:40Z"
+    mac: ENC[AES256_GCM,data:0c+7+iCUGYEWTCOzSQQhKPexVhq3Svq8eGMhnG+fbGz8tcD8/ZlOfCfJWjYadRMv3lR2Pc/sAqEYKvqM5aYO5VsomKjN7D6+YlkiqQPjyIFUno0JzoyASRNN5cJu1QsG2f7OCMWip64UMUKyg360NK1ue4hHKn0x1LMwchYGUX4=,iv:+E+vPtTycusKHwqlFOaeNGA9ie/wWY77qrc1zuulQNs=,tag:POpzRxdCPLxfIjHAj4ZIBw==,type:str]
     pgp:
         - created_at: "2022-07-14T23:01:11Z"
           enc: |-
