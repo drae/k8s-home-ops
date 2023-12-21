@@ -2,7 +2,7 @@ receivers:
   - name: "null"
   - name: "discord"
     webhook_configs:
-      - url: "http://alertmanager-discord:9094"
+      - url: "http://alertmanager-discord.monitoring:9094"
 route:
   group_by: ["alertname", "job"]
   group_wait: 30s

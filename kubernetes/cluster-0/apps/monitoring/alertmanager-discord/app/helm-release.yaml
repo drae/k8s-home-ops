@@ -28,11 +28,12 @@ spec:
             envFrom:
               - secretRef:
                   name: discord-webhook
+            ports:
+              - name: http
+                containerPort: &port 9094
+                protocol: TCP
     service:
       main:
         ports:
           http:
-            port: 9094
-    ingress:
-      main:
-        enabled: false
+            port: *port
