@@ -29,9 +29,6 @@ spec:
                 - path: /config
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          hostNetwork: true
-          dnsPolicy: ClusterFirstWithHostNet
         containers:
           main:
             image:
@@ -39,9 +36,6 @@ spec:
               tag: 2023.12.3
             env:
               ESPHOME_DASHBOARD_USE_PING: true
-            pod:
-              dnsPolicy: ClusterFirstWithHostNet
-              hostNetwork: true
             probes:
               liveness:
                 enabled: false
