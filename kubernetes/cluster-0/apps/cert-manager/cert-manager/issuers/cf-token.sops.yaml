@@ -5,18 +5,24 @@ metadata:
     name: cf-token
     namespace: cert-manager
 stringData:
-    cloudflare-token: ENC[AES256_GCM,data:iSjH4oai50ViZiI/6eFQYOdE6Bt9CnX7mfTSl29sSQuCImvl4mZyPw==,iv:uiw+F+3/lBMGfJyYcISecXGLy9gTWuguqqwCoEFlhhc=,tag:eFLVR64tnRuMIJybbgi3hg==,type:str]
+    cloudflare-token: ENC[AES256_GCM,data:9fzsFVEdluAjdfEOykmg8gfAXvVD2L35smmzbq/bS20STUg2t2GvlA==,iv:iU3jlFS3+O2q8++HrviCSuRkp/V9cMZkWzJhYXsTCU4=,tag:pO9I24q9T3hpJP/wCM/Wmg==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
-    age: []
-    lastmodified: "2023-09-12T00:52:39Z"
-    mac: ENC[AES256_GCM,data:tCLmGGj6a7FR8KFg6mo/9e1wUusVpRKzbiql/sj1re4S3prGzaWu7/sAwz2jqErbammUVEHPSTLCDVxzFlBRqLgivhGz/MmiMJK7u0HhXwidUPQNAjGgSd5lVxgRlojUNf4nQK4xx6eZv1X8ElwXb+ea3agxcNItUt/nO6bDYPA=,iv:fKanUONXnTktLjn4GqsFaZBQNnPT1808nhIxYr1Fn1Y=,tag:B3JYCmJyvESbXjrjox9GHA==,type:str]
-    pgp:
-        - created_at: "2021-07-10T19:47:13Z"
-          enc: "-----BEGIN PGP MESSAGE-----\r\n\r\nhQILA1fr/5wrlRWyAQ/3bRRyShUhmbypQlXCHX6u5g4p9qApIcARweDUUCrYvm90\r\nlFpWr+Z0SlZrRO9wbzn6aosZCYCgu9PDJSCRSbDpOD7twThi87GBfOwalAKFLryK\r\n0EohyiyQraKXlc9wbq4T+8ZEfd1kkWKhFCNOgEanTLE5vOgq9Jnr2XILU8wkKwDr\r\n3msrAslO6yCHxkvk2S0x8apWl18nqX/GKa75S1KW5o35/1pQAqHBq7QblpONbb8z\r\n2t3m1NeykiXxI8CqIE3rTTAIh/vco9s+6D1f+KA7HEOMld3qCDg/CI5h0EaL4AoF\r\nX6jO6+kGn19SVJugYC5IDWoG3gVA8Jws9occyVhyifo6wVQ3bhouFnDqlmKYQF+S\r\naG/D40JiJrXJXAos8jyhNCvXNiDxGyswsRCkRIY2lfdlL5WGLxd4rbTuTkiTQgWh\r\n0hcZKZiockZq7vdcY9X5cJzXvZGLzzQ/P/knOumL7EatNc3l+0NW1HITXVMTCQcJ\r\nXIwqKuYeqrTTq3Re2zOLcqjc/0mOA1IGGa97mR23iqd2wFYZXbLY8s/JWBjOuvxs\r\ncGP9tyk7CZBRKi+RaFpbdRWiseGaQXQ1DMm4K5gfUiOnodLZVu/lTOCrqKEiXrIX\r\njQZtrAiH+9utahWlNkylI0oHPOfcOaP5/pL82zB/+45m3f2j7ztrGC9Hu/yKUdJe\r\nAYuUGLa0kMoY6A5pAktkHxtEttV5a7Ko59oyYbEDDv11iwK/oUFAm6uHTL5hVmnF\r\nGPTWUDPpvpa0rg1qneHDUhmuxenp+rrdvGj9iiBu9FihdFr/lKdxNZvfwJamqg==\r\n=f0Va\r\n-----END PGP MESSAGE-----\r\n"
-          fp: 4CF588582D481BB5C1927F275BB27F59F87ABCA3
+    age:
+        - recipient: age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA2ZFZkVWlPVVl2Q0wwVnhu
+            L3pjOFZEdXYrWHltbk1HQ0RYcWZScktyWkM4CnphM2RpclFxcXBnSUUxVmNZejhP
+            Sk9kenpVTXkyYXpscHk1N2cyTldSVWMKLS0tIEFkdjNYZGkyOVIwVVdPN2Q5T2Vz
+            NHFTVGdqaHlZbG5Id2tPR2pYWEVFMTAKxkYKKjo0FN2c7KpeFM0reQalQpQEmAeX
+            VLukGqZVzjtmEbtEIx6It8Mog+/DJWPHadcMACKdp8Egd6ZRxxrX9Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-12-26T21:00:18Z"
+    mac: ENC[AES256_GCM,data:/4jcS71hDaSLaYNEHFdSbaqaK7T7O9aJp9hw1AsZLogZu5WWCA49txWZ+nbdSQe4urV8mGvPb3HCxdBCZRg/5Lnbe2k6Lngwfrw/2vdqKUq+H/n2YovYWQb6HQhWvw2mxU7QQXsTiOsCoQIbHia+BS+pJ9M0aHihfqjOyJ2C44g=,iv:aRq5GByqFXt3pVeZJUwU55KgsB0FICkVbASqTgPcM1M=,tag:5fy/7vsGSuFfqN3nRPQb6Q==,type:str]
+    pgp: []
     encrypted_regex: ^(data|stringData)$
-    version: 3.7.3
+    version: 3.8.1

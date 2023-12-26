@@ -8,6 +8,8 @@ docker_packages:
 
 docker_users: "{{ ansible_user }}"
 docker_install_compose_plugin: true
+docker_compose_package: docker-compose-plugin
+docker_compose_package_state: present
 
 docker_daemon_options:
   log-driver: journald

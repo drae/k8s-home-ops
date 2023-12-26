@@ -5,36 +5,25 @@ metadata:
     name: discord-webhook
     namespace: monitoring
 stringData:
-    DISCORD_WEBHOOK: ENC[AES256_GCM,data:YLMP57qLr0BnsWJiH8NnFCCL7e1C29+gdhnjl/3idWHPwHa9zMdqrp/hBJuPin1AOzrTDDaqR3ogGhEo0kcQNlPJVO1pfMSvWlqI1IPvE+ubl41GyxmI3+L4H+FqyjGzAp0ho77M76mSeGTAr7GhJr0wtL0HLNZ/Zg==,iv:yQcNMDjt4rmEyzPPC2CluRhQfQNAM9PYee33g48Nq2A=,tag:GqeC/YDUNz0iZ7FoSPKDjw==,type:str]
-    DISCORD_USERNAME: ENC[AES256_GCM,data:qO1Oc9elucv44Q==,iv:d20VFDGO8JOggJ5hwBdW21RBxXL0zTKrVYrgi+YsQm0=,tag:ts3pc1jlfbOyF6u3o3bKqA==,type:str]
+    DISCORD_WEBHOOK: ENC[AES256_GCM,data:MpsBBFkCipzjB4E5jsQIMMAmWQv2e63pRDFOBLXjHPXak/DojXjCk9t9C/qlMt5l6vSXT5h3AUJTnQPdRI4/8FE7Srnqlwfa1S4m9Pbap3i+Eok3h3fVAo7vwZsQIy5cKiCAysc1TznU9SKfCP70Gy2PikKmav/2AA==,iv:ZqnFwcBBx7OTITwIamYQfppaXoxCRHsiePUBLKwVLwA=,tag:MB0ugw0NdnJMnQaZLLlDgg==,type:str]
+    DISCORD_USERNAME: ENC[AES256_GCM,data:9Aeb6t7MkckwUw==,iv:TYvepbIbhoSswNdOixWqWOjgpFLch+JikVVXD3vCmZg=,tag:gz1QK+nGyqvbkSLDk/FckA==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
-    age: []
-    lastmodified: "2023-12-21T11:38:40Z"
-    mac: ENC[AES256_GCM,data:0c+7+iCUGYEWTCOzSQQhKPexVhq3Svq8eGMhnG+fbGz8tcD8/ZlOfCfJWjYadRMv3lR2Pc/sAqEYKvqM5aYO5VsomKjN7D6+YlkiqQPjyIFUno0JzoyASRNN5cJu1QsG2f7OCMWip64UMUKyg360NK1ue4hHKn0x1LMwchYGUX4=,iv:+E+vPtTycusKHwqlFOaeNGA9ie/wWY77qrc1zuulQNs=,tag:POpzRxdCPLxfIjHAj4ZIBw==,type:str]
-    pgp:
-        - created_at: "2022-07-14T23:01:11Z"
-          enc: |-
-            -----BEGIN PGP MESSAGE-----
-
-            wcFMA1fr/5wrlRWyARAAgpZG019irNDSXgliahHEHjSmJBn2v5za9GVYKOLS9eSD
-            6bvzYyqRbUgHPJATyk2tVNB1fsWU3sofLaasflEfKD5lTFlxmzV392xrueDuss1t
-            mePqNcHDrHgZCTj3AIIExN1xdafyOeHOvmf44msdS6CxXSVyhH3DZ5aXZ50Euef2
-            BZ9IkysRp6H05xM06TSgVkAYh7H21Vzotu4jZKIYyTlyGcu3PqQGh1wfgJlU921Z
-            dE9KTPhyde88U5NunzF4Js2VFl8/7jJZolldzl35FUkniRYzbnKklWIhsA7O4YES
-            glMtqrN71agDnD8wK9is/EQGKLyUCOHWrtbt7oO2Z6Zw7mCZpq5IN6fnTKrXQVbU
-            4kAM1LaJyJH/uxfVMOnbXh4W/Cf1kSOflBtuSwFVRiaXAw8moWhNVh2ygrSyodhY
-            6Eb+xD+W5z8P+whURC3o4YK6/+4VdrD9/v6kpfIFVlGXBnKJa8NTVSJeLqDLluwZ
-            +BrN6HYB/NdRMIIuQdzAm6PhW3t6JUvlp38xvUk7MxMUrhbGVyUmOzbnaiqSOYol
-            orxPMPL4kTLMTXqBltPpuDA/b0rZpw+fLUAiVaVml6P077v43qKO7cwI02Fy3u0I
-            +M0vx33WepNRL96pSUQPWGETwwopwkDHFvruBN3M7cJOJi9MmDw3cKF93uwflLbS
-            5gEttSk6gguGvksQntDSaSWIwdzLIVUErTf+DDslzdU47bNXLh+wURuSelvJdbdv
-            vdgQvTj1A4Oo9zGLFQoDrzDkpM5A7tGauuhIzwEE1LAgZ+KHG8rgAA==
-            =2T02
-            -----END PGP MESSAGE-----
-          fp: 4CF588582D481BB5C1927F275BB27F59F87ABCA3
+    age:
+        - recipient: age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB2a2dIKzF6WU1JMlhuWWpu
+            Q1BZMm1LRWJ3Z0FJTXFiZXJWU2w4enQ5b24wCllqcjVJdjc1dE1YMkJkcFBabldI
+            V0FNWEJQQVZidXN0UGY4THlxVURKVmMKLS0tIGd1enF1RUhLaUpwTUZoanhnWFE0
+            R2lwaEY1RzBwK2M0YjA4QVVJTzdGaFkKKUqgWDJfUfHvBBV5GDVrCBSSHqnSpfAH
+            6MXa3IHwoIGw/Z6f9YA+9ogJy8JDYAAnT8UEqdLBfFTY1DoESzy1CA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-12-26T21:00:18Z"
+    mac: ENC[AES256_GCM,data:0UcpERrne4sEt4hAQGUav3qLiBj0z39xK3jstDQTCHM8qL0ssJ0LhjvUt6WZfkJpr+PKq9ZMfU6+og1pWAlMg+GeFtp7/QmjbADfixIfZ19UoQsKEBYTTxzuzShtDtTgqKxOOVz0/YWZnebh7ecEr5i0k63crVYcUhewywJhXAY=,iv:QSTzlqwc3Q3Bss711L5ppxGbMdcmOk9oPyk/tuNFMxI=,tag:UCFVimntoHMg0WcEwb2xeA==,type:str]
+    pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
