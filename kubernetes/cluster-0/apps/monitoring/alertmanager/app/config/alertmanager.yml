@@ -23,3 +23,5 @@ inhibit_rules:
     target_matchers:
       - severity = "warning"
     equal: ["alertname", "namespace"]
+templates:
+  - /etc/alertmanager/config/*.tmpl
