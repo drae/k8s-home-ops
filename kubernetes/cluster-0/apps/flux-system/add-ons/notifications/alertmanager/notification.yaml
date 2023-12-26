@@ -1,19 +1,18 @@
 ---
-apiVersion: notification.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/provider-notification-v1beta3.json
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
   name: alert-manager
-  namespace: flux-system
 spec:
   type: alertmanager
-  address: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093/api/v2/alerts/
-  interval: 10m
+  address: http://alertmanager.monitoring.svc.cluster.local:9093/api/v2/alerts/
 ---
-apiVersion: notification.toolkit.fluxcd.io/v1beta2
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/alert-notification-v1beta3.json
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
   name: alert-manager
-  namespace: flux-system
 spec:
   providerRef:
     name: alert-manager
@@ -28,8 +27,6 @@ spec:
     - kind: Kustomization
       name: "*"
     - kind: OCIRepository
-      name: "*"
-    - kind: Terraform
       name: "*"
   exclusionList:
     - "error.*lookup github\\.com"
