@@ -10,18 +10,15 @@ os_packages_repositories:
   - ppa:neovim-ppa/unstable
 os_packages_install:
   - apt-transport-https
-  - aardvark-dns
   - ca-certificates
   - curl
   - gettext
   - git
   - htop
-  - netavark
   - neofetch
   - neovim
+  - nfs-kernel-server
   - ntpdate
-  - podman
-  - podman-plugins
   - psmisc
   - samba
   - software-properties-common

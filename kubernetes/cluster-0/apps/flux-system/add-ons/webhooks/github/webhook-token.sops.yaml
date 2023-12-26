@@ -5,35 +5,24 @@ metadata:
     name: github-webhook-token
     namespace: flux-system
 stringData:
-    token: ENC[AES256_GCM,data:3OwXEPE5vCd6jN6Veo7t328vPFdUohuDZY4w/lGQRWQ=,iv:L93dUjmBCfMXE4WeterWMt9hAsIGQ45kHYR+Mmvm4JE=,tag:PtiNIJVxoYe/nm7wZZjRkQ==,type:str]
+    token: ENC[AES256_GCM,data:KCA4VsIkM2WNAxYqJ90wOIZLzaQJhpPhd89EMwu4KAA=,iv:CvyK8PeQ9Rv08yi+lj43LSR+E49AMoAXEBURL1EIbI4=,tag:LmaHLUCRJgKGrHRftFQJWQ==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
-    age: []
-    lastmodified: "2023-08-12T17:21:16Z"
-    mac: ENC[AES256_GCM,data:rxfC3E7ZbN1lAHydWuScC+rtCQMDvagDkNDFetdhyhvilajgfoXya6jqBEt2ZuenZhgCDLKIkSzatTkwXhKZmbfBwheFV6lDqUj1Bfxl9EVjbegzPo1XlL5mGAAZc/0J6+dXoN+FarFOVeu739NhPZoer+vEfSp5DKrW980/ZEA=,iv:y0A738JbnJMuXpQHqctxqPzwbebhOfTMc6EhpPowBVI=,tag:9Yu50SyaxB3Ypf0OokGMFw==,type:str]
-    pgp:
-        - created_at: "2023-08-12T17:04:02Z"
+    age:
+        - recipient: age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr
           enc: |
-            -----BEGIN PGP MESSAGE-----
-
-            hQIMA1fr/5wrlRWyAQ/+NlQ+yMsCqzQatSPqmCIUePRW/QLKsXfVZQQfdxCCFVhg
-            vS5oIkfQgwA/rIkXdEeadPegkdzLPryNBfRAVNwUUk0CXV2Z+JXEtMJXGJVHF8T6
-            NDbNWTUPLKIJFebE+Z1gURZQqXtWU705RcpREHYdFVz73v6U3pLDU6+NFslsT6zM
-            B5kjl+YrscpUHL+o9h8PI7/14I9BLrhWlQorOSE0rirJDSQFBD2kFwRaCPc8G2io
-            QjuCHKyefE+9JTADoyUku9AB3gd09ZB8fIgy0uR6rkbKCyxM60CvsdZpWRq6d1c2
-            GnXwGt+BUo9fDILNMPODx5IvMifWlHubxVEvE53rwULjNjp+CgXvraY71OLlIvIW
-            Jfa71hfP9tTsl8yoxpPCC3uoSvRk9lUMd1kVswtP+PvkqoOfuJ7Y8ak1d6n1S8/D
-            3LzmwBHPNWGT2Ez4oyRcAOAQ8gTiSS00E/bRmMXE1m1/vGnikLHiRgKzR72qoBpo
-            zIAJh1aEZb5ddOCzsiTsaScdLxfLF38K2MYAQcMGLpSz29/xZvjhxfrop0JZH0S/
-            o3iBcsdtFmTvaygk83GHLhWeAgqBwV+x0idOMeEVK3dF75cCjlzjXZZ40241/w+J
-            NbXn3LixSu9OhJTc8gkAEh5LROBTykyZq91QbsBd4Ilt9oFxf9qNYwt0IPTjFIrS
-            XgEQkY5CxUORu6DpwdY16iIutzoe7irLScYBa8WColtwXQ+eZRx80r8jkxYW7v0r
-            m/UvpvjY3WkgmJtadfRyvFWC+YTCM4m9mulFEpnMYhohKIUogy1pI8vfcShFVLs=
-            =zCUk
-            -----END PGP MESSAGE-----
-          fp: 4CF588582D481BB5C1927F275BB27F59F87ABCA3
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAvSktwWTRDRkFyQVhiYTZN
+            aG5QVC9EYXZoUWhQdWVwZitZUFM2NllMSlhvCk81UDRLdWlqWUFuM0V5YzR2NVFK
+            YWJjWmQrWmhxTHBPZ1RKMGxIck5nTmMKLS0tIGx0UzFYUUVBYkVQbXZXaFRDUTlz
+            SW56NENsT2xOdy9nYUdrL1E2ZFJtaUEK1C0ypobkwM0GHhT+h2vTyHrj+O70Nr8k
+            iSitOVA5fr8LDf1Hoxjg6IdZ4nCihnG0027V0f61xUq3KbswtPcRjg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-12-26T21:00:18Z"
+    mac: ENC[AES256_GCM,data:Qo8GrNznC7AyEDfBYG1csLwIKKwfh+ZuuvU+yztbODTRaLwxpUqEtc3XrI8mCymJWSGH2KmSHDrDogG0SzBMnQcowSN39VCKzMmBHmQKyHpTsaI70SwIEQ7Me9rzxf9xey4+MmqYcu86KAz0MRY1toK+hKSQMjRqZiveh4SBIRg=,iv:e17fmb3A4UHlR/MCP+5XRoMbwfe1yVzEF3LfCSTGViE=,tag:Kw/4Zwl3BtOGgpUxtWMNBg==,type:str]
+    pgp: []
     encrypted_regex: ^(data|stringData)$
-    version: 3.7.3
+    version: 3.8.1
