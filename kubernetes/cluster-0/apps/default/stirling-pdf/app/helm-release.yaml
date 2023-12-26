@@ -40,7 +40,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: nginx
+        className: ingress-nginx-int
         hosts:
           - host: &host "pdf.${SECRET_DOMAIN_PROXY}"
             paths:
