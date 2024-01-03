@@ -22,7 +22,8 @@ spec:
       fsGroupPolicy: File # fsGroupChangePolicy
     storageClasses:
       - name: zfs-local-dataset
-        defaultClass: true
+        annotations:
+          storageclass.kubernetes.io/is-default-class: "true"
         reclaimPolicy: Delete
         volumeBindingMode: WaitForFirstConsumer
         # distributed support is not yet ready for expansion
