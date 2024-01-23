@@ -33,7 +33,7 @@ spec:
           main:
             image:
               repository: ghcr.io/esphome/esphome
-              tag: 2023.12.8
+              tag: 2023.12.9
             env:
               ESPHOME_DASHBOARD_USE_PING: true
             probes:
