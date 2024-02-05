@@ -31,7 +31,7 @@ loadBalancer:
   algorithm: "maglev"
   mode: "dsr"
 
-tunnel: "disabled"
+routingMode: native
 
 endpointRoutes:
   enabled: true
