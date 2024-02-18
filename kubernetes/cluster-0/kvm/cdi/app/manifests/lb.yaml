@@ -7,9 +7,10 @@ metadata:
   annotations:
     io.cilium/lb-ipam-ips: ${SVC_LB_CDI_UPLOADPROXY}
 spec:
-  selector:
-    app: cdi-uploadproxy
   ports:
     - port: 443
+      protocol: TCP
       targetPort: 8443
+  selector:
+    cdi.kubevirt.io: cdi-uploadproxy
   type: LoadBalancer
