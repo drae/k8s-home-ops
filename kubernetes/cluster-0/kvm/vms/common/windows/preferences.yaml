@@ -6,12 +6,12 @@ metadata:
 spec:
   requirements:
     cpu:
-      guest: 2
+      guest: 4
     memory:
-      guest: 8192Mi
+      guest: 2048Mi
   clock:
     preferredClockOffset:
-      timezone: "America/Denver"
+      timezone: "Europe/London"
     preferredTimer:
       hpet:
         present: false
@@ -26,8 +26,8 @@ spec:
     preferredTPM:
       persistent: true
     # preferredAutoattachMemBalloon: false
-    # preferredAutoattachGraphicsDevice: true
-    # preferredAutoattachSerialConsole: true
+    preferredAutoattachGraphicsDevice: true
+    preferredAutoattachSerialConsole: true
     preferredAutoattachPodInterface: true
     # preferredAutoattachInputDevice: true
     preferredAutoattachInputDevice: false # save CPU resources, similar to disabling tablet input on Proxmox
