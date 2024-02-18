@@ -7,4 +7,4 @@ spec:
   cpu:
     guest: 4
   memory:
-    guest: 2048Mi
+    guest: 4096Mi
