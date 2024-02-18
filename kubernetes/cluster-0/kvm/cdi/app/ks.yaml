@@ -38,6 +38,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  targetNamespace: cdi
   dependsOn:
     - name: cluster-apps-cdi
