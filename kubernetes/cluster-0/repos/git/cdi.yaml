@@ -1,0 +1,16 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: cdi
+  namespace: flux-system
+spec:
+  interval: 30m
+  url: https://github.com/Kerogen-Systems/kubevirt-flux.git
+  ref:
+    branch: cdi-v1.58.1
+  ignore: |
+    # exclude all to whitelist
+    /*
+    # include operator (with CRDs) and CR to deploy KubeVirt
+    !/deploy
