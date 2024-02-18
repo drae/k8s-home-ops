@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cdi-uploadproxy-lb
+  namespace: cdi
+  annotations:
+    io.cilium/lb-ipam-ips: ${SVC_LB_CDI_UPLOADPROXY}
+spec:
+  selector:
+    app: cdi-uploadproxy
+  ports:
+    - port: 443
+      targetPort: 8443
+  type: LoadBalancer
