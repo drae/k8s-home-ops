@@ -47,10 +47,6 @@ spec:
           interfaces:
             - name: main
               masquerade: {}
-              ports:
-                - name: tailscale
-                  port: 41641
-                  protocol: UDP
           autoattachInputDevice: false
           inputs: []
         firmware:
