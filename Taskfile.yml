@@ -1,6 +1,11 @@
 ---
 version: "3"
 
+vars:
+  PROJECT_DIR:
+    sh: "git rev-parse --show-toplevel"
+  CLUSTERS_DIR: "{{.PROJECT_DIR}}/clusters"
+
 includes:
   ansible:
     taskfile: ".taskfiles/ansible"
@@ -17,6 +22,9 @@ includes:
   sops:
     taskfile: ".taskfiles/sops"
     dir: .taskfiles/sops
+  talos:
+    taskfile: ".taskfiles/talos"
+    dir: .taskfiles/talos
   volsync:
     taskfile: ".taskfiles/volsync"
     dir: .taskfiles/volsync

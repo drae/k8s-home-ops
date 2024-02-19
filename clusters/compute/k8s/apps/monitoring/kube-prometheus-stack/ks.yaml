@@ -1,0 +1,36 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-kube-prometheus-stack
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: "./clusters/compute/k8s/apps/monitoring/kube-prometheus-stack/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  dependsOn:
+    - name: cluster-apps-democratic-csi-zfs-local-dataset
+    - name: cluster-apps-k8s-ycl
+    - name: cluster-apps-k8tz
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-kube-prometheus-stack-addons
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: "./clusters/compute/k8s/apps/monitoring/kube-prometheus-stack/addons"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  dependsOn:
+    - name: cluster-apps-kube-prometheus-stack
+    - name: cluster-apps-k8s-ycl
+    - name: cluster-apps-k8tz

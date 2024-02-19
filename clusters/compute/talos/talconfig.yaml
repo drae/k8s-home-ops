@@ -1,0 +1,170 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+clusterName: ${clusterName}
+endpoint: https://${clusterEndpointIP}:6443
+
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
+talosVersion: v1.6.4
+# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
+kubernetesVersion: 1.29.1
+
+cniConfig:
+  name: none
+
+clusterPodNets:
+  - 10.200.0.0/16
+clusterSvcNets:
+  - 10.210.0.0/12
+
+additionalApiServerCertSans: &san
+  - ${clusterName}
+  - ${clusterName}.${clusterDNSSuffix}
+  - ${clusterName}.${clusterDNSSuffix}.${domainName}
+  - "127.0.0.1"
+additionalMachineCertSans: *san
+
+nodes:
+  - hostname: alpha.${domainName}
+    ipAddress: 10.1.10.21
+    controlPlane: true
+    installDiskSelector:
+      size: "<= 500GB"
+      type: ssd
+    kernelModules:
+      - name: spl
+      - name: znvpair
+      - name: zcommon
+      - name: icp
+      - name: zavl
+      - name: zlua
+      - name: zzstd
+      - name: zunicode
+      - name: zfs
+        parameters:
+          - zfs_prefetch_disable=1
+          - zfs_txg_timeout=5
+          - zfs_arc_max=2147483648
+    nameservers:
+      - 10.1.10.1
+    networkInterfaces:
+      - deviceSelector:
+          driver: e1000e
+          hardwareAddr: "*:70:e2"
+        mtu: 1500
+        dhcp: true
+        dhcpOptions:
+          ipv4: true
+          ipv6: true
+        vlans:
+          - vlanId: 20
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/openebs/keys
+                type: bind
+                source: /var/openebs/keys
+                options:
+                  - rbind
+                  - rshared
+                  - rw
+
+controlPlane:
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/intel-ucode
+          - siderolabs/i915-ucode
+          - siderolabs/zfs
+  patches:
+    - |-
+      cluster:
+        allowSchedulingOnMasters: true
+        proxy:
+          disabled: true
+        etcd:
+          advertisedSubnets:
+            - 10.1.10.0/24
+
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-controllers
+          kubePrism:
+            enabled: true
+            port: 7445
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.2
+              hard=True
+              noatime=True
+              nodiratime=True
+              rsize=131072
+              wsize=131072
+              nconnect=8
+        install:
+          extraKernelArgs:
+            - nvme_core.default_ps_max_latency_us=5500
+            - pci=noaer
+            - mitigations=off
+        kubelet:
+          extraArgs:
+            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,ServerSideApply=true
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 150
+          nodeIP:
+            validSubnets:
+              - 10.1.10.0/24
+        network:
+          disableSearchDomain: true
+          extraHostEntries:
+            - ip: 10.1.10.21
+              aliases:
+                - ${clusterName}
+                - ${clusterName}.${clusterDNSSuffix}
+                - ${clusterName}.${clusterDNSSuffix}.${domainName}
+            - ip: 10.1.10.10
+              aliases:
+                - apollo
+                - apollo.${domainName}
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
+          net.core.rmem_max: "2500000"
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
+        udev:
+          rules:
+            - SUBSYSTEM=="drm", KERNEL=="card*", GROUP="44", MODE="0660"
+            - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"

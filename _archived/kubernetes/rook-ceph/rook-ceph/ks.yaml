@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/rook-ceph/rook-ceph/operator"
+  path: "./clusters/compute/k8s/apps/rook-ceph/rook-ceph/operator"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -22,7 +22,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/rook-ceph/rook-ceph/cluster"
+  path: "./clusters/compute/k8s/apps/rook-ceph/rook-ceph/cluster"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -38,7 +38,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/rook-ceph/rook-ceph/addons"
+  path: "./clusters/compute/k8s/apps/rook-ceph/rook-ceph/addons"
   prune: true
   sourceRef:
     kind: GitRepository

@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/networking/unifi"
+  path: "./clusters/compute/k8s/apps/networking/unifi"
   prune: true
   sourceRef:
     kind: GitRepository
