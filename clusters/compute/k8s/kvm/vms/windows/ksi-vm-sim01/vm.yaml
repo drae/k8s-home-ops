@@ -1,0 +1,64 @@
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: ksi-vm-sim01
+spec:
+  preference:
+    kind: VirtualMachinePreference
+    name: vm-windows
+  instancetype:
+    kind: VirtualMachineInstancetype
+    name: vm-windows
+  runStrategy: Manual
+  template:
+    metadata:
+      labels:
+        vm.home.arpa/os: windows
+        vm.home.arpa/windows: ksi-vm-sim01
+    spec:
+      hostname: ksi-vm-sim01
+      networks:
+        - name: main
+          pod:
+            vmNetworkCIDR: "192.168.60.0/24"
+      volumes:
+        - name: c-drive
+          persistentVolumeClaim:
+            claimName: ksi-vm-sim01-c-drive
+        - name: windows-iso
+          persistentVolumeClaim:
+            claimName: vm-cdrom-windows11
+        - name: virtiocontainerdisk
+          containerDisk:
+            image: quay.io/kubevirt/virtio-container-disk
+      domain:
+        devices:
+          disks:
+            - bootOrder: 1
+              name: windows-iso
+              cdrom:
+                bus: sata
+            - name: c-drive
+              disk: {}
+            - name: virtiocontainerdisk
+              cdrom:
+                bus: sata
+          interfaces:
+            - name: main
+              model: e1000
+              masquerade: {}
+          autoattachInputDevice: false
+          inputs: []
+        firmware:
+          uuid: c2914896-accd-415e-acff-4fa8ecb79d2e
+          bootloader:
+            efi:
+              persistent: true
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              vm.home.arpa/windows: ksi-vm-sim01

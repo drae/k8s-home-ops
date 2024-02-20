@@ -1,9 +1,15 @@
 ---
-area/ansible:
-  - "ansible/**/*"
-area/github:
-  - ".github/**/*"
-area/cluster:
-  - "cluster/**/*"
-area/scripts:
-  - "scripts/**/*"
+# Area
+area/ci:
+  - changed-files:
+      - any-glob-to-any-file: ".github/**/*"
+area/kubernetes:
+  - changed-files:
+      - any-glob-to-any-file: "clusters/**/*"
+# Cluster
+cluster/compute:
+  - changed-files:
+      - any-glob-to-any-file: clusters/compute/**/*
+cluster/storage:
+  - changed-files:
+      - any-glob-to-any-file: clusters/storage/**/*

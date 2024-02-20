@@ -1,14 +1,14 @@
 ---
 creation_rules:
-  - path_regex: infrastructure/ansible/.*\.sops\.ya?ml
+  - path_regex: clusters/.*/ansible/.*\.sops\.ya?ml
     unencrypted_regex: "^(kind)$"
     age: >-
       age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr
-  - path_regex: kubernetes/.*\.sops\.ya?ml
+  - path_regex: clusters/.*/k8s/.*\.sops\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     age: >-
       age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr
-  - path_regex: infrastructure/talos/.*\.sops\.ya?ml
+  - path_regex: clusters/.*/talos/.*\.sops\.ya?ml
     unencrypted_regex: "^(kind)$"
     age: >-
       age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr

@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster-apps-volsync
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: "./clusters/compute/k8s/apps/system/volsync/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: false # no flux ks dependents
+  timeout: 2m
+  dependsOn:
+    - name: cluster-apps-snapshot-controller
+    - name: cluster-apps-k8s-ycl
+    - name: cluster-apps-k8tz

@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./kubernetes/cluster-0/apps/networking/pod-gateway/downloads"
+  path: "./clusters/compute/k8s/apps/networking/pod-gateway/downloads"
   prune: true
   sourceRef:
     kind: GitRepository
