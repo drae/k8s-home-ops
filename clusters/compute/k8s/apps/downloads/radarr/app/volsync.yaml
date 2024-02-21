@@ -34,3 +34,40 @@ spec:
     storageClassName: zfs-local-dataset
     cacheCapacity: 3G
     cacheStorageClassName: local-hostpath
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: radarr-restic-secret-minio
+  namespace: downloads
+stringData:
+  RESTIC_REPOSITORY: "s3:${MINIO_REPOSITORY}/volsync/radarr"
+  RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+  AWS_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${MINIO_SECRET_ACCESS_KEY}
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: radarr-minio
+  namespace: downloads
+spec:
+  sourcePVC: config-radarr-0
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    copyMethod: Snapshot
+    repository: radarr-restic-secret-minio
+    pruneIntervalDays: 7
+    retain:
+      hourly: 24
+      daily: 7
+      weekly: 5
+    moverSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+    volumeSnapshotClassName: zfs-local-dataset
+    storageClassName: zfs-local-dataset
+    cacheCapacity: 1G
+    cacheStorageClassName: local-hostpath
