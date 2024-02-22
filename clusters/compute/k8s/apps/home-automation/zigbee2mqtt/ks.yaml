@@ -27,4 +27,3 @@ spec:
     - name: rook-ceph-cluster
     - name: multus
     - name: volsync
-    - name: k8tz

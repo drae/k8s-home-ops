@@ -19,15 +19,15 @@ spec:
       main:
         type: statefulset
         annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
               [{
                 "name":"multus-iot",
                 "namespace": "networking",
-                "ips": ["10.1.20.22/24"]
+                "ips": ["10.1.20.21/24"]
               }]
-          reloader.stakater.com/auto: "true"
-        pod:
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
