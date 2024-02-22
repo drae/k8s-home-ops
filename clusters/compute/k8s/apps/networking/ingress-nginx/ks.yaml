@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname nginx-internal
+  name: &appname ingress-nginx-int
   namespace: flux-system
 spec:
   targetNamespace: networking
@@ -23,7 +23,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname nginx-external
+  name: &appname ingress-nginx-ext
   namespace: flux-system
 spec:
   targetNamespace: networking
@@ -38,4 +38,4 @@ spec:
     name: k8s-home-ops
   wait: false
   dependsOn:
-    - name: nginx-internal
+    - name: ingress-nginx-int
