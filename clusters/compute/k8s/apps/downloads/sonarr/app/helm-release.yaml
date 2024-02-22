@@ -67,6 +67,9 @@ spec:
           - hosts:
               - *host
     persistence:
+      config:
+        enabled: true
+        existingClaim: "${VOLSYNC_CLAIM}"
       media:
         enabled: true
         type: nfs

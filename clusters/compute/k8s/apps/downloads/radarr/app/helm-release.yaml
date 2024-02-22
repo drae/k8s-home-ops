@@ -68,8 +68,6 @@ spec:
       config:
         enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
-        globalMounts:
-          - path: /config
       media:
         enabled: true
         type: nfs

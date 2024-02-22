@@ -22,7 +22,6 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsNonRoot: true
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
             fsGroup: ${APP_GID}
@@ -69,5 +68,3 @@ spec:
       config:
         enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
-        globalMounts:
-          - path: /config
