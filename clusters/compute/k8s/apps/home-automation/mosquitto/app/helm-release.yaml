@@ -57,7 +57,7 @@ spec:
         advancedMounts:
           main:
             main:
-              - path: /data
+              - path: /mosquitto/data
       config:
         enabled: true
         type: configMap
