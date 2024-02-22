@@ -18,6 +18,7 @@ spec:
   wait: false # no flux ks dependents
   postBuild:
     substitute:
+      APP: *appname
       APP_UID: "0"
       APP_GID: "0"
       VOLSYNC_CLAIM: home-assistant-config
