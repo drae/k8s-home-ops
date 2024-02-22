@@ -2,18 +2,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-kvm-cdi
+  name: &appname cdi
   namespace: flux-system
   labels:
     substitution.flux.home.arpa/disabled: "true"
 spec:
-  interval: 5m
-  prune: true
-  wait: true
+  targetNamespace: cdi
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
   path: "./deploy"
+  prune: true
   sourceRef:
     kind: GitRepository
     name: cdi
+  wait: true
   dependsOn: []
   patches:
     - patch: |
@@ -29,14 +33,19 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-kvm-cdi-manifests
+  name: &appname cdi-manifests
   namespace: flux-system
 spec:
+  targetNamespace: cdi
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   interval: 10m
-  prune: false
   path: "./clusters/compute/k8s/kvm/cdi/app/manifests"
+  prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+  wait: true
   dependsOn:
-    - name: cluster-kvm-cdi
+    - name: cdi

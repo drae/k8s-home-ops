@@ -15,6 +15,8 @@ spec:
         name: rook-ceph-charts
         namespace: flux-system
   values:
+    clusterName: "${SECRET_CLUSTER_NAME}"
+    operatorNamespace: "rook-ceph"
     toolbox:
       enabled: false
     monitoring:
@@ -30,6 +32,8 @@ spec:
       bluefs_buffered_io = false
       mon_data_avail_warn = 10
     cephClusterSpec:
+      cephVersion:
+        image: "quay.io/ceph/ceph:v18.2.0"
       disruptionManagement:
         managePodBudgets: true
       healthCheck:
@@ -104,7 +108,7 @@ spec:
         nodes:
           - name: alpha
             devices:
-              - name: "/dev/disk/by-id/nvme-WD_Blue_SN570_500GB_22115N806818"
+              - name: "^/dev/disk/by-id/nvme-WD_Blue_SN570_500GB.*"
     ingress:
       dashboard:
         ingressClassName: ingress-nginx-int

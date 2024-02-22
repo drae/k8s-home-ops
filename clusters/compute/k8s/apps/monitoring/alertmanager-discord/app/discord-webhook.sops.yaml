@@ -1,0 +1,27 @@
+# yamllint disable
+apiVersion: v1
+kind: Secret
+metadata:
+    name: alertmanager-discord
+stringData:
+    DISCORD_WEBHOOK: ENC[AES256_GCM,data:HG10hpy65aj8XZNe4LftOEeT3aKfNIb2WCQB+04pu6g/U7IMyHpsZ8tYDrok5w2T5h0bQlR3LfJmfM1od/hdQTvd2XEqT+emQVfl1jrN7Pjpq2Liga5Geto/8V053XCx6+MXZ1uRR10IzSpkiaIgI3fgKwbSIruftg==,iv:zLLDOQoLjpJzvMXrAPxsImpZVvuCj61YnX6yGVQ6CfM=,tag:L7bZEFE03Z4VZNBt2I1nEA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBBbCt1SjJ1MncwMkF0Z2Rl
+            UWdyTFpvejBGb3RvMnNFZWR0cWh1Z2ZsWnhJCnpRcSt5ZTZpM2tzM0oxOG9WWng4
+            ZkdRbHg2NzRwSS9xUldpVVRORUQ2VlkKLS0tIGVIa2lwcVpWSDJiTzkzdEROelpx
+            Qng0OXpqZkJlUEdFTTNwYVBtdjU3WXMKMNpmB7o1CTY0y+dkCDN4K0fcAWni/wwD
+            E1HwpyIDcLOcQHlHlQNJ8tyHd8/sRb4DkMM1Q9oEgtvgkHwlNRslcg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-02-21T18:01:18Z"
+    mac: ENC[AES256_GCM,data:EJ+pcE+T5d/mzWUxOK6Qpewx0QtzLelB1cbP5SqUCOnmiElcqUS9s6IuKQoondV7GIePzb8d3jJLUcP9qtrSKisLOdJUS5weyItssjJxL8JSL4ZNU+VOFRJegw8IIQC2kljdjcb12QIve6TCkdNWkQzT1csjsKyO9qKXAbaMDOA=,iv:vJn0bY+Kj7dyh5+NhHke/LaMHWIMf4Hx6yxl8E83Oc8=,tag:5yjyR2kl5/UBVjwfu1uUvA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1

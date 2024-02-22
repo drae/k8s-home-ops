@@ -11,17 +11,19 @@ tasks:
     # prompt: Bootstrap Flux into the '{{.cluster}}' cluster... continue?
     cmds:
       # Install Flux and essential Prometheus crd's
-      - kubectl --context {{.cluster}} apply --server-side --kustomize {{.CLUSTERS_DIR}}/{{.cluster}}/k8s/bootstrap/flux
+      - kubectl --context {{.cluster}} apply --server-side --kustomize {{.CLUSTERS_DIR}}/{{.cluster}}/k8s/bootstrap/
       # Install sops secret
       - sops --decrypt {{.CLUSTERS_DIR}}/{{.cluster}}/k8s/bootstrap/age-key.sops.yaml | kubectl --context {{.cluster}} apply -f -
       # Install Flux Kustomization resources - this kicks everything off
       - kubectl --context {{.cluster}} apply --server-side --kustomize {{.CLUSTERS_DIR}}/{{.cluster}}/k8s/flux/configure
     preconditions:
-      - sh: kubectl config get-contexts {{.cluster}}
+      - sh: "kubectl config get-contexts {{.cluster}}"
         msg: "Kubectl context {{.cluster}} not found"
-      - test -f $HOME/.config/sops/age/personal-keys.txt
+      - sh: "test -f $HOME/.config/sops/age/personal-keys.txt"
+        msg: "Personel SOPS keys missing from sops/age"
       - test -f {{.CLUSTERS_DIR}}/{{.cluster}}/k8s/bootstrap/age-key.sops.yaml
-      - sops --decrypt {{.CLUSTERS_DIR}}/{{.cluster}}/k8s/bootstrap/age-key.sops.yaml
+      - sh: "sops --decrypt {{.CLUSTERS_DIR}}/{{.cluster}}/k8s/bootstrap/age-key.sops.yaml"
+        msg: "Cannot decrypt flux sops key"
       - kustomize build {{.CLUSTERS_DIR}}/{{.cluster}}/k8s/bootstrap
       - kustomize build {{.CLUSTERS_DIR}}/{{.cluster}}/k8s/flux/configure
     requires:

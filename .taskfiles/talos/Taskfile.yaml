@@ -45,13 +45,13 @@ tasks:
       - which helmfile
       - sh: kubectl config get-contexts {{.cluster}}
         msg: "Kubectl context {{.cluster}} not found"
-      - test -f {{.INFRASTRUCTURE_DIR}}/talos/integrations/helmfile.yaml
+      - test -f {{.CLUSTERS_DIR}}/{{.cluster}}/talos/integrations/helmfile.yaml
 
   fetch-kubeconfig:
     desc: Fetch kubeconfig from Talos controllers
     cmd: |
       talosctl --context {{.cluster}} kubeconfig --nodes {{.controller}} \
-          --force-context-name {{.cluster}} {{.CLUSTERS_DIR}}/{{.cluster}}
+          --force --force-context-name {{.cluster}} {{.CLUSTERS_DIR}}/{{.cluster}}
     requires:
       vars:
         - cluster
@@ -102,7 +102,7 @@ tasks:
     cmds:
       - talosctl --context {{.cluster}} apply-config
         --nodes "{{.hostname}}"
-        --file "{{.CLUSTERS_DIR}}/{{.cluster}}/talos/clusterconfig/{{.filename}}"
+        --file "{{.CLUSTERS_DIR}}/{{.cluster}}/talos/clusterconfig/{{.filename}}" --insecure
         {{ if eq "true" .dry_run }}--dry-run{{ end }}
     requires:
       vars:

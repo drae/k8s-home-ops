@@ -1,0 +1,44 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app alertmanager-discord
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 30m
+  install:
+    createNamespace: true
+  upgrade:
+    cleanupOnFail: true
+  values:
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: docker.io/rogerrum/alertmanager-discord
+              tag: 1.0.6
+            envFrom:
+              - secretRef:
+                  name: *app
+            env:
+              VERBOSE: ON
+    service:
+      main:
+        ports:
+          http:
+            port: 9094
+    ingress:
+      main:
+        enabled: false

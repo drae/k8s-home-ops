@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: weave-gitops
-  namespace: flux-system
 spec:
   interval: 30m
   chart:
@@ -16,11 +15,6 @@ spec:
         namespace: flux-system
   install:
     createNamespace: true
-    remediation:
-      retries: 5
-  upgrade:
-    remediation:
-      retries: 5
   values:
     adminUser:
       create: true
@@ -36,6 +30,11 @@ spec:
       tls:
         - hosts:
             - *host
+    podLabels:
+      egress.home.arpa/apiserver: allow
+      egress.home.arpa/internet: allow
+      egress.home.arpa/kubedns: allow # TODO: Remove when clusterNetworkPolicy is in place
+      ingress.home.arpa/nginx-internal: allow
   valuesFrom:
     - kind: Secret
       name: weave-gitops

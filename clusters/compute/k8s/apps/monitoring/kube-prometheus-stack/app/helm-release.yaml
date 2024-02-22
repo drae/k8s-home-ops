@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
-  namespace: monitoring
 spec:
   interval: 30m
   chart:
@@ -115,26 +114,6 @@ spec:
           - hosts:
               - "prometheus.${SECRET_DOMAIN_PROXY}"
       prometheusSpec:
-        replicas: 1
-        replicaExternalLabelName: __replica__
-        externalLabels:
-          cluster: ${SECRET_CLUSTER_NAME}
-        podAntiAffinity: hard
-        retentionSize: 22GB
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
-        retention: 14d
-        enableAdminAPI: true
-        walCompression: true
-        storageSpec:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: zfs-local-dataset
-              resources:
-                requests:
-                  storage: 25Gi
         additionalAlertManagerConfigs:
           - scheme: http
             static_configs:
@@ -152,6 +131,31 @@ spec:
                   - "${IP_ADDR_LAN_GW}:9100"
                   - "${IP_ADDR_LAN_NAS}:9100"
                   - "${IP_ADDR_LAN_GRAVITY}:9100"
+        alertingEndpoints:
+          - namespace: monitoring
+            name: alertmanager
+            port: 9093
+            apiVersion: v2
+        replicas: 1
+        replicaExternalLabelName: __replica__
+        externalLabels:
+          cluster: ${SECRET_CLUSTER_NAME}
+        podAntiAffinity: hard
+        retentionSize: 22GB
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        retention: 14d
+        enableAdminAPI: true
+        walCompression: true
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 25Gi
         resources:
           requests:
             cpu: 10m

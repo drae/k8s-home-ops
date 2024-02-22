@@ -1,10 +1,45 @@
 ---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  PYTHON_BIN: python3
+
+env:
+  PATH: "{{.PROJECT_DIR}}/.venv/bin:$PATH"
+  VIRTUAL_ENV: "{{.PROJECT_DIR}}/.venv"
+  ANSIBLE_COLLECTIONS_PATH: "{{.PROJECT_DIR}}/.venv/galaxy"
+  ANSIBLE_ROLES_PATH: "{{.PROJECT_DIR}}/.venv/galaxy/ansible_roles"
+  ANSIBLE_VARS_ENABLED: "host_group_vars"
+
 tasks:
-  init:
-    desc: Install/Upgrade required ansible collections
-    dir: infrastructure/ansible
+  venv:
+    desc: Set up Python virtual environment
     cmds:
-      - "ansible-galaxy install -r ./requirements.yml --force"
-      - "ansible-galaxy collection install -r ./requirements.yml --force"
+      - true && {{.PYTHON_BIN}} -m venv {{.PROJECT_DIR}}/.venv
+      - true && {{.PROJECT_DIR}}/.venv/bin/python3 -m pip install --upgrade pip setuptools wheel
+      - true && {{.PROJECT_DIR}}/.venv/bin/python3 -m pip install --upgrade --requirement {{.CLUSTERS_DIR}}/{{.cluster}}/ansible/requirements.txt
+      - true && {{.PROJECT_DIR}}/.venv/bin/ansible-galaxy install --role-file "{{.CLUSTERS_DIR}}/{{.cluster}}/ansible/requirements.yml" --force
+    sources:
+      - "{{.CLUSTERS_DIR}}/{{.cluster}}/ansible/requirements.txt"
+      - "{{.CLUSTERS_DIR}}/{{.cluster}}/ansible/requirements.yml"
+    generates:
+      - "{{.PROJECT_DIR}}/.venv/pyvenv.cfg"
+
+  run:
+    desc: Run an Ansible playbook for configuring a cluster
+    summary: |
+      Args:
+        cluster: Cluster to run command against (required)
+        playbook: Playbook to run (required)
+    prompt: Run Ansible playbook '{{.playbook}}' against the '{{.cluster}}' cluster ... continue?
+    cmd: |
+      true && {{.PROJECT_DIR}}/.venv/bin/ansible-playbook \
+        --inventory {{.CLUSTERS_DIR}}/{{.cluster}}/ansible/inventory/hosts.yml \
+        {{.CLUSTERS_DIR}}/{{.cluster}}/ansible/playbooks/{{.playbook}}.yml {{.CLI_ARGS}}
+    requires:
+      vars: ["cluster", "playbook"]
+    preconditions:
+      - test -d {{.PROJECT_DIR}}/.venv
+      - test -f {{.CLUSTERS_DIR}}/{{.cluster}}/ansible/inventory/hosts.yml
+      - test -f {{.CLUSTERS_DIR}}/{{.cluster}}/ansible/playbooks/{{.playbook}}.yml

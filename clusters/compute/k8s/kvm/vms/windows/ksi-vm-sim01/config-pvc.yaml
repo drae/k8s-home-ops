@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: ksi-vm-sim01-c-drive
 spec:
-  storageClassName: zfs-local-dataset
+  storageClassName: ceph-block
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce

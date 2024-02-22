@@ -5,4 +5,5 @@ kind: Kustomization
 namespace: networking
 resources:
   - ./dnsendpoint-crd.yaml
-  - ./cloudflare
+  - ./cloudflare-token.sops.yaml
+  - ./helm-release.yaml

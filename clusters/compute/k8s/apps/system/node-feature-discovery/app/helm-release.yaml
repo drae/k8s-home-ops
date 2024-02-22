@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: node-feature-discovery
-  namespace: system
 spec:
   interval: 30m
   chart:
@@ -27,7 +26,6 @@ spec:
           memory: 51Mi
         limits:
           memory: 51Mi
-
     worker:
       resources:
         requests:

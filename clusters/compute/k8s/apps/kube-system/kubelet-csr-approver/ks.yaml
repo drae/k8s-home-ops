@@ -2,9 +2,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-kubelet-csr-approver
-  namespace: flux-system
+  name: &appname kubelet-csr-approver
 spec:
+  targetNamespace: kube-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   interval: 10m
   path: ./clusters/compute/k8s/apps/kube-system/kubelet-csr-approver/app
   prune: true

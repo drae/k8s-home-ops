@@ -1,0 +1,72 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: mosquitto
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 30m
+  values:
+    controllers:
+      main:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          labels:
+            ingress.home.arpa/lan: allow
+            egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          main:
+            image:
+              repository: ghcr.io/k8s-at-home/eclipse-mosquitto
+              tag: v2.0.15
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10M
+              limits:
+                memory: 10M
+    service:
+      main:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SVB_LB_MOSQUITO}
+        externalTrafficPolicy: Local
+        ports:
+          http:
+            enabled: false
+          mqtt:
+            enabled: true
+            primary: true
+            port: 1883
+            protocol: TCP
+    persistence:
+      data:
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          main:
+            main:
+              - path: /data
+      config:
+        enabled: true
+        type: configMap
+        name: mosquitto-config
+        advancedMounts:
+          main:
+            main:
+              - path: /mosquitto/config/mosquitto.conf
+                subPath: mosquitto.conf

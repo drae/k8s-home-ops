@@ -3,9 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: &app tvheadend
-  namespace: media
   labels:
-    app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
 spec:
   type: ExternalName

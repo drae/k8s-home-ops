@@ -34,6 +34,10 @@ receivers:
               {{- end }}
             {{- end }}
           {{- end }}
+  - name: "discord"
+    webhook_configs:
+      - url: "http://alertmanager-discord.monitoring.svc.cluster.local:9094"
+
 route:
   group_by: ["alertname", "job"]
   group_wait: 30s
@@ -48,6 +52,10 @@ route:
       matchers:
         - severity = critical
       continue: true
+    - receiver: "discord"
+      continue: true
+      matchers:
+        - severity = "critical"
 inhibit_rules:
   - source_matchers:
       - severity = "critical"

@@ -7,7 +7,6 @@ metadata:
     app.kubernetes.io/instance: vector-aggregator
     app.kubernetes.io/name: vector-aggregator
   name: vector-aggregator
-  namespace: monitoring
 spec:
   chart:
     spec:

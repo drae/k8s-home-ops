@@ -2,9 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-grafana
+  name: &appname grafana
   namespace: flux-system
 spec:
+  targetNamespace: monitoring
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
   interval: 10m
   path: "./clusters/compute/k8s/apps/monitoring/grafana/app"
   prune: true
@@ -13,7 +17,6 @@ spec:
     name: k8s-home-ops
   wait: false # no flux ks dependents
   dependsOn:
-    - name: cluster-apps-democratic-csi-zfs-local-dataset
-    - name: cluster-apps-kube-prometheus-stack
-    - name: cluster-apps-k8s-ycl
-    - name: cluster-apps-k8tz
+    - name: rook-ceph-cluster
+    - name: kube-prometheus-stack
+    - name: k8tz

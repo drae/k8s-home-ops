@@ -1,0 +1,27 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname esphome
+  namespace: flux-system
+spec:
+  targetNamespace: home-automation
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./clusters/compute/k8s/apps/home-automation/esphome/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: false # no flux ks dependents
+  postBuild:
+    substitute:
+      VOLSYNC_CLAIM: esphome-config
+      VOLSYNC_CAPACITY: 5Gi
+  dependsOn:
+    - name: rook-ceph-cluster
+    - name: multus-config
+    - name: volsync
+    - name: k8tz

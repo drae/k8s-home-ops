@@ -10,7 +10,6 @@ sources:
     address: 0.0.0.0:6000
     type: vector
     version: "2"
-
   journald_source:
     type: vector
     address: 0.0.0.0:6002
@@ -29,15 +28,14 @@ sinks:
     remove_label_fields: true
     remove_timestamp: true
     labels:
-      hostname: '{{ kubernetes.pod_node_name }}'
+      hostname: "{{ kubernetes.pod_node_name }}"
       app: '{{ kubernetes.pod_labels."app.kubernetes.io/name" }}'
-      container: '{{ kubernetes.container_name }}'
-      filename: '{{ kubernetes.file }}'
+      container: "{{ kubernetes.container_name }}"
+      filename: "{{ kubernetes.file }}"
       instance: '{{ kubernetes.pod_labels."app.kubernetes.io/instance" }}'
-      namespace: '{{ kubernetes.pod_namespace }}'
-      node: '{{ kubernetes.pod_node_name }}'
-      pod: '{{ kubernetes.pod_name }}'
-
+      namespace: "{{ kubernetes.pod_namespace }}"
+      node: "{{ kubernetes.pod_node_name }}"
+      pod: "{{ kubernetes.pod_name }}"
   loki_journal:
     type: loki
     endpoint: http://loki-gateway.monitoring.svc.cluster.local.

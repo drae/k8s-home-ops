@@ -4,9 +4,9 @@ clusterName: ${clusterName}
 endpoint: https://${clusterEndpointIP}:6443
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
-talosVersion: v1.6.4
+talosVersion: v1.6.5
 # renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
-kubernetesVersion: 1.29.1
+kubernetesVersion: 1.29.2
 
 cniConfig:
   name: none
@@ -17,6 +17,7 @@ clusterSvcNets:
   - 10.210.0.0/12
 
 additionalApiServerCertSans: &san
+  - ${clusterEndpointIP}
   - ${clusterName}
   - ${clusterName}.${clusterDNSSuffix}
   - ${clusterName}.${clusterDNSSuffix}.${domainName}
@@ -28,7 +29,7 @@ nodes:
     ipAddress: 10.1.10.21
     controlPlane: true
     installDiskSelector:
-      size: "<= 500GB"
+      size: "<= 256GB"
       type: ssd
     kernelModules:
       - name: spl
@@ -61,18 +62,6 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-    patches:
-      - |-
-        machine:
-          kubelet:
-            extraMounts:
-              - destination: /var/openebs/keys
-                type: bind
-                source: /var/openebs/keys
-                options:
-                  - rbind
-                  - rshared
-                  - rw
 
 controlPlane:
   schematic:
@@ -137,17 +126,17 @@ controlPlane:
             - mitigations=off
         kubelet:
           extraArgs:
-            feature-gates: CronJobTimeZone=true,GracefulNodeShutdown=true,ServerSideApply=true
+            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
             rotate-server-certificates: "true"
           extraConfig:
-            maxPods: 150
+            maxPods: 200
           nodeIP:
             validSubnets:
               - 10.1.10.0/24
         network:
           disableSearchDomain: true
           extraHostEntries:
-            - ip: 10.1.10.21
+            - ip: ${clusterEndpointIP}
               aliases:
                 - ${clusterName}
                 - ${clusterName}.${clusterDNSSuffix}

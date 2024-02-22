@@ -1,13 +1,8 @@
 ---
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
-namespace: downloads
 resources:
   - ./helm-release.yaml
-  - ./volsync.yaml
-configMapGenerator:
-  - name: prowlarr-litestream
-    files:
-      - config/litestream.yml
-generatorOptions:
-  disableNameSuffixHash: true
+  - ./network-policy.yaml
+  # PVC and volsync templates
+  - ../../../../templates/volsync

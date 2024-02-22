@@ -3,7 +3,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: alertmanager
-  namespace: monitoring
 spec:
   interval: 30m
   chart:
@@ -26,15 +25,9 @@ spec:
             - name: storage
               accessMode: ReadWriteOnce
               size: 50Mi
-              storageClass: zfs-local-dataset
+              storageClass: ceph-block
               globalMounts:
                 - path: /alertmanager
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           main:
             image:

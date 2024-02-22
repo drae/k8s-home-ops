@@ -19,7 +19,7 @@ x-env: &env
   app_gid: "{{.app_gid}}"
 
 vars:
-  scriptsDir: "{{.ROOT_DIR}}/.taskfiles/_scripts"
+  scriptsDir: "{{.ROOT_DIR}}/.taskfiles/volsync/scripts"
   templatesDir: "{{.ROOT_DIR}}/.taskfiles/volsync/templates"
   ts: '{{now | date "150405"}}'
 
