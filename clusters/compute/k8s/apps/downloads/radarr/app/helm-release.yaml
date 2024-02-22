@@ -82,6 +82,8 @@ spec:
           - path: /config
       media:
         enabled: true
-        existingClaim: nfs-apollo--media
+        type: nfs
+        server: 10.1.10.10
+        path: /mnt/zstore/media
         globalMounts:
-          - path: /mnt/media/
+          - path: /mnt/media

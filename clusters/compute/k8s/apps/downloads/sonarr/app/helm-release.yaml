@@ -78,8 +78,9 @@ spec:
               - *host
     persistence:
       media:
+        enabled: true
         type: nfs
-        server: ${IP_ADDR_LAN_NAS}
+        server: 10.1.10.10
         path: /mnt/zstore/media
         globalMounts:
-          - path: /mnt/media/
+          - path: /mnt/media
