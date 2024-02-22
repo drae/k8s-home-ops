@@ -11,7 +11,7 @@ spec:
       "plugins": [
         {
           "type": "macvlan",
-          "master": "lagg0.20",
+          "master": "eth0",
           "mode": "bridge",
           "capabilities": {
             "ips": true
