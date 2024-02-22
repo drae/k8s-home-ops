@@ -37,3 +37,5 @@ spec:
     kind: GitRepository
     name: k8s-flux-gitops
   wait: false
+  dependsOn:
+    - name: cilium
