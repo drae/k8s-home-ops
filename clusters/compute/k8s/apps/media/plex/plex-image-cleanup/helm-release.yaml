@@ -12,7 +12,7 @@ spec:
       interval: 30m
       sourceRef:
         kind: HelmRepository
-        name: bjw-s
+        name: bjw-s-charts
         namespace: flux-system
   interval: 30m
   values:
@@ -35,12 +35,9 @@ spec:
                           - plex
                   topologyKey: kubernetes.io/hostname
           enableServiceLinks: false
-          labels:
-            egress.home.arpa/internet: allow
-            egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
           securityContext:
-            runAsUser: 568
-            runAsGroup: 568
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
             runAsNonRoot: true
         containers:
           main:
@@ -70,12 +67,6 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 128Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
     service:
       main:
         enabled: false
