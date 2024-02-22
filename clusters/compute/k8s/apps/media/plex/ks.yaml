@@ -41,7 +41,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/main/apps/media/plex/plex-image-cleanup"
+  path: "./clusters/compute/k8s/apps/media/plex/plex-image-cleanup"
   prune: true
   sourceRef:
     kind: GitRepository
