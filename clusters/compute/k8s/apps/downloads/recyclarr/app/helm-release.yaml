@@ -21,9 +21,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          labels:
-            egress.home.arpa/world: allow
-            egress.home.arpa/kubedns: allow # TODO: Remove when clusterNetworkPolicy is in place
           securityContext:
             runAsNonRoot: true
             runAsUser: ${APP_UID}
@@ -40,12 +37,6 @@ spec:
               - "/bin/sh"
               - "-c"
               - "cp /tmp/config/recyclarr.yml /config/recyclarr.yml"
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
         containers:
           main:
             image:

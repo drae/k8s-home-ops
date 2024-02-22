@@ -5,7 +5,6 @@ resources:
   - ./cloudflared-secret.sops.yaml
   - ./dnsEndpoint.yaml
   - ./helm-release.yaml
-  - ./network-policy.yaml
 configMapGenerator:
   - name: cloudflared-configmap
     files:

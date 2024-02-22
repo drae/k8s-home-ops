@@ -33,10 +33,6 @@ spec:
                 "namespace": "network",
                 "ips": ["10.1.20.20/24"]
               }]
-          labels:
-            ingress.home.arpa/nginx-external: allow
-            egress.home.arpa/world: allow
-            egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
         containers:
           main:
             image:

@@ -21,9 +21,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          labels:
-            ingress.home.arpa/lan: allow
-            egress.home.arpa/kubedns: allow # FIXME: Remove when clusterNetworkPolicy is in place
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}

@@ -22,10 +22,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          labels:
-            egress.home.arpa/internet: allow
-            egress.home.arpa/kubedns: allow # TODO: Remove when clusterNetworkPolicy is in place
-            ingress.home.arpa/nginx-internal: allow
           securityContext:
             runAsNonRoot: true
             runAsUser: ${APP_UID}
@@ -50,12 +46,6 @@ spec:
                 cpu: 20m
               limits:
                 memory: 768M
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
     service:
       main:
         ports:

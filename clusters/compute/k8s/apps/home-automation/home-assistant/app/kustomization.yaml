@@ -3,6 +3,5 @@ kind: Kustomization
 resources:
   - ./home-assistant.sops.yaml
   - ./helm-release.yaml
-  - ./network-policy.yaml
   # PVC and volsync templates
   - ../../../../templates/volsync
