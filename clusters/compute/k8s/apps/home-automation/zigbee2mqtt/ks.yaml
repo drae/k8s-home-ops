@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./clusters/compute/k8s/apps/home/zigbee2mqtt/app"
+  path: "./clusters/compute/k8s/apps/home-automation/zigbee2mqtt/app"
   prune: true
   sourceRef:
     kind: GitRepository
