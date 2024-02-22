@@ -4,6 +4,7 @@ kind: Secret
 metadata:
     name: alertmanager-discord
 stringData:
+    DISCORD_USERNAME: ENC[AES256_GCM,data:jcOEtSOR7H7kSA==,iv:yZlP3OP+f5Wv7JxtT4ZeHMrK0XqwIMnlvJLxcW0pLVQ=,tag:5TR2UHZHG3hHfWlw9bT6ZA==,type:str]
     DISCORD_WEBHOOK: ENC[AES256_GCM,data:HG10hpy65aj8XZNe4LftOEeT3aKfNIb2WCQB+04pu6g/U7IMyHpsZ8tYDrok5w2T5h0bQlR3LfJmfM1od/hdQTvd2XEqT+emQVfl1jrN7Pjpq2Liga5Geto/8V053XCx6+MXZ1uRR10IzSpkiaIgI3fgKwbSIruftg==,iv:zLLDOQoLjpJzvMXrAPxsImpZVvuCj61YnX6yGVQ6CfM=,tag:L7bZEFE03Z4VZNBt2I1nEA==,type:str]
 sops:
     kms: []
@@ -20,8 +21,8 @@ sops:
             Qng0OXpqZkJlUEdFTTNwYVBtdjU3WXMKMNpmB7o1CTY0y+dkCDN4K0fcAWni/wwD
             E1HwpyIDcLOcQHlHlQNJ8tyHd8/sRb4DkMM1Q9oEgtvgkHwlNRslcg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-02-21T18:01:18Z"
-    mac: ENC[AES256_GCM,data:EJ+pcE+T5d/mzWUxOK6Qpewx0QtzLelB1cbP5SqUCOnmiElcqUS9s6IuKQoondV7GIePzb8d3jJLUcP9qtrSKisLOdJUS5weyItssjJxL8JSL4ZNU+VOFRJegw8IIQC2kljdjcb12QIve6TCkdNWkQzT1csjsKyO9qKXAbaMDOA=,iv:vJn0bY+Kj7dyh5+NhHke/LaMHWIMf4Hx6yxl8E83Oc8=,tag:5yjyR2kl5/UBVjwfu1uUvA==,type:str]
+    lastmodified: "2024-02-22T17:33:13Z"
+    mac: ENC[AES256_GCM,data:2Of22enhK7WoYWPR3haoOQrMMlLgx/2TNYQb9PTkG93Gskd5urOESd5BxaCssgY8noiGVSYTB0ZIjbfENjctlGvn39N56XcPwE02GZP+UHqLVO3bOwnZ2JMWCIoyfQZwytXCxRVLRFCzkR8GToBDWl8sHbgFQeGKm71QavUsGtQ=,iv:YvLaCQP+ilMpYa7S5AuYfqKGobTdccwnVScSaEtk6GE=,tag:ZjhdKJnj2CfMFFX3RCSd2g==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
