@@ -108,7 +108,7 @@ spec:
         nodes:
           - name: alpha
             devices:
-              - name: "^/dev/disk/by-id/nvme-WD_Blue_SN570_500GB.*"
+              - name: "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b45f4bd5e"
     ingress:
       dashboard:
         ingressClassName: ingress-nginx-int
