@@ -20,4 +20,5 @@ spec:
   dependsOn:
     - name: kubevirt
     - name: cdi
+    - name: rook-ceph-cluster
     - name: vms-common
