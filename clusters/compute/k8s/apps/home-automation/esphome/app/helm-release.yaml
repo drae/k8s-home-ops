@@ -26,13 +26,6 @@ spec:
             runAsGroup: ${APP_GID}
             fsGroup: ${APP_GID}
             fsGroupChangePolicy: OnRootMismatch
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": ["10.1.20.21/24"]
-              }]
         containers:
           main:
             image:
