@@ -25,5 +25,5 @@ spec:
   dependsOn:
     - name: mosquitto
     - name: rook-ceph-cluster
-    - name: multus
+    - name: multus-config
     - name: volsync
