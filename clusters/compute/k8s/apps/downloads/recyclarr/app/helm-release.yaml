@@ -17,9 +17,11 @@ spec:
   values:
     controllers:
       main:
-        type: statefulset
+        type: cronjob
         annotations:
           reloader.stakater.com/auto: "true"
+        cronjob:
+          schedule: "@daily"
         pod:
           securityContext:
             runAsNonRoot: true
@@ -27,34 +29,37 @@ spec:
             runAsGroup: ${APP_GID}
             fsGroup: ${APP_GID}
             fsGroupChangePolicy: OnRootMismatch
-        initContainers:
-          init-config:
-            image:
-              repository: public.ecr.aws/docker/library/busybox
-              tag: latest@sha256:6d9ac9237a84afe1516540f40a0fafdc86859b2141954b4d643af7066d598b74
-              pullPolicy: IfNotPresent
-            command:
-              - "/bin/sh"
-              - "-c"
-              - "cp /tmp/config/recyclarr.yml /config/recyclarr.yml"
         containers:
           main:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 6.0.2
+            args:
+              - sync
             env:
+              COMPlus_EnableDiagnostics: "0"
               SONARR_API_KEY: ${SONARR_API_KEY}
               RADARR_API_KEY: ${RADARR_API_KEY}
             resources:
               requests:
                 cpu: 5m
-                memory: 36M
+                memory: 50M
               limits:
                 memory: 128M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
     persistence:
       config:
         enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          main:
+            main:
+              - path: /config
       config-file:
         enabled: true
         type: configMap
@@ -62,7 +67,8 @@ spec:
         advancedMounts:
           main:
             init-config:
-              - path: /tmp/config
+              - path: /config/recyclarr.yml
+                subPath: recyclarr.yml
                 readOnly: true
     service:
       main:
