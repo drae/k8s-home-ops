@@ -10,15 +10,15 @@ includes:
   ansible:
     taskfile: ".taskfiles/ansible"
     dir: .taskfiles/ansible
+  disk:
+    taskfile: ".taskfiles/disk"
+    dir: .taskfiles/disk
   flux:
     dir: .taskfiles/flux
     taskfile: .taskfiles/flux
   k8s:
     taskfile: .taskfiles/k8s
     dir: .taskfiles/k8s
-  rook:
-    taskfile: ".taskfiles/rook"
-    dir: .taskfiles/rook
   sops:
     taskfile: ".taskfiles/sops"
     dir: .taskfiles/sops
