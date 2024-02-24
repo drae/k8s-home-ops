@@ -24,7 +24,7 @@ spec:
         annotations:
           storageclass.kubernetes.io/is-default-class: "false"
         reclaimPolicy: Delete
-        volumeBindingMode: WaitForFirstConsumer
+        volumeBindingMode: Immediate
         # distributed support is not yet ready for expansion
         allowVolumeExpansion: false
     controller:
@@ -39,7 +39,7 @@ spec:
         extraArgs:
           - --leader-election=false
           - --node-deployment=true
-          - --node-deployment-immediate-binding=false
+          - --node-deployment-immediate-binding=true
           - --feature-gates=Topology=true
           - --strict-topology=true
           - --enable-capacity=true
