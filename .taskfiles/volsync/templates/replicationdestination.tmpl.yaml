@@ -11,7 +11,7 @@ spec:
     repository: "${app}-volsync-minio"
     destinationPVC: "${claim}"
     copyMethod: Direct
-    storageClassName: ceph-block
+    storageClassName: zfs-local-dataset
     # storageClassName: ceph-filesystem
     # accessModes: ["ReadWriteMany"]
     # IMPORTANT NOTE:

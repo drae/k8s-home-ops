@@ -1,10 +1,15 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: rook-ceph
   namespace: flux-system
 spec:
+  targetNamespace: rook-ceph
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: rook-ceph
   interval: 10m
   path: "./clusters/compute/k8s/apps/rook-ceph/rook-ceph/operator"
   prune: true
@@ -12,15 +17,18 @@ spec:
     kind: GitRepository
     name: k8s-home-ops
   wait: true
-  dependsOn:
-    - name: csi-addons-controller-manager
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: rook-ceph-cluster
   namespace: flux-system
 spec:
+  targetNamespace: rook-ceph
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: rook-ceph-cluster
   interval: 10m
   path: "./clusters/compute/k8s/apps/rook-ceph/rook-ceph/cluster"
   prune: true
@@ -30,19 +38,4 @@ spec:
   wait: true
   dependsOn:
     - name: rook-ceph
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: rook-ceph-addons
-  namespace: flux-system
-spec:
-  interval: 10m
-  path: "./clusters/compute/k8s/apps/rook-ceph/rook-ceph/addons"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-home-ops
-  wait: false
-  dependsOn:
-    - name: rook-ceph-cluster
+    - name: snapshot-controller

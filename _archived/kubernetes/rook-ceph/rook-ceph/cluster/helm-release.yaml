@@ -1,47 +1,46 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: rook-ceph-cluster
-  namespace: rook-ceph
 spec:
   interval: 30m
   chart:
     spec:
       chart: rook-ceph-cluster
-      version: v1.12.3
+      version: v1.13.5
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
         namespace: flux-system
   values:
+    clusterName: "${SECRET_CLUSTER_NAME}"
+    operatorNamespace: "rook-ceph"
     toolbox:
       enabled: false
     monitoring:
       enabled: true
-    ingress:
-      dashboard:
-        ingressClassName: ingress-nginx-int
-        host:
-          name: &host "rook.${SECRET_DOMAIN_PROXY}"
-          path: "/"
-        tls:
-          - hosts:
-              - *host
-    cephVersion:
-      allowUnsupported: true
+      createPrometheusRules: true
     configOverride: |
       [global]
       bdev_enable_discard = true
       bdev_async_discard = true
-      bluefs_buffered_io = false
-      mon_warn_on_pool_no_redundancy = false
       osd_pool_default_size = 1
+      mon_warn_on_pool_no_redundancy = false
+      bdev_flock_retry = 20
+      bluefs_buffered_io = false
+      mon_data_avail_warn = 10
     cephClusterSpec:
-      dataDirHostPath: /var/lib/rook
-      skipUpgradeChecks: false
-      continueUpgradeAfterChecksEvenIfNotHealthy: false
-      waitTimeoutForHealthyOSDInMinutes: 10
+      cephVersion:
+        image: "quay.io/ceph/ceph:v18.2.0"
+      disruptionManagement:
+        managePodBudgets: true
+      healthCheck:
+        daemonHealth:
+          mon:
+            interval: 45s
+            timeout: 600s
       mon:
         count: 1
         allowMultiplePerNode: true
@@ -50,73 +49,57 @@ spec:
         allowMultiplePerNode: true
       network:
         provider: host
-      crashCollector:
-        disable: false
-      cleanupPolicy:
-        confirmation: ""
-        sanitizeDisks:
-          method: quick
-          dataSource: zero
-          iteration: 1
-        allowUninstallWithVolumes: false
-      removeOSDsIfOutAndSafeToRemove: false
       priorityClassNames:
-        mon: system-node-critical
-        osd: system-node-critical
+        all: system-node-critical
         mgr: system-cluster-critical
-      dashboard:
-        enabled: true
-        urlPrefix: /
-        ssl: false
       resources:
         mgr:
           requests:
             cpu: "125m"
-            memory: "549M"
+            memory: "512Mi"
           limits:
-            memory: "1219M"
+            memory: "2Gi"
         mon:
           requests:
             cpu: "49m"
-            memory: "477M"
+            memory: "512Mi"
           limits:
-            memory: "1059M"
+            memory: "1Gi"
         osd:
           requests:
             cpu: "442m"
-            memory: "2678M"
+            memory: "2Gi"
           limits:
-            memory: "5944M"
-        prepareosd:
-          requests:
-            cpu: "250m"
-            memory: "50Mi"
-          limits:
-            memory: "200Mi"
+            memory: "6Gi"
         mgr-sidecar:
           requests:
             cpu: "49m"
-            memory: "94M"
+            memory: "128Mi"
           limits:
-            memory: "208M"
+            memory: "256Mi"
         crashcollector:
           requests:
             cpu: "15m"
-            memory: "64M"
+            memory: "64Mi"
           limits:
-            memory: "64M"
+            memory: "64Mi"
         logcollector:
           requests:
             cpu: "100m"
-            memory: "100M"
+            memory: "100Mi"
           limits:
-            memory: "1G"
+            memory: "1Gi"
         cleanup:
           requests:
             cpu: "250m"
-            memory: "100M"
+            memory: "100Mi"
           limits:
-            memory: "1G"
+            memory: "1Gi"
+      crashCollector:
+        disable: false
+      dashboard:
+        enabled: true
+        urlPrefix: "/"
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -125,20 +108,31 @@ spec:
         nodes:
           - name: alpha
             devices:
-              - name: nvme0n1
-    cephBlockPoolsVolumeSnapshotClass:
-      enabled: false
+              - name: "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b45f4bd5e"
+    ingress:
+      dashboard:
+        ingressClassName: ingress-nginx-int
+        annotations:
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+        host:
+          name: &host rook.${SECRET_DOMAIN_PROXY}
+          path: "/"
+        tls:
+          - hosts:
+              - *host
+
     cephBlockPools:
-      - name: replicapool
+      - name: zfs-local-datasetpool
         spec:
           failureDomain: host
           replicated:
             size: 1
+            requireSafeReplicaSize: false
         storageClass:
           enabled: true
-          name: rook-ceph-block
-          isDefault: true
-          reclaimPolicy: Retain
+          name: zfs-local-dataset
+          isDefault: false
+          reclaimPolicy: Delete
           allowVolumeExpansion: true
           parameters:
             imageFormat: "2"
@@ -150,5 +144,83 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
-    cephFileSystems: []
-    cephObjectStores: []
+
+    cephBlockPoolsVolumeSnapshotClass:
+      enabled: true
+      name: csi-zfs-local-datasetpool
+      isDefault: true
+      deletionPolicy: Delete
+
+    cephFileSystems:
+      - name: ceph-filesystem
+        spec:
+          metadataPool:
+            replicated:
+              size: 1
+              requireSafeReplicaSize: false
+          dataPools:
+            - failureDomain: host
+              replicated:
+                size: 1
+                requireSafeReplicaSize: false
+          metadataServer:
+            activeCount: 1
+            activeStandby: true
+            resources:
+              requests:
+                cpu: "35m"
+                memory: "1Gi"
+              limits:
+                memory: "3Gi"
+        storageClass:
+          enabled: true
+          isDefault: false
+          name: ceph-filesystem
+          reclaimPolicy: Delete
+          allowVolumeExpansion: true
+          mountOptions: []
+          parameters:
+            csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+            csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+            csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+            csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+            csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+            csi.storage.k8s.io/fstype: ext4
+    cephFileSystemVolumeSnapshotClass:
+      enabled: true
+      name: csi-ceph-filesystem
+      isDefault: false
+      deletionPolicy: Delete
+
+    cephObjectStores:
+      - name: ceph-objectstore
+        spec:
+          metadataPool:
+            failureDomain: host
+            replicated:
+              size: 1
+          dataPool:
+            failureDomain: host
+            erasureCoded:
+              dataChunks: 2
+              codingChunks: 1
+          preservePoolsOnDelete: true
+          gateway:
+            port: 80
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+            instances: 1
+          healthCheck:
+            bucket:
+              interval: 60s
+        storageClass:
+          enabled: true
+          name: ceph-bucket
+          reclaimPolicy: Delete
+          parameters:
+            region: us-east-1

@@ -1,16 +1,16 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: rook-ceph
-  namespace: rook-ceph
 spec:
   interval: 30m
   releaseName: rook-ceph
   chart:
     spec:
       chart: rook-ceph
-      version: v1.12.3
+      version: v1.13.5
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
@@ -18,13 +18,13 @@ spec:
   values:
     crds:
       enabled: true
-    monitoring:
-      enabled: true
-    pspEnable: false
     csi:
-      enableCephfsDriver: false
-      enableCephfsSnapshotter: false
+      provisioner:
+        image: registry.k8s.io/sig-storage/csi-provisioner:v4.0.0
       csiAddons:
+        enabled: false
+      enableLiveness: true
+      serviceMonitor:
         enabled: true
       kubeletDirPath: /var/lib/kubelet
       enableCSIHostNetwork: true
@@ -126,6 +126,9 @@ spec:
               cpu: 25m
             limits:
               memory: 256Mi
+    monitoring:
+      enabled: true
+    pspEnable: false
     resources:
       requests:
         cpu: 109m

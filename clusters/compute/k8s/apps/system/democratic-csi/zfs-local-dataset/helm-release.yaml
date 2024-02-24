@@ -22,7 +22,7 @@ spec:
     storageClasses:
       - name: zfs-local-dataset
         annotations:
-          storageclass.kubernetes.io/is-default-class: "false"
+          storageclass.kubernetes.io/is-default-class: "true"
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
         # distributed support is not yet ready for expansion
