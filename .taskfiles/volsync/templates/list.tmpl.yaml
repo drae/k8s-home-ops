@@ -20,4 +20,4 @@ spec:
             - snapshots
           envFrom:
             - secretRef:
-                name: "${app}-restic-secret"
+                name: "${app}-volsync-minio"

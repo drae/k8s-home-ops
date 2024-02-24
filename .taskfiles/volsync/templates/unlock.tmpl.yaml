@@ -21,4 +21,4 @@ spec:
             - --remove-all
           envFrom:
             - secretRef:
-                name: "${app}-restic-secret"
+                name: "${app}-volsync-minio"
