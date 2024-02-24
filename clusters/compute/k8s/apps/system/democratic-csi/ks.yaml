@@ -16,3 +16,21 @@ spec:
     name: k8s-home-ops
   interval: 10m
   wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname democratic-csi-zfs-local-dataset
+  namespace: flux-system
+spec:
+  targetNamespace: system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  path: "./clusters/compute/k8s/apps/system/democratic-csi/zfs-local-dataset"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  interval: 10m
+  wait: true

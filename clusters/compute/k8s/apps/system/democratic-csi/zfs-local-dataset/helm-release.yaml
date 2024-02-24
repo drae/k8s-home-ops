@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: ceph-block-provisioner
+  name: zfs-local-dataset-provisioner
 spec:
   interval: 30m
   chart:
@@ -15,12 +15,12 @@ spec:
         namespace: flux-system
   values:
     csiDriver:
-      name: "org.democratic-csi.ceph-block"
+      name: "org.democratic-csi.zfs-local-dataset"
       attachRequired: false
       storageCapacity: true # With storage capacity tracking, the scheduler filters out nodes which do not have enough capacity.
       fsGroupPolicy: File # fsGroupChangePolicy
     storageClasses:
-      - name: ceph-block
+      - name: zfs-local-dataset
         annotations:
           storageclass.kubernetes.io/is-default-class: "true"
         reclaimPolicy: Delete
@@ -29,6 +29,8 @@ spec:
         allowVolumeExpansion: false
     controller:
       enabled: true
+      driver:
+        image: ghcr.io/drae/democratic-csi:v1.8.4
       strategy: node
       externalAttacher:
         enabled: false
@@ -48,9 +50,12 @@ spec:
         enabled: true
     driver:
       config:
-        driver: ceph-block
+        driver: zfs-local-dataset
         zfs:
           datasetParentName: alpha/k8s/local/v
           detachedSnapshotsDatasetParentName: alpha/k8s/local/s
           datasetEnableQuotas: true
           datasetEnableReservation: false
+    node:
+      driver:
+        image: ghcr.io/drae/democratic-csi:v1.8.4
