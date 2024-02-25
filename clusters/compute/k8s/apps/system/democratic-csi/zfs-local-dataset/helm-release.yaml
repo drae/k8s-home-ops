@@ -30,7 +30,7 @@ spec:
     controller:
       enabled: true
       driver:
-        image: ghcr.io/drae/democratic-csi:v1.8.4
+        image: ghcr.io/drae/democratic-csi:v1.8.6
       strategy: node
       externalAttacher:
         enabled: false
@@ -58,4 +58,4 @@ spec:
           datasetEnableReservation: false
     node:
       driver:
-        image: ghcr.io/drae/democratic-csi:v1.8.4
+        image: ghcr.io/drae/democratic-csi:v1.8.6
