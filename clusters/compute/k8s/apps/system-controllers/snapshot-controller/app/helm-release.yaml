@@ -30,6 +30,9 @@ spec:
           annotations:
             snapshot.storage.kubernetes.io/is-default-class: "true"
           deletionPolicy: Delete
+        - name: zfs-local-zvol
+          driver: org.democratic-csi.zfs-local-zvol
+          deletionPolicy: Delete
     webhook:
       enabled: true
       tls:

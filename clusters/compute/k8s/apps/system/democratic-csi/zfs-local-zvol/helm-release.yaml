@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: zfs-local-dataset-provisioner
+  name: zfs-local-zvol-provisioner
 spec:
   interval: 30m
   chart:
@@ -15,18 +15,18 @@ spec:
         namespace: flux-system
   values:
     csiDriver:
-      name: "org.democratic-csi.zfs-local-dataset"
+      name: "org.democratic-csi.zfs-local-zvol"
       attachRequired: false
       storageCapacity: true # With storage capacity tracking, the scheduler filters out nodes which do not have enough capacity.
       fsGroupPolicy: File # fsGroupChangePolicy
     storageClasses:
-      - name: zfs-local-dataset
-        annotations:
-          storageclass.kubernetes.io/is-default-class: "true"
+      - name: zfs-local-zvol
         reclaimPolicy: Delete
         volumeBindingMode: Immediate
         # distributed support is not yet ready for expansion
         allowVolumeExpansion: false
+        parameters:
+          fsType: ext4
         mountOptions: ["noatime"]
     controller:
       enabled: true
@@ -51,17 +51,15 @@ spec:
         enabled: true
     driver:
       config:
-        driver: zfs-local-dataset
+        driver: zfs-local-zvol
         zfs:
-          datasetParentName: alpha/k8s/local/v
-          detachedSnapshotsDatasetParentName: alpha/k8s/local/s
+          datasetParentName: alpha/k8s/local/z
+          detachedSnapshotsDatasetParentName: alpha/k8s/local/zs
           datasetEnableQuotas: true
           datasetEnableReservation: false
           datasetProperties:
-            recordsize: "1M"
-            compression: lz4
             atime: off
-            overlay: on
+          zvolBlocksize: "32k"
     node:
       driver:
         image: ghcr.io/drae/democratic-csi:v1.8.6
