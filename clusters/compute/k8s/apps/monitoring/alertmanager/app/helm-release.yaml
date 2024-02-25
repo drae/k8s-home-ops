@@ -66,8 +66,3 @@ spec:
         globalMounts:
           - path: /etc/alertmanager
             readOnly: true
-      secrets:
-        type: secret
-        name: alertmanager-secret
-        globalMounts:
-          - path: /etc/secrets
