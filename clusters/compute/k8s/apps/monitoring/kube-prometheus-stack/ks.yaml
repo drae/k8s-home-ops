@@ -17,9 +17,8 @@ spec:
     name: k8s-home-ops
   wait: true
   dependsOn:
-    - name: rook-ceph-cluster
+    - name: democratic-csi-zfs-local-dataset
     - name: alertmanager
-    - name: k8tz
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

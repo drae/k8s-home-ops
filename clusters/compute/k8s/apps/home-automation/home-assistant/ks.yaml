@@ -24,6 +24,6 @@ spec:
       VOLSYNC_CLAIM: home-assistant-config
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
-    - name: rook-ceph-cluster
+    - name: democratic-csi-zfs-local-dataset
     - name: multus-config
     - name: volsync

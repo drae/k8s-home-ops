@@ -7,7 +7,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: ceph-block
+  storageClassName: zfs-local-dataset
   resources:
     requests:
       storage: 10Gi

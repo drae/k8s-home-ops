@@ -24,10 +24,9 @@ spec:
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 80Gi
   dependsOn:
-    - name: rook-ceph-cluster
+    - name: democratic-csi-zfs-local-dataset
     - name: intel-device-plugins-operator
     - name: volsync
-    - name: k8tz
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

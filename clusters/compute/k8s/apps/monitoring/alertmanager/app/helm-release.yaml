@@ -25,7 +25,7 @@ spec:
             - name: storage
               accessMode: ReadWriteOnce
               size: 50Mi
-              storageClass: ceph-block
+              storageClass: zfs-local-dataset
               globalMounts:
                 - path: /alertmanager
         containers:

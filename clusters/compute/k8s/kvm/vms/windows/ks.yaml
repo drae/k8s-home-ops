@@ -20,5 +20,5 @@ spec:
   dependsOn:
     - name: kubevirt
     - name: cdi
-    - name: rook-ceph-cluster
+    - name: democratic-csi-zfs-local-dataset
     - name: vms-common

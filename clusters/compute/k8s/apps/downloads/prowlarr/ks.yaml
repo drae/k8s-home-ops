@@ -24,6 +24,5 @@ spec:
       VOLSYNC_CLAIM: prowlarr-config
       VOLSYNC_CAPACITY: 1Gi
   dependsOn:
-    - name: rook-ceph-cluster
+    - name: democratic-csi-zfs-local-dataset
     - name: volsync
-    - name: k8tz

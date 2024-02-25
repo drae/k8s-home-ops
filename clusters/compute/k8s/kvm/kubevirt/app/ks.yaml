@@ -37,7 +37,7 @@ spec:
           name: not-used
         spec:
           configuration:
-            vmStateStorageClass: ceph-filesystem
+            vmStateStorageClass: zfs-local-dataset
             developerConfiguration:
               featureGates:
                 - VMPersistentState

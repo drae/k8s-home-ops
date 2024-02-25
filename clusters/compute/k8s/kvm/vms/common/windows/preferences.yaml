@@ -44,5 +44,5 @@ spec:
     preferredUseEfi: true
     preferredUseSecureBoot: true
   volumes:
-    preferredStorageClassName: ceph-block
+    preferredStorageClassName: zfs-local-dataset
   preferredTerminationGracePeriodSeconds: 180

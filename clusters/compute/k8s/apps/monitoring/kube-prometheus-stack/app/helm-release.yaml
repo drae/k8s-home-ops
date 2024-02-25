@@ -152,7 +152,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: ceph-block
+              storageClassName: zfs-local-dataset
               resources:
                 requests:
                   storage: 25Gi
