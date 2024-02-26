@@ -17,11 +17,8 @@ spec:
   values:
     controllers:
       main:
-        type: cronjob
         annotations:
           reloader.stakater.com/auto: "true"
-        cronjob:
-          schedule: "@daily"
         pod:
           securityContext:
             runAsNonRoot: true
@@ -29,15 +26,14 @@ spec:
             runAsGroup: ${APP_GID}
             fsGroup: ${APP_GID}
             fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups:
+              - 65539
         containers:
           main:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 6.0.2
-            args:
-              - sync
             env:
-              COMPlus_EnableDiagnostics: "0"
               SONARR_API_KEY: ${SONARR_API_KEY}
               RADARR_API_KEY: ${RADARR_API_KEY}
             resources:
@@ -46,12 +42,6 @@ spec:
                 memory: 50M
               limits:
                 memory: 128M
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
     persistence:
       config:
         enabled: true
@@ -64,12 +54,10 @@ spec:
         enabled: true
         type: configMap
         name: recyclarr-configmap
-        advancedMounts:
-          main:
-            init-config:
-              - path: /config/recyclarr.yml
-                subPath: recyclarr.yml
-                readOnly: true
+        globalMounts:
+          - path: /config/recyclarr.yml
+            subPath: recyclarr.yml
+            readOnly: true
     service:
       main:
         enabled: false
