@@ -22,3 +22,11 @@ spec:
     - name: cdi
     - name: democratic-csi-zfs-local-dataset
     - name: vms-common
+    - name: volsync
+  postBuild:
+    substitute:
+      APP: *appname
+      APP_UID: "107"
+      APP_GID: "107"
+      VOLSYNC_CLAIM: ksi-vm-sim01-c-drive
+      VOLSYNC_CAPACITY: 150Gi

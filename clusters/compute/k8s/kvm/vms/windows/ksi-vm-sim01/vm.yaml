@@ -2,7 +2,7 @@
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: ksi-vm-sim01
+  name: &app ksi-vm-sim01
 spec:
   preference:
     kind: VirtualMachinePreference
@@ -15,9 +15,9 @@ spec:
     metadata:
       labels:
         vm.home.arpa/os: windows
-        vm.home.arpa/windows: ksi-vm-sim01
+        vm.home.arpa/windows: *app
     spec:
-      hostname: ksi-vm-sim01
+      hostname: *app
       networks:
         - name: main
           pod:
@@ -61,4 +61,4 @@ spec:
           whenUnsatisfiable: DoNotSchedule
           labelSelector:
             matchLabels:
-              vm.home.arpa/windows: ksi-vm-sim01
+              vm.home.arpa/windows: *app
