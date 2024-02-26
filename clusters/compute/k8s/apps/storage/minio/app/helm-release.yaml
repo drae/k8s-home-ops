@@ -45,6 +45,15 @@ spec:
             securityContext:
               privileged: true
               runAsUser: 0
+    serviceMonitor:
+      main:
+        enabled: true
+        endpoints:
+          - port: s3
+            scheme: http
+            path: /minio/v2/metrics/cluster
+            interval: 1m
+            scrapeTimeout: 10s
     service:
       main:
         ports:
