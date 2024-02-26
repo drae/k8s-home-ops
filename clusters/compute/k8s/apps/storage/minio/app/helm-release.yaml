@@ -36,7 +36,8 @@ spec:
               MINIO_PROMETHEUS_AUTH_TYPE: "public"
               MINIO_UPDATE: "off"
             envFrom:
-              - name: minio-secret
+              - secretRef:
+                  name: minio-secret
             resources:
               requests:
                 cpu: 5m
