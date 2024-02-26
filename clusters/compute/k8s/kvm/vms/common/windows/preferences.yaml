@@ -10,8 +10,6 @@ spec:
     memory:
       guest: 16384Mi
   clock:
-    preferredClockOffset:
-      timezone: "Europe/London"
     preferredTimer:
       hpet:
         present: false
@@ -20,17 +18,17 @@ spec:
         tickPolicy: delay
       rtc:
         tickPolicy: catchup
-  devices:
-    preferredDiskBus: sata
-    preferredInterfaceModel: virtio
-    preferredTPM:
-      persistent: true
-    # preferredAutoattachMemBalloon: false
-    preferredAutoattachGraphicsDevice: true
-    preferredAutoattachSerialConsole: true
-    preferredAutoattachPodInterface: true
-    # preferredAutoattachInputDevice: true
-    preferredAutoattachInputDevice: false # save CPU resources, similar to disabling tablet input on Proxmox
+  #devices:
+  #preferredDiskBus: sata
+  #preferredInterfaceModel: e1000
+  #preferredTPM:
+  #  persistent: true
+  # preferredAutoattachMemBalloon: false
+  #preferredAutoattachGraphicsDevice: true
+  #preferredAutoattachSerialConsole: true
+  #preferredAutoattachPodInterface: true
+  # preferredAutoattachInputDevice: true
+  #preferredAutoattachInputDevice: false # save CPU resources, similar to disabling tablet input on Proxmox
   features:
     preferredAcpi: {}
     preferredApic: {}
@@ -40,9 +38,9 @@ spec:
         spinlocks: 8191
       vapic: {}
     preferredSmm: {}
-  firmware:
-    preferredUseEfi: true
-    preferredUseSecureBoot: true
+  #firmware:
+  #  preferredUseEfi: true
+  #  preferredUseSecureBoot: true
   volumes:
     preferredStorageClassName: zfs-local-dataset
   preferredTerminationGracePeriodSeconds: 180

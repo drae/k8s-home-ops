@@ -3,6 +3,8 @@ apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
   name: &app ksi-vm-sim01
+  labels:
+    special: *app
 spec:
   preference:
     kind: VirtualMachinePreference
@@ -18,25 +20,20 @@ spec:
         vm.home.arpa/windows: *app
     spec:
       hostname: *app
-      networks:
-        - name: main
-          pod:
-            vmNetworkCIDR: "192.168.60.0/24"
-      volumes:
-        - name: c-drive
-          persistentVolumeClaim:
-            claimName: ksi-vm-sim01-c-drive
-        - name: windows-iso
-          persistentVolumeClaim:
-            claimName: vm-cdrom-windows11
-        - name: virtiocontainerdisk
-          containerDisk:
-            image: quay.io/kubevirt/virtio-container-disk
       domain:
+        clock:
+          timer:
+            hpet:
+              present: false
+            hyperv: {}
+            pit:
+              tickPolicy: delay
+            rtc:
+              tickPolicy: catchup
+          utc: {}
         devices:
           disks:
-            - bootOrder: 1
-              name: windows-iso
+            - name: windows-iso
               cdrom:
                 bus: sata
             - name: c-drive
@@ -45,20 +42,33 @@ spec:
               cdrom:
                 bus: sata
           interfaces:
-            - name: main
+            - name: default
               model: e1000
               masquerade: {}
-          autoattachInputDevice: false
-          inputs: []
+        features:
+          acpi: {}
+          apic: {}
+          hyperv:
+            relaxed: {}
+            spinlocks:
+              spinlocks: 8191
+            vapic: {}
+          smm: {}
         firmware:
-          uuid: c2914896-accd-415e-acff-4fa8ecb79d2e
+          uuid: f68c22f6-5c82-4744-947c-9704998e8ce7
           bootloader:
             efi:
-              persistent: true
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              vm.home.arpa/windows: *app
+              secureBoot: true
+      networks:
+        - name: default
+          pod: {}
+      volumes:
+        - name: c-drive
+          persistentVolumeClaim:
+            claimName: ksi-vm-sim01-c-drive
+        - name: windows-iso
+          persistentVolumeClaim:
+            claimName: vm-cdrom-windows11
+        - name: virtiocontainerdisk
+          persistentVolumeClaim:
+            claimName: vm-cdrom-virtio-win
