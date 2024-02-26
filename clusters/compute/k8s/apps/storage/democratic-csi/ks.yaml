@@ -5,11 +5,11 @@ metadata:
   name: &appname democratic-csi-local-path
   namespace: flux-system
 spec:
-  targetNamespace: system
+  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: "./clusters/compute/k8s/apps/system/democratic-csi/local-path"
+  path: "./clusters/compute/k8s/apps/storage/democratic-csi/local-path"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -23,11 +23,11 @@ metadata:
   name: &appname democratic-csi-zfs-local-dataset
   namespace: flux-system
 spec:
-  targetNamespace: system
+  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: "./clusters/compute/k8s/apps/system/democratic-csi/zfs-local-dataset"
+  path: "./clusters/compute/k8s/apps/storage/democratic-csi/zfs-local-dataset"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -41,11 +41,11 @@ metadata:
   name: &appname democratic-csi-zfs-local-zvol
   namespace: flux-system
 spec:
-  targetNamespace: system
+  targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: "./clusters/compute/k8s/apps/system/democratic-csi/zfs-local-zvol"
+  path: "./clusters/compute/k8s/apps/storage/democratic-csi/zfs-local-zvol"
   prune: true
   sourceRef:
     kind: GitRepository
