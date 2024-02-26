@@ -143,6 +143,10 @@ spec:
           gnetId: 15038
           revision: 3
           datasource: Prometheus
+        minio:
+          gnetId: 13502
+          revision: 25
+          datasource: Prometheus
         node-feature-discovery:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
           datasource: Prometheus
