@@ -31,6 +31,10 @@ nodes:
     installDiskSelector:
       size: "<= 256GB"
       type: ssd
+    machineDisks:
+      - device: /dev/disk/by-id/usb-WDC_PC_S_N730_SDBQNTY-256_012345678906-0:0
+        partitions:
+          - mountpoint: /var/mnt/usb
     kernelModules:
       - name: spl
       - name: znvpair
@@ -62,7 +66,18 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/usb
+                type: bind
+                source: /var/mnt/usb
+                options:
+                  - rbind
+                  - rshared
+                  - rw
 controlPlane:
   schematic:
     customization:
