@@ -25,6 +25,8 @@ spec:
             rtc:
               tickPolicy: catchup
           utc: {}
+        cpu:
+          cores: 3
         devices:
           autoattachInputDevice: false # save CPU resources, similar to disabling tablet input on Proxmox
           disks:
@@ -61,9 +63,6 @@ spec:
         resources:
           requests:
             memory: 16Gi
-            cpu: 3
-          limits:
-            cpu: 3
       networks:
         - name: default
           pod: {}
