@@ -42,6 +42,7 @@ spec:
               featureGates:
                 - VMPersistentState
                 - AutoResourceLimitsGate
+                - HotplugVolumes
       target:
         group: kubevirt.io
         kind: KubeVirt

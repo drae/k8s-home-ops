@@ -36,9 +36,6 @@ spec:
             - name: c-drive
               disk:
                 bus: sata
-            - name: virtiocontainerdisk
-              cdrom:
-                bus: sata
           interfaces:
             - name: default
               model: e1000
@@ -74,6 +71,3 @@ spec:
         - name: windows-iso
           persistentVolumeClaim:
             claimName: vm-cdrom-windows11
-        - name: virtiocontainerdisk
-          persistentVolumeClaim:
-            claimName: vm-cdrom-virtio-win
