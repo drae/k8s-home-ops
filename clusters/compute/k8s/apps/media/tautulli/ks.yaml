@@ -25,5 +25,5 @@ spec:
       VOLSYNC_CAPACITY: 1Gi
   dependsOn:
     - name: plex
-    - name: democratic-csi-zfs-local-dataset
+    - name: rook-ceph-cluster
     - name: volsync

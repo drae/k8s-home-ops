@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
   # PVC and volsync templates
-  - ../../../../templates/volsync
+  - ../../../storage/volsync/templates
 configMapGenerator:
   - name: recyclarr-configmap
     files:

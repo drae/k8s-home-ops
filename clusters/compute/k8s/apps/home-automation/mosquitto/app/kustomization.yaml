@@ -4,4 +4,4 @@ resources:
   - ./mosquitto-config.yaml
   - ./helm-release.yaml
   # PVC and volsync templates
-  - ../../../../templates/volsync
+  - ../../../storage/volsync/templates

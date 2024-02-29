@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: "${VOLSYNC_CAPACITY:-1Gi}"
-  storageClassName: "${VOLSYNC_STORAGECLASS:-zfs-local-dataset}"
+  storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"

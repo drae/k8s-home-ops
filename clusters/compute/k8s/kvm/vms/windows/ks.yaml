@@ -20,7 +20,7 @@ spec:
   dependsOn:
     - name: kubevirt
     - name: cdi
-    - name: democratic-csi-zfs-local-dataset
+    - name: rook-ceph-cluster
     - name: vms-common
     - name: volsync
   postBuild:

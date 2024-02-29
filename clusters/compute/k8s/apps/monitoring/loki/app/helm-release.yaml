@@ -80,15 +80,15 @@ spec:
     read:
       replicas: 1
       persistence:
-        storageClass: zfs-local-dataset
+        storageClass: ceph-block
     write:
       replicas: 1
       persistence:
-        storageClass: zfs-local-dataset
+        storageClass: ceph-block
     backend:
       replicas: 1
       persistence:
-        storageClass: zfs-local-dataset
+        storageClass: ceph-block
     gateway:
       deploymentStrategy:
         type: Recreate

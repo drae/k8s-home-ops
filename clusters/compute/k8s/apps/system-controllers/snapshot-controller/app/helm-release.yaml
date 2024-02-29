@@ -25,8 +25,8 @@ spec:
       serviceMonitor:
         create: true
       volumeSnapshotClasses:
-        - name: zfs-local-dataset
-          driver: org.democratic-csi.zfs-local-dataset
+        - name: ceph-block
+          driver: org.democratic-csi.ceph-block
           annotations:
             snapshot.storage.kubernetes.io/is-default-class: "true"
           deletionPolicy: Delete

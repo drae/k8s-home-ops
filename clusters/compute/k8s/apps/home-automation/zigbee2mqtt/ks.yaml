@@ -24,6 +24,6 @@ spec:
       VOLSYNC_CLAIM: zigbee2mqtt-data
   dependsOn:
     - name: mosquitto
-    - name: democratic-csi-zfs-local-dataset
+    - name: rook-ceph-cluster
     - name: multus-config
     - name: volsync

@@ -130,7 +130,7 @@ spec:
         storageClass:
           enabled: true
           name: ceph-block
-          isDefault: false
+          isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
           parameters:
@@ -145,7 +145,7 @@ spec:
             csi.storage.k8s.io/fstype: ext4
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
-      name: csi-ceph-blockpool
+      name: ceph-blockpool-snap
       isDefault: true
       deletionPolicy: Delete
 
@@ -173,7 +173,7 @@ spec:
         storageClass:
           enabled: true
           isDefault: false
-          name: ceph-filesystem
+          name: ceph-file
           reclaimPolicy: Delete
           allowVolumeExpansion: true
           mountOptions: []
@@ -187,7 +187,7 @@ spec:
             csi.storage.k8s.io/fstype: ext4
     cephFileSystemVolumeSnapshotClass:
       enabled: true
-      name: csi-ceph-filesystem
+      name: ceph-filesystem-snap
       isDefault: false
       deletionPolicy: Delete
 

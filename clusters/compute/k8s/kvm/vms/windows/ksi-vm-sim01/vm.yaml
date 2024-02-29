@@ -34,6 +34,7 @@ spec:
               cdrom:
                 bus: sata
             - name: c-drive
+              serial: ${KV_KSI_VM_SIM01_DISK}
               disk:
                 bus: sata
           interfaces:
@@ -53,7 +54,7 @@ spec:
           smm: {}
         firmware:
           uuid: ${KV_KSI_VM_SIM01_UUID}
-          serial: ${KV_KSI_VIM_SIM01_SERIAL}
+          serial: ${KV_KSI_VM_SIM01_SERIAL}
           bootloader:
             efi:
               secureBoot: true
@@ -63,7 +64,7 @@ spec:
       networks:
         - name: default
           pod: {}
-      terminationGracePeriodSeconds: 60
+      terminationGracePeriodSeconds: 0
       volumes:
         - name: c-drive
           persistentVolumeClaim:

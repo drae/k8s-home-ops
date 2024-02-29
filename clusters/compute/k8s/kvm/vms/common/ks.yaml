@@ -20,4 +20,4 @@ spec:
   dependsOn:
     - name: kubevirt
     - name: cdi
-    - name: democratic-csi-zfs-local-dataset
+    - name: rook-ceph-cluster

@@ -96,6 +96,8 @@ securityContext:
       - SYS_RESOURCE
 
 # "Socket LoadBalancer Bypass in Pod Namespace" - to fix kubevirt service
-# lookup access when cilium proxy (kubeProxyReplacement) is used
+# lookup when cilium proxy (kubeProxyReplacement) is used, becomes
+# apparent for example as being unable to do a dns lookup in the VM, so
+# windows 11 will not complete install in kubevirt
 socketLB:
   hostNamespaceOnly: true

@@ -24,6 +24,6 @@ spec:
       VOLSYNC_CLAIM: mosquitto-data
       VOLSYNC_CAPACITY: 256Mi
   dependsOn:
-    - name: democratic-csi-zfs-local-dataset
+    - name: rook-ceph-cluster
     - name: multus-config
     - name: volsync
