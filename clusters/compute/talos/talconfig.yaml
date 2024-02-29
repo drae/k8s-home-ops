@@ -45,10 +45,6 @@ nodes:
       - name: zzstd
       - name: zunicode
       - name: zfs
-        parameters:
-          - zfs_prefetch_disable=1
-          - zfs_txg_timeout=5
-          - zfs_arc_max=2147483648
     nameservers:
       - 10.1.10.1
     networkInterfaces:
@@ -164,6 +160,13 @@ controlPlane:
           fs.inotify.max_user_watches: "1048576"
           fs.inotify.max_user_instances: "8192"
           net.core.rmem_max: "2500000"
+          # These do not work as kernel module parameters above since they
+          # are not available at the time the module is loaded ... they
+          # seem to work fine loaded via sysctl
+          module.zfs.parameters.zfs_arc_min: "2147483648" # 2Gi
+          module.zfs.parameters.zfs_arc_max: "3221225472" # 3Gi
+          module.zfs.parameters.zfs_prefetch_disable: "1" # Lots of random reads/writes 
+          module.zfs.parameters.zfs_txg_timeout: "5"
         time:
           disabled: false
           servers:
