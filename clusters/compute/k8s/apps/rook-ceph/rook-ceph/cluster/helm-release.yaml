@@ -16,12 +16,6 @@ spec:
         namespace: flux-system
   values:
     clusterName: "${SECRET_CLUSTER_NAME}"
-    operatorNamespace: "rook-ceph"
-    toolbox:
-      enabled: false
-    monitoring:
-      enabled: true
-      createPrometheusRules: true
     configOverride: |
       [global]
       bdev_enable_discard = true
@@ -34,6 +28,11 @@ spec:
     cephClusterSpec:
       cephVersion:
         image: "quay.io/ceph/ceph:v18.2.0"
+      crashCollector:
+        disable: false
+      dashboard:
+        enabled: true
+        urlPrefix: "/"
       disruptionManagement:
         managePodBudgets: true
       healthCheck:
@@ -95,11 +94,6 @@ spec:
             memory: "100Mi"
           limits:
             memory: "1Gi"
-      crashCollector:
-        disable: false
-      dashboard:
-        enabled: true
-        urlPrefix: "/"
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -107,8 +101,7 @@ spec:
           osdsPerDevice: "1"
         nodes:
           - name: alpha
-            devices:
-              - name: "/dev/disk/by-id/nvme-eui.e8238fa6bf530001001b448b45f4bd5e"
+            devicePathFilter: "^/dev/disk/by-id/nvme-WD_Blue_SN570.*"
     ingress:
       dashboard:
         ingressClassName: ingress-nginx-int
@@ -120,9 +113,15 @@ spec:
         tls:
           - hosts:
               - *host
+    monitoring:
+      enabled: true
+      createPrometheusRules: true
+    operatorNamespace: "rook-ceph"
+    toolbox:
+      enabled: false
 
     cephBlockPools:
-      - name: zfs-local-datasetpool
+      - name: ceph-blockpool
         spec:
           failureDomain: host
           replicated:
@@ -130,7 +129,7 @@ spec:
             requireSafeReplicaSize: false
         storageClass:
           enabled: true
-          name: zfs-local-dataset
+          name: ceph-block
           isDefault: false
           reclaimPolicy: Delete
           allowVolumeExpansion: true
@@ -144,10 +143,9 @@ spec:
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
             csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
             csi.storage.k8s.io/fstype: ext4
-
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
-      name: csi-zfs-local-datasetpool
+      name: csi-ceph-blockpool
       isDefault: true
       deletionPolicy: Delete
 
