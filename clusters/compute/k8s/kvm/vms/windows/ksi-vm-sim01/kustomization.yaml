@@ -6,4 +6,4 @@ resources:
   - ./pvc.yaml
   - ./vm.yaml
   # volsync minio template
-  - ../../../storage/volsync/templates/minio
+  - ../../../../apps/storage/volsync/templates/minio
