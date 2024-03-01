@@ -26,7 +26,7 @@ spec:
               tickPolicy: catchup
           utc: {}
         cpu:
-          cores: 3
+          cores: 2
         devices:
           autoattachInputDevice: false # save CPU resources, similar to disabling tablet input on Proxmox
           disks:
