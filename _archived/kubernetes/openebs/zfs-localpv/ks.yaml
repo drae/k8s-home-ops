@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./clusters/compute/k8s/apps/openebs/zfs-localpv/app"
+  path: "./clusters/darkstar/k8s/apps/openebs/zfs-localpv/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -22,7 +22,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./clusters/compute/k8s/apps/openebs/zfs-localpv/storage"
+  path: "./clusters/darkstar/k8s/apps/openebs/zfs-localpv/storage"
   prune: true
   sourceRef:
     kind: GitRepository

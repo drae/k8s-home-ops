@@ -7,9 +7,9 @@ area/kubernetes:
   - changed-files:
       - any-glob-to-any-file: "clusters/**/*"
 # Cluster
-cluster/compute:
+cluster/darkstar:
   - changed-files:
-      - any-glob-to-any-file: clusters/compute/**/*
+      - any-glob-to-any-file: clusters/darkstar/**/*
 cluster/storage:
   - changed-files:
       - any-glob-to-any-file: clusters/storage/**/*

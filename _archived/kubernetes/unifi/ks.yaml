@@ -6,11 +6,11 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./clusters/compute/k8s/apps/networking/unifi"
+  path: "./clusters/darkstar/k8s/apps/networking/unifi"
   prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
   wait: false
   dependsOn:
-    - name: rook-ceph-cluster
+    - name: democratic-csi-zfs-local-dataset

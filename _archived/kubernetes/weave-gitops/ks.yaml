@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./clusters/compute/k8s/apps/flux-system/weave-gitops/app"
+  path: "./clusters/darkstar/k8s/apps/flux-system/weave-gitops/app"
   prune: true
   sourceRef:
     kind: GitRepository

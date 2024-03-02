@@ -31,7 +31,7 @@ spec:
     retain:
       daily: 7
       within: 3d
-    volumeSnapshotClassName: ceph-block
+    volumeSnapshotClassName: zfs-dataset
     capacity: 10Gi
-    storageClassName: ceph-block
+    storageClassName: zfs-dataset
     cacheStorageClassName: local-hostpath

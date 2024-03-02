@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./clusters/compute/k8s/apps/system/kopia-web/app"
+  path: "./clusters/darkstar/k8s/apps/system/kopia-web/app"
   prune: true
   sourceRef:
     kind: GitRepository
