@@ -85,13 +85,10 @@ spec:
       config:
         enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
-        globalMounts:
-          - path: /config
-      # Separate PVC for cache to avoid backing up cache files
-      plex-cache:
-        existingClaim: plex-cache
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache
+        advancedMounts:
+          main:
+            main:
+              - path: /config
       tmp:
         type: emptyDir
       transcode:
