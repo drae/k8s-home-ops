@@ -76,3 +76,5 @@ spec:
       config:
         enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
+      tmp:
+        type: emptyDir
