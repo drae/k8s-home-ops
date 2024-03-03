@@ -1,0 +1,381 @@
+---
+- name: Prepare storage server OS
+  hosts:
+    - storage
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+  pre_tasks:
+    - name: Pausing for 2 seconds...
+      ansible.builtin.pause:
+        seconds: 2
+
+  handlers:
+    - name: Restart smartd
+      ansible.builtin.service:
+        name: smartd.service
+        daemon_reload: true
+        enabled: true
+        state: restarted
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Update grub
+      ansible.builtin.command: update-grub
+      tags:
+        - skip_ansible_lint
+
+    - name: Update initramfs
+      ansible.builtin.command: update-initramfs -u
+      tags:
+        - skip_ansible_lint
+
+  tasks:
+    # Include vars
+    - name: Load vars
+      ansible.builtin.include_vars:
+        dir: vars
+        files_matching: main.yml
+
+    # Configure localadmin
+    - name: Add additional user SSH public keys
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
+        key: "{{ item }}"
+      loop: "{{ os_ssh_authorized_keys | default([]) }}"
+
+    - name: Check if hushlogin exists
+      ansible.builtin.stat:
+        path: "/home/{{ ansible_user }}/.hushlogin"
+      register: hushlogin_status
+
+    - name: Silence the login prompt
+      ansible.builtin.file:
+        dest: "/home/{{ ansible_user }}/.hushlogin"
+        state: touch
+        owner: "{{ ansible_user }}"
+        mode: "0775"
+      when:
+        - not hushlogin_status.stat.exists
+
+    - name: Add user to sudoers
+      ansible.builtin.copy:
+        content: "{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
+        dest: "/etc/sudoers.d/{{ ansible_user }}_nopasswd"
+        mode: "0440"
+
+    - name: Add user to users
+      ansible.builtin.user:
+        name: localadmin
+        groups: users
+        append: true
+
+    # Add kah user
+    - name: Add the group 'kah'
+      ansible.builtin.group:
+        name: kah
+        gid: 568
+        state: present
+
+    - name: Add the user 'kah'
+      ansible.builtin.user:
+        name: kah
+        uid: 568
+        group: kah
+        groups: users
+        append: true
+        create_home: false
+        home: /nonexistent
+        shell: /bin/nologin
+        state: present
+
+    # Set locale
+    - name: Set timezone
+      community.general.timezone:
+        name: "{{ os_timezone | default('Europe/London') }}"
+
+    # Manage packages
+    - name: Disable APT recommends
+      ansible.builtin.blockinfile:
+        path: /etc/apt/apt.conf.d/02norecommends
+        mode: "0644"
+        create: true
+        block: |
+          APT::Install-Recommends "false";
+          APT::Install-Suggests "false";
+          APT::Get::Install-Recommends "false";
+          APT::Get::Install-Suggests "false";
+
+    - name: Add apt repositories
+      ansible.builtin.apt_repository:
+        repo: "{{ item }}"
+        update_cache: true
+      loop: "{{ os_packages_repositories | default([]) }}"
+
+    - name: Upgrade all system packages
+      ansible.builtin.apt:
+        upgrade: full
+      register: apt_upgrade
+      retries: 5
+      until: apt_upgrade is success
+
+    - name: Install common packages
+      ansible.builtin.apt:
+        name: "{{ os_packages_install | default([]) }}"
+        install_recommends: false
+      register: apt_install_common
+      retries: 5
+      until: apt_install_common is success
+
+    - name: Gather installed packages
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Remove snapd
+      when:
+        - "'snapd' in os_packages_remove"
+        - "'snapd' in ansible_facts.packages"
+      block:
+        - name: Check if snap is installed
+          ansible.builtin.debug:
+            msg: "snapd is installed"
+          register: snapd_check
+        - name: Remove snap packages
+          ansible.builtin.command: snap remove {{ item }}
+          loop:
+            - lxd
+            - core18
+            - core20
+            - snapd
+          when:
+            - snapd_check.failed is defined
+          tags:
+            - skip_ansible_lint
+        - name: Remove files
+          ansible.builtin.file:
+            state: absent
+            path: "{{ item }}"
+          loop:
+            - "/home/{{ ansible_user }}/.snap"
+            - "/snap"
+            - "/var/snap"
+            - "/var/lib/snapd"
+            - "/var/cache/snapd"
+            - "/usr/lib/snapd"
+
+    - name: Remove packages
+      ansible.builtin.apt:
+        name: "{{ os_packages_remove | default([]) }}"
+        state: absent
+        autoremove: true
+
+    # Setup networking
+    - name: Install network tools
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        update_cache: true
+      loop:
+        - iputils-ping
+        - net-tools
+
+    - name: Set hostname to inventory hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+      when:
+        - ansible_hostname != inventory_hostname
+
+    - name: Update /etc/hosts to include hostname
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        mode: "0644"
+        create: true
+        block: |
+          127.0.0.1 localhost
+          127.0.1.1 {{ inventory_hostname }}
+
+          # The following lines are desirable for IPv6 capable hosts
+          ::1 ip6-localhost ip6-loopback
+          fe00::0 ip6-localnet
+          ff00::0 ip6-mcastprefix
+          ff02::1 ip6-allnodes
+          ff02::2 ip6-allrouters
+
+    # Setup filesystem tools
+    - name: Install filesystem tools
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        update_cache: true
+      loop:
+        - gdisk
+        - hdparm
+        - lvm2
+        - nfs-common
+        - nfs-kernel-server
+        - samba
+        - smartmontools
+
+    - name: Configure smartd
+      ansible.builtin.copy:
+        dest: /etc/smartd.conf
+        mode: 0644
+        content: |
+          DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -W 4,35,40
+      notify: Restart smartd
+
+    - name: Disable swap at runtime
+      ansible.builtin.command: swapoff -a
+      when: ansible_swaptotal_mb > 0
+
+    - name: Disable swap on boot
+      ansible.posix.mount:
+        name: "{{ item }}"
+        fstype: swap
+        state: absent
+      loop:
+        - swap
+        - none
+
+    # Configure ZFS
+    - name: zfs
+      ansible.builtin.include_role:
+        role: "mrlesmithjr.zfs"
+
+    # Security
+    - name: Check for existence of grub
+      ansible.builtin.stat:
+        path: /etc/default/grub
+      register: grub_result
+
+    - name: Check if apparmor is disabled
+      ansible.builtin.shell:
+        cmd: grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | grep -c "apparmor=0"
+      register: apparmor_status
+      ignore_errors: true
+      changed_when: apparmor_status.rc != 0
+
+    - name: Check if mitigations is disabled
+      ansible.builtin.shell:
+        cmd: grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | grep -c "mitigations=off"
+      register: mitigations_status
+      ignore_errors: true
+      changed_when: mitigations_status.rc != 0
+
+    - name: Disable apparmor
+      ansible.builtin.replace:
+        path: /etc/default/grub
+        regexp: '^(GRUB_CMDLINE_LINUX=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
+        replace: '\1 {{ option }}={{ value }}\2'
+      vars:
+        option: apparmor
+        value: 0
+      when:
+        - grub_result.stat.exists
+        - not apparmor_status.changed
+
+    - name: Disable mitigations
+      ansible.builtin.replace:
+        path: /etc/default/grub
+        regexp: '^(GRUB_CMDLINE_LINUX=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
+        replace: '\1 {{ option }}={{ value }}\2'
+      vars:
+        option: mitigations
+        value: "off"
+      when:
+        - grub_result.stat.exists
+        - not mitigations_status.changed
+
+    - name: Run grub-mkconfig
+      ansible.builtin.command: update-grub
+      when:
+        - grub_result.stat.exists
+        - (apparmor_status.changed or mitigations_status.changed)
+
+    # Enable cgroupv2 and rootless
+    - name: check if linger is enabled
+      stat:
+        path: "/var/lib/systemd/linger/{{ ansible_user }}"
+      register: linger_enabled_file
+      become: false
+
+    - name: enable linger
+      command: "loginctl enable-linger {{ ansible_user }}"
+      when: linger_enabled_file.stat.exists == false
+      become: false
+
+    - name: install rootless packages
+      ansible.builtin.package:
+        name:
+          - dbus-user-session
+          - uidmap
+        state: present
+      become: true
+      when: ansible_os_family == "Debian"
+
+    - name: enable dbus-user-session
+      ansible.builtin.systemd:
+        name: dbus
+        state: started
+        enabled: true
+        scope: user
+      become: false
+
+    - name: set ping sysctl
+      ansible.posix.sysctl:
+        name: net.ipv4.ping_group_range
+        value: "0 2147483647"
+        state: present
+        reload: true
+      become: true
+
+    - name: set rootfull ports for rootless user sysctl
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_unprivileged_port_start
+        value: "0"
+        state: present
+        reload: true
+      become: true
+
+    - name: check if cgroupv2 is enabled
+      stat:
+        path: "/sys/fs/cgroup/cgroup.controllers"
+      register: cgroupv2_enabled_file
+      become: false
+
+    - name: enable cgroupv2
+      ansible.builtin.replace:
+        path: /etc/default/grub
+        regexp: '^(GRUB_CMDLINE_LINUX=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
+        replace: '\1 {{ option }}={{ value }}\2'
+      vars:
+        option: systemd.unified_cgroup_hierarchy
+        value: 1
+      when: cgroupv2_enabled_file.stat.exists == false
+      notify: update grub
+
+    - name: ensure user delegate systemd directory exists
+      ansible.builtin.file:
+        path: /etc/systemd/system/user@.service.d
+        state: directory
+
+    - name: install delegate.conf for rootless users
+      ansible.builtin.copy:
+        src: delegate.conf
+        dest: "/etc/systemd/system/user@.service.d/delegate.conf"
+      notify: Reload systemd daemon
+
+    # Setup udev entries
+    - name: Power saving on hdd's
+      ansible.builtin.copy:
+        dest: /etc/udev/rules.d/hdparm.rules
+        mode: "0644"
+        content: |
+          ACTION=="add|change", KERNEL=="sd[a-z]", ATTRS{queue/rotational}=="1", RUN+="/usr/sbin/hdparm -B 150 -S 180 /dev/%k"
+
+    - name: Set cpu governor to powersaving
+      ansible.builtin.copy:
+        dest: /etc/udev/rules.d/cpu.rules
+        mode: "0644"
+        content: |
+          KERNEL=="cpu", SUBSYSTEM=="event_source", ACTION=="add", RUN+="/bin/sh -c 'echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor'"

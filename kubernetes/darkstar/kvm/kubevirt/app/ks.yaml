@@ -1,0 +1,48 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname kubevirt
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+spec:
+  targetNamespace: kubevirt
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./deploy"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: kubevirt
+  wait: true
+  dependsOn: []
+  patches:
+    # namespace is managed separately by main ks, no need for this ks to also manage it, KubeVirt bundles namespace into kubevirt-operator.yaml
+    - patch: |
+        $patch: delete
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: kubevirt
+      target:
+        kind: Namespace
+        name: kubevirt
+    - patch: |
+        apiVersion: kubevirt.io/v1
+        kind: KubeVirt
+        metadata:
+          name: not-used
+        spec:
+          configuration:
+            vmStateStorageClass: zfs-dataset # NOTE: this needs to be RWX capable - for zfs it's n/a, for rook-ceph, use file
+            developerConfiguration:
+              featureGates:
+                - VMPersistentState
+                - AutoResourceLimitsGate
+                - HotplugVolumes
+      target:
+        group: kubevirt.io
+        kind: KubeVirt

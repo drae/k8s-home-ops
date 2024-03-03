@@ -1,0 +1,121 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: home-assistant
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 30m
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/home-assistant/home-assistant
+              tag: 2024.2.5
+            envFrom:
+              - secretRef:
+                  name: home-assistant
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 126m
+                memory: 512M
+              limits:
+                memory: 2048M
+          codeserver:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.21.2@sha256:21e64d64cfa39787822f4c77c984c65797393a52a4cffdd40b2e3601ab63cfe0
+              pullPolicy: IfNotPresent
+            env:
+              HASS_SERVER: http://localhost:8123
+            args:
+              - --user-data-dir
+              - "/config/.vscode"
+              - --auth
+              - "none"
+              - --port
+              - "12321"
+              - "/config"
+    service:
+      main:
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: ${SVC_LB_HASS}
+        ports:
+          http:
+            port: 8123
+            primary: true
+          mdns-tcp:
+            enabled: true
+            port: 5353
+            protocol: TCP
+            targetPort: 5353
+          mdns-udp:
+            enabled: true
+            port: 5353
+            protocol: UDP
+            targetPort: 5353
+      codeserver:
+        type: ClusterIP
+        controller: main
+        ports:
+          http:
+            enabled: true
+            port: 12321
+            protocol: TCP
+    ingress:
+      main:
+        enabled: true
+        className: ingress-nginx-ext
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
+        hosts:
+          - host: &host "hass.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+      codeserver:
+        enabled: true
+        className: ingress-nginx-int
+        hosts:
+          - host: &host "hass-vscode.${SECRET_DOMAIN_PROXY}"
+            paths:
+              - path: /
+                service:
+                  name: codeserver
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          main:
+            main:
+              - path: /config

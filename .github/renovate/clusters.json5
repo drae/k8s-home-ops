@@ -1,0 +1,15 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
+    {
+      description: "Separate PRs for darkstar cluster",
+      matchFileNames: ["**/clusters/darkstar/**"],
+      additionalBranchPrefix: "darkstar-",
+    },
+    {
+      description: "Separate PRs for storage cluster",
+      matchFileNames: ["**/clusters/storage/**"],
+      additionalBranchPrefix: "storage-",
+    },
+  ],
+}
