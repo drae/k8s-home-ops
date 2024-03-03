@@ -28,7 +28,6 @@ spec:
         cpu:
           sockets: 2
           cores: 1
-          model: x86-64-v2-AES
         devices:
           autoattachInputDevice: false # save CPU resources, similar to disabling tablet input on Proxmox
           disks:
