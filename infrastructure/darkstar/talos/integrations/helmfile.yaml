@@ -12,7 +12,7 @@ releases:
     version: 1.15.1
     wait: true
     values:
-      - ../../k8s/apps/kube-system/cilium/app/values.yaml
+      - ../../../../kubernetes/darkstar/apps/kube-system/cilium/app/values.yaml
 
   - name: kubelet-csr-approver
     namespace: kube-system
@@ -20,4 +20,4 @@ releases:
     version: 1.0.7
     wait: true
     values:
-      - ../../k8s/apps/kube-system/kubelet-csr-approver/app/values.yaml
+      - ../../../../kubernetes/darkstar/apps/kube-system/kubelet-csr-approver/app/values.yaml
