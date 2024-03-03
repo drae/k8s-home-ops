@@ -28,12 +28,6 @@ spec:
             image:
               repository: ghcr.io/frooodle/s-pdf
               tag: 0.18.1
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
     service:
       main:
         ports:
