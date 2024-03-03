@@ -1,0 +1,17 @@
+---
+version: "3.8"
+
+services:
+  sabnzbd:
+    image: quay.io/linuxserver.io/sabnzbd:4.2.2
+    container_name: sabnzbd
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=Europe/London
+    ports:
+      - 8080:8080/tcp # sabnzbd web
+    volumes:
+      - "{{ docker_base_dir }}/downloads/sabnzbd:/config"
+      - /mnt/zstore/media/.downloads:/downloads
+    restart: unless-stopped
