@@ -50,12 +50,12 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 9216Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+    #            securityContext:
+    #              allowPrivilegeEscalation: false
+    #              readOnlyRootFilesystem: true
+    #              capabilities:
+    #                drop:
+    #                  - ALL
     service:
       main:
         type: LoadBalancer
