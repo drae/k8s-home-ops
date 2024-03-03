@@ -1,0 +1,291 @@
+---
+- name: Prepare Ubuntu
+  hosts: all
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+  pre_tasks:
+    - name: Pausing for 2 seconds...
+      ansible.builtin.pause:
+        seconds: 2
+  tasks:
+    - name: Locale
+      block:
+        - name: Set timezone
+          community.general.timezone:
+            name: "{{ timezone | default('Etc/UTC') }}"
+
+    - name: Packages
+      block:
+        - name: Disable APT recommends
+          ansible.builtin.blockinfile:
+            path: /etc/apt/apt.conf.d/02norecommends
+            mode: "0644"
+            create: true
+            block: |
+              APT::Install-Recommends "false";
+              APT::Install-Suggests "false";
+              APT::Get::Install-Recommends "false";
+              APT::Get::Install-Suggests "false";
+        - name: Add apt repositories
+          ansible.builtin.apt_repository:
+            repo: "{{ item }}"
+            update_cache: true
+          loop: "{{ os_packages_repositories | default([]) }}"
+        - name: Upgrade all system packages
+          ansible.builtin.apt:
+            upgrade: full
+          register: apt_upgrade
+          retries: 5
+          until: apt_upgrade is success
+        - name: Install common packages
+          ansible.builtin.apt:
+            name: "{{ os_packages_install | default([]) }}"
+            install_recommends: false
+          register: apt_install_common
+          retries: 5
+          until: apt_install_common is success
+        - name: Gather installed packages
+          ansible.builtin.package_facts:
+            manager: auto
+        - name: Remove snapd
+          when:
+            - "'snapd' in ansible_facts.packages"
+          block:
+            - name: Purge snapd
+              ansible.builtin.include_role:
+                name: bodsch.snapd
+              vars:
+                snapd_purge: true
+                snapd_block_later_installation: true
+            - name: Remove remaining snapd files
+              ansible.builtin.file:
+                state: absent
+                path: "{{ item }}"
+              loop:
+                - "/home/{{ ansible_user }}/.snap"
+                - "/snap"
+                - "/var/snap"
+                - "/var/lib/snapd"
+                - "/var/cache/snapd"
+                - "/usr/lib/snapd"
+        - name: Remove packages
+          ansible.builtin.apt:
+            name: "{{ os_packages_remove | default([]) }}"
+            state: absent
+            autoremove: true
+
+    - name: Users
+      block:
+        - name: Add user to sudoers
+          ansible.builtin.copy:
+            content: "{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
+            dest: "/etc/sudoers.d/{{ ansible_user }}_nopasswd"
+            owner: root
+            group: root
+            mode: "0440"
+        - name: User Configuration | SSH keys
+          ansible.posix.authorized_key:
+            user: "{{ ansible_user }}"
+            key: "https://github.com/{{ github_username }}.keys"
+        - name: Check if hushlogin exists
+          ansible.builtin.stat:
+            path: "/home/{{ ansible_user }}/.hushlogin"
+          register: hushlogin_status
+        - name: Silence the login prompt
+          ansible.builtin.file:
+            dest: "{{ '/home/' + ansible_user if ansible_user != 'root' else '/root' }}/.hushlogin"
+            state: touch
+            owner: "{{ ansible_user }}"
+            group: "{{ ansible_user }}"
+            mode: "0644"
+            modification_time: preserve
+            access_time: preserve
+
+    - name: Networking
+      notify: Reboot
+      block:
+        - name: Set hostname
+          ansible.builtin.hostname:
+            name: "{{ inventory_hostname }}"
+        - name: Update /etc/hosts to include hostname
+          ansible.builtin.copy:
+            dest: /etc/hosts
+            content: |
+              127.0.0.1 localhost
+              127.0.1.1 {{ inventory_hostname }}
+
+              # The following lines are desirable for IPv6 capable hosts
+              ::1     localhost ip6-localhost ip6-loopback
+              ff02::1 ip6-allnodes
+              ff02::2 ip6-allrouters
+            mode: preserve
+        - name: Check for bridge-nf-call-iptables
+          ansible.builtin.stat:
+            path: /proc/sys/net/bridge/bridge-nf-call-iptables
+          register: bridge_nf_call_iptables_result
+        - name: Sysctl | set config
+          ansible.posix.sysctl:
+            name: "{{ item.key }}"
+            value: "{{ item.value }}"
+            sysctl_file: /etc/sysctl.d/99-kubernetes.conf
+            reload: true
+          with_dict: "{{ sysctl_config }}"
+          vars:
+            sysctl_config:
+              net.ipv4.ip_forward: 1
+              net.ipv6.conf.all.forwarding: 1
+              net.bridge.bridge-nf-call-iptables: 1
+              net.bridge.bridge-nf-call-ip6tables: 1
+          when:
+            - bridge_nf_call_iptables_result.stat.exists
+          register: sysctl_network
+
+    - name: System
+      notify: Reboot
+      block:
+        - name: System Configuration | NFS
+          ansible.builtin.copy:
+            src: files/nfsmount.conf
+            dest: /etc/nfsmount.conf
+            owner: root
+            group: root
+            mode: "0644"
+        - name: System Configuration | Disable apparmor
+          ansible.builtin.systemd:
+            name: apparmor
+            state: stopped
+            masked: true
+        - name: System Configuration | Disable swap
+          ansible.posix.mount:
+            name: "{{ item }}"
+            fstype: swap
+            state: absent
+          loop: ["none", "swap"]
+        - name: System Configuration | Kernel modules (1)
+          community.general.modprobe:
+            name: "{{ item }}"
+            state: present
+          loop: ["br_netfilter", "ip_vs", "ip_vs_rr", "overlay", "tcp_bbr"]
+        - name: System Configuration | Kernel modules (2)
+          ansible.builtin.copy:
+            dest: "/etc/modules-load.d/{{ item }}.conf"
+            mode: "0644"
+            content: "{{ item }}"
+          loop: ["br_netfilter", "ip_vs", "ip_vs_rr", "overlay", "tcp_bbr"]
+          register: modules_status
+          notify: Update initramfs
+        - name: System Configuration | Reload Kernel modules # noqa: no-changed-when no-handler
+          when: modules_status.changed
+          ansible.builtin.systemd:
+            name: systemd-modules-load
+            state: restarted
+        - name: System Configuration | Sysctl
+          ansible.posix.sysctl:
+            name: "{{ item.key }}"
+            value: "{{ item.value }}"
+            sysctl_file: /etc/sysctl.d/99-kubernetes.conf
+            reload: true
+          with_dict: "{{ sysctl_config }}"
+          vars:
+            sysctl_config:
+              fs.inotify.max_queued_events: 65536
+              fs.inotify.max_user_watches: 524288
+              fs.inotify.max_user_instances: 8192
+        - name: System Configuration | Grub (1)
+          ansible.builtin.replace:
+            path: /etc/default/grub
+            regexp: '^(GRUB_CMDLINE_LINUX=(?:(?![" ]{{ item.key | regex_escape }}=).)*)(?:[" ]{{ item.key | regex_escape }}=\S+)?(.*")$'
+            replace: '\1 {{ item.key }}={{ item.value }}\2'
+          with_dict: "{{ grub_config }}"
+          vars:
+            grub_config:
+              apparmor: "0"
+              mitigations: "off"
+              nvme_core.default_ps_max_latency_us: "5500"
+              pci: "noaer"
+          register: grub_status
+        - name: System Configuration | Grub (2) # noqa: no-changed-when no-handler
+          ansible.builtin.command: update-grub
+          when: grub_status.changed
+        - name: Unattended-upgrades | Copy 20auto-upgrades config
+          ansible.builtin.blockinfile:
+            path: /etc/apt/apt.conf.d/20auto-upgrades
+            mode: "0644"
+            create: true
+            block: |
+              APT::Periodic::Update-Package-Lists "14";
+              APT::Periodic::Download-Upgradeable-Packages "14";
+              APT::Periodic::AutocleanInterval "7";
+              APT::Periodic::Unattended-Upgrade "1";
+        - name: Unattended-upgrades | Copy 50unattended-upgrades config
+          ansible.builtin.blockinfile:
+            path: /etc/apt/apt.conf.d/50unattended-upgrades
+            mode: "0644"
+            create: true
+            block: |
+              Unattended-Upgrade::Automatic-Reboot "false";
+              Unattended-Upgrade::Remove-Unused-Dependencies "true";
+              Unattended-Upgrade::Allowed-Origins {
+                  "${distro_id}:${distro_codename}";
+                  "${distro_id} ${distro_codename}-security";
+                  "${distro_id} ${distro_codename}-updates";
+              };
+        - name: Unattended-upgrades | Start systemd service
+          ansible.builtin.systemd:
+            name: unattended-upgrades
+            enabled: true
+            state: started
+        - name: Unattended-upgrades | Restart systemd service
+          ansible.builtin.service:
+            name: unattended-upgrades.service
+            daemon_reload: true
+            enabled: true
+            state: restarted
+
+    - name: Filesystem
+      ansible.builtin.include_role:
+        name: mrlesmithjr.zfs
+      vars:
+        zfs_enable_iscsi: false
+        zfs_enable_nfs: false
+        zfs_enable_samba: false
+        zfs_create_pools: false
+        zfs_create_filesystems: false
+        zfs_enable_auto_snapshots: false
+        zfs_enable_performance_tuning: true
+        zfs_performance_tuning:
+          - param: zfs_prefetch_disable
+            value: 1
+          - param: zfs_txg_timeout
+            value: 5
+          - param: zfs_arc_max
+            value: 2147483648
+        zfs_pools:
+          - name: "alpha"
+            action: create
+            atime: "off"
+            acltype: "posixacl"
+            xattr: "sa"
+            compression: "lz4"
+            devices:
+              - /dev/nvme0n1
+            type: basic
+            state: present
+        zfs_filesystems:
+          - name: k8s/local
+            pool: alpha
+            atime: "off"
+            acltype: "posixacl"
+            xattr: "sa"
+            state: present
+
+  handlers:
+    - name: Reboot
+      ansible.builtin.reboot:
+        msg: Rebooting nodes
+        reboot_timeout: 3600
+    - name: Update initramfs
+      ansible.builtin.command: update-initramfs -u -k all
+      register: result
+      changed_when: result.rc == 0

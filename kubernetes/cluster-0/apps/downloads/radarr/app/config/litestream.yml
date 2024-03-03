@@ -1,8 +1,0 @@
-addr: ":9090"
-dbs:
-  - path: /config/radarr.db
-    replicas:
-      - type: s3
-        bucket: litestream
-        path: radarr/radarr.db
-        endpoint: ${R2_REPOSITORY}

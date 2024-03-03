@@ -1,0 +1,76 @@
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: &app ksi-vm-sim01
+  labels:
+    special: *app
+spec:
+  runStrategy: Manual
+  template:
+    metadata:
+      labels:
+        vm.home.arpa/os: windows
+        vm.home.arpa/windows: *app
+    spec:
+      hostname: *app
+      domain:
+        clock:
+          timer:
+            hpet:
+              present: false
+            hyperv: {}
+            pit:
+              tickPolicy: delay
+            rtc:
+              tickPolicy: catchup
+          utc: {}
+        cpu:
+          sockets: 2
+          cores: 1
+          model: x86-64-v2-AES
+        devices:
+          autoattachInputDevice: false # save CPU resources, similar to disabling tablet input on Proxmox
+          disks:
+            - name: windows-iso
+              cdrom:
+                bus: sata
+            - name: c-drive
+              serial: ${KV_KSI_VM_SIM01_DISK}
+              disk:
+                bus: sata
+          interfaces:
+            - name: default
+              model: e1000
+              masquerade: {}
+          tpm:
+            persistent: true
+        features:
+          acpi: {}
+          apic: {}
+          hyperv:
+            relaxed: {}
+            spinlocks:
+              spinlocks: 8191
+            vapic: {}
+          smm: {}
+        firmware:
+          uuid: ${KV_KSI_VM_SIM01_UUID}
+          serial: ${KV_KSI_VM_SIM01_SERIAL}
+          bootloader:
+            efi:
+              secureBoot: true
+        resources:
+          requests:
+            memory: 16Gi
+      networks:
+        - name: default
+          pod: {}
+      terminationGracePeriodSeconds: 0
+      volumes:
+        - name: c-drive
+          persistentVolumeClaim:
+            claimName: ksi-vm-sim01-c-drive
+        - name: windows-iso
+          persistentVolumeClaim:
+            claimName: vm-cdrom-windows11

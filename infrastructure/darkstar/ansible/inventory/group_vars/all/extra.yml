@@ -1,0 +1,52 @@
+---
+timezone: Europe/London
+github_username: drae
+#os_packages_repositories:
+#  - ppa:neovim-ppa/unstable
+os_packages_install:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - ebtables
+  - gettext
+  - gdisk
+  - hdparm
+  - htop
+  - iptables
+  - locales
+  - linux-generic-hwe-22.04
+  - net-tools
+  - nfs-common
+  - ntpdate
+  - nvme-cli
+  - psmisc
+  - smartmontools
+  - software-properties-common
+  - tzdata
+  - unattended-upgrades
+  - zfsutils-linux
+os_packages_remove:
+  - apparmor
+  - apport
+  - bcache-tools
+  - btrfs-progs
+  - byobu
+  - cloud-init
+  - cloud-guest-utils
+  - cloud-initramfs-copymods
+  - cloud-initramfs-dyn-netconf
+  - friendly-recovery
+  - fwupd
+  - landscape-common
+  - lxd-agent-loader
+  - ntfs-3g
+  - open-vm-tools
+  - plymouth
+  - plymouth-theme-ubuntu-text
+  - popularity-contest
+  - snapd
+  - sosreport
+  - tmux
+  - ubuntu-advantage-tools
+  - ufw
+  - bolt
