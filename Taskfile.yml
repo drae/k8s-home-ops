@@ -4,7 +4,7 @@ version: "3"
 vars:
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
-  K8S_DIR: "{{.PROJECT_DIR}}/kubernetes"
+  KUBERNETES_DIR: "{{.PROJECT_DIR}}/kubernetes"
   INFRASTRUCTURE_DIR: "{{.PROJECT_DIR}}/infrastructure"
 
 includes:
