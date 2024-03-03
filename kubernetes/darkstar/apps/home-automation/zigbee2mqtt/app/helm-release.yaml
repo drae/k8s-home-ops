@@ -94,3 +94,5 @@ spec:
           main:
             main:
               - path: /data
+      tmp:
+        type: emptyDir
