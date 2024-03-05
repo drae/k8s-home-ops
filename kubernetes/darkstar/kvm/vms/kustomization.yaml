@@ -4,5 +4,5 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
   - ./namespace.yaml
-  #  - ./common/ks.yaml
+  - ./common/ks.yaml
   - ./windows/ks.yaml
