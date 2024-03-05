@@ -7,6 +7,12 @@ metadata:
     special: *app
 spec:
   runStrategy: Manual
+  preference:
+    kind: VirtualMachinePreference
+    name: "vm-windows"
+  instancetype:
+    kind: VirtualMachineInstancetype
+    name: "vm-windows"
   template:
     metadata:
       labels:
@@ -15,21 +21,7 @@ spec:
     spec:
       hostname: *app
       domain:
-        clock:
-          timer:
-            hpet:
-              present: false
-            hyperv: {}
-            pit:
-              tickPolicy: delay
-            rtc:
-              tickPolicy: catchup
-          utc: {}
-        cpu:
-          sockets: 2
-          cores: 1
         devices:
-          autoattachInputDevice: false # save CPU resources, similar to disabling tablet input on Proxmox
           disks:
             - name: windows-iso
               cdrom:
@@ -42,26 +34,12 @@ spec:
             - name: default
               model: e1000
               masquerade: {}
-          tpm:
-            persistent: true
-        features:
-          acpi: {}
-          apic: {}
-          hyperv:
-            relaxed: {}
-            spinlocks:
-              spinlocks: 8191
-            vapic: {}
-          smm: {}
         firmware:
           uuid: ${KV_KSI_VM_SIM01_UUID}
           serial: ${KV_KSI_VM_SIM01_SERIAL}
           bootloader:
             efi:
-              secureBoot: true
-        resources:
-          requests:
-            memory: 16Gi
+              persistent: true
       networks:
         - name: default
           pod: {}
