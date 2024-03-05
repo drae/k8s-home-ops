@@ -6,9 +6,9 @@ metadata:
 spec:
   requirements:
     cpu:
-      guest: 4
+      guest: 2
     memory:
-      guest: 16384Mi
+      guest: 16Gi
   clock:
     preferredTimer:
       hpet:
@@ -18,6 +18,8 @@ spec:
         tickPolicy: delay
       rtc:
         tickPolicy: catchup
+  cpu:
+    preferredCPUTopology: preferSockets
   devices:
     preferredDiskBus: sata
     preferredInterfaceModel: e1000
@@ -42,4 +44,6 @@ spec:
     preferredUseSecureBoot: true
   volumes:
     preferredStorageClassName: zfs-dataset
-  preferredTerminationGracePeriodSeconds: 30
+  preferredTerminationGracePeriodSeconds: 0
+  machine:
+    preferredMachineType: "pc-q35-rhel9.2.0"

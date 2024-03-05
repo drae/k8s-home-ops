@@ -5,6 +5,6 @@ metadata:
   name: vm-windows
 spec:
   cpu:
-    guest: 4
+    guest: 2
   memory:
-    guest: 16384Mi
+    guest: 16Gi
