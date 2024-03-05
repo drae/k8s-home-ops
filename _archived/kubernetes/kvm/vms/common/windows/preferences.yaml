@@ -18,6 +18,8 @@ spec:
         tickPolicy: delay
       rtc:
         tickPolicy: catchup
+      kvm:
+        present: false
   cpu:
     preferredCPUTopology: preferSockets
   devices:
@@ -35,9 +37,18 @@ spec:
     preferredApic: {}
     preferredHyperv:
       relaxed: {}
+      vapic: {}
       spinlocks:
         spinlocks: 8191
-      vapic: {}
+      vpindex: {}
+      synic: {}
+      stimer:
+        direct: {}
+      reset: {}
+      frequencies: {}
+      reenlightenment: {}
+      tlbflush: {}
+      ipi: {}
     preferredSmm: {}
   firmware:
     preferredUseEfi: true
