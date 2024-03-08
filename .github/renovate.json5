@@ -22,13 +22,13 @@
   rebaseWhen: "conflicted",
   ignorePaths: ["_archived/**"],
   flux: {
-    fileMatch: ["^clusters/.+\\.ya?ml$"],
+    fileMatch: ["^kubernetes/.+\\.ya?ml$"],
   },
   "helm-values": {
-    fileMatch: ["^clusters/.+\\.ya?ml$"],
+    fileMatch: ["^kubernetes/.+\\.ya?ml$"],
   },
   kubernetes: {
-    fileMatch: ["^clusters/.+\\.ya?ml$"],
+    fileMatch: ["^kubernetes/.+\\.ya?ml$"],
   },
   "docker-compose": {
     fileMatch: ["(^|/)(?:docker-)?compose[^/]*\\.ya?ml(.j2)?$"],
