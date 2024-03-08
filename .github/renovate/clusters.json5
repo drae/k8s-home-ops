@@ -3,13 +3,13 @@
   packageRules: [
     {
       description: "Separate PRs for darkstar cluster",
-      matchFileNames: ["**/clusters/darkstar/**"],
+      matchFileNames: ["**/darkstar/**"],
       additionalBranchPrefix: "darkstar-",
     },
     {
-      description: "Separate PRs for storage cluster",
-      matchFileNames: ["**/clusters/storage/**"],
-      additionalBranchPrefix: "storage-",
+      description: "Separate PRs for apollo (storage)",
+      matchFileNames: ["**/apollo/**"],
+      additionalBranchPrefix: "apollo-",
     },
   ],
 }
