@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.1/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -16,11 +17,11 @@ spec:
       interval: 30m
   values:
     controllers:
-      main:
+      home-assistant:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/home-assistant/home-assistant
               tag: 2024.3.0
@@ -56,7 +57,8 @@ spec:
               - "12321"
               - "/config"
     service:
-      main:
+      app:
+        controller: home-assistant
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: ${SVC_LB_HASS}
@@ -75,15 +77,15 @@ spec:
             protocol: UDP
             targetPort: 5353
       codeserver:
+        controller: home-assistant
         type: ClusterIP
-        controller: main
         ports:
           http:
             enabled: true
             port: 12321
             protocol: TCP
     ingress:
-      main:
+      app:
         enabled: true
         className: ingress-nginx-ext
         annotations:
@@ -93,7 +95,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
@@ -106,16 +108,15 @@ spec:
             paths:
               - path: /
                 service:
-                  name: codeserver
+                  identifier: codeserver
                   port: http
         tls:
           - hosts:
               - *host
     persistence:
       config:
-        enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          main:
-            main:
+          home-assistant:
+            app:
               - path: /config

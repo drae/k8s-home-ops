@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.1/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -16,7 +17,7 @@ spec:
       interval: 30m
   values:
     controllers:
-      main:
+      mosquitto:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -26,7 +27,7 @@ spec:
             fsGroup: ${APP_GID}
             fsGroupChangePolicy: OnRootMismatch
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/k8s-at-home/eclipse-mosquitto
               tag: v2.0.15
@@ -37,14 +38,13 @@ spec:
               limits:
                 memory: 10M
     service:
-      main:
+      app:
+        controller: mosquitto
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: ${SVB_LB_MOSQUITO}
         externalTrafficPolicy: Local
         ports:
-          http:
-            enabled: false
           mqtt:
             enabled: true
             primary: true
@@ -54,15 +54,14 @@ spec:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          main:
-            main:
+          mosquitto:
+            app:
               - path: /mosquitto/data
       config:
-        enabled: true
         type: configMap
         name: mosquitto-config
         advancedMounts:
-          main:
-            main:
+          mosquitto:
+            app:
               - path: /mosquitto/config/mosquitto.conf
                 subPath: mosquitto.conf

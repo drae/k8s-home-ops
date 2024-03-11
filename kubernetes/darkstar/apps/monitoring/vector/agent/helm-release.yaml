@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.1/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -17,7 +17,7 @@ spec:
   interval: 30m
   values:
     controllers:
-      main:
+      vector-agent:
         type: daemonset
         strategy: RollingUpdate
         annotations:
@@ -27,7 +27,7 @@ spec:
             - key: node-role.kubernetes.io/master
               effect: NoSchedule
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/vector
               tag: 0.34.1-debian@sha256:329ceb648d40a26fca9f72c851e9abbacef74cc50b7956d9cf7eb1929d57f35c
@@ -60,9 +60,11 @@ spec:
               #   memory: 918M
             securityContext:
               privileged: true
+    serviceAccount:
+      create: true
+      name: vector-agent
     persistence:
       config:
-        enabled: true
         type: configMap
         name: vector-agent-configmap
         globalMounts:
@@ -101,9 +103,3 @@ spec:
         globalMounts:
           - path: /host/sys
             readOnly: true
-    service:
-      main:
-        enabled: false
-    serviceAccount:
-      create: true
-      name: vector-agent
