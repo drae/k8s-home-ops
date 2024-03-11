@@ -5,6 +5,7 @@ metadata:
   name: system-upgrade-controller
   namespace: flux-system
 spec:
+  targetNamespace: system-upgrade
   path: ./kubernetes/darkstar/apps/system-upgrade/system-upgrade-controller/app
   prune: true
   sourceRef:
@@ -19,6 +20,7 @@ metadata:
   name: system-upgrade-controller-plans
   namespace: flux-system
 spec:
+  targetNamespace: system-upgrade
   path: ./kubernetes/darkstar/apps/system-upgrade/system-upgrade-controller/plans
   prune: true
   sourceRef:
