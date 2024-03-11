@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.1/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s-charts
@@ -17,11 +17,10 @@ spec:
       interval: 30m
   values:
     controllers:
-      main:
+      plex:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          enableServiceLinks: false
           nodeSelector:
             intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
@@ -34,7 +33,7 @@ spec:
               - 109
               - 65539
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/plex
               tag: 1.40.0.7998-c29d4c0c8@sha256:7c4501799f0d5f4f94fcb95a8a47b883528354c779a182a9ae4af118a1fc6b10
@@ -57,7 +56,8 @@ spec:
     #                drop:
     #                  - ALL
     service:
-      main:
+      app:
+        controller: plex
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: ${SVC_LB_PLEX}
@@ -66,7 +66,7 @@ spec:
           http:
             port: 32400
     ingress:
-      main:
+      app:
         enabled: true
         className: ingress-nginx-ext
         annotations:
@@ -76,25 +76,23 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - hosts:
               - *host
     persistence:
       config:
-        enabled: true
         existingClaim: "${VOLSYNC_CLAIM}"
         advancedMounts:
-          main:
-            main:
+          plex:
+            app:
               - path: /config
       tmp:
         type: emptyDir
       transcode:
         type: emptyDir
       media:
-        enabled: true
         type: nfs
         server: 10.1.10.10
         path: /mnt/zstore/media
