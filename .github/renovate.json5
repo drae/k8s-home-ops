@@ -7,7 +7,6 @@
     ":disableRateLimiting",
     ":enablePreCommit",
     ":timezone(Europe/London)",
-    "github>drae/k8s-home-ops//.github/renovate/autoMerge.json5",
     "github>drae/k8s-home-ops//.github/renovate/clusters.json5",
     "github>drae/k8s-home-ops//.github/renovate/commitMessage.json5",
     "github>drae/k8s-home-ops//.github/renovate/customManagers.json5",
