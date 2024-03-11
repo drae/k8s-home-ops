@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.0.1/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.1
       interval: 30m
       sourceRef:
         kind: HelmRepository
@@ -17,7 +17,7 @@ spec:
   interval: 30m
   values:
     controllers:
-      main:
+      vector-aggregator:
         replicas: 1
         strategy: Recreate
         annotations:
@@ -31,7 +31,7 @@ spec:
                 matchLabels:
                   app.kubernetes.io/name: vector-aggregator
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/vector
               tag: 0.34.1-debian@sha256:329ceb648d40a26fca9f72c851e9abbacef74cc50b7956d9cf7eb1929d57f35c
@@ -39,7 +39,8 @@ spec:
               - "--config"
               - "/etc/vector/vector.yaml"
     service:
-      main:
+      app:
+        controller: vector-aggregator
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: ${SVC_LB_VECTOR}
@@ -48,14 +49,11 @@ spec:
           http:
             port: 8686
           kubernetes-logs:
-            enabled: true
             port: 6000
           journald-logs:
-            enabled: true
             port: 6002
     persistence:
       config:
-        enabled: true
         type: configMap
         name: vector-aggregator-configmap
         globalMounts:
