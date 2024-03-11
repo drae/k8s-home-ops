@@ -1,10 +1,33 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
+    //
+    // NOTE: Renovate processes rules from top to bottom, so the rules below take precedence over rules above it
+    //
+    // Github actions
+    {
+      description: "Auto merge Github Actions",
+      matchManagers: ["github-actions"],
+      automerge: true,
+      automergeType: "pr",
+      ignoreTests: true,
+      matchUpdateTypes: ["minor", "patch", "digest"],
+    },
+    // Renovate actual
+    {
+      description: "Auto merge all Renovate versions",
+      matchPackagePatterns: ["renovate"],
+      matchUpdateTypes: ["major", "minor", "patch", "digest"],
+      automerge: true,
+      automergeType: "branch",
+      ignoreTests: true,
+      labels: ["renovate-actual"],
+    },
+    // FluxCD
     {
       description: "Flux Group",
       groupName: "Flux",
-      matchPackagePatterns: ["^flux", "^ghcr.io/fluxcd/"],
+      matchPackagePatterns: ["fluxcd"],
       matchDatasources: ["docker", "github-tags"],
       versioning: "semver",
       group: {
@@ -12,16 +35,7 @@
       },
       separateMinorPatch: true,
     },
-    {
-      description: "Rook-Ceph image and chart",
-      groupName: "Rook Ceph",
-      matchPackagePatterns: ["rook.ceph"],
-      matchDatasources: ["docker", "helm"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      separateMinorPatch: true,
-    },
+    // Cilium
     {
       description: "Cilium image and chart",
       groupName: "cilium",
@@ -36,6 +50,7 @@
       },
       separateMinorPatch: true,
     },
+    // Snapshotter
     {
       description: "External Snapshotter charts",
       groupName: "External Snapshotter",
@@ -46,6 +61,7 @@
       },
       separateMinorPatch: true,
     },
+    // Vector (aggregator & agent)
     {
       description: "Vector image and chart - versions do not match",
       groupName: "Vector",
@@ -56,6 +72,20 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
       separateMinorPatch: false,
+    },
+    // manually approve app-template major releases
+    {
+      matchPackagePatterns: ["app-template"],
+      matchDatasources: ["helm"],
+      matchUpdateTypes: ["major"],
+      dependencyDashboardApproval: true,
+      automerge: false,
+      separateMajorMinor: true,
+      separateMultipleMajor: true,
+      separateMinorPatch: true,
+      groupName: "app-template-major",
+      commitMessagePrefix: "feat(app-template/major)!: ",
+      labels: ["app-template", "major"],
     },
   ],
 }
