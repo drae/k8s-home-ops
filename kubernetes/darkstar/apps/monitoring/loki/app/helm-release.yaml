@@ -15,84 +15,66 @@ spec:
         namespace: flux-system
       interval: 30m
   install:
-    timeout: 20m
-    replace: true
     crds: CreateReplace
     createNamespace: true
-    remediation:
-      retries: 3
   upgrade:
-    remediation:
-      remediateLastFailure: true
-      retries: 3
-      strategy: rollback
     cleanupOnFail: true
     crds: CreateReplace
   rollback:
-    recreate: true
-    force: true
     cleanupOnFail: true
-  uninstall:
-    keepHistory: false
-  maxHistory: 3
   values:
     deploymentMode: SingleBinary
-    singleBinary:
-      replicas: 1
-    loki:
-      storage:
-        type: filesystem
-      auth_enabled: false
-      commonConfig:
-        replication_factor: 1
-      query_scheduler:
-        max_outstanding_requests_per_tenant: 4096
-      frontend:
-        max_outstanding_per_tenant: 4096
-      query_range:
-        parallelise_shardable_queries: true
-      limits_config:
-        retention_period: 14d
-        enforce_metric_name: false
-        reject_old_samples: true
-        reject_old_samples_max_age: 168h
-        max_cache_freshness_per_query: 10m
-        ingestion_rate_mb: 8
-        ingestion_burst_size_mb: 16
-        shard_streams:
-          enabled: true
-        split_queries_by_interval: 15m
-        max_query_parallelism: 32
-      compactor:
-        working_directory: /var/loki/boltdb-shipper-compactor
-        shared_store: filesystem
-        compaction_interval: 10m
-        retention_enabled: true
-        retention_delete_delay: 2h
-        retention_delete_worker_count: 150
-      ingester:
-        max_chunk_age: 1h
-      analytics:
-        reporting_enabled: false
-      rulerConfig:
-        alertmanager_url: http://alertmanager.monitoring:9093
-    test:
-      enabled: false
-    read:
-      replicas: 1
-      persistence:
-        storageClass: zfs-dataset
-    write:
-      replicas: 1
-      persistence:
-        storageClass: zfs-dataset
-    backend:
-      replicas: 1
-      persistence:
-        storageClass: zfs-dataset
     gateway:
       deploymentStrategy:
         type: Recreate
-      # structuredConfig:
-      #   memberlist:
-      #     join_members: ["loki-memberlist"]
+    loki:
+      schemaConfig:
+        configs:
+          - from: "2024-04-01"
+            store: tsdb
+            object_store: filesystem
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
+      storage:
+        type: filesystem
+      structuredConfig:
+        analytics:
+          reporting_enabled: false
+        auth_enabled: false
+        frontend:
+          max_outstanding_per_tenant: 4096
+        limits_config:
+          retention_period: 14d
+          reject_old_samples: true
+          reject_old_samples_max_age: 168h
+          max_cache_freshness_per_query: 10m
+          ingestion_rate_mb: 8
+          ingestion_burst_size_mb: 16
+          shard_streams:
+            enabled: true
+          split_queries_by_interval: 15m
+          max_query_parallelism: 32
+        query_scheduler:
+          max_outstanding_requests_per_tenant: 4096
+        query_range:
+          parallelise_shardable_queries: true
+    backend:
+      replicas: 0
+    read:
+      replicas: 0
+    write:
+      replicas: 0
+    chunksCache:
+      enabled: false
+    resultsCache:
+      enabled: false
+    singleBinary:
+      persistence:
+        storageClass: zfs-dataset
+      replicas: 1
+    lokiCanary:
+      enabled: false
+    test:
+      enabled: false
