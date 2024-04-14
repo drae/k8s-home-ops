@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 5.47.2
+      version: 6.2.0
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
@@ -36,6 +36,7 @@ spec:
     keepHistory: false
   maxHistory: 3
   values:
+    deploymentMode: SingleBinary
     singleBinary:
       replicas: 1
     loki:
@@ -92,19 +93,6 @@ spec:
     gateway:
       deploymentStrategy:
         type: Recreate
-    monitoring:
-      dashboards:
-        enabled: true
-        annotations:
-          grafana_folder: Loki
-        labels:
-          grafana_dashboard: "true"
-      selfMonitoring:
-        enabled: false
-        grafanaAgent:
-          installOperator: false
-      lokiCanary:
-        enabled: false
       # structuredConfig:
       #   memberlist:
       #     join_members: ["loki-memberlist"]
