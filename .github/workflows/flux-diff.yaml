@@ -72,7 +72,7 @@ jobs:
         uses: frenck/action-setup-yq@v1
 
       - name: Diff Resources
-        uses: allenporter/flux-local/action/diff@5.2.0
+        uses: allenporter/flux-local/action/diff@5.3.0
         id: diff
         with:
           sources: k8s-home-ops
