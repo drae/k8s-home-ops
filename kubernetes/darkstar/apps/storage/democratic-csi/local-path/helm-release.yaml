@@ -37,7 +37,7 @@ spec:
     controller:
       enabled: true
       driver:
-        image: ghcr.io/democratic-csi/democratic-csi:v1.9.2
+        image: ghcr.io/democratic-csi/democratic-csi:v1.9.3
       strategy: node
       externalProvisioner:
         enabled: true
@@ -58,7 +58,7 @@ spec:
         enabled: false
     node:
       driver:
-        image: ghcr.io/democratic-csi/democratic-csi:v1.9.2
+        image: ghcr.io/democratic-csi/democratic-csi:v1.9.3
         extraVolumeMounts:
           - name: local-hostpath
             mountPath: *storagePath
