@@ -8,8 +8,8 @@ ConditionPathIsMountPoint={{ condition_path_is_mount_point }}
 Type=oneshot
 RemainAfterExit=true
 WorkingDirectory={{ docker_base_dir }}/%i
-ExecStart=/usr/bin/docker-compose up -d --remove-orphans
-ExecStop=/usr/bin/docker-compose down
+ExecStart=/usr/bin/docker compose up -d --remove-orphans
+ExecStop=/usr/bin/docker compose down
 
 [Install]
 WantedBy=multi-user.target
