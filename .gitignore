@@ -10,3 +10,6 @@ talosconfig
 
 # Python (for ansible)
 .venv
+
+# Task
+.task
