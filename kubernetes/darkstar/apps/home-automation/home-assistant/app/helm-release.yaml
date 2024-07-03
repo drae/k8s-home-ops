@@ -116,7 +116,5 @@ spec:
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /config
+        globalMounts:
+          - path: /config
