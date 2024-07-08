@@ -271,7 +271,7 @@ radarr:
           - e0c07d59beb37348e975a930d5e50319 # Criterion Collection - 25
           - 9d27d9d2181838f76dee150882bdc58c # Masters of Cinema - 25
           - db9b4c4b53d312a3ca5f1378f6440fc9 # Vinegar Syndrome - 25
-          - 957d0f44b592285f26449575e8b1167e # Special Edition - 125
+          #          - 957d0f44b592285f26449575e8b1167e # Special Edition - 125
           # HQ Release Groups
           - c20f169ef63c5f40c2def54abaf4438e # WEB Tier 01 - 1700
           - 403816d65392c79236dcb6dd591aeda4 # WEB Tier 02 - 1650
