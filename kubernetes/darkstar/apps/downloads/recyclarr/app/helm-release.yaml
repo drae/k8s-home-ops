@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: ghcr.io/recyclarr/recyclarr
-              tag: 7.0.0
+              tag: 7.1.0
             env:
               SONARR_API_KEY: ${SONARR_API_KEY}
               RADARR_API_KEY: ${RADARR_API_KEY}
