@@ -51,7 +51,7 @@ ipv4NativeRoutingCIDR: 10.200.0.0/16
 k8sServiceHost: 10.1.10.21
 k8sServicePort: 6443
 
-kubeProxyReplacement: "strict"
+kubeProxyReplacement: "true"
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
 l2announcements:
