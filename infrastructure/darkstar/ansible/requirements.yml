@@ -9,7 +9,7 @@ collections:
   - name: community.sops
     version: 1.8.1
   - name: community.docker
-    version: 3.11.0
+    version: 3.12.0
   - name: kubernetes.core
     version: 5.0.0
 roles:
