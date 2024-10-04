@@ -25,7 +25,6 @@ spec:
         egress.home.arpa/apiserver: allow
         egress.home.arpa/kubedns: allow # TODO: Remove when clusterNetworkPolicy is in place
     webhook:
-      enabled: true
       podLabels:
         egress.home.arpa/apiserver: allow
         egress.home.arpa/kubedns: allow # TODO: Remove when clusterNetworkPolicy is in place
