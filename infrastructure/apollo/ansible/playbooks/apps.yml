@@ -38,13 +38,6 @@
         enabled: true
         daemon_reload: true
 
-    - name: Restart minio
-      ansible.builtin.systemd:
-        name: "docker-compose@minio.service"
-        state: restarted
-        enabled: true
-        daemon_reload: true
-
   tasks:
     - name: Create default directories
       ansible.builtin.file:
@@ -128,34 +121,6 @@
           ansible.builtin.template:
             src: "docker-compose@.service.j2"
             dest: "/etc/systemd/system/docker-compose@node-exporter.service"
-            mode: "0644"
-          vars:
-            condition_path_is_mount_point: "/"
-
-    - name: Create minio directories
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        owner: "{{ ansible_user }}"
-        group: users
-        mode: "0775"
-      loop:
-        - "{{ docker_base_dir }}/minio"
-
-    - name: Create docker-compose for minio
-      notify: Restart minio
-      block:
-        - name: Create minio docker compose file
-          ansible.builtin.template:
-            src: minio/docker-compose.yml.j2
-            dest: "{{ docker_base_dir }}/minio/docker-compose.yml"
-            owner: "{{ ansible_user }}"
-            group: users
-            mode: "0775"
-        - name: Create minio systemd service file
-          ansible.builtin.template:
-            src: "docker-compose@.service.j2"
-            dest: "/etc/systemd/system/docker-compose@minio.service"
             mode: "0644"
           vars:
             condition_path_is_mount_point: "/"
