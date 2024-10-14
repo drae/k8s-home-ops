@@ -144,15 +144,15 @@ tasks:
           fi
       claim:
         sh: |
-          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}}-minio \
+          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}}-r2 \
             -o jsonpath="{.spec.sourcePVC}"
       app_uid:
         sh: |
-          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}}-minio \
+          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}}-r2 \
             -o jsonpath="{.spec.restic.moverSecurityContext.runAsUser}"
       app_gid:
         sh: |
-          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}}-minio \
+          kubectl --context {{.cluster}} -n {{.ns}} get replicationsources/{{.app}}-r2 \
             -o jsonpath="{.spec.restic.moverSecurityContext.runAsGroup}"
     env: *env
     preconditions:
