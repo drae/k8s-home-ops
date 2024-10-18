@@ -41,6 +41,16 @@ spec:
               ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,https://plex.${SECRET_DOMAIN}:443"
               ALLOWED_NETWORKS: "10.200.0.0/16,10.210.0.0/16,10.1.10.0/23"
               PLEX_NO_AUTH_NETWORKS: 10.200.0.0/16
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
                 gpu.intel.com/i915: 1
@@ -88,10 +98,6 @@ spec:
           plex:
             app:
               - path: /config
-      tmp:
-        type: emptyDir
-      transcode:
-        type: emptyDir
       media:
         type: nfs
         server: 10.1.10.10
@@ -99,3 +105,23 @@ spec:
         globalMounts:
           - path: /mnt/media
             readOnly: true
+      tmp:
+        type: emptyDir
+      transcode:
+        type: emptyDir
+        advancedMounts:
+          plex:
+            app:
+              - path: /transcode
+      plex-cache:
+        existingClaim: plex-cache
+        advancedMounts:
+          plex:
+            app:
+              - path: /config/Library/Application Support/Plex Media Server/Cache
+      logs:
+        type: emptyDir
+        advancedMounts:
+          plex:
+            app:
+              - path: /config/Library/Application Support/Plex Media Server/Logs
