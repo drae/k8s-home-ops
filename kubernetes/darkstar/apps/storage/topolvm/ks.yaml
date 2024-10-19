@@ -16,3 +16,5 @@ spec:
     name: k8s-home-ops
   wait: true
   interval: 10m
+  dependsOn:
+    - name: snapshot-controller
