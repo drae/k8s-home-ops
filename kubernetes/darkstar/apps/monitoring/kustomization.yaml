@@ -8,5 +8,6 @@ resources:
   - ./node-exporter/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./loki/ks.yaml
+  - ./prometheus-operator/ks.yaml
   - ./vector/ks.yaml
   - ./grafana/ks.yaml
