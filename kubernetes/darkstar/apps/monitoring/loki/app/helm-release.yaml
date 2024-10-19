@@ -72,7 +72,7 @@ spec:
       enabled: false
     singleBinary:
       persistence:
-        storageClass: zfs-dataset
+        storageClass: topolvm-thin-provisioner
       replicas: 1
     lokiCanary:
       enabled: false

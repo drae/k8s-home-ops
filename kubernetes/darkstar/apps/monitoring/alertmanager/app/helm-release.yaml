@@ -26,7 +26,7 @@ spec:
             - name: storage
               accessMode: ReadWriteOnce
               size: 50Mi
-              storageClass: zfs-dataset
+              storageClass: topolvm-thin-provisioner
               globalMounts:
                 - path: /alertmanager
         containers:

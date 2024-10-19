@@ -152,7 +152,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: zfs-dataset
+              storageClassName: topolvm-thin-provisioner
               resources:
                 requests:
                   storage: 25Gi
