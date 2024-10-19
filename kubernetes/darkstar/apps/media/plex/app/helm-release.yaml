@@ -70,7 +70,7 @@ spec:
         controller: plex
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${SVC_LB_PLEX}
+          lbipam.cilium.io/ips: ${SVC_LB_PLEX}
         externalTrafficPolicy: Cluster
         ports:
           http:
