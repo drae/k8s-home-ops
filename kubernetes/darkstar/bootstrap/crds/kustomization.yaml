@@ -1,9 +1,0 @@
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  # renovate: depName=prometheus-operator/prometheus-operator datasource=github-releases
-  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/0.72.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
-  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/0.72.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
-  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/0.72.0/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
-  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/0.72.0/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
