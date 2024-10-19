@@ -42,7 +42,7 @@ spec:
         controller: mosquitto
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${SVB_LB_MOSQUITO}
+          lbipam.cilium.io/ips: ${SVB_LB_MOSQUITO}
         externalTrafficPolicy: Local
         ports:
           mqtt:

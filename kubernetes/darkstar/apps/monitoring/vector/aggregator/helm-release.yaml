@@ -43,7 +43,7 @@ spec:
         controller: vector-aggregator
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${SVC_LB_VECTOR}
+          lbipam.cilium.io/ips: ${SVC_LB_VECTOR}
         externalTrafficPolicy: Cluster
         ports:
           http:

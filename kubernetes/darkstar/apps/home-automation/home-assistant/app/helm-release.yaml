@@ -61,7 +61,7 @@ spec:
         controller: home-assistant
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: ${SVC_LB_HASS}
+          lbipam.cilium.io/ips: ${SVC_LB_HASS}
         ports:
           http:
             port: 8123
