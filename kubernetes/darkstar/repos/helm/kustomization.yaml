@@ -8,7 +8,7 @@ resources:
   - ./backube-charts.yaml
   - ./bjw-s-charts.yaml
   - ./cilium-charts.yaml
-  - ./democratic-csi-charts.yaml
+  #  - ./democratic-csi-charts.yaml
   - ./grafana-charts.yaml
   - ./ingress-nginx-charts.yaml
   - ./intel-charts.yaml
