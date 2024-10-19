@@ -1,5 +1,5 @@
 ---
 providerRegex: |
-  ^(alpha)$
+  ^(alpha|beta|gamma)$
 
 bypassDnsResolution: true
