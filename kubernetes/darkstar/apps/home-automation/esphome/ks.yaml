@@ -24,5 +24,5 @@ spec:
       VOLSYNC_CLAIM: esphome-config
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
-    - name: democratic-csi-zfs-local-dataset
+    - name: topolvm
     - name: volsync

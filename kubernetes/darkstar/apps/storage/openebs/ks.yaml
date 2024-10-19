@@ -2,22 +2,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname volsync
+  name: &appname openebs
   namespace: flux-system
 spec:
   targetNamespace: storage
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
-  path: "./kubernetes/darkstar/apps/storage/volsync/app"
-  prune: true
+  path: ./kubernetes/darkstar/apps/storage/openebs/app
+  prune: false
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  wait: false # no flux ks dependents
-  timeout: 2m
-  dependsOn:
-    - name: openebs
-    - name: topolvm
-    - name: snapshot-controller
+  wait: true
+  interval: 10m
