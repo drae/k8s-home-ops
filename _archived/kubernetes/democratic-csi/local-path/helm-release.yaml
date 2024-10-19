@@ -29,7 +29,7 @@ spec:
       config:
         driver: local-hostpath
         local-hostpath:
-          shareBasePath: &storagePath "/var/lib/demo_csi/local-path"
+          shareBasePath: &storagePath "/var/mnt/democsi/local"
           controllerBasePath: *storagePath
           dirPermissionsMode: "0770"
           dirPermissionsUser: 0

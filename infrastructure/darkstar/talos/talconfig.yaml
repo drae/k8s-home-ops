@@ -54,18 +54,18 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-#    patches:
-#      - |-
-#        machine:
-#          kubelet:
-#            extraMounts:
-#              - destination: /var/mnt/usb
-#                type: bind
-#                source: /var/mnt/usb
-#                options:
-#                  - rbind
-#                  - rshared
-#                  - rw
+    patches:
+      - |-
+        machine:
+          kubelet:
+            extraMounts:
+              - destination: /var/mnt/openebs/local
+                type: bind
+                source: /var/mnt/openebs/local
+                options:
+                  - bind
+                  - rshared
+                  - rw
 
 controlPlane:
   schematic:
@@ -164,7 +164,6 @@ controlPlane:
       machine:
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 200
