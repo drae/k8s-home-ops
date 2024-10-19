@@ -17,5 +17,5 @@ spec:
     name: k8s-home-ops
   wait: false # no flux ks dependents
   dependsOn:
-    - name: democratic-csi-zfs-local-dataset
+    - name: topolvm
     - name: kube-prometheus-stack

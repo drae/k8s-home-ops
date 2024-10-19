@@ -24,4 +24,4 @@ spec:
       VOLSYNC_CLAIM: recyclarr-config
       VOLSYNC_CAPACITY: 1Gi
   dependsOn:
-    - name: democratic-csi-zfs-local-dataset
+    - name: topolvm
