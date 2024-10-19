@@ -3,10 +3,10 @@
 clusterName: ${clusterName}
 endpoint: https://${clusterEndpointIP}:6443
 
-# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
-talosVersion: v1.6.6
-# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
-kubernetesVersion: 1.29.2
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker
+talosVersion: v1.8.1
+# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+kubernetesVersion: v1.31.1
 
 cniConfig:
   name: none
@@ -35,19 +35,8 @@ nodes:
     #        partitions:
     #          - mountpoint: /var/mnt/usb
     kernelModules:
-      - name: spl
-      - name: znvpair
-      - name: zcommon
-      - name: icp
-      - name: zavl
-      - name: zlua
-      - name: zzstd
-      - name: zunicode
-      - name: zfs
-        parameters: # NOTE: THESE DO NOT WORK HERE! the module is loaded before this is read ...
-          - zfs_prefetch_disable=1
-          - zfs_txg_timeout=5
-          - zfs_arc_max=2147483648
+      - name: dm_thin_pool
+      - name: dm_mod
     nameservers:
       - 10.1.10.1
     networkInterfaces:
@@ -82,12 +71,11 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
-        - net.ifnames=0
+        - net.ifnames=1
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
           - siderolabs/i915-ucode
-          - siderolabs/zfs
   patches:
     - |-
       cluster:
@@ -97,6 +85,13 @@ controlPlane:
         etcd:
           advertisedSubnets:
             - 10.1.10.0/24
+        discovery:
+          enabled: true
+          registries:
+            kubernetes:
+              disabled: false
+            service:
+              disabled: true
 
     - |-
       - op: remove
@@ -111,9 +106,17 @@ controlPlane:
               - os:admin
             allowedKubernetesNamespaces:
               - system-controllers
+              - system-upgrade
           kubePrism:
             enabled: true
             port: 7445
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
+
+    - |
+      machine:
         files:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
@@ -134,20 +137,17 @@ controlPlane:
               rsize=131072
               wsize=131072
               nconnect=8
+
+    - |-
+      machine:
         install:
           extraKernelArgs:
             - nvme_core.default_ps_max_latency_us=5500
             - pci=noaer
             - mitigations=off
-        kubelet:
-          extraArgs:
-            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
-            rotate-server-certificates: "true"
-          extraConfig:
-            maxPods: 200
-          nodeIP:
-            validSubnets:
-              - 10.1.10.0/24
+
+    - |-
+      machine:
         network:
           disableSearchDomain: true
           extraHostEntries:
@@ -159,15 +159,38 @@ controlPlane:
               aliases:
                 - apollo
                 - apollo.${domainName}
+
+    - |-
+      machine:
+        kubelet:
+          extraArgs:
+            feature-gates: GracefulNodeShutdown=true,NewVolumeManagerReconstruction=false
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 200
+          nodeIP:
+            validSubnets:
+              - 10.1.10.0/24
+
+    - |-
+      machine:
         sysctls:
-          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_queued_events: "65536"
           fs.inotify.max_user_instances: "8192"
-          net.core.rmem_max: "2500000"
-        time:
-          disabled: false
-          servers:
-            - time.cloudflare.com
+          fs.inotify.max_user_watches: "524288"
+          net.core.rmem_max: "7500000"
+          net.core.wmem_max: "7500000"
+
+    - |-
+      machine:
         udev:
           rules:
             - SUBSYSTEM=="drm", KERNEL=="card*", GROUP="44", MODE="0660"
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
+
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
