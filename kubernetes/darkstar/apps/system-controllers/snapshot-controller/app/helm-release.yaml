@@ -24,15 +24,6 @@ spec:
       replicaCount: 1
       serviceMonitor:
         create: true
-      volumeSnapshotClasses:
-        - name: zfs-dataset-snap
-          driver: org.democratic-csi.zfs-local-dataset
-          annotations:
-            snapshot.storage.kubernetes.io/is-default-class: "true"
-          deletionPolicy: Delete
-        - name: zfs-zvol-snap
-          driver: org.democratic-csi.zfs-local-zvol
-          deletionPolicy: Delete
     webhook:
       enabled: true
       tls:

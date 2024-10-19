@@ -24,6 +24,6 @@ spec:
       VOLSYNC_CLAIM: tautulli-config
       VOLSYNC_CAPACITY: 1Gi
   dependsOn:
-    - name: democratic-csi-zfs-local-dataset
+    - name: topolvm
     - name: volsync
     - name: plex
