@@ -11,7 +11,7 @@ spec:
     repository: "${app}-volsync-f2"
     destinationPVC: "${claim}"
     copyMethod: Direct
-    storageClassName: zfs-dataset
+    storageClassName: topolvm-thin-provisioner
     # storageClassName: ceph-filesystem
     # accessModes: ["ReadWriteMany"]
     # IMPORTANT NOTE:
