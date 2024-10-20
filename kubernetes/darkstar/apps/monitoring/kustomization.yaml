@@ -9,5 +9,5 @@ resources:
   - ./smartctl-exporter/ks.yaml
   - ./loki/ks.yaml
   - ./prometheus-operator/ks.yaml
-  - ./vector/ks.yaml
+  - ./promtail/ks.yaml
   - ./grafana/ks.yaml
