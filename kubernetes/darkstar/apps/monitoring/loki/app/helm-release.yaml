@@ -24,10 +24,20 @@ spec:
     cleanupOnFail: true
   values:
     deploymentMode: SingleBinary
-    gateway:
-      deploymentStrategy:
-        type: Recreate
     loki:
+      auth_enabled: false
+      analytics:
+        reporting_enabled: false
+      server:
+        log_level: info
+      commonConfig:
+        replication_factor: 1
+      compactor:
+        working_directory: /var/loki/compactor/retention
+        delete_request_store: filesystem
+        retention_enabled: true
+      ingester:
+        chunk_encoding: snappy
       schemaConfig:
         configs:
           - from: "2024-04-01"
@@ -37,29 +47,18 @@ spec:
             index:
               prefix: loki_index_
               period: 24h
+      limits_config:
+        retention_period: 7d
       storage:
         type: filesystem
-      structuredConfig:
-        analytics:
-          reporting_enabled: false
-        auth_enabled: false
-        frontend:
-          max_outstanding_per_tenant: 4096
-        limits_config:
-          retention_period: 14d
-          reject_old_samples: true
-          reject_old_samples_max_age: 168h
-          max_cache_freshness_per_query: 10m
-          ingestion_rate_mb: 8
-          ingestion_burst_size_mb: 16
-          shard_streams:
-            enabled: true
-          split_queries_by_interval: 15m
-          max_query_parallelism: 32
-        query_scheduler:
-          max_outstanding_requests_per_tenant: 4096
-        query_range:
-          parallelise_shardable_queries: true
+    singleBinary:
+      persistence:
+        enabled: true
+        storageClass: local-hostpath
+        size: 25Gi
+      replicas: 1
+    gateway:
+      replicas: 0
     backend:
       replicas: 0
     read:
@@ -70,11 +69,12 @@ spec:
       enabled: false
     resultsCache:
       enabled: false
-    singleBinary:
-      persistence:
-        storageClass: topolvm-thin-provisioner
-      replicas: 1
     lokiCanary:
       enabled: false
     test:
       enabled: false
+    sidecar:
+      image:
+        repository: ghcr.io/kiwigrid/k8s-sidecar
+      rules:
+        searchNamespace: ALL
