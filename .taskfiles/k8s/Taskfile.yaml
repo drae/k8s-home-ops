@@ -1,52 +1,37 @@
 ---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
 tasks:
-  mount:
-    desc: Mount a PersistentVolumeClaim to a pod temporarily
-    interactive: true
-    vars:
-      claim: '{{ or .claim (fail "PersistentVolumeClaim `claim` is required") }}'
-      namespace: '{{.namespace | default "default"}}'
-    cmds:
-      - |
-        kubectl run -n {{.namespace}} debug-{{.claim}} -i --tty --rm --image=null --privileged --overrides='
-          {
-            "apiVersion": "v1",
-            "spec": {
-              "containers": [
-                {
-                  "name": "debug",
-                  "image": "ghcr.io/onedr0p/alpine:rolling",
-                  "command": [
-                    "/bin/bash"
-                  ],
-                  "stdin": true,
-                  "stdinOnce": true,
-                  "tty": true,
-                  "volumeMounts": [
-                    {
-                      "name": "config",
-                      "mountPath": "/data/config"
-                    }
-                  ]
-                }
-              ],
-              "volumes": [
-                {
-                  "name": "config",
-                  "persistentVolumeClaim": {
-                    "claimName": "{{.claim}}"
-                  }
-                }
-              ],
-              "restartPolicy": "Never"
-            }
-          }'
-    preconditions:
-      - kubectl -n {{.namespace}} get pvc {{.claim}}
-
   delete-failed-pods:
-    desc: Deletes failed pods
+    desc: Deletes pods with Failed phase
     cmds:
-      - kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
+      - task: _delete_pods_in_phase
+        vars:
+          PHASE: Failed
+
+  delete-succeeded-pods:
+    desc: Deletes pods with Succeeded phase
+    cmds:
+      - task: _delete_pods_in_phase
+        vars:
+          PHASE: Succeeded
+
+  delete-pending-pods:
+    desc: Deletes pods with Pending phase
+    cmds:
+      - task: _delete_pods_in_phase
+        vars:
+          PHASE: Pending
+
+  _delete_pods_in_phase:
+    desc: Deletes pods with a specific phase
+    internal: true
+    requires:
+      vars:
+        - PHASE
+    cmds:
+      - for:
+          var: PHASE
+          split: ","
+        cmd: kubectl delete pods --field-selector status.phase={{.ITEM}} -A --ignore-not-found=true
