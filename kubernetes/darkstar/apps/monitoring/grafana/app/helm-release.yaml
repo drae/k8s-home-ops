@@ -99,14 +99,14 @@ spec:
           - name: Prometheus
             type: prometheus
             access: proxy
-            url: http://kube-prometheus-stack-prometheus.monitoring:9090/
+            url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090/
             isDefault: true
             jsonData:
               prometheusType: Prometheus
           - name: Loki
             type: loki
             access: proxy
-            url: http://loki.monitoring:3100
+            url: http://loki-headless.monitoring.svc.cluster.local:3100
           - name: Alertmanager
             type: alertmanager
             access: proxy
@@ -126,7 +126,15 @@ spec:
           gnetId: 1860
           revision: 22
           datasource: Prometheus
+        smart:
+          # renovate: dashboardName="Dashboard for smartctl_exporter"
+          gnetId: 20204
+          revision: 1
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
         zfs:
+          # renovate: dashboardName="ZFS"
           gnetId: 7845
           revision: 4
           datasource: Prometheus
@@ -148,6 +156,11 @@ spec:
         node-feature-discovery:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
           datasource: Prometheus
+        prometheus:
+          # renovate: dashboardName="Prometheus"
+          gnetId: 19105
+          revision: 5
+          datasource: Prometheus
         volsync:
           # removate: dashboardName="VolSync Dashboard"
           gnetId: 21356
@@ -163,9 +176,6 @@ spec:
           datasource: Prometheus
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
-          datasource: Prometheus
-        flux-logs:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
           datasource: Prometheus
       kubernetes:
         k8s-system-api-server:
