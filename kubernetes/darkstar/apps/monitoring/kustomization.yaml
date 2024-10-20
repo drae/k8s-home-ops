@@ -11,3 +11,4 @@ resources:
   - ./prometheus-operator/ks.yaml
   - ./promtail/ks.yaml
   - ./grafana/ks.yaml
+  - ./kromgo/ks.yaml
