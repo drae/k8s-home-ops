@@ -6,7 +6,6 @@ metadata:
 spec:
   loadBalancerIPs: true
   interfaces:
-    - ^eth.*
     - ^eno.*
   nodeSelector:
     matchLabels:
@@ -17,5 +16,7 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: pool
 spec:
+  allowFirstLastIPs: "Yes"
   blocks:
-    - cidr: ${NETWORK_HOME_CIDR}
+    - start: 10.1.10.30
+      stop: 10.1.10.50
