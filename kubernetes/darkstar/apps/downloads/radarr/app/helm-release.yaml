@@ -64,7 +64,7 @@ spec:
         enabled: true
         className: ingress-nginx-int
         hosts:
-          - host: &host "radarr.${SECRET_DOMAIN_PROXY}"
+          - host: &host "radarr.p.lan.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

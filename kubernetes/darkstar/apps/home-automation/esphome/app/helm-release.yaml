@@ -59,7 +59,7 @@ spec:
         enabled: true
         className: ingress-nginx-int
         hosts:
-          - host: &host "esphome.${SECRET_DOMAIN_PROXY}"
+          - host: &host "esphome.p.lan.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

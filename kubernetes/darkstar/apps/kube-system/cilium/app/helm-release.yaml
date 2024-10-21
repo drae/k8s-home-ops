@@ -44,7 +44,7 @@ spec:
           enabled: true
           className: ingress-nginx-int
           hosts:
-            - &host "hubble-ui.${SECRET_DOMAIN_PROXY}"
+            - &host "hubble-ui.p.lan.${SECRET_DOMAIN}"
           tls:
             - hosts:
                 - *host

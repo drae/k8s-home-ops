@@ -51,7 +51,7 @@ spec:
         enabled: true
         className: ingress-nginx-int
         hosts:
-          - host: &host "alert-manager.${SECRET_DOMAIN_PROXY}"
+          - host: &host "alert-manager.p.lan.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

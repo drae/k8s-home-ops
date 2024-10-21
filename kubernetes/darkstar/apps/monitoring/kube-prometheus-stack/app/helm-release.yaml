@@ -109,10 +109,10 @@ spec:
         pathType: Prefix
         ingressClassName: ingress-nginx-int
         hosts:
-          - "prometheus.${SECRET_DOMAIN_PROXY}"
+          - "prometheus.p.lan.${SECRET_DOMAIN}"
         tls:
           - hosts:
-              - "prometheus.${SECRET_DOMAIN_PROXY}"
+              - "prometheus.p.lan.${SECRET_DOMAIN}"
       prometheusSpec:
         additionalAlertManagerConfigs:
           - scheme: http
