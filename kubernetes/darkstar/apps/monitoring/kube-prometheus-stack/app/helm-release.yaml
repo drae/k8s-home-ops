@@ -100,6 +100,13 @@ spec:
             name: alertmanager
             port: 9093
             apiVersion: v2
+        additionalAlertManagerConfigs:
+          - scheme: http
+            static_configs:
+              - targets:
+                  - "alertmanager.monitoring.svc.cluster.local:9093"
+                labels:
+                  server: alertmanager.monitoring
         enableAdminAPI: true
         enableFeatures:
           - auto-gomaxprocs
