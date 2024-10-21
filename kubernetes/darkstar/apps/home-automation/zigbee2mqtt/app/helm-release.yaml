@@ -79,7 +79,7 @@ spec:
         enabled: true
         className: ingress-nginx-int
         hosts:
-          - host: &host "zigbee2mqtt.${SECRET_DOMAIN_PROXY}"
+          - host: &host "zigbee2mqtt.p.lan.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

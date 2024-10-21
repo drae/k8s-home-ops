@@ -104,7 +104,7 @@ spec:
         enabled: true
         className: ingress-nginx-int
         hosts:
-          - host: &host "hass-vscode.${SECRET_DOMAIN_PROXY}"
+          - host: &host "hass-vscode.p.lan.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

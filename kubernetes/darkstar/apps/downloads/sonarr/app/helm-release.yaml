@@ -64,7 +64,7 @@ spec:
         enabled: true
         className: ingress-nginx-int
         hosts:
-          - host: &host "sonarr.${SECRET_DOMAIN_PROXY}"
+          - host: &host "sonarr.p.lan.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

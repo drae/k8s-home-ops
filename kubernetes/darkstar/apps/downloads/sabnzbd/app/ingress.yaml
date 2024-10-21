@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-int
   rules:
-    - host: &host "sabnzbd.${SECRET_DOMAIN_PROXY}"
+    - host: &host "sabnzbd.p.lan.${SECRET_DOMAIN}"
       http:
         paths:
           - path: /

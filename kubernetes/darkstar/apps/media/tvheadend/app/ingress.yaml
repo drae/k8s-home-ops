@@ -16,7 +16,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-int
   rules:
-    - host: &host "tvheadend.${SECRET_DOMAIN_PROXY}"
+    - host: &host "tvheadend.p.lan.${SECRET_DOMAIN}"
       http:
         paths:
           - path: /

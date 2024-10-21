@@ -40,7 +40,7 @@ spec:
       existingSecret: "grafana-admin-secret"
     grafana.ini:
       server:
-        root_url: "https://grafana.${SECRET_DOMAIN_PROXY}"
+        root_url: "https://grafana.p.lan.${SECRET_DOMAIN}"
       paths:
         data: /var/lib/grafana/data
         logs: /var/log/grafana
@@ -244,10 +244,10 @@ spec:
       enabled: true
       ingressClassName: ingress-nginx-int
       hosts:
-        - "grafana.${SECRET_DOMAIN_PROXY}"
+        - "grafana.p.lan.${SECRET_DOMAIN}"
       tls:
         - hosts:
-            - "grafana.${SECRET_DOMAIN_PROXY}"
+            - "grafana.p.lan.${SECRET_DOMAIN}"
     serviceAccount:
       create: true
       autoMount: true
