@@ -5,6 +5,7 @@ metadata:
   name: flux-system
   labels:
     app.kubernetes.io/part-of: flux
+    app.kubernetes.io/component: monitoring
 spec:
   namespaceSelector:
     matchNames:
@@ -23,7 +24,7 @@ spec:
   podMetricsEndpoints:
     - port: http-prom
       relabelings:
-        - sourceLabels: ["namespace", "job"]
-          regex: ".+/(.*)"
-          targetLabel: "job"
-          replacement: "$1"
+        # Ref: https://github.com/prometheus-operator/prometheus-operator/issues/4816
+        - sourceLabels: [__meta_kubernetes_pod_phase]
+          action: keep
+          regex: Running
