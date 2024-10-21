@@ -56,9 +56,9 @@ Total power use (inc. switch, zigbee transceivers, modem, etc.) varies from arou
 
 ## 🤔 Before we start
 
-The repo has lots of encrypted data that is tied to my GPG private key. You cannot simply clone this repo, follow this walkthrough, and have a functioning cluster. You will need to use your own key (GPG, age, azure keystore, etc.), update the `.sops.yaml` file in the root of the repo, replacing my public gpg key(s) with your own key.
+The repo has lots of encrypted data that is tied to my AGE private key. You cannot simply clone this repo, follow this walkthrough, and have a functioning cluster. You will need to use your own key (GPG, age, azure keystore, etc.), update the `.sops.yaml` file in the root of the repo, replacing my age key(s) with your own key.
 
-Then you will need to re-create all the individual `XXXXX.sops.yaml` files in the repo (`infrastructure/*` and `cluster/*`) with your own data and encrypt them with your own gpg, age, azure, ... or other key.
+Then you will need to re-create all the individual `XXXXX.sops.yaml` files in the repo (`infrastructure/*` and `cluster/*`) with your own data and encrypt them with your own key.
 
 Creating your own key is "out of scope" for this readme, a quick [google](https://www.google.com/) will get you sorted!
 
