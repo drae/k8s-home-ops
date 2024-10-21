@@ -253,7 +253,7 @@ spec:
         node-exporter-full:
           # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
-          revision: 22
+          revision: 37
           datasource: Prometheus
         prometheus:
           # renovate: dashboardName="Prometheus"
