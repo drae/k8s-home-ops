@@ -16,25 +16,54 @@ spec:
       interval: 30m
   install:
     createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    remediation:
-      retries: 3
-      remediateLastFailure: true
-    cleanupOnFail: true
   valuesFrom:
     - kind: ConfigMap
       name: cilium-values
   values:
     dashboards:
       enabled: true
+      annotations:
+        grafana_folder: "Network"
     hubble:
       dashboards:
-        dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: "Network"
+      metrics:
+        enabled:
+          - dns:query;labelsContext=source_pod,source_workload,source_namespace,destination_ip,destination_pod,destination_workload,destination_namespace,traffic_direction
+          - drop:labelsContext=source_pod,source_workload,source_namespace,destination_ip,destination_pod,destination_workload,destination_namespace,traffic_direction
+          - tcp:labelsContext=source_pod,source_workload,source_namespace,destination_ip,destination_pod,destination_workload,destination_namespace,traffic_direction
+          - flow:labelsContext=source_pod,source_workload,source_namespace,destination_ip,destination_pod,destination_workload,destination_namespace,traffic_direction
+          - flows-to-world:any-drop;port;labelsContext=source_pod,source_workload,source_namespace,destination_ip,destination_pod,destination_workload,destination_namespace,traffic_direction
+          - port-distribution:labelsContext=source_pod,source_workload,source_namespace,destination_ip,destination_pod,destination_workload,destination_namespace,traffic_direction
+          - httpV2:labelsContext=source_pod,source_workload,source_namespace,destination_ip,destination_pod,destination_workload,destination_namespace,traffic_direction
+        serviceMonitor:
           enabled: true
+          interval: "60s"
+          relabelings:
+            # replaces other node identifiers with hostname
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: nodename
+            - action: replace
+              regex: (.*)
+              replacement: $1.${CLUSTER_NAME}:9100
+              sourceLabels:
+                - kubernetes_node
+              targetLabel: instance
       relay:
         prometheus:
+          enabled: true
           serviceMonitor:
             enabled: true
       serviceMonitor:
@@ -48,13 +77,18 @@ spec:
           tls:
             - hosts:
                 - *host
-    prometheus:
-      serviceMonitor:
-        enabled: true
-        trustCRDsExist: true
+      eventQueueSize: "50000" # default is 6144 which fills up
     operator:
       prometheus:
+        enabled: true
         serviceMonitor:
           enabled: true
       dashboards:
         enabled: true
+        annotations:
+          grafana_folder: "Network"
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true # for CI or local Helm builds, such as flux-local
