@@ -27,12 +27,12 @@ spec:
     - kind: ConfigMap
       name: cilium-values
   values:
+    dashboards:
+      enabled: true
     hubble:
       dashboards:
         dashboards:
           enabled: true
-          annotations:
-            grafana_folder: Cilium
       relay:
         prometheus:
           serviceMonitor:
@@ -58,5 +58,3 @@ spec:
           enabled: true
       dashboards:
         enabled: true
-        annotations:
-          grafana_folder: Cilium
