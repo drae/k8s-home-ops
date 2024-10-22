@@ -67,9 +67,11 @@ spec:
     ingress:
       app:
         enabled: true
-        className: ingress-nginx-int
+        className: ingress-nginx-ext
+        annotations:
+          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
         hosts:
-          - host: atuin.p.lan.${SECRET_DOMAIN}
+          - host: sh.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
