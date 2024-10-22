@@ -86,14 +86,14 @@ spec:
           schedules:
             full: "5 1 * * 0" # Sunday at 01:05
             incremental: "5 1 * * 1-6" # Mon-Sat at 01:05
-  #  dataSource:
-  #    pgbackrest:
-  #      stanza: "db"
-  #      configuration: *backupConfig
-  #      global: *backupFlag
-  #      repo:
-  #        name: "repo1"
-  #        s3: *r2
+  dataSource:
+    pgbackrest:
+      stanza: "db"
+      configuration: *backupConfig
+      global: *backupFlag
+      repo:
+        name: "repo1"
+        s3: *r2
   monitoring:
     pgmonitor:
       exporter:
