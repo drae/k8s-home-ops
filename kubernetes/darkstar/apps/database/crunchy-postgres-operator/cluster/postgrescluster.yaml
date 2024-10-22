@@ -1,0 +1,124 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/postgres-operator.crunchydata.com/postgrescluster_v1beta1.json
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: postgres
+spec:
+  postgresVersion: 16
+  metadata:
+    labels:
+      crunchy-userinit.ramblurr.github.com/enabled: "true"
+      crunchy-userinit.ramblurr.github.com/superuser: "postgres"
+  patroni: # turn on sync writes to at least 1 other replica
+    dynamicConfiguration:
+      synchronous_mode: true
+      postgresql:
+        max_wal_size: 5GB
+        synchronous_commit: "on"
+        pg_hba:
+          - hostnossl all all 10.200.0.0/16 md5 # Needed because dbman does not support SSL yet
+          - hostssl all all all md5
+  instances:
+    - name: postgres
+      metadata:
+        labels:
+          app.kubernetes.io/name: crunchy-postgres
+      replicas: &replica 2
+      dataVolumeClaimSpec:
+        storageClassName: local-hostpath
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+  #      topologySpreadConstraints:
+  #        - maxSkew: 1
+  #          topologyKey: "kubernetes.io/hostname"
+  #          whenUnsatisfiable: "DoNotSchedule"
+  #          labelSelector:
+  #            matchLabels:
+  #              postgres-operator.crunchydata.com/cluster: *name
+  #              postgres-operator.crunchydata.com/data: postgres
+  users:
+    # Superuser
+    - name: postgres
+      databases:
+        - postgres
+      options: "SUPERUSER"
+      password:
+        type: AlphaNumeric
+    # Applications
+    - name: atuin
+      databases:
+        - atuin
+      password:
+        type: AlphaNumeric
+  backups:
+    pgbackrest:
+      configuration: &backupConfig
+        - secret:
+            name: crunchy-pgo-pgbackrest-secret
+      global: &backupFlag
+        compress-type: "bz2"
+        compress-level: "9"
+        # R2
+        repo1-bundle: "y"
+        repo1-block: "y"
+        repo1-cipher-type: "aes-256-cbc"
+        repo1-path: /crunchy-pgo
+        repo1-retention-full: "7" # days
+        repo1-retention-full-type: time
+        repo1-s3-uri-style: path
+      manual:
+        repoName: repo1
+        options:
+          - --type=full
+      metadata:
+        labels:
+          app.kubernetes.io/name: crunchy-postgres-backup
+      repos:
+        - name: repo1 # Minio
+          s3: &r2
+            bucket: "crunchy-postgres"
+            endpoint: ${R2_REPOSITORY}
+            region: "auto"
+          schedules:
+            full: "5 1 * * 0" # Sunday at 01:05
+            incremental: "5 1 * * 1-6" # Mon-Sat at 01:05
+  dataSource:
+    pgbackrest:
+      stanza: "db"
+      configuration: *backupConfig
+      global: *backupFlag
+      repo:
+        name: "repo1"
+        s3: *r2
+  monitoring:
+    pgmonitor:
+      exporter:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64M
+          limits:
+            memory: 512M
+  proxy:
+    pgBouncer:
+      port: 5432
+      replicas: *replica
+      metadata:
+        labels:
+          app.kubernetes.io/name: crunchy-postgres-pgbouncer
+      config:
+        global:
+          pool_mode: "transaction" # pgBouncer is set to transaction for Authentik. Grafana requires session https://github.com/grafana/grafana/issues/74260#issuecomment-1702795311. Everything else is happy with transaction
+          client_tls_sslmode: prefer
+#      topologySpreadConstraints:
+#        - maxSkew: 1
+#          topologyKey: "kubernetes.io/hostname"
+#          whenUnsatisfiable: "DoNotSchedule"
+#          labelSelector:
+#            matchLabels:
+#              postgres-operator.crunchydata.com/cluster: *name
+#              postgres-operator.crunchydata.com/role: "pgbouncer"
