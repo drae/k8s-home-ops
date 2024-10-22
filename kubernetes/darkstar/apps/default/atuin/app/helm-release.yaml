@@ -37,11 +37,11 @@ spec:
                     key: uri
               ATUIN_HOST: 0.0.0.0
               ATUIN_PORT: &port 8888
-              ATUIN_OPEN_REGISTRATION: false
+              ATUIN_OPEN_REGISTRATION: true
               ATUIN_TLS__ENABLE: false
               ATUIN_TLS__CERT_PATH: ""
               ATUIN_TLS__PKEY_PATH: ""
-              RUST_LOG: info
+              RUST_LOG: debug
             probes:
               liveness:
                 enabled: true
@@ -67,11 +67,11 @@ spec:
     ingress:
       app:
         enabled: true
-        className: ingress-nginx-ext
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
+        className: ingress-nginx-int
+        #        annotations:
+        #          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
         hosts:
-          - host: sh.${SECRET_DOMAIN}
+          - host: sh.p.lan.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
