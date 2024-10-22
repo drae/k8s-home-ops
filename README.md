@@ -4,7 +4,7 @@
 
 ### k8s-home-ops
 
-Mmanagement of my home server
+Management of my home server
 
 </div>
 
@@ -71,9 +71,9 @@ For a list of available backup snapshots use `task volsync:list`. You will be pr
 
 Recovery is performed via a `task`, see `task volsync:restore`. One off backups can be performed using `task volsync:snapshot` - note that one off backups are still subject to the retention period for the _replicationsource_! Example, if you have retention set to "retain one per day", performing a one-off backup will replace any other backup performed that day (scheduled or otherwise).
 
-✳️ When doing a restore you have two choices in how the snapshot to be recovered is selected, either "recover the previous X snapshot" or "recover after a given date/time". This is changed in the volsync taskfile, see [/.taskfiles/volsync/templates/recplicationdestination.tmpl.yaml](https://github.com/drae/k8s-home-ops/tree/main/.taskfiles/volsync/templates/recplicationdestination.tmpl.yaml) - as noted in the comments.
+✳️ When doing a restore you have two choices for how the snapshot to be recovered is selected, either "recover the previous X snapshot" or "recover after a given date/time". This can be changed in the volsync taskfile, see [/.taskfiles/volsync/templates/recplicationdestination.tmpl.yaml](https://github.com/drae/k8s-home-ops/tree/main/.taskfiles/volsync/templates/recplicationdestination.tmpl.yaml) - as noted in the comments in the file.
 
-✳️ When doing a cluster (re-)install volsync will do an initial backup of the associated persistent volumes. Thus, if using the "restore the last X snapshot" option you probably want to set the `previous=` value as "2". This will skip the just produced automatic backup which likely contains initial or perhaps no data. There is an open issue on this [Option to NOT run backup as soon as replicationsource is applied to the cluster#627](https://github.com/backube/volsync/issues/627). The current "workaround" for this used by most is volsync's replicationdestiation (volume populator) feature. This immediately restores the last backup on creation, a backup is still subsequently performed but at least it is from the restored data!
+✳️ When doing a cluster (re-)install volsync will do an initial backup of the associated persistent volumes. If you were to immediately restore the volume using the last backup it would obviously would not contain the correct data. Thus, if using the "restore the last X snapshot" option you probably want to set the `previous=` value as "2", to restore the previous bar one backup. There is an open issue on this: "[Option to NOT run backup as soon as replicationsource is applied to the cluster#627](https://github.com/backube/volsync/issues/627)". The current "workaround" for this used by most is volsync's _replicationdestination_ feature. When first creating the pvc, if a backup exists it will immediately attempt to restore it. A new backup is still subsequently performed but at least it will be from the just restored data!
 
 ## 👍 Thanks
 
