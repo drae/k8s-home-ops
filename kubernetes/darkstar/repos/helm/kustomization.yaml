@@ -9,6 +9,7 @@ resources:
   - ./bjw-s-charts.yaml
   - ./cilium-charts.yaml
   - ./crunchy-charts.yaml
+  - ./emberstack-charts.yaml
   #  - ./democratic-csi-charts.yaml
   - ./grafana-charts.yaml
   - ./ingress-nginx-charts.yaml
