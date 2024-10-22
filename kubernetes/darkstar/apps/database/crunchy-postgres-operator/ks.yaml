@@ -40,3 +40,25 @@ spec:
   wait: true
   dependsOn:
     - name: crunchy-postgres-operator
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname crunchy-postgres-userinit-controller
+  namespace: flux-system
+spec:
+  targetNamespace: database
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 30m
+  timeout: 5m
+  path: ./kubernetes/darkstar/apps/database/crunchy-postgres-operator/userinit-controller
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  dependsOn:
+    - name: crunchy-postgres-operator-cluster
