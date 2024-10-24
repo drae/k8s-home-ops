@@ -26,6 +26,9 @@ cni:
 endpointRoutes:
   enabled: true
 
+envoy:
+  enabled: false
+
 hubble:
   enabled: true
   serviceMonitor:
