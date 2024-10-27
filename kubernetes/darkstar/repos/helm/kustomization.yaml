@@ -26,6 +26,7 @@ resources:
   - ./prometheus-community-charts.yaml
   - ./ramblurr-charts.yaml
   #  - ./rook-ceph-charts.yaml
+  - ./spegel-charts.yaml
   - ./stakater-charts.yaml
   - ./topolvm-charts.yaml
   - ./vector-charts.yaml
