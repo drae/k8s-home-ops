@@ -30,4 +30,3 @@ resources:
   - ./spegel-charts.yaml
   - ./stakater-charts.yaml
   - ./topolvm-charts.yaml
-  - ./vector-charts.yaml
