@@ -1,35 +1,3 @@
-receivers:
-  - name: "null"
-  - name: "discord"
-    discord_configs:
-      - webhook_url: "${ALERTMANAGER_DISCORD_WEBHOOK}"
-        send_resolved: true
-        title: |-
-          [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }} {{ else if ne .CommonAnnotations.message ""}}{{ .CommonAnnotations.message }} {{ else if ne .CommonAnnotations.description ""}}{{ .CommonAnnotations.description }} {{ else }}{{ .CommonLabels.alertname }}{{ end }}
-        #title: >-
-        #  {{ .CommonLabels.alertname }}
-        #  [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}]
-        #message: |-
-        #  {{- range .Alerts }}
-        #    {{- if ne .Annotations.description "" }}
-        #      {{ .Annotations.description }}
-        #    {{- else if ne .Annotations.summary "" }}
-        #      {{ .Annotations.summary }}
-        #    {{- else if ne .Annotations.message "" }}
-        #      {{ .Annotations.message }}
-        #    {{- else }}
-        #      Alert description not available
-        #      {{- if gt (len .Labels.SortedPairs) 0 }}
-        #        <small>
-        #        {{- range .Labels.SortedPairs }}
-        #          <b>{{ .Name }}:</b> {{ .Value }}
-        #        {{- end }}
-        #        </small>
-        #      {{- end }}
-        #    {{- end }}
-        #  {{- end }}
-        #  {{ .ExternalURL }}
-
 route:
   group_by: ["alertname", "job"]
   group_wait: 30s
@@ -50,3 +18,43 @@ inhibit_rules:
     target_matchers:
       - severity = "warning"
     equal: ["alertname", "namespace"]
+receivers:
+  - name: "null"
+  - name: "discord"
+    discord_configs:
+      - webhook_url: "${ALERTMANAGER_DISCORD_WEBHOOK}"
+        send_resolved: true
+        # yoinked from JJGadgets who yoinked it from onedr0p, blame them(!) if something doesn't work
+        title: >-
+          {{ .GroupLabels.alertname }} - {{ .GroupLabels.namespace }}
+          {{- if ne .CommonLabels.severity "" }} ({{ .CommonLabels.severity}}){{- end }}
+          ({{ .GroupLabels.cluster }})
+          [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}]
+        message: |-
+          {{- $root := . }}
+          {{- $rm := stringSlice "instance" "kubernetes_node" "endpoint" "prometheus" "service" "cluster" "container" "job" "severity" "alertgroup" }}
+          {{- $common := ( ( .CommonLabels.Remove $root.GroupLabels.Names ).Remove $rm ) }}
+          {{- if gt (len $common.SortedPairs) 0 }}
+          ## Common Labels
+          {{- range $common.SortedPairs }}
+          > {{ .Name }}: `{{ .Value }}`
+          {{- end }}
+          {{- end }}
+          ## Alerts
+          {{- range .Alerts }}
+            {{- if ne .Annotations.description "" }}
+          - **{{ .Annotations.description }}** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- else if ne .Annotations.summary "" }}
+          - **{{ .Annotations.summary }}** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- else if ne .Annotations.message "" }}
+          - **{{ .Annotations.message }}** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- else }}
+          - **Alert description not available** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- end }}
+            {{- $uniq := ( ( .Labels.Remove $root.GroupLabels.Names ).Remove $root.CommonLabels.Names ) }}
+            {{- if gt (len $uniq.SortedPairs) 0 }}
+              {{- range $uniq.SortedPairs }}
+          > {{ .Name }}: `{{ .Value }}`
+              {{- end }}
+            {{- end }}
+          {{- end }}
