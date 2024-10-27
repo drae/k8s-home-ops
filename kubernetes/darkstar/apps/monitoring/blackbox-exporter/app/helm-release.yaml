@@ -99,6 +99,9 @@ spec:
           name: nas-icmp
           url: ${IP_ADDR_LAN_GW}
         # tvheadend
+        - module: http_2xx
+          name: tvheadend-http
+          url: "http://${IP_ADDR_LAN_GRAVITY}:9981"
         - module: icmp
           name: tvheadend-icmp
           url: ${IP_ADDR_LAN_GRAVITY}
