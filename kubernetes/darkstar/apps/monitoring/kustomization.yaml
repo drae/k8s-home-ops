@@ -3,13 +3,14 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
   - ./namespace.yaml
-  - ./kube-prometheus-stack/ks.yaml
-  - ./kube-state-metrics/ks.yaml
   - ./alertmanager/ks.yaml
-  - ./node-exporter/ks.yaml
-  - ./smartctl-exporter/ks.yaml
-  - ./loki/ks.yaml
-  - ./prometheus-operator/ks.yaml
-  - ./promtail/ks.yaml
+  - ./blackbox-exporter/ks.yaml
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml
+  - ./kube-prometheus-stack/ks.yaml
+  - ./kube-state-metrics/ks.yaml
+  - ./loki/ks.yaml
+  - ./node-exporter/ks.yaml
+  - ./prometheus-operator/ks.yaml
+  - ./promtail/ks.yaml
+  - ./smartctl-exporter/ks.yaml

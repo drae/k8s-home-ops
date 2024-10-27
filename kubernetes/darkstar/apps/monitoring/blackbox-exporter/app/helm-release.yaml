@@ -1,0 +1,112 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: blackbox-exporter
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: prometheus-blackbox-exporter
+      version: 9.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community-charts
+        namespace: flux-system
+      interval: 30m
+  values:
+    fullnameOverride: blackbox-exporter
+    image:
+      registry: quay.io
+    podSecurityContext:
+      sysctls:
+        - name: net.ipv4.ping_group_range
+          value: "0 2147483647"
+    config:
+      modules:
+        http_2xx:
+          prober: http
+          timeout: 5s
+          http:
+            valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+            follow_redirects: true
+            preferred_ip_protocol: "ip4"
+        icmp:
+          prober: icmp
+          timeout: 30s
+          icmp:
+            preferred_ip_protocol: "ip4"
+        icmp6:
+          prober: icmp
+          timeout: 30s
+          icmp:
+            preferred_ip_protocol: "ip6"
+    ingress:
+      enabled: true
+      className: ingress-nginx-int
+      hosts:
+        - host: blackbox-exporter.p.lan.${SECRET_DOMAIN}
+          paths:
+            - path: /
+              pathType: Prefix
+    prometheusRule:
+      enabled: true
+      additionalLabels:
+        app: prometheus-operator
+        release: prometheus
+      rules:
+        - alert: BlackboxSslCertificateWillExpireSoon
+          expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 3
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: |-
+              The SSL certificate for {{ $labels.target }} will expire in less than 3 days
+        - alert: BlackboxSslCertificateExpired
+          expr: probe_ssl_earliest_cert_expiry - time() <= 0
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: |-
+              The SSL certificate for {{ $labels.target }} has expired
+        - alert: BlackboxProbeFailed
+          expr: probe_success == 0
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: |-
+              The host {{ $labels.instance }} is currently unreachable
+    pspEnabled: false
+    securityContext:
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        add: ["NET_RAW"]
+    serviceMonitor:
+      enabled: true
+      defaults:
+        labels:
+          release: prometheus
+        interval: 1m
+        scrapeTimeout: 30s
+      targets:
+        # NAS
+        - module: icmp
+          name: nas-icmp
+          url: ${IP_ADDR_LAN_GW}
+        # tvheadend
+        - module: icmp
+          name: tvheadend-icmp
+          url: ${IP_ADDR_LAN_GRAVITY}
+        # Other devices
+        - module: icmp
+          name: zigbee-controller-icmp
+          url: ${IP_ADDR_IOT_ZIGBEE}
+        - module: icmp
+          name: ping-cloudflare
+          url: 1.1.1.1
+          scrape_interval: 30s
