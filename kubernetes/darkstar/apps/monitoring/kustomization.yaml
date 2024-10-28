@@ -5,7 +5,6 @@ resources:
   - ./namespace.yaml
   - ./alertmanager/ks.yaml
   - ./blackbox-exporter/ks.yaml
-  - ./fluent-bit/ks.yaml
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
@@ -13,4 +12,5 @@ resources:
   - ./loki/ks.yaml
   - ./node-exporter/ks.yaml
   - ./prometheus-operator/ks.yaml
+  - ./promtail/ks.yaml
   - ./smartctl-exporter/ks.yaml
