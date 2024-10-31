@@ -94,6 +94,13 @@ radarr:
 
     custom_formats:
       - trash_ids:
+          - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL)
+        assign_scores_to:
+          - name: SQP-1 (1080p)
+          - name: SQP-1 (2160p)
+          - name: SQP-2
+          - name: SQP-3
+      - trash_ids:
           - 5153ec7413d9dae44e24275589b5e944 # bhdstudio - downgrade
         assign_scores_to:
           - name: SQP-1 (1080p)
