@@ -93,8 +93,7 @@ radarr:
 
     custom_formats:
       - trash_ids:
-          # Downgrade bhdstudio for "reasons"
-          - 5153ec7413d9dae44e24275589b5e944 # bhdstudio
+          - 5153ec7413d9dae44e24275589b5e944 # bhdstudio - downgrade
         assign_scores_to:
           - name: SQP-1 (1080p)
             score: -10000
@@ -104,3 +103,38 @@ radarr:
             score: -10000
           - name: SQP-3
             score: -10000
+      # Not bothered about positional audio - remove these if that changes
+      - trash_ids:
+          - 496f355514737f7d83bf7aa4d24f8169 # TrueHD Atmos == TrueHD
+          - 417804f7f2c4308c1f4c5d380d4c4475 # Atmos (undefined) == TrueHD
+        assign_scores_to:
+          - name: SQP-1 (1080p)
+            score: 2750
+          - name: SQP-1 (2160p)
+            score: 2750
+          - name: SQP-2
+            score: 2750
+          - name: SQP-3
+            score: 2750
+      - trash_ids:
+          - 2f22d89048b01681dde8afe203bf2e95 # DTS-X == DTS-HD
+        assign_scores_to:
+          - name: SQP-1 (1080p)
+            score: 2500
+          - name: SQP-1 (2160p)
+            score: 2500
+          - name: SQP-2
+            score: 2500
+          - name: SQP-3
+            score: 2500
+      - trash_ids:
+          - 1af239278386be2919e1bcee0bde047e # DD+Atmos == DD+
+        assign_scores_to:
+          - name: SQP-1 (1080p)
+            score: 1750
+          - name: SQP-1 (2160p)
+            score: 1750
+          - name: SQP-2
+            score: 1750
+          - name: SQP-3
+            score: 1750
