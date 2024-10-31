@@ -11,6 +11,7 @@ resources:
   - ./crunchy-charts.yaml
   - ./emberstack-charts.yaml
   #  - ./democratic-csi-charts.yaml
+  - ./external-secrets-charts.yaml
   - ./grafana-charts.yaml
   - ./ingress-nginx-charts.yaml
   - ./intel-charts.yaml
