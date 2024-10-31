@@ -72,17 +72,24 @@ radarr:
         rename: true
         standard: default
 
+    # SQP-1 : streaming optimised
+    # SQP-2 : webdl > remux > encode > (webdl) imax
+    # SQP-3 : webdl > remux > (webdl) imax
+
     include:
       - template: radarr-quality-definition-sqp-uhd
+      # SQP-1 (1080p)
+      - template: radarr-custom-formats-sqp-1-1080p
+      - template: radarr-quality-profile-sqp-1-1080p
       # SQP-1 (2160p)
       - template: radarr-custom-formats-sqp-1-2160p
       - template: radarr-quality-profile-sqp-1-2160p-default
       # SQP-2
       - template: radarr-quality-profile-sqp-2
       - template: radarr-custom-formats-sqp-2
-      # SQP-1 (1080p)
-      - template: radarr-custom-formats-sqp-1-1080p
-      - template: radarr-quality-profile-sqp-1-1080p
+      # SQP-3
+      - template: radarr-quality-profile-sqp-3
+      - template: radarr-custom-formats-sqp-3
 
     custom_formats:
       - trash_ids:
@@ -94,4 +101,6 @@ radarr:
           - name: SQP-1 (2160p)
             score: -10000
           - name: SQP-2
+            score: -10000
+          - name: SQP-3
             score: -10000
