@@ -49,9 +49,9 @@ spec:
       password:
         type: AlphaNumeric
     # Applications
-    - name: atuin
+    - name: gatus
       databases:
-        - atuin
+        - gatus
       password:
         type: AlphaNumeric
   backups:
