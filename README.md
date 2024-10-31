@@ -10,7 +10,7 @@ Management of my home server
 
 <div align="center">
 
-[![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=blue&label=%20)](https://talos.dev)&nbsp;&nbsp;[![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=%20)](https://kubernetes.io)&nbsp;&nbsp;[![Renovate](https://img.shields.io/github/actions/workflow/status/drae/k8s-home-ops/renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/drae/k8s-home-ops/actions/workflows/renovate.yaml)
+[![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=blue&label=%20)](https://talos.dev)&nbsp;&nbsp;[![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=%20)](https://kubernetes.io)&nbsp;&nbsp;[![Renovate](https://img.shields.io/github/actions/workflow/status/drae/k8s-home-ops/renovate.yaml?branch=main&label=&style=for-the-badge&logo=renovate&logoColor=white&color=blue)](https://github.com/drae/k8s-home-ops/actions/workflows/renovate.yaml)
 
 </div>
 
@@ -22,7 +22,7 @@ Management of my home server
 
 ## 👋 Overview
 
-This repo contains the gitops workflow for maintaining my [talos](https://talos.dev/) home based server. State storage utilises [topolvm](https://github.com/topolvm/topolvm) and [openebs](https://openebs.io/). NFS is used for accessing data stored on my white box, Ubuntu powered, ZFS backed NAS. 🤖 [Renovate](https://www.mend.io/free-developer-tools/renovate/) and [Github actions](https://github.com/features/actions) are used to automatically open pull requests and perform other "mundane" tasks.
+This repo contains the gitops workflow for maintaining my [talos](https://talos.dev/) based home server. State storage utilises [topolvm](https://github.com/topolvm/topolvm) and [openebs](https://openebs.io/). NFS is used for accessing data stored on my white box, Ubuntu powered, ZFS backed NAS. 🤖 [Renovate](https://www.mend.io/free-developer-tools/renovate/) and [Github actions](https://github.com/features/actions) are used to automatically open pull requests and perform other "mundane" tasks.
 
 ## 💻 Hardware
 
@@ -43,7 +43,7 @@ The following applications are used to install and manage the cluster:
 - [task](https://taskfile.dev/)
 - [talhelper](https://github.com/budimanjojo/talhelper)
 
-✳️ The repo contains data encrypted using my personal [age](https://github.com/FiloSottile/age) key. You cannot clone this repo and have a functioning cluster. You will need to use your own key (GPG, age, azure keystore, etc.) to re-create and encrypt the existing sops encrypted files (the `*.sops.yaml` files).
+✳️ The repo contains data encrypted using my personal [age](https://github.com/FiloSottile/age) key. You cannot clone this repo and have a functioning cluster. You will need to use your own key (GPG, age, azure keystore, etc.) to re-create and encrypt the existing (`*.sops.yaml`) sops encrypted files.
 
 ## 💾 Installing the cluster
 
@@ -73,7 +73,7 @@ Recovery is performed via a `task`, see `task volsync:restore`. One off backups 
 
 ✳️ When doing a restore you have two choices for how the snapshot to be recovered is selected, either "recover the previous X snapshot" or "recover after a given date/time". This can be changed in the volsync taskfile, see [/.taskfiles/volsync/templates/recplicationdestination.tmpl.yaml](https://github.com/drae/k8s-home-ops/tree/main/.taskfiles/volsync/templates/recplicationdestination.tmpl.yaml) - as noted in the comments in the file.
 
-✳️ When doing a cluster (re-)install volsync will do an initial backup of the associated persistent volumes. If you were to immediately restore the volume using the last backup it would obviously would not contain the correct data. Thus, if using the "restore the last X snapshot" option you probably want to set the `previous=` value as "2", to restore the previous bar one backup. There is an open issue on this: "[Option to NOT run backup as soon as replicationsource is applied to the cluster#627](https://github.com/backube/volsync/issues/627)". The current "workaround" for this used by most is volsync's _replicationdestination_ feature. When first creating the pvc, if a backup exists it will immediately attempt to restore it. A new backup is still subsequently performed but at least it will be from the just restored data!
+✳️ When doing a cluster (re-)install volsync will do an initial backup of the associated persistent volumes. If you were to immediately restore the volume using the last backup it would not contain the correct data. Thus, if using the "restore the last X snapshot" option you probably want to set the `previous=` value as "2", to restore the previous bar one backup. There is an open issue on this: "[Option to NOT run backup as soon as replicationsource is applied to the cluster#627](https://github.com/backube/volsync/issues/627)". The current "workaround" for this used by most is volsync's _replicationdestination_ feature. When first creating the pvc, if a backup exists it will immediately attempt to restore it. A new backup is still subsequently performed but at least it will be from the just restored data!
 
 ## 👍 Thanks
 
