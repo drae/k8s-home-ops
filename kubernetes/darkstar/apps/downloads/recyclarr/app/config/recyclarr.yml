@@ -108,10 +108,6 @@ radarr:
           - 496f355514737f7d83bf7aa4d24f8169 # TrueHD Atmos == TrueHD
           - 417804f7f2c4308c1f4c5d380d4c4475 # Atmos (undefined) == TrueHD
         assign_scores_to:
-          - name: SQP-1 (1080p)
-            score: 2750
-          - name: SQP-1 (2160p)
-            score: 2750
           - name: SQP-2
             score: 2750
           - name: SQP-3
@@ -119,10 +115,6 @@ radarr:
       - trash_ids:
           - 2f22d89048b01681dde8afe203bf2e95 # DTS-X == DTS-HD
         assign_scores_to:
-          - name: SQP-1 (1080p)
-            score: 2500
-          - name: SQP-1 (2160p)
-            score: 2500
           - name: SQP-2
             score: 2500
           - name: SQP-3
@@ -130,10 +122,6 @@ radarr:
       - trash_ids:
           - 1af239278386be2919e1bcee0bde047e # DD+Atmos == DD+
         assign_scores_to:
-          - name: SQP-1 (1080p)
-            score: 1750
-          - name: SQP-1 (2160p)
-            score: 1750
           - name: SQP-2
             score: 1750
           - name: SQP-3
