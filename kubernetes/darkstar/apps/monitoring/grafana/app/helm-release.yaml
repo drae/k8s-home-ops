@@ -283,6 +283,9 @@ spec:
           revision: 4
           datasource: Prometheus
       system:
+        external-secrets:
+          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
+          datasource: Prometheus
         node-exporter-full:
           # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
