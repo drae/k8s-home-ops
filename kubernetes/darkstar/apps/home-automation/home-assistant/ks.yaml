@@ -21,6 +21,7 @@ spec:
       APP: *appname
       APP_UID: "568"
       APP_GID: "568"
+      GATUS_SUBDOMAIN: hass
       VOLSYNC_CLAIM: home-assistant-config
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
