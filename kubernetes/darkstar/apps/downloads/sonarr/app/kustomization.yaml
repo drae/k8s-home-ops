@@ -5,4 +5,4 @@ resources:
   - ./helm-release.yaml
   # PVC and volsync templates
   - ../../../storage/volsync/templates
-  - ../../../monitoring/gatus/templates/guarded
+  - ../../../monitoring/gatus/templates/internal

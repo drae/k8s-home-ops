@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./service.yaml
   - ./ingress.yaml
-  - ../../../monitoring/gatus/templates/guarded
+  - ../../../monitoring/gatus/templates/internal
