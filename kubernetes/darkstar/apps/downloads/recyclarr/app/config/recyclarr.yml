@@ -79,6 +79,12 @@ radarr:
 
     include:
       - template: radarr-quality-definition-sqp-uhd
+      # HD Bluray + Web
+      - template: radarr-custom-formats-hd-bluray-web
+      - template: radarr-quality-profile-hd-bluray-web
+      # Remux + WEB 1080p
+      - template: radarr-custom-formats-remux-web-1080p
+      - template: radarr-quality-profile-remux-web-1080p
       # SQP-1 (1080p)
       - template: radarr-custom-formats-sqp-1-1080p
       - template: radarr-quality-profile-sqp-1-1080p
@@ -96,6 +102,8 @@ radarr:
       - trash_ids:
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL)
         assign_scores_to:
+          - name: HD Bluray + Web
+          - name: Remux + WEB 1080p
           - name: SQP-1 (1080p)
           - name: SQP-1 (2160p)
           - name: SQP-2
@@ -103,6 +111,8 @@ radarr:
       - trash_ids:
           - 5153ec7413d9dae44e24275589b5e944 # bhdstudio - downgrade
         assign_scores_to:
+          - name: HD Bluray + Web
+            score: -10000
           - name: SQP-1 (1080p)
             score: -10000
           - name: SQP-1 (2160p)
