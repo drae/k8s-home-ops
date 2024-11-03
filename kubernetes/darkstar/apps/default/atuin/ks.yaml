@@ -5,7 +5,7 @@ metadata:
   name: &appname atuin
   namespace: flux-system
 spec:
-  targetNamespace: downloads
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
