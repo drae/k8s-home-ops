@@ -54,6 +54,11 @@ spec:
         - gatus
       password:
         type: AlphaNumeric
+    - name: atuin
+      databases:
+        - atuin
+      password:
+        type: AlphaNumeric
   backups:
     pgbackrest:
       configuration: &backupConfig
