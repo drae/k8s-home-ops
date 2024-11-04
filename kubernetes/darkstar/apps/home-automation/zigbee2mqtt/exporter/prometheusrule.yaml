@@ -33,7 +33,7 @@ spec:
             summary: The zigbee device link quality is low
             description: link quality on topic {{$labels.topic}} is at {{$value}}
         - alert: Zigbee2MqttBatteryLow
-          expr: mqtt_battery < 40
+          expr: mqtt_battery < 10
           for: 60m
           labels:
             severity: warning
