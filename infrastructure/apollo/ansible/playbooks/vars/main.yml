@@ -6,8 +6,6 @@
 os_timezone: "Europe/London"
 os_ssh_authorized_keys:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnp4n7WX1FgQozEi6qY+E/6y3yg6eqnAdpQHp1MkMTH paul@LAPTOP"
-os_packages_repositories:
-  - ppa:neovim-ppa/unstable
 os_packages_install:
   - apt-transport-https
   - ca-certificates
@@ -15,8 +13,6 @@ os_packages_install:
   - gettext
   - git
   - htop
-  - neofetch
-  - neovim
   - nfs-kernel-server
   - ntpdate
   - psmisc

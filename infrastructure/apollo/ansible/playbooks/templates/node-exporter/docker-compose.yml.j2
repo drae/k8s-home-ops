@@ -15,5 +15,6 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro,rslave
-    ports:
-      - 9100:9100
+#    ports:
+#      - 9100:9100
+    network_mode: host
