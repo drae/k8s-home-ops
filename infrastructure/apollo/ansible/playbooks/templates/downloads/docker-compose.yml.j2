@@ -2,6 +2,38 @@
 version: "3.8"
 
 services:
+  gluetun:
+    image: qmcgaw/gluetun:v3.39.1
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 8080:8080/tcp # sabnzbd web
+    volumes:
+      - "{{ docker_base_dir }}/downloads/gluetun:/gluetun"
+    environment:
+      ***REMOVED***
+      - VPN_SERVICE_PROVIDER={{ GLUETUN_VPN_PROVIDER }}
+      - VPN_TYPE=wireguard
+      # DNS
+      - DNS_ADDRESS={{ GLUETUN_VPN_DNS }}
+      # Firewall
+      - FIREWALL_OUTBOUND_SUBNETS=10.1.10.0/24
+      # Wireguard
+      - WIREGUARD_PRIVATE_KEY={{ GLUETUN_VPN_KEY }}
+      - WIREGUARD_ADDRESSES={{ GLUETUN_VPN_ADDRESSES }}
+      - SERVER_HOSTNAMES={{ GLUETUN_VPN_HOSTNAMES }}
+#      - VPN_ENDPOINT_PORT={{ GLUETUN_VPN_ENDPOINT_PORT }}
+      # Timezone for accurate log times
+      - TZ=Europe/London
+      # Other
+      - PUBLICIP_PERIOD=12h
+      - VERSION_INFORMATION=on
+      - UPDATER_PERIOD=24h
+    restart: unless-stopped
+
   sabnzbd:
     image: quay.io/linuxserver.io/sabnzbd:4.3.3
     container_name: sabnzbd
@@ -9,9 +41,28 @@ services:
       - PUID=568
       - PGID=568
       - TZ=Europe/London
-    ports:
-      - 8080:8080/tcp # sabnzbd web
+    network_mode: "service:gluetun"
+#    ports:
+#      - 8080:8080/tcp # sabnzbd web
     volumes:
       - "{{ docker_base_dir }}/downloads/sabnzbd:/config"
       - /mnt/zstore/media/.downloads:/downloads
     restart: unless-stopped
+
+#  qbittorrent:
+#    image: quay.io/linuxserver.io/qbittorrent:4.5.5
+#    container_name: qbittorrent
+#    environment:
+#      - PUID=568
+#      - PGID=568
+#      - TZ=Europe/London
+#      - WEBUI_PORT=8080
+#    network_mode: "service:gluetun"
+#    ports:
+#      - 8088:8080
+#      - 6881:6881
+#      - 6881:6881/udp
+#    volumes:
+#      - "{{ docker_base_dir }}/downloads/qbittorrent:/config"
+#      - /mnt/zstore/media/.downloads:/downloads
+#    restart: unless-stopped

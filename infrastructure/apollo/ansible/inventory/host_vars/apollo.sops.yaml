@@ -1,7 +1,10 @@
 kind: Secret
-MINIO_ROOT_USER: ENC[AES256_GCM,data:1HcuHXSzpQEyXQ==,iv:APVrUoxyz7CgUPmw0ivm83ZLaY2rBLVCbFrNI2nPKEQ=,tag:w6RjTfdxG+HLE83JuE+x7w==,type:str]
-MINIO_ROOT_PASSWORD: ENC[AES256_GCM,data:tCd2sxpI6Yw=,iv:FdeXaiVlpRlE8QMMffdTC94YjW9qUWDcZ9jvtJrHQP8=,tag:UkGtMuQPrC+REPyYzwK2kQ==,type:str]
-MINIO_PROMETHEUS_URL: ENC[AES256_GCM,data:e4GA+cvvrDwRpKcA7RnteVmdDvyVZ5r9Crg7qOmsIta52g==,iv:eUSytFYpm1dXgTKiL2U+jrXYQ1cB3p17adt8ZMHZ7+Q=,tag:0DNvDvwHjVFIZQLndL1E/Q==,type:str]
+GLUETUN_VPN_PROVIDER: ENC[AES256_GCM,data:ffM58KGKtA==,iv:Y7SJ048aYXculFqD8BRC1YkXLjlvJ4JwE69LmvFAYag=,tag:fMakYaFf7QrcZzyPT0zuoA==,type:str]
+GLUETUN_VPN_DNS: ENC[AES256_GCM,data:hiOMfqfWPw==,iv:vzp3ul1bNDmwapw/mqIM+HYwA8DozRdDIuXJ9LpiNNQ=,tag:cDPrBOagu7fvK0LrzDN4Dg==,type:str]
+GLUETUN_VPN_INPUT_PORTS: ENC[AES256_GCM,data:QEM34fI=,iv:JrGBYviTVMUAFRYRti27F7Ltau8UdlsRCCJabLr4ySU=,tag:9GJbqP0eks6XnHr4xvVJ/Q==,type:str]
+GLUETUN_VPN_KEY: ENC[AES256_GCM,data:JWSdlStTP2AVdj464DVOevxfZndJXZGFK6oNilCJJ+LD4mLeF9urCx3YWXI=,iv:vdTN4TeMaJ7kvuuaT11cf/9TS8TKMqGw/KqbWneYiAE=,tag:iSVFbs9jGit02IU5g3BG6g==,type:str]
+GLUETUN_VPN_ADDRESSES: ENC[AES256_GCM,data:iG+ssdRrD/oJihK1n/OSyg==,iv:nfZQCpiGne7m4DbMG6j+SU1ZF562VL0bf1dNN51b2ZQ=,tag:55XNc7vJtsv0xYQ+8dBhOA==,type:str]
+GLUETUN_VPN_ENDPOINT_PORT: ENC[AES256_GCM,data:2WoS9Ww=,iv:Dm+rv+s4ob/TQE+MQOBiVI47QOYPx0yelVT9jImpsBg=,tag:X+DAi1oQrAD01Odpdl8rKg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -11,14 +14,14 @@ sops:
         - recipient: age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBscHlYM2lJeTF0SEE1RkFD
-            Ni84SURBa3lNRFlOK0lHWWdaQnRJMTByK0JBClIyei9jdjRsbk93ZWt4RmRLdDJu
-            dzJDOVJOYTVLL0xpVXpPaDMxcEZaNGcKLS0tIFkzcFFJRGNIVDIzMGw5bVhRZjQ0
-            SGFOVkNsN3dYWE5OcjFheUQ4bVYramsKy3a5dRypzvmoEpDSabwtrPGybWNqbeGQ
-            XxwC02wuR98H1IDLZUxJS+psfDamWGgRAICAt/4Z6wqiVB8nQDSQ6w==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBYd0JpUjdIWmdUOVpnZjl2
+            K1V3SGsvaE0xc1VNbFFyczRLWFF6ckliL0JFCkdMMXB6YUxhRTFPRnZJMnJMRzM5
+            aC9tKzVoaURscmNMUC9TZHhpbnJPQ2MKLS0tIHJTY1lMSVVxYytndGl5K0JWUHlw
+            SWI3Y2F5N0dTNTc0OGRJWnBNSm9jbDgKJzNno+/FC1xzLx+mPr3qAF5xsK6HRw+q
+            ZipD8TSmpTPrPf7mrCjEIQlF7ojfD64N5/LSzsyyu7JPHNEJ9S5Xyw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-02-20T14:00:32Z"
-    mac: ENC[AES256_GCM,data:u0/pvuRZlHztJvl1IRwnFqJNeyGE4zZX6juiutv8mjLXJ3wFY00u1OlTgW1ci+7GiEB+6XjO2ghcIE8v0TgJIX3draVxoZqfeIbNTe1NoLuCql+8sIEkeiN+ilmqqqYbiaRqKAbslw6xvfsugwi07POUc/5hG8Cq+6/hHl+GcxQ=,iv:ZbiVbeIauz6xgjDLI97LxyEcZ90Bm9/zGwrR/WLgygk=,tag:kUr5C3EWVq8aoe2h1hj/jQ==,type:str]
+    lastmodified: "2024-11-04T15:08:11Z"
+    mac: ENC[AES256_GCM,data:P/r5aYIJL2fFvS7I3wR5STSSV7bsN1uMooEzQhLf/NMSmPQlh1td0d9tIi1IglAy9HgGAOUHGkRUzkWlRcCIVBzkaAytrWb/igYaQuE+H3Eb+YDHduv0Q1CfSN0sEje82iXZf0eIQ2UWVuL6ffTeo1SA+xr7T1XnnF9fejpN/QQ=,iv:kJTJ//zEW80bL5CezsDqArwCgOiHKq4M4WYKXx9NieU=,tag:7R3jJcs+lXUiilAAl1awlw==,type:str]
     pgp: []
     unencrypted_regex: ^(kind)$
-    version: 3.8.1
+    version: 3.9.1
