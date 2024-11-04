@@ -45,5 +45,12 @@ spec:
             "topolvm.io/device-class": "thin"
     node:
       lvmdEmbedded: true
+      metrics:
+        enabled: true
+        annotations:
+          prometheus.io/port: metrics
+      prometheus:
+        podMonitor:
+          enabled: true
     controller:
       replicaCount: 1
