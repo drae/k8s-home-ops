@@ -136,7 +136,7 @@ spec:
                 requests:
                   storage: 25Gi
         walCompression: true
-        additionalScrapeConfigs:
+        additionalScrapeConfigs: |
           - job_name: node-exporter
             scrape_interval: 1m
             scrape_timeout: 10s
@@ -146,3 +146,22 @@ spec:
                   - "${IP_ADDR_LAN_GW}:9100"
                   - "${IP_ADDR_LAN_NAS}:9100"
                   - "${IP_ADDR_LAN_GRAVITY}:9100"
+          - job_name: "topolvm"
+            kubernetes_sd_configs:
+              - role: pod
+                namespaces:
+                  names: ["storage"]
+            relabel_configs:
+              - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+                action: keep
+                regex: node
+              - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+                action: replace
+                regex: ([^:]+)(?::\d+)?;(\d+)
+                replacement: ${1}:${2}
+                target_label: __address__
+              - source_labels: [__address__]
+                action: replace
+                regex: ([^:]+)(?::\d+)?
+                replacement: ${1}
+                target_label: instance
