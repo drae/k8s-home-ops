@@ -38,7 +38,7 @@ spec:
       - name: topolvm-thin-provisioner
         storageClass:
           fsType: xfs
-          isDefaultClass: false
+          isDefaultClass: true
           volumeBindingMode: WaitForFirstConsumer
           allowVolumeExpansion: true
           additionalParameters:
@@ -47,10 +47,5 @@ spec:
       lvmdEmbedded: true
       metrics:
         enabled: true
-        annotations:
-          prometheus.io/port: metrics
-      prometheus:
-        podMonitor:
-          enabled: true
     controller:
       replicaCount: 1
