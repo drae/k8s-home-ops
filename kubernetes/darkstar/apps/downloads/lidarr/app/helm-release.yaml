@@ -62,6 +62,7 @@ spec:
               allowPrivilegeEscalation: false
         containers:
           app:
+            nameOverride: lidarr
             image:
               repository: docker.io/youegraillot/lidarr-on-steroids
               tag: 1.5.2
@@ -111,11 +112,15 @@ spec:
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          lidarr:
+            app:
+              - path: /config
       dnsdist:
         type: configMap
         name: lidarr-dnsdist
         advancedMounts:
-          qbittorrent:
+          lidarr:
             dnsdist:
               - path: /etc/dnsdist/dnsdist.conf
                 subPath: dnsdist.conf
@@ -126,5 +131,7 @@ spec:
         type: nfs
         server: 10.1.10.10
         path: /mnt/zstore/media
-        globalMounts:
-          - path: /mnt/media
+        advancedMounts:
+          lidarr:
+            app:
+              - path: /mnt/media
