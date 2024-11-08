@@ -25,3 +25,4 @@ spec:
       VOLSYNC_CAPACITY: 1Gi
   dependsOn:
     - name: topolvm
+    - name: volsync
