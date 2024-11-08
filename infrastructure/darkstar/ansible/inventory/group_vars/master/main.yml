@@ -17,7 +17,7 @@ k3s_server:
   disable-cloud-controller: true
   disable-kube-proxy: true
   write-kubeconfig-mode: "0644"
-  cluster-cidr: "10.200.0.0/16"
+  cluster-cidr: "10.244.0.0/16"
   service-cidr: "10.210.0.0/16"
   kube-apiserver-arg:
     - anonymous-auth=true
