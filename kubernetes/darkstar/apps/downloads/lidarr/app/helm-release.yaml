@@ -20,13 +20,13 @@ spec:
       lidarr:
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: ${APP_UID}
-            runAsGroup: ${APP_GID}
-            fsGroup: ${APP_GID}
-            fsGroupChangePolicy: "OnRootMismatch"
+        #        pod:
+        #          securityContext:
+        #            runAsNonRoot: true
+        #            runAsUser: ${APP_UID}
+        #            runAsGroup: ${APP_GID}
+        #            fsGroup: ${APP_GID}
+        #            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           app:
             image:
@@ -37,18 +37,20 @@ spec:
               LIDARR__INSTANCE_NAME: Lidar
               LIDARR__AUTH__METHOD: External
               LIDARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              PUID: ${APP_UID}
+              PGID: ${APP_GID}
             resources:
               requests:
                 memory: 250Mi
                 cpu: 25m
               limits:
                 memory: 500Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+          #            securityContext:
+          #              allowPrivilegeEscalation: false
+          #              readOnlyRootFilesystem: true
+          #              capabilities:
+          #                drop:
+          #                  - ALL
           gluetun:
             image:
               repository: ghcr.io/qdm12/gluetun
@@ -60,8 +62,9 @@ spec:
               VPN_TYPE: wireguard
               VPN_INTERFACE: wg0
               WIREGUARD_ENDPOINT_PORT: 51820
+              #  FIREWALL: off
               FIREWALL_INPUT_PORTS: 8686,6595
-              FIREWALL_OUTBOUND_SUBNETS: 10.200.0.0/12,10.210.0.0/16 # Allow access to k8s subnets
+              FIREWALL_OUTBOUND_SUBNETS: 10.200.0.0/16 # Allow access to k8s subnets
             envFrom:
               - secretRef:
                   name: lidarr-secret
