@@ -7,3 +7,11 @@ resources:
   # PVC and volsync templates
   - ../../../storage/volsync/templates
   - ../../../monitoring/gatus/templates/internal
+configMapGenerator:
+  - name: lidarr-dnsdist
+    files:
+      - ./config/dnsdist.conf
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
