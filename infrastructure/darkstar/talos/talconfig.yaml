@@ -14,7 +14,7 @@ cniConfig:
 clusterPodNets:
   - 10.200.0.0/16
 clusterSvcNets:
-  - 10.210.0.0/12
+  - 10.210.0.0/16
 
 additionalApiServerCertSans: &san
   - ${clusterEndpointIP}
@@ -80,6 +80,8 @@ controlPlane:
     - |-
       cluster:
         allowSchedulingOnMasters: true
+        coreDNS:
+            disabled: true
         proxy:
           disabled: true
         etcd:

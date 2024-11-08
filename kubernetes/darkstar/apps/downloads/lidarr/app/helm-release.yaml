@@ -62,7 +62,6 @@ spec:
               VPN_TYPE: wireguard
               VPN_INTERFACE: wg0
               WIREGUARD_ENDPOINT_PORT: 51820
-              #  FIREWALL: off
               FIREWALL_INPUT_PORTS: 8686,6595
               FIREWALL_OUTBOUND_SUBNETS: 10.200.0.0/16 # Allow access to k8s subnets
             envFrom:
