@@ -39,7 +39,7 @@ spec:
               tag: 1.41.1.9057-af5eaea7a@sha256:5926b77196bb7c9f75b52f431d0483abea0fef1f576b7201592b385449201456
             env:
               ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,https://plex.${SECRET_DOMAIN}:443"
-              PLEX_NO_AUTH_NETWORKS: 10.200.0.0/16
+              PLEX_NO_AUTH_NETWORKS: 10.244.0.0/16
             probes:
               liveness:
                 enabled: true
