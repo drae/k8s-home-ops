@@ -11,11 +11,6 @@ kubernetesVersion: v1.31.1
 cniConfig:
   name: none
 
-clusterPodNets:
-  - 10.200.0.0/16
-clusterSvcNets:
-  - 10.210.0.0/16
-
 additionalApiServerCertSans: &san
   - ${clusterEndpointIP}
   - ${clusterName}
