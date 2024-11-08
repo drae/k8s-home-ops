@@ -22,7 +22,6 @@ spec:
       APP_UID: "568"
       APP_GID: "568"
       VOLSYNC_CLAIM: mosquitto-data
-      VOLSYNC_CAPACITY: 256Mi
   dependsOn:
     - name: topolvm
     - name: volsync
