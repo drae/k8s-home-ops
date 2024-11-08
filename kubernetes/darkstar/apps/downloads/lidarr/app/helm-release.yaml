@@ -1,0 +1,110 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: lidarr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+      interval: 30m
+  values:
+    controllers:
+      lidarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: "OnRootMismatch"
+        containers:
+          app:
+            image:
+              repository: docker.io/youegraillot/lidarr-on-steroids
+              tag: 1.5.2
+            env:
+              LIDARR__API_KEY: ${LIDARR_API_KEY}
+              LIDARR__INSTANCE_NAME: Lidar
+              LIDARR__AUTH__METHOD: External
+              LIDARR__AUTH__REQUIRED: DisabledForLocalAddresses
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 25m
+              limits:
+                memory: 500Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.39.1
+            env:
+              DOT: "off"
+              DNS_ADDRESS: "1.1.1.2"
+              VPN_SERVICE_PROVIDER: custom
+              VPN_TYPE: wireguard
+              VPN_INTERFACE: wg0
+              WIREGUARD_ENDPOINT_PORT: 51820
+              FIREWALL_INPUT_PORTS: 8686,6595
+              FIREWALL_OUTBOUND_SUBNETS: 10.200.0.0/12,10.210.0.0/16 # Allow access to k8s subnets
+            envFrom:
+              - secretRef:
+                  name: lidarr-secret
+            resources:
+              limits:
+                squat.ai/tun: "1"
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
+              allowPrivilegeEscalation: false
+    service:
+      app:
+        controller: lidarr
+        ports:
+          http:
+            port: 8686
+          dmix:
+            port: 6595
+    ingress:
+      app:
+        className: ingress-nginx-int
+        hosts:
+          - host: lidarr.p.lan.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+          - host: dmix.p.lan.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: dmix
+    persistence:
+      config:
+        existingClaim: "${VOLSYNC_CLAIM}"
+      tmp:
+        type: emptyDir
+      media:
+        type: nfs
+        server: 10.1.10.10
+        path: /mnt/zstore/media
+        globalMounts:
+          - path: /mnt/media
