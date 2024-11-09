@@ -95,7 +95,7 @@ sonarr:
           - fbcb31d8dabd2a319072b84fc0b7249c # Extras - -10000
           - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - -10000
         assign_scores_to:
-          - name: WEB-DL (1080p)
+          - name: WEB-1080p
 
       # UHD
       - trash_ids:
@@ -160,7 +160,7 @@ sonarr:
           - fbcb31d8dabd2a319072b84fc0b7249c # Extras - -10000
           - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - -10000
         assign_scores_to:
-          - name: WEB-DL (2160p)
+          - name: WEB-2160p
 
 radarr:
   radarr:
