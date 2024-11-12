@@ -20,11 +20,20 @@ spec:
       home-assistant:
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
         containers:
           app:
             image:
-              repository: ghcr.io/home-assistant/home-assistant
-              tag: 2024.11.1
+              repository: ghcr.io/onedr0p/home-assistant
+              tag: 2024.11.1@sha256:a3dd7577c28771702b21f817ad86600056467c2c7f45d261a1e7241910ddc2e2
             envFrom:
               - secretRef:
                   name: home-assistant
@@ -41,6 +50,12 @@ spec:
                 memory: 512M
               limits:
                 memory: 2048M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
@@ -49,72 +64,63 @@ spec:
             env:
               HASS_SERVER: http://localhost:8123
             args:
-              - --user-data-dir
-              - "/config/.vscode"
               - --auth
-              - "none"
+              - none
+              - --disable-telemetry
+              - --disable-update-check
+              - --user-data-dir
+              - /config/.vscode
+              - --extensions-dir
+              - /config/.vscode
               - --port
               - "12321"
-              - "/config"
+              - /config
     service:
       app:
         controller: home-assistant
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: ${SVC_LB_HASS}
         ports:
           http:
             port: 8123
-            primary: true
-          mdns-tcp:
-            enabled: true
-            port: 5353
-            protocol: TCP
-            targetPort: 5353
-          mdns-udp:
-            enabled: true
-            port: 5353
-            protocol: UDP
-            targetPort: 5353
       codeserver:
         controller: home-assistant
-        type: ClusterIP
         ports:
           http:
-            enabled: true
             port: 12321
-            protocol: TCP
     ingress:
       app:
-        enabled: true
         className: ingress-nginx-ext
         annotations:
           external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
         hosts:
-          - host: &host "hass.${SECRET_DOMAIN}"
+          - host: hass.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
       codeserver:
-        enabled: true
         className: ingress-nginx-int
         hosts:
-          - host: &host "hass-vscode.p.lan.${SECRET_DOMAIN}"
+          - host: hass-vscode.p.lan.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: codeserver
                   port: http
-        tls:
-          - hosts:
-              - *host
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /config
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
+      tts:
+        type: emptyDir
+        globalMounts:
+          - path: /config/tts
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
