@@ -4,7 +4,6 @@ kind: Secret
 metadata:
     name: home-assistant
 stringData:
-    TZ: ENC[AES256_GCM,data:WrroMpOgu49sIa3EHA==,iv:tl/DKPgr1Gzqn3kuyBPWLJlRjEqVO8ZUwLfnGNC78I8=,tag:4RV/ScZx+44xRBUddS+/sg==,type:str]
     HASS_LATITUDE: ENC[AES256_GCM,data:w+cfikqfuS3/,iv:+5KXS8QS//Y9Bl22k1/GAr8OqrjgkhYQSwRnQ27Bp60=,tag:4wOzNammx8zGpiZnJvNsGg==,type:str]
     HASS_LONGITUDE: ENC[AES256_GCM,data:zTVeUV3MOy9F,iv:6h7aWnnbUMDw9ThIMQj3yfy47aCGciTttdAOsgbb9PA=,tag:RjjbOAPNk2FkmaHwuYj7mA==,type:str]
     HASS_ELEVATION: ENC[AES256_GCM,data:XjY=,iv:BCXlUzPlpIVWBCw91H7EBaDDBTNvAR2YMNodyAQXRXw=,tag:XRLrbLoTMWowrE8RDQOABA==,type:str]
@@ -31,8 +30,8 @@ sops:
             VTBHU3lCelVacXVMZUhKRTZrMzRMaEUKSwmSxZKmEOQ1f1Dn2GqWiXvDk9Cpeylh
             Uy76+MydfCbTtEbvejeybeuuxWnoKB06VuXWRSj1XzH8ZRb43Owi/Q==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-11-08T15:49:54Z"
-    mac: ENC[AES256_GCM,data:bDGI6ljFqxodQgQ4gIWhNpohfwjlaTWL0zKkXX58U2lw4cdFB0pUXjBtg8UW3aiJE2hbmmc0WTO/Ej38WDnOuZWMJyeC0J05NhZRA9bYVr0TeAvAZNEzo6X+9wcxBjHVXKNYE/0wOpjomHWp/rsXe6ukFBjwM8ndpooS/jKsscE=,iv:hfnr8vEIF7z4jPjvBCm1WrWFaRdNwXne+G9WMnPCZ1I=,tag:59AszvUCABS6tpFCRkL+GQ==,type:str]
+    lastmodified: "2024-11-12T23:54:37Z"
+    mac: ENC[AES256_GCM,data:t3bJ39EWoeaSa8h0A12DKj9CVkRktb0eVCcvY5v6ZtlP92I6aSROfhi2h70Sz0JNkrihAJxWCm275mp/iIWkscyZyzGJmq4QGlxnxfe7Dh8k7WErbFgHXXc0ZW/LwbfFv7+Y2+NrnWQLTiXx4JooMG1HPLNQkdTrVs1oWIwsVtE=,iv:KqEF/Pp0aniXSoLSTZ87GrGJ3wtRFlhpHUNiQA14q1w=,tag:2wDxiAZEZ3fFaA148YLdew==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.9.1
