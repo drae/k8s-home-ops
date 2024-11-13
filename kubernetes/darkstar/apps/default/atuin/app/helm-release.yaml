@@ -21,6 +21,13 @@ spec:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
         containers:
           app:
             image:
@@ -86,15 +93,12 @@ spec:
         enabled: true
         className: ingress-nginx-int
         hosts:
-          - host: &host "sh.p.lan.${SECRET_DOMAIN}"
+          - host: "sh.p.lan.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
-                  port: *port
-        tls:
-          - hosts:
-              - *host
+                  port: http
     persistence:
       config:
         type: emptyDir
