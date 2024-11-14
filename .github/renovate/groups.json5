@@ -1,33 +1,10 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
-    //
-    // NOTE: Renovate processes rules from top to bottom, so the rules below take precedence over rules above it
-    //
-    // Github actions
-    {
-      description: "Auto merge Github Actions",
-      matchManagers: ["github-actions"],
-      automerge: true,
-      automergeType: "pr",
-      ignoreTests: true,
-      matchUpdateTypes: ["minor", "patch", "digest"],
-    },
-    // Renovate actual
-    {
-      description: "Auto merge all Renovate versions",
-      matchPackagePatterns: ["renovate"],
-      matchUpdateTypes: ["major", "minor", "patch", "digest"],
-      automerge: true,
-      automergeType: "branch",
-      ignoreTests: true,
-      labels: ["renovate-actual"],
-    },
-    // FluxCD
     {
       description: "Flux Group",
       groupName: "Flux",
-      matchPackagePatterns: ["fluxcd"],
+      matchPackagePatterns: ["^flux", "^ghcr.io/fluxcd/"],
       matchDatasources: ["docker", "github-tags"],
       versioning: "semver",
       group: {
@@ -35,7 +12,6 @@
       },
       separateMinorPatch: true,
     },
-    // Cilium
     {
       description: "Cilium image and chart",
       groupName: "cilium",
@@ -50,42 +26,41 @@
       },
       separateMinorPatch: true,
     },
-    // Snapshotter
     {
-      description: "External Snapshotter charts",
-      groupName: "External Snapshotter",
-      matchPackageNames: ["snapshot-controller", "snapshot-validation-webhook"],
-      matchDatasources: ["helm"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      separateMinorPatch: true,
-    },
-    // Vector (aggregator & agent)
-    {
-      description: "Vector image and chart - versions do not match",
-      groupName: "Vector",
-      matchPackagePatterns: ["vector"],
-      matchDatasources: ["docker", "github-releases", "helm"],
-      matchUpdateTypes: ["minor", "patch"],
+      description: "Actions Runner Controller charts",
+      groupName: "ARC",
+      matchPackageNames: [
+        "actions-runner-controller-charts/gha-runner-scale-set-controller",
+        "actions-runner-controller-charts/gha-runner-scale-set",
+      ],
+      matchDatasources: ["helm", "docker"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
       separateMinorPatch: false,
     },
-    // manually approve app-template major releases
     {
-      matchPackagePatterns: ["app-template"],
-      matchDatasources: ["helm"],
-      matchUpdateTypes: ["major"],
-      dependencyDashboardApproval: true,
-      automerge: false,
-      separateMajorMinor: true,
-      separateMultipleMajor: true,
+      description: "Talos",
+      groupName: "Talos",
+      matchPackageNames: [
+        "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/talosctl",
+      ],
+      matchDatasources: ["docker"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
       separateMinorPatch: true,
-      groupName: "app-template-major",
-      commitMessagePrefix: "feat(app-template/major)!: ",
-      labels: ["app-template", "major"],
+    },
+    {
+      description: "silence-operator image and CRD",
+      groupName: "silence-operator",
+      matchPackagePatterns: ["silence-operator"],
+      matchDatasources: ["docker", "github-releases"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      separateMinorPatch: true,
     },
   ],
 }
