@@ -320,8 +320,6 @@ radarr:
       # Movie version (all but SQP-1)
       - trash_ids:
           - 0f12c086e289cf966fa5948eac571f44 # Hybrid - 100
-          - eecf3a857724171f968a66cb5719e152 # IMAX - 800
-          - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced - 800
         assign_scores_to:
           - name: SQP-2
           - name: SQP-3
