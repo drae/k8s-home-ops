@@ -65,6 +65,25 @@ spec:
               capabilities:
                 drop:
                   - ALL
+          codeserver:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.95.3@sha256:6d74583d68179cbb6ddadc2518b450d2ac3eaec2d342474fe1941e03371cd2cf
+              pullPolicy: IfNotPresent
+            env:
+              HASS_SERVER: http://localhost:8123
+            args:
+              - --auth
+              - none
+              - --disable-telemetry
+              - --disable-update-check
+              - --user-data-dir
+              - /data/.vscode
+              - --extensions-dir
+              - /data/.vscode
+              - --port
+              - "12321"
+              - /data
     service:
       app:
         controller: zigbee2mqtt
@@ -74,26 +93,35 @@ spec:
           metrics:
             enabled: true
             port: 9000
+      codeserver:
+        controller: zigbee2mqtt
+        ports:
+          http:
+            port: 12321
     ingress:
       app:
         enabled: true
         className: ingress-nginx-int
         hosts:
-          - host: &host "zigbee2mqtt.p.lan.${SECRET_DOMAIN}"
+          - host: "zigbee2mqtt.p.lan.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
+      codeserver:
+        className: ingress-nginx-int
+        hosts:
+          - host: z2m-vscode.p.lan.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: codeserver
+                  port: http
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
-        advancedMounts:
-          zigbee2mqtt:
-            app:
-              - path: /data
+        globalMounts:
+          - path: /data
       tmp:
         type: emptyDir
