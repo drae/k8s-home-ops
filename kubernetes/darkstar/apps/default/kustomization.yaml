@@ -4,5 +4,3 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./stirling-pdf/ks.yaml
-  - ./ollama/ks.yaml
-  - ./openwebui/ks.yaml
