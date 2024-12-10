@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: latest-dev@sha256:ec4bc85786ed5e491cb868f1368370d19bc1a9b047022813de5cde728af4dc78
+              tag: latest-dev@sha256:1d9c7c37fc5fd1abbfd4b6b61a41ce1699e34d7002786d7887e3b9e3f2d703d9
             env:
               ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: "20"
               ZIGBEE2MQTT_CONFIG_ADVANCED_EXT_PAN_ID: "[221, 221, 221, 221, 221, 221, 221, 221]"
