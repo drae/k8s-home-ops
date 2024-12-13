@@ -32,7 +32,7 @@ spec:
         controller: lvm-exporter
         ports:
           http:
-            port: 9080
+            port: 9845
     serviceMonitor:
       app:
         serviceName: lvm-exporter
