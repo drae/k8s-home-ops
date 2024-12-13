@@ -31,5 +31,14 @@ spec:
       app:
         controller: lvm-exporter
         ports:
-          metrics:
+          http:
             port: 9080
+    serviceMonitor:
+      app:
+        serviceName: lvm-exporter
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
