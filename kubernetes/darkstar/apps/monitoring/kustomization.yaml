@@ -12,6 +12,7 @@ resources:
   - ./kube-state-metrics/ks.yaml
   - ./loki/ks.yaml
   - ./node-exporter/ks.yaml
+  - ./lvm-exporter/ks.yaml
   - ./prometheus-operator/ks.yaml
   - ./promtail/ks.yaml
   - ./smartctl-exporter/ks.yaml
