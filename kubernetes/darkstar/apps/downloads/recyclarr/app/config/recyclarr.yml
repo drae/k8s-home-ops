@@ -181,24 +181,13 @@ radarr:
     quality_definition:
       type: sqp-uhd
 
-    # Quality Profiles
+    # Automated formats and profiles for: 1080p Remux > Web
+    include:
+      - template: radarr-custom-formats-remux-web-1080p
+      - template: radarr-quality-profile-remux-web-1080p
+
+    # Manual quality profiles for 2160p
     quality_profiles:
-      - name: SQP-1 (1080p)
-        reset_unmatched_scores:
-          enabled: true
-        upgrade:
-          allowed: true
-          until_quality: Bluray|WEB-1080p
-          until_score: 10000
-        min_format_score: 1000
-        score_set: sqp-1-1080p
-        quality_sort: top
-        qualities:
-          - name: Bluray|WEB-1080p
-            qualities:
-              - Bluray-1080p
-              - WEBDL-1080p
-              - WEBRip-1080p
       - name: SQP-2
         reset_unmatched_scores:
           enabled: true
@@ -312,7 +301,6 @@ radarr:
           - e36a0ba1bc902b26ee40818a1d59b8bd # PMTP - 0
           - c2863d2a50c9acad1fb50e53ece60817 # STAN - 0
         assign_scores_to:
-          - name: SQP-1 (1080p)
           - name: SQP-2
           - name: SQP-3
           - name: SQP-5
@@ -351,11 +339,6 @@ radarr:
           - name: SQP-2
           - name: SQP-3
           - name: SQP-5
-      - trash_ids:
-          - 820b09bb9acbfde9c35c71e0e565dad8 # 1080p - 50
-          - b2be17d608fc88818940cd1833b0b24c # 720p
-        assign_scores_to:
-          - name: SQP-1 (1080p)
 
       # HQ Release Groups
       - trash_ids:
@@ -382,8 +365,6 @@ radarr:
       - trash_ids:
           - 5153ec7413d9dae44e24275589b5e944 # bhdstudio - downgrade
         assign_scores_to:
-          - name: SQP-1 (1080p)
-            score: -10000
           - name: SQP-2
             score: -10000
           - name: SQP-3
@@ -413,9 +394,3 @@ radarr:
             score: 5000
           - name: SQP-5
             score: 5000
-
-      - trash_ids:
-          # Unwanted
-          - dc98083864ea246d05a42df0d05f81cc # x265(HD)
-        assign_scores_to:
-          - name: SQP-1 (1080p)
