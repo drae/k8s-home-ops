@@ -23,8 +23,8 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/orimarti/lvm-exporter
-              tag: 0.0.1
+              repository: ghcr.io/drae/lvm-exporter
+              tag: v0.3.4@sha256:e301f47d6877444449587685fce16adb5fb9730d3bf3d81687d5afa60c096e37
             securityContext:
               privileged: true
     service:
