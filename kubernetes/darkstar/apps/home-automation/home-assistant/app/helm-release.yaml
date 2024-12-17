@@ -78,6 +78,10 @@ spec:
     service:
       app:
         controller: home-assistant
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: ${SVC_LB_HASS}
+        externalTrafficPolicy: Cluster
         ports:
           http:
             port: 8123
