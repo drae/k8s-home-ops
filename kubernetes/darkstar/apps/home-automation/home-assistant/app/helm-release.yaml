@@ -56,6 +56,20 @@ spec:
               capabilities:
                 drop:
                   - ALL
+          whisper:
+            image:
+              repository: docker.io/rhasspy/wyoming-whisper
+              tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8
+            args:
+              - --model
+              - "small-int8"
+              - --language
+              - "en"
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
@@ -85,6 +99,11 @@ spec:
         ports:
           http:
             port: 8123
+      whisper:
+        controller: home-assistant
+        ports:
+          whisper:
+            port: 10300
       codeserver:
         controller: home-assistant
         ports:
@@ -97,6 +116,15 @@ spec:
           external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
         hosts:
           - host: hass.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+      app-local:
+        className: ingress-nginx-int
+        hosts:
+          - host: hass.p.lan.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
@@ -116,6 +144,18 @@ spec:
         existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /config
+      whisper-data:
+        existingClaim: whisper-data
+        advancedMounts:
+          home-assistant:
+            whisper:
+              - path: /data
+      whisper-cache:
+        type: emptyDir
+        advancedMounts:
+          home-assistant:
+            whisper:
+              - path: /.cache
       logs:
         type: emptyDir
         globalMounts:
