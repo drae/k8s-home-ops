@@ -70,6 +70,18 @@ spec:
                 enabled: false
               readiness:
                 enabled: false
+          piper:
+            image:
+              repository: docker.io/rhasspy/wyoming-piper
+              tag: 1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f
+            args:
+              - --voice
+              - "en_GB-jenny_dioco-medium"
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
@@ -104,6 +116,11 @@ spec:
         ports:
           whisper:
             port: 10300
+      piper:
+        controller: home-assistant
+        ports:
+          piper:
+            port: 10200
       codeserver:
         controller: home-assistant
         ports:
@@ -149,6 +166,12 @@ spec:
         advancedMounts:
           home-assistant:
             whisper:
+              - path: /data
+      piper-data:
+        existingClaim: piper-data
+        advancedMounts:
+          home-assistant:
+            piper:
               - path: /data
       whisper-cache:
         type: emptyDir

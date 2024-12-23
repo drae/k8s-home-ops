@@ -9,3 +9,14 @@ spec:
     requests:
       storage: 20Gi
   storageClassName: topolvm-thin-provisioner
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: piper-data
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: topolvm-thin-provisioner
