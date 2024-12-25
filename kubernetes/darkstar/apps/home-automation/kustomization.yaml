@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./esphome/ks.yaml
+  - ./matter-server/ks.yaml
   - ./home-assistant/ks.yaml
   - ./mosquitto/ks.yaml
   - ./zigbee2mqtt/ks.yaml
