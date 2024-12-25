@@ -19,6 +19,23 @@ spec:
       matter-server:
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["10.1.20.99/24"],
+                "mac": "74:3a:6c:89:fd:5a"
+              }]
+          securityContext:
+            runAsUser: 0 # Must be run as root user
+            runAsGroup: 0
+            runAsNonRoot: false # Must be run as root user
+            fsGroup: 0
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups:
+              - 34
         containers:
           app:
             image:
@@ -29,39 +46,12 @@ spec:
               MATTER_SERVER__PORT: &wsPort 5580
               MATTER_SERVER__APPLICATION_URL: &host matter.p.lan.${SECRET_DOMAIN}
               MATTER_SERVER__LOG_LEVEL: debug
-            resources:
-              requests:
-                cpu: "100m"
-                memory: "100M"
-              limits:
-                memory: "500M"
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": ["10.1.20.36/24"],
-                "mac": "5D:CA:2B:2A:72:0B"
-              }]
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 0 # Must be run as root user
-        runAsGroup: 0
-        runAsNonRoot: false # Must be run as root user
-        fsGroup: 0
-        fsGroupChangePolicy: "OnRootMismatch"
-        supplementalGroups:
-          - 34
     service:
       matter-server:
         controller: matter-server
         ports:
           ws:
-            protocol: TCP
             port: *wsPort
-            primary: true
-        externalTrafficPolicy: Cluster
     ingress:
       internal:
         className: ingress-nginx-int
