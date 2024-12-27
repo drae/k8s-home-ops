@@ -5,4 +5,9 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
   - ./rbac.yaml
-  - ./crd.yaml
+configMapGenerator:
+  - name: multus-configmap
+    files:
+      - ./resources/00-multus.conf
+generatorOptions:
+  disableNameSuffixHash: true
