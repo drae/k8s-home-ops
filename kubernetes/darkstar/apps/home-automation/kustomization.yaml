@@ -5,5 +5,6 @@ resources:
   - ./namespace.yaml
   - ./esphome/ks.yaml
   - ./home-assistant/ks.yaml
+  - ./music-assistant/ks.yaml
   - ./mosquitto/ks.yaml
   - ./zigbee2mqtt/ks.yaml
