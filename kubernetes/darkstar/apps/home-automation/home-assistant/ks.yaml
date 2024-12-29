@@ -25,5 +25,6 @@ spec:
       VOLSYNC_CLAIM: home-assistant-config
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
+    - name: multus-networks
     - name: topolvm
     - name: volsync
