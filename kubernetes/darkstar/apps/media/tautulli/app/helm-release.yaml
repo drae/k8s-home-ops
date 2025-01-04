@@ -93,3 +93,11 @@ spec:
           - path: /config
       tmp:
         type: emptyDir
+      cache:
+        existingClaim: tautulli-cache
+        globalMounts:
+          - path: /config/cache
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
