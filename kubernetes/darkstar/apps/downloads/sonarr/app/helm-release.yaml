@@ -92,3 +92,7 @@ spec:
           - path: /scripts/refresh-series.sh
             subPath: refresh-series.sh
             readOnly: true
+      cache:
+        existingClaim: sonarr-cache
+        globalMounts:
+          - path: /config/MediaCover
