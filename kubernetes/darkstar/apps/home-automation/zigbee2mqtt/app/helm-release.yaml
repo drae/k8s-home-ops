@@ -50,12 +50,14 @@ spec:
               ZIGBEE2MQTT_CONFIG_SERIAL_PORT: "tcp://${IP_ADDR_IOT_ZIGBEE}:6638"
               ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: "zstack"
               ZIGBEE2MQTT_DATA: /data
-          #            securityContext:
-          #              allowPrivilegeEscalation: false
-          #              readOnlyRootFilesystem: true
-          #              capabilities:
-          #                drop:
-          #                  - ALL
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+                add:
+                  - NET_BIND_SERVICE
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
