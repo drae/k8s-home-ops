@@ -271,6 +271,7 @@ radarr:
           - ae43b294509409a6a13919dedd4764c4 # Repack2 - 6
           # Unwanted
           - ed38b889b31be83fda192888e2286d83 # BR-DISK - -10000
+          - e6886871085226c3da1830830146846c # Generated Dynamic HDR - -10000
           - 90a6f9a284dff5103f6346090e6280c8 # LQ - -10000
           - e204b80c87be9497a8a6eaff48f72905 # LQ (Release Title) - -10000
           - b8cd450cbfa689c0259a01d9e29ba3d6 # 3D - -10000
@@ -294,8 +295,8 @@ radarr:
           - 5763d1b0ce84aff3b21038eea8e9b8ad # HMAX - 0
           - 526d445d4c16214309f0fd2b3be18a89 # Hulu - 0
           - e0ec9672be6cac914ffad34a6b077209 # iT - 0
-          - 2a6039655313bf5dab1e43523b62c374 # MA - 20
           - 6a061313d22e51e0f25b7cd4dc065233 # MAX - 0
+          - 2a6039655313bf5dab1e43523b62c374 # MA - 20
           - 170b1d363bd8516fbf3a3eb05d4faff6 # NF - 0
           - c9fd353f8f5f1baf56dc601c4cb29920 # PCOK - 0
           - e36a0ba1bc902b26ee40818a1d59b8bd # PMTP - 0
@@ -341,12 +342,6 @@ radarr:
           - name: SQP-5
 
       # HQ Release Groups
-      - trash_ids:
-          - ed27ebfef2f323e964fb1f61391bcb35 # HD Bluray Tier 01 - 1100
-          - c20c8647f2746a1f4c4262b0fbbeeeae # HD Bluray Tier 02 - 1050
-          - 5608c71bcebba0a5e666223bae8c9227 # HD Bluray Tier 03 - 1000
-        assign_scores_to:
-          - name: SQP-1 (1080p)
       - trash_ids:
           - 4d74ac4c4db0b64bff6ce0cffef99bf0 # UHD Bluray Tier 01 - 2300
           - a58f517a70193f8e578056642178419d # UHD Bluray Tier 02 - 2200
