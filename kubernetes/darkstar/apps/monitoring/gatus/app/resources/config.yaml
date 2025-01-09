@@ -3,9 +3,8 @@
 web:
   port: $${WEB_PORT}
 storage:
-  type: postgres
-  path: $${POSTGRES_URI}?sslmode=require
-  caching: true
+  type: sqlite
+  path: /data/gatus.db
 metrics: true
 debug: false
 ui:
