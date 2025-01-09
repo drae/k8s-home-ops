@@ -21,14 +21,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": ["10.1.20.33/24"],
-                "mac": "72:2e:2d:ef:ec:c4"
-              }]
           securityContext:
             runAsNonRoot: true
             runAsUser: ${APP_UID}
