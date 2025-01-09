@@ -123,3 +123,5 @@ spec:
           - path: /config/config.yaml
             subPath: config.yaml
             readOnly: true
+      data:
+        existingClaim: "${VOLSYNC_CLAIM}"

@@ -3,13 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app gatus
+  name: &appname gatus
   namespace: flux-system
 spec:
   targetNamespace: monitoring
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
   path: ./kubernetes/darkstar/apps/monitoring/gatus/app
@@ -18,6 +18,13 @@ spec:
     kind: GitRepository
     name: k8s-home-ops
   wait: false
+  postBuild:
+    substitute:
+      APP: *appname
+      APP_UID: "65534"
+      APP_GID: "65534"
+      VOLSYNC_CLAIM: gatus-data
+      VOLSYNC_CAPACITY: 5Gi
   dependsOn:
-    - name: crunchy-postgres-operator-cluster
-    - name: crunchy-postgres-operator-secretstore
+    - name: topolvm
+    - name: volsync
