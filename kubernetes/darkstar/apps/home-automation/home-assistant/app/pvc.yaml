@@ -31,3 +31,14 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: topolvm-thin-provisioner
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: speaches-cache
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: topolvm-thin-provisioner
