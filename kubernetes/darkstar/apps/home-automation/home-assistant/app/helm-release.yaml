@@ -66,32 +66,64 @@ spec:
               capabilities:
                 drop:
                   - ALL
-          whisper:
+          wyoming-openai:
             image:
               repository: docker.io/rhasspy/wyoming-whisper
-              tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8
-            args:
-              - --model
-              - "small-int8"
-              - --language
-              - "en"
+              tag: main@sha256:372092a38a56445047889a1f4c7a1131a5197b91c4fc39eaac3f91a41f84051b
+            env:
+              WYOMING_URI: tcp://0.0.0.0:10300
+              WYOMING_LOG_LEVEL: INFO
+              WYOMING_LANGUAGES: en
+              STT_OPENAI_URL: http://localhost:8000/v1
+              STT_MODELS: "Systran/faster-distil-whisper-large-v3"
+              TTS_OPENAI_URL: http://localhost:8000/v1
+              TTS_MODELS: "hexgrad/Kokoro-82M"
+              TTS_VOICES: "bm_fable"
             probes:
               liveness:
                 enabled: false
               readiness:
                 enabled: false
-          piper:
+          speaches:
             image:
-              repository: docker.io/rhasspy/wyoming-piper
-              tag: 1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f
-            args:
-              - --voice
-              - "en_GB-jenny_dioco-medium"
+              repository: ghcr.io/speaches-ai/speaches
+              tag: latest-cpu@sha256:09ccfe85e67267afb9f2eb483ff452ff0bb4f974bb7eae3b872026e6485e30ed
+            env:
+              ENABLE_UI: "false"
+              LOG_LEVEL: "info"
+              WHISPER__MODEL: "Systran/faster-distil-whisper-large-v3"
+              WHISPER__COMPUTE_TYPE: "int8_float32"
             probes:
               liveness:
                 enabled: false
               readiness:
                 enabled: false
+          #          whisper:
+          #            image:
+          #              repository: ghcr.io/roryeckel/wyoming_openai
+          #              tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8
+          #            args:
+          #              - --model
+          #              - "small-int8"
+          #              - --language
+          #              - "en"
+          #            probes:
+          #              liveness:
+          #                enabled: false
+          #              readiness:
+          #                enabled: false
+          #          piper:
+          #            image:
+          #              repository: docker.io/rhasspy/wyoming-piper
+          #              tag: 1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f
+          #            args:
+          #              - --voice
+          #              - "en_GB-jenny_dioco-medium"
+          #            probes:
+          #              liveness:
+          #                enabled: false
+          #              readiness:
+          #                enabled: false
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
@@ -121,16 +153,26 @@ spec:
         ports:
           http:
             port: 8123
-      whisper:
+      wyoming-openai:
         controller: home-assistant
         ports:
-          whisper:
+          wyoming-openai:
             port: 10300
-      piper:
+      speaches:
         controller: home-assistant
         ports:
-          piper:
-            port: 10200
+          speaches:
+            port: 8000
+      #      whisper:
+      #        controller: home-assistant
+      #        ports:
+      #          whisper:
+      #            port: 10300
+      #      piper:
+      #        controller: home-assistant
+      #        ports:
+      #          piper:
+      #            port: 10200
       codeserver:
         controller: home-assistant
         ports:
@@ -171,24 +213,30 @@ spec:
         existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /config
-      whisper-data:
-        existingClaim: whisper-data
+      speaches:
+        existingClaim: speaches-cache
         advancedMounts:
           home-assistant:
-            whisper:
-              - path: /data
-      piper-data:
-        existingClaim: piper-data
-        advancedMounts:
-          home-assistant:
-            piper:
-              - path: /data
-      whisper-cache:
-        type: emptyDir
-        advancedMounts:
-          home-assistant:
-            whisper:
-              - path: /.cache
+            speaches:
+              - path: /home/ubuntu/.cache/huggingface/hub
+      #      whisper-data:
+      #        existingClaim: whisper-data
+      #        advancedMounts:
+      #          home-assistant:
+      #            whisper:
+      #              - path: /data
+      #      piper-data:
+      #        existingClaim: piper-data
+      #        advancedMounts:
+      #          home-assistant:
+      #            piper:
+      #              - path: /data
+      #      whisper-cache:
+      #        type: emptyDir
+      #        advancedMounts:
+      #          home-assistant:
+      #            whisper:
+      #              - path: /.cache
       logs:
         type: emptyDir
         globalMounts:
