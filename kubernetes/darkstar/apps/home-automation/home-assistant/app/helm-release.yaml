@@ -66,38 +66,38 @@ spec:
               capabilities:
                 drop:
                   - ALL
-          wyoming-openai:
-            image:
-              repository: docker.io/rhasspy/wyoming-whisper
-              tag: main@sha256:372092a38a56445047889a1f4c7a1131a5197b91c4fc39eaac3f91a41f84051b
-            env:
-              WYOMING_URI: tcp://0.0.0.0:10300
-              WYOMING_LOG_LEVEL: INFO
-              WYOMING_LANGUAGES: en
-              STT_OPENAI_URL: http://localhost:8000/v1
-              STT_MODELS: "Systran/faster-distil-whisper-large-v3"
-              TTS_OPENAI_URL: http://localhost:8000/v1
-              TTS_MODELS: "hexgrad/Kokoro-82M"
-              TTS_VOICES: "bm_fable"
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-          speaches:
-            image:
-              repository: ghcr.io/speaches-ai/speaches
-              tag: latest-cpu@sha256:09ccfe85e67267afb9f2eb483ff452ff0bb4f974bb7eae3b872026e6485e30ed
-            env:
-              ENABLE_UI: "false"
-              LOG_LEVEL: "info"
-              WHISPER__MODEL: "Systran/faster-distil-whisper-large-v3"
-              WHISPER__COMPUTE_TYPE: "int8_float32"
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
+          #          wyoming-openai:
+          #            image:
+          #              repository: docker.io/rhasspy/wyoming-whisper
+          #              tag: main@sha256:372092a38a56445047889a1f4c7a1131a5197b91c4fc39eaac3f91a41f84051b
+          #            env:
+          #              WYOMING_URI: tcp://0.0.0.0:10300
+          #              WYOMING_LOG_LEVEL: INFO
+          #              WYOMING_LANGUAGES: en
+          #              STT_OPENAI_URL: http://localhost:8000/v1
+          #              STT_MODELS: "Systran/faster-distil-whisper-large-v3"
+          #              TTS_OPENAI_URL: http://localhost:8000/v1
+          #              TTS_MODELS: "hexgrad/Kokoro-82M"
+          #              TTS_VOICES: "bm_fable"
+          #            probes:
+          #              liveness:
+          #                enabled: false
+          #              readiness:
+          #                enabled: false
+          #          speaches:
+          #            image:
+          #              repository: ghcr.io/speaches-ai/speaches
+          #              tag: latest-cpu@sha256:09ccfe85e67267afb9f2eb483ff452ff0bb4f974bb7eae3b872026e6485e30ed
+          #            env:
+          #              ENABLE_UI: "false"
+          #              LOG_LEVEL: "info"
+          #              WHISPER__MODEL: "Systran/faster-distil-whisper-large-v3"
+          #              WHISPER__COMPUTE_TYPE: "int8_float32"
+          #            probes:
+          #              liveness:
+          #                enabled: false
+          #              readiness:
+          #                enabled: false
           whisper:
             image:
               repository: ghcr.io/roryeckel/wyoming_openai
