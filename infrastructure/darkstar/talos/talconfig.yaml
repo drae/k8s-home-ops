@@ -66,11 +66,17 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
-        - net.ifnames=1
+        - apparmor=0 # Less security, more speed
+        - init_on_alloc=0 # Less security, more speed
+        - init_on_free=0 # Less security, more speed
+        - mitigations=off # Less security, more speed
+        - security=none # Less security, more speed
+        - net.ifnames=1 # Enable predictable NIC naming
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
-          - siderolabs/i915-ucode
+          - siderolabs/i915
+          - siderolabs/mei
   patches:
     - |-
       cluster:
@@ -83,11 +89,8 @@ controlPlane:
           advertisedSubnets:
             - 10.1.10.0/24
         discovery:
-          enabled: true
           registries:
             kubernetes:
-              disabled: false
-            service:
               disabled: true
 
     - |-
@@ -104,9 +107,6 @@ controlPlane:
             allowedKubernetesNamespaces:
               - system-controllers
               - system-upgrade
-          kubePrism:
-            enabled: true
-            port: 7445
           hostDNS:
             enabled: true
             resolveMemberNames: true
@@ -122,6 +122,10 @@ controlPlane:
                 [plugins."io.containerd.grpc.v1.cri"]
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
+              [plugins."io.containerd.grpc.v1.cri".containerd]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                discard_unpacked_layers = false
           - op: overwrite
             path: /etc/nfsmount.conf
             permissions: 0o644
@@ -174,8 +178,8 @@ controlPlane:
           fs.inotify.max_queued_events: "65536"
           fs.inotify.max_user_instances: "8192"
           fs.inotify.max_user_watches: "524288"
-          net.core.rmem_max: "7500000"
-          net.core.wmem_max: "7500000"
+          net.core.rmem_max: "67108864"
+          net.core.wmem_max: "67108864"
 
     - |-
       machine:
