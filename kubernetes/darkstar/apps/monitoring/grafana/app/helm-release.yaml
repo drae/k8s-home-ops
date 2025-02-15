@@ -294,7 +294,7 @@ spec:
         prometheus:
           # renovate: dashboardName="Prometheus"
           gnetId: 19105
-          revision: 6
+          revision: 7
           datasource: Prometheus
         spegel:
           # renovate: dashboardName="Spegel"
