@@ -69,7 +69,7 @@ spec:
           #          wyoming-openai:
           #            image:
           #              repository: docker.io/rhasspy/wyoming-whisper
-          #              tag: main@sha256:372092a38a56445047889a1f4c7a1131a5197b91c4fc39eaac3f91a41f84051b
+          #              tag: main@sha256:d6466222786da5efd72ef5c7e64117d9cfd9259fe5bbab10902a7c655cd68b0b
           #            env:
           #              WYOMING_URI: tcp://0.0.0.0:10300
           #              WYOMING_LOG_LEVEL: INFO
@@ -100,7 +100,7 @@ spec:
           #                enabled: false
           whisper:
             image:
-              repository: ghcr.io/roryeckel/wyoming_openai
+              repository: docker.io/rhasspy/wyoming-whisper
               tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8
             args:
               - --model
