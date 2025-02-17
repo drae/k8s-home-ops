@@ -21,8 +21,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          nodeSelector:
-            intel.feature.node.kubernetes.io/gpu: "true"
           securityContext:
             runAsUser: ${APP_UID}
             runAsGroup: ${APP_GID}
@@ -41,29 +39,35 @@ spec:
               ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,https://plex.${SECRET_DOMAIN}:443"
               PLEX_NO_AUTH_NETWORKS: 10.244.0.0/16
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
-              readiness:
-                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
               startup:
                 enabled: true
                 spec:
                   failureThreshold: 30
-                  periodSeconds: 5
+                  periodSeconds: 10
             resources:
               requests:
-                gpu.intel.com/i915: 1
                 cpu: 100m
-                memory: 2048Mi
               limits:
                 gpu.intel.com/i915: 1
                 memory: 9216Mi
-    #            securityContext:
-    #              allowPrivilegeEscalation: false
-    #              readOnlyRootFilesystem: true
-    #              capabilities:
-    #                drop:
-    #                  - ALL
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
     service:
       app:
         controller: plex
@@ -76,20 +80,17 @@ spec:
             port: 32400
     ingress:
       app:
-        enabled: true
         className: ingress-nginx-ext
         annotations:
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
           external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
         hosts:
-          - host: &host plex.${SECRET_DOMAIN}
+          - host: plex.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - *host
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
