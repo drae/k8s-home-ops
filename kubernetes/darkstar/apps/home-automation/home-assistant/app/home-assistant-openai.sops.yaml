@@ -1,0 +1,28 @@
+# yamllint disable
+apiVersion: v1
+kind: Secret
+metadata:
+    name: home-assistant-openai
+stringData:
+    STT_OPENAI_KEY: ENC[AES256_GCM,data:ijBHdpKxxpHGP/RL1qxM4MZ5FBU0MfSkuIeaoPD72X4zN56AsLAqkVdebdKpd4uI9BGInzgNdyL1Eo9RyrtTZsa3LUYZQevseCD/V941prHEQFmFP6d5OC4DmgbJJg//r5JLO4z6or8Z5CoiTyAXwY/olmR2XIgfmRLeJeJn7Q8COAdVKfRqhxu15fhlIaXqZO+LHwWIZpoAKuZXRhgL3tioc7A=,iv:xltvAvGb1+zNdxmodXJQaPyTjVDQnFcdAs5xelAtwYg=,tag:0HLC1bX+KVpV5heBi8Hb6g==,type:str]
+    TTS_OPENAI_KEY: ENC[AES256_GCM,data:LjuPehEhNxPetBuKeM7ngYn0L8iskpQpAhnSnI08FiimDI+Mro4jj6gB0lPZH0x/QiCd6mor+Jrl3hTv7WIQCq6/3/R161Ww3CwQENKq8gJ/Ol0eZKJfcNYf4D1n3/k+1boweiP4c0Qqb2eklGRKH4eIKI2VsnAu/d7h16P/KUbP+gPK2rnv2LLao4muSTWx2FcGFF0fVZSslUrC8z4glmVWpP4=,iv:fEfAI93yWif4GBeWn1kd2KUF9K7WnI5+3H+7MpQ/o2Q=,tag:38GPFVvmq9cE7NNpoZ+x8A==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBqNUo4VU5pTTVaZE80Z2x1
+            d3hMVjZCRVhRN1d6Q2hZRk00M0cyaEs3YlhFClF6WTBNQ00vOFlxUmxPOGlYcTBY
+            ZDN4VmMrN1d1QzZGeHNuK254ZHhwUW8KLS0tIFZvUGk3K2VvY202czFwc3hoa3Qw
+            eEpUWWxzRjliQTZQYkk0TnlIZS9vSWsKGnx0/sh/99Ifg6GEF2difLo2bYom12VY
+            aadI8tZh8493CY+fDXmak3kerPhgWTqmLNopsGSHGUg2gT7npyCVAA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-02-16T22:32:30Z"
+    mac: ENC[AES256_GCM,data:4kdaSCjeVp4CXlnenpkRosPb7MKW9ecW42zHr4I6DTN96xq31uqF+Dl63IyYt3Hgu/hUbAn8M/vSU3TmFqL+G1QIneXZB6vUsA5jsmwIhuTGg6xJ4AYX7BiCasAzf1oQ3ef7UMjREWF1QLB9CdmRi28p6txe5JRE179gHzqmQCA=,iv:FGWimaG4yfW0OFc4hNqKvW+CW02Cs4AHMXDsTKZGwUw=,tag:h5fYzxqVXQL/UHTdrOsnxw==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.9.4

@@ -66,64 +66,80 @@ spec:
               capabilities:
                 drop:
                   - ALL
-          #          wyoming-openai:
-          #            image:
-          #              repository: docker.io/rhasspy/wyoming-whisper
-          #              tag: main@sha256:d6466222786da5efd72ef5c7e64117d9cfd9259fe5bbab10902a7c655cd68b0b
-          #            env:
-          #              WYOMING_URI: tcp://0.0.0.0:10300
-          #              WYOMING_LOG_LEVEL: INFO
-          #              WYOMING_LANGUAGES: en
-          #              STT_OPENAI_URL: http://localhost:8000/v1
-          #              STT_MODELS: "Systran/faster-distil-whisper-large-v3"
-          #              TTS_OPENAI_URL: http://localhost:8000/v1
-          #              TTS_MODELS: "hexgrad/Kokoro-82M"
-          #              TTS_VOICES: "bm_fable"
-          #            probes:
-          #              liveness:
-          #                enabled: false
-          #              readiness:
-          #                enabled: false
-          #          speaches:
-          #            image:
-          #              repository: ghcr.io/speaches-ai/speaches
-          #              tag: latest-cpu@sha256:09ccfe85e67267afb9f2eb483ff452ff0bb4f974bb7eae3b872026e6485e30ed
-          #            env:
-          #              ENABLE_UI: "false"
-          #              LOG_LEVEL: "info"
-          #              WHISPER__MODEL: "Systran/faster-distil-whisper-large-v3"
-          #              WHISPER__COMPUTE_TYPE: "int8_float32"
-          #            probes:
-          #              liveness:
-          #                enabled: false
-          #              readiness:
-          #                enabled: false
-          whisper:
+          wyoming-openai:
             image:
-              repository: docker.io/rhasspy/wyoming-whisper
-              tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8
-            args:
-              - --model
-              - "small-int8"
-              - --language
-              - "en"
+              repository: ghcr.io/roryeckel/wyoming_openai
+              tag: main@sha256:63217ca6e30a5267b3db9b5adf8f234ac5a016cb6f740b744450e2c53191732e
+            env:
+              WYOMING_URI: tcp://0.0.0.0:10301
+              WYOMING_LOG_LEVEL: INFO
+              WYOMING_LANGUAGES: en
+              STT_OPENAI_URL: https://api.openai.com/v1
+              STT_MODELS: "whisper-1"
+              #              TTS_OPENAI_URL: https://api.openai.com/v1
+              #              TTS_MODELS: "tts-1 tts-1-hd"
+              TTS_OPENAI_URL: http://localhost:8880/v1
+              TTS_MODELS: "kokoro"
+              TTS_VOICES: "bf_emma bf_alice bf_lily bm_daniel bm_george bm_lewis bm_fable"
+            envFrom:
+              - secretRef:
+                  name: home-assistant-openai
             probes:
               liveness:
                 enabled: false
               readiness:
                 enabled: false
-          piper:
+          kokoro:
             image:
-              repository: docker.io/rhasspy/wyoming-piper
-              tag: 1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f
-            args:
-              - --voice
-              - "en_GB-jenny_dioco-medium"
+              repository: ghcr.io/remsky/kokoro-fastapi-cpu
+              tag: v0.2.2@sha256:76549cce3c5cc5ed4089619a9cffc3d39a041476ff99c5138cd18b6da832c4d7
+            env:
+              DEFAULT_VOICE_CODE: b
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+              fsGroupChangePolicy: OnRootMismatch
             probes:
               liveness:
-                enabled: false
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /v1/test
+                    port: 8880
+                  initialDelaySeconds: 40
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
               readiness:
                 enabled: false
+          #         whisper:
+          #           image:
+          #             repository: docker.io/rhasspy/wyoming-whisper
+          #             tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8
+          #           args:
+          #             - --model
+          #             - "small-int8"
+          #             - --language
+          #             - "en"
+          #           probes:
+          #             liveness:
+          #               enabled: false
+          #             readiness:
+          #               enabled: false
+          #          piper:
+          #            image:
+          #              repository: docker.io/rhasspy/wyoming-piper
+          #              tag: 1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f
+          #            args:
+          #              - --voice
+          #              - "en_GB-jenny_dioco-medium"
+          #            probes:
+          #              liveness:
+          #                enabled: false
+          #              readiness:
+          #                enabled: false
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
@@ -153,26 +169,26 @@ spec:
         ports:
           http:
             port: 8123
-      #      wyoming-openai:
+      wyoming-openai:
+        controller: home-assistant
+        ports:
+          wyoming-openai:
+            port: 10301
+      kokoro:
+        controller: home-assistant
+        ports:
+          kokoro:
+            port: 8880
+      #      whisper:
       #        controller: home-assistant
       #        ports:
-      #          wyoming-openai:
+      #          whisper:
       #            port: 10300
-      #      speaches:
+      #      piper:
       #        controller: home-assistant
       #        ports:
-      #          speaches:
-      #            port: 8000
-      whisper:
-        controller: home-assistant
-        ports:
-          whisper:
-            port: 10300
-      piper:
-        controller: home-assistant
-        ports:
-          piper:
-            port: 10200
+      #          piper:
+      #            port: 10200
       codeserver:
         controller: home-assistant
         ports:
@@ -213,30 +229,24 @@ spec:
         existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /config
-      #      speaches:
-      #        existingClaim: speaches-cache
+      #      whisper-data:
+      #        existingClaim: whisper-data
       #        advancedMounts:
       #          home-assistant:
-      #            speaches:
-      #              - path: /home/ubuntu/.cache/huggingface/hub
-      whisper-data:
-        existingClaim: whisper-data
-        advancedMounts:
-          home-assistant:
-            whisper:
-              - path: /data
-      piper-data:
-        existingClaim: piper-data
-        advancedMounts:
-          home-assistant:
-            piper:
-              - path: /data
-      whisper-cache:
-        type: emptyDir
-        advancedMounts:
-          home-assistant:
-            whisper:
-              - path: /.cache
+      #            whisper:
+      #              - path: /data
+      #      whisper-cache:
+      #        type: emptyDir
+      #        advancedMounts:
+      #          home-assistant:
+      #            whisper:
+      #              - path: /.cache
+      #      piper-data:
+      #        existingClaim: piper-data
+      #        advancedMounts:
+      #          home-assistant:
+      #            piper:
+      #              - path: /data
       logs:
         type: emptyDir
         globalMounts:
