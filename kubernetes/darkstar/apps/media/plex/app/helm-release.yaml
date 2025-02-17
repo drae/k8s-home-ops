@@ -58,6 +58,7 @@ spec:
                   periodSeconds: 10
             resources:
               requests:
+                memory: 2048Mi
                 cpu: 100m
               limits:
                 gpu.intel.com/i915: 1
