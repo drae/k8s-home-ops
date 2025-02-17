@@ -18,7 +18,7 @@ spec:
   wait: true
   dependsOn:
     - name: cert-manager
-    - name: node-feature-discovery-rules
+    - name: node-feature-discovery
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
