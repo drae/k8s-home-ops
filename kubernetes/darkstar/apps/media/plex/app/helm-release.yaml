@@ -92,6 +92,18 @@ spec:
                 service:
                   identifier: app
                   port: http
+      app-local:
+        className: ingress-nginx-int
+        annotations:
+          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+        hosts:
+          - host: plex.p.lan.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
