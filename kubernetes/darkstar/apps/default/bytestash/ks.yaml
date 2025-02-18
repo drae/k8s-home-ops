@@ -1,0 +1,28 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname bytestash
+  namespace: flux-system
+spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 10m
+  path: "./kubernetes/darkstar/apps/default/bytestash/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+  wait: true
+  postBuild:
+    substitute:
+      APP: *appname
+      APP_UID: "2000"
+      APP_GID: "2000"
+      VOLSYNC_CLAIM: bytestash-data
+      VOLSYNC_CAPACITY: 5Gi
+  dependsOn:
+    - name: topolvm
+    - name: volsync
