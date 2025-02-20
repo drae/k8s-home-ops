@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 10m
   path: "./kubernetes/darkstar/apps/networking/external-dns/app"
-  prune: true
+  prune: false #TODO: revert to false
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
