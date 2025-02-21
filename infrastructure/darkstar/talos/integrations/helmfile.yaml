@@ -64,3 +64,22 @@ releases:
       - kube-system/coredns
       - system-controllers/kubelet-csr-approver
       - monitoring/prometheus-operator-crds
+
+  - name: flux-operator
+    namespace: flux-system
+    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
+    version: 0.15.0
+    values:
+      - ../../../../kubernetes/darkstar/apps/flux-system/flux-operator/app/values.yaml
+  #    needs:
+  #      - kube-system/wipe-rook
+
+  - name: flux-instance
+    namespace: flux-system
+    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
+    version: 0.15.0
+    wait: false
+    values:
+      - ../../../../kubernetes/darkstar/apps/flux-system/flux-operator/instance/values.yaml
+    needs:
+      - flux-system/flux-operator
