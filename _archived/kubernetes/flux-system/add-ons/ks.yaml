@@ -14,7 +14,7 @@ spec:
   prune: false #TODO: revert to false
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: flux-system
   wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -32,7 +32,7 @@ spec:
   prune: false #TODO: revert to false
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: flux-system
   wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -50,5 +50,5 @@ spec:
   prune: false #TODO: revert to false
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: flux-system
   wait: true

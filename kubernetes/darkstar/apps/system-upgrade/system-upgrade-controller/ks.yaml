@@ -15,7 +15,7 @@ spec:
   prune: false #TODO: revert to false
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: flux-system
   timeout: 5m
   wait: true
 ---
@@ -35,7 +35,7 @@ spec:
   prune: false #TODO: revert to false
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: flux-system
   timeout: 5m
   wait: false
   dependsOn:

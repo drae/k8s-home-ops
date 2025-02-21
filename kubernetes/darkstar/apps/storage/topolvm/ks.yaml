@@ -13,7 +13,7 @@ spec:
   prune: false
   sourceRef:
     kind: GitRepository
-    name: k8s-home-ops
+    name: flux-system
   wait: true
   interval: 10m
   dependsOn:

@@ -75,7 +75,7 @@ jobs:
         uses: allenporter/flux-local/action/diff@7.0.0
         id: diff
         with:
-          sources: k8s-home-ops
+          sources: flux-system
           path: "${{ matrix.paths }}"
           resource: "${{ matrix.resources }}"
 
