@@ -18,6 +18,8 @@ spec:
     name: alert-manager
   eventSeverity: error
   eventSources:
+    - kind: FluxInstance
+      name: "*"
     - kind: GitRepository
       name: "*"
     - kind: HelmRelease

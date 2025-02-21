@@ -6,6 +6,7 @@ resources:
   - ./helm-release.yaml
   - ./prometheusrule.yaml
   - ./github/
+  - ./notifications/
 configMapGenerator:
   - name: flux-instance-helm-values
     files:
