@@ -23,15 +23,26 @@ instance:
     patches:
       # Add Sops decryption to 'flux-system' Kustomization
       - patch: |
-          - op: add
-            path: /spec/decryption
-            value:
+          apiVersion: kustomize.toolkit.fluxcd.io/v1
+          kind: Kustomization
+          metadata:
+            name: flux-system
+            namespace: flux-system
+          spec:
+            decryption:
               provider: sops
               secretRef:
-                name: sops-age
+                name: sops-gpg
+            postBuild:
+              substitute: {}
+              substituteFrom:
+                - kind: ConfigMap
+                  name: cluster-config
+                - kind: Secret
+                  name: cluster-secrets
         target:
-          group: kustomize.toolkit.fluxcd.io
           kind: Kustomization
+          name: flux-system
       # Increase the number of workers
       - patch: |
           - op: add
