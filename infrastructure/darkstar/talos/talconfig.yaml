@@ -78,6 +78,7 @@ controlPlane:
           - siderolabs/i915
           - siderolabs/mei
   patches:
+    # Configure cluster
     - |-
       cluster:
         allowSchedulingOnMasters: true
@@ -85,18 +86,31 @@ controlPlane:
             disabled: true
         proxy:
           disabled: true
-        etcd:
-          advertisedSubnets:
-            - 10.1.10.0/24
         discovery:
           registries:
             kubernetes:
               disabled: true
+        scheduler:
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
 
+    # Disable default API server admission plugins.
     - |-
       - op: remove
         path: /cluster/apiServer/admissionControl
 
+    # Enable K8s Talos API Access
     - |-
       machine:
         features:
@@ -107,11 +121,37 @@ controlPlane:
             allowedKubernetesNamespaces:
               - system-controllers
               - system-upgrade
+
+    # Enable host DNS resolution but do not forward kube-dns to host
+    - |-
+      machine:
+        features:
           hostDNS:
             enabled: true
             resolveMemberNames: true
             forwardKubeDNSToHost: false
 
+    # Disable searchdomain
+    - |-
+      machine:
+        network:
+          disableSearchDomain: true
+
+    # Define some static host entries
+    - |-
+      machine:
+        network:
+          extraHostEntries:
+            - ip: ${clusterEndpointIP}
+              aliases:
+                - ${clusterName}
+                - ${clusterName}.${domainName}
+            - ip: 10.1.10.10
+              aliases:
+                - apollo
+                - apollo.${domainName}
+
+    # Configure containerd
     - |
       machine:
         files:
@@ -126,6 +166,11 @@ controlPlane:
                 discard_unpacked_layers = false
               [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
                 discard_unpacked_layers = false
+
+    # Configure NFS mount options
+    - |
+      machine:
+        files:
           - op: overwrite
             path: /etc/nfsmount.conf
             permissions: 0o644
@@ -139,6 +184,7 @@ controlPlane:
               wsize=131072
               nconnect=8
 
+    # Configure Linux kernel parameters
     - |-
       machine:
         install:
@@ -147,31 +193,17 @@ controlPlane:
             - pci=noaer
             - mitigations=off
 
-    - |-
-      machine:
-        network:
-          disableSearchDomain: true
-          extraHostEntries:
-            - ip: ${clusterEndpointIP}
-              aliases:
-                - ${clusterName}
-                - ${clusterName}.${domainName}
-            - ip: 10.1.10.10
-              aliases:
-                - apollo
-                - apollo.${domainName}
-
+    # Configure kubelet
     - |-
       machine:
         kubelet:
-          extraArgs:
-            rotate-server-certificates: "true"
           extraConfig:
             maxPods: 200
           nodeIP:
             validSubnets:
               - 10.1.10.0/24
 
+    # Configure sysctls
     - |-
       machine:
         sysctls:
@@ -181,6 +213,7 @@ controlPlane:
           net.core.rmem_max: "67108864"
           net.core.wmem_max: "67108864"
 
+    # Configure udev rules
     - |-
       machine:
         udev:
@@ -188,6 +221,7 @@ controlPlane:
             - SUBSYSTEM=="drm", KERNEL=="card*", GROUP="44", MODE="0660"
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
 
+    # Configure time server
     - |-
       machine:
         time:

@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./k8tz/ks.yaml
-  - ./kubelet-csr-approver/ks.yaml
+  #  - ./kubelet-csr-approver/ks.yaml
   - ./snapshot-controller/ks.yaml
