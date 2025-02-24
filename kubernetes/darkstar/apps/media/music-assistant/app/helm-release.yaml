@@ -20,6 +20,15 @@ spec:
       music-assistant:
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "networking",
+                "ips": ["10.1.20.95/24"],
+                "mac": "92:cf:d7:05:70:80"
+              }]
         containers:
           app:
             image:
@@ -31,26 +40,21 @@ spec:
                 memory: 250Mi
               limits:
                 memory: 2500Mi
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": ["10.1.20.95/24"],
-                "mac": "92:cf:d7:05:70:80"
-              }]
-    defaultPodOptions:
-      securityContext:
-        runAsUser: ${APP_UID}
-        runAsGroup: ${APP_GID}
-        fsGroup: ${APP_GID}
-        fsGroupChangePolicy: "OnRootMismatch"
-        runAsNonRoot: true
-        seccompProfile: { type: RuntimeDefault }
+            securityContext:
+              runAsUser: ${APP_UID}
+              runAsGroup: ${APP_GID}
+              fsGroup: ${APP_GID}
+              fsGroupChangePolicy: "OnRootMismatch"
+              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
     service:
       app:
         controller: music-assistant
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: ${SVC_MASS_PLEX}
+        externalTrafficPolicy: Cluster
         ports:
           http:
             port: 8095
