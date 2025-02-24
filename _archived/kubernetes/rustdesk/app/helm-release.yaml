@@ -35,10 +35,6 @@ spec:
             command:
               - hbbs
               - -r ${SVC_LB_RUSTDESK}:21117
-            env:
-              RELAY: ${SVC_LB_RUSTDESK}:21117
-              ENCRYPTED_ONLY: "1"
-              DB_URL: /db/db_v2.sqlite3
             probes:
               startup:
                 enabled: false
