@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: rustdesk/rustdesk-server
-              tag: 1.1.12@sha256:9b1197d116f7bb4d3ad93a50bc1bc59ddb388de267df221a351f5ce10fac3dcf
+              tag: 1.1.14@sha256:680f8ba5accafc264d15076f33a6fdb9cb6f4d963a0fc92e01023ca0e919cc83
             command:
               - hbbs
               - -r ${SVC_LB_RUSTDESK}:21117
@@ -54,7 +54,7 @@ spec:
           relay:
             image:
               repository: rustdesk/rustdesk-server
-              tag: 1.1.12@sha256:9b1197d116f7bb4d3ad93a50bc1bc59ddb388de267df221a351f5ce10fac3dcf
+              tag: 1.1.14@sha256:680f8ba5accafc264d15076f33a6fdb9cb6f4d963a0fc92e01023ca0e919cc83
             command:
               - hbbr
             probes:
