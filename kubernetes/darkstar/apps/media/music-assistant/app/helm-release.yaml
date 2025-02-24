@@ -29,35 +29,51 @@ spec:
                 "ips": ["10.1.20.95/24"],
                 "mac": "92:cf:d7:05:70:80"
               }]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           app:
             image:
               repository: ghcr.io/music-assistant/server
               tag: 2.3.6@sha256:7c43aadfaf9109feab4c514648124701bf6b70410932ffcbf0c9daa7bdfbc2b2
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
-                cpu: 100m
-                memory: 250Mi
+                cpu: 47m
+                memory: 512Mi
               limits:
-                memory: 2500Mi
+                memory: 1024Mi
             securityContext:
-              runAsUser: ${APP_UID}
-              runAsGroup: ${APP_GID}
-              fsGroup: ${APP_GID}
-              fsGroupChangePolicy: "OnRootMismatch"
-              runAsNonRoot: true
-              seccompProfile:
-                type: RuntimeDefault
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
     service:
       app:
         controller: music-assistant
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: ${SVC_MASS_PLEX}
+          lbipam.cilium.io/ips: ${SVC_LB_MASS}
         externalTrafficPolicy: Cluster
         ports:
           http:
             port: 8095
+          stream:
+            port: 8097
     ingress:
       app:
         className: ingress-nginx-int
