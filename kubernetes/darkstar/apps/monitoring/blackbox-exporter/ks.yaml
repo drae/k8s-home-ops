@@ -13,7 +13,7 @@ spec:
   interval: 30m
   timeout: 5m
   path: "./kubernetes/darkstar/apps/monitoring/blackbox-exporter/app"
-  prune: false #TODO: revert to false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops

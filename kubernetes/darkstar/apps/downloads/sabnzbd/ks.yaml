@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 10m
   path: "./kubernetes/darkstar/apps/downloads/sabnzbd/app"
-  prune: false #TODO: revert to false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
