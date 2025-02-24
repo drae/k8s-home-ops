@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/zigbee2mqtt/app"
-  prune: false #TODO: revert to false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
@@ -39,7 +39,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/zigbee2mqtt/exporter"
-  prune: false #TODO: revert to false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
