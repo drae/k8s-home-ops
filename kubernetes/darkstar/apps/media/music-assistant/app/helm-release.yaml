@@ -49,14 +49,13 @@ spec:
         runAsNonRoot: true
         seccompProfile: { type: RuntimeDefault }
     service:
-      music-assistant:
+      app:
         controller: music-assistant
         ports:
           http:
             port: 8095
     ingress:
-      music-assistant:
-        enabled: true
+      app:
         className: ingress-nginx-int
         hosts:
           - host: music-assistant.p.lan.${SECRET_DOMAIN}
