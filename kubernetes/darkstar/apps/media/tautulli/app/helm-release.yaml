@@ -48,7 +48,7 @@ spec:
                 spec:
                   httpGet:
                     path: /status
-                    port: 8181
+                    port: &port 8181
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -71,7 +71,7 @@ spec:
         controller: tautulli
         ports:
           http:
-            port: &port 8181
+            port: *port
     route:
       app:
         hostnames:
