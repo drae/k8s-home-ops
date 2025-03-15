@@ -10,9 +10,9 @@ spec:
   gatewayClassName: cilium
   addresses:
     - type: IPAddress
-      value: ${SVC_LB_INGRESS_NGINX_INT}
+      value: 10.1.10.30
     - type: IPAddress
-      value: ::ffff:${SVC_LB_INGRESS_NGINX_INT}
+      value: ::ffff:10.1.10.30
   listeners:
     - name: http
       protocol: HTTP
