@@ -29,6 +29,11 @@ endpointRoutes:
 envoy:
   enabled: false
 
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
+  xffNumTrustedHops: 1
+
 hubble:
   enabled: true
   serviceMonitor:
@@ -85,6 +90,8 @@ securityContext:
       - IPC_LOCK
       - SYS_ADMIN
       - SYS_RESOURCE
+      - PERFMON
+      - BPF
       - DAC_OVERRIDE
       - FOWNER
       - SETGID
