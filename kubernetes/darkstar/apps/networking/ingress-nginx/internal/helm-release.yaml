@@ -33,7 +33,7 @@ spec:
       service:
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: ${SVC_LB_INGRESS_NGINX_INT}
+          lbipam.cilium.io/ips: 10.1.10.192 # TEMPORARY
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: ingress-nginx-int
