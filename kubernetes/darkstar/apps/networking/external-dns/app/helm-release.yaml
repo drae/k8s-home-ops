@@ -42,7 +42,7 @@ spec:
     serviceMonitor:
       enabled: true
     sources:
-      - ingress
+      - gateway-httproute
       - crd
     txtPrefix: "k8s."
   postRenderers:
