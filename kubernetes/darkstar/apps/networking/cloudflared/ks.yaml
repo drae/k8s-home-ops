@@ -17,5 +17,4 @@ spec:
     name: k8s-home-ops
   wait: false
   dependsOn:
-    - name: ingress-nginx-int
     - name: external-dns
