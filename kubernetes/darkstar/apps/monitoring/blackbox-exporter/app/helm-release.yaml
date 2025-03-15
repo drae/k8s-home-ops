@@ -42,14 +42,6 @@ spec:
           timeout: 30s
           icmp:
             preferred_ip_protocol: "ip6"
-    ingress:
-      enabled: true
-      className: ingress-nginx-int
-      hosts:
-        - host: blackbox-exporter.p.lan.${SECRET_DOMAIN}
-          paths:
-            - path: /
-              pathType: Prefix
     prometheusRule:
       enabled: true
       additionalLabels:

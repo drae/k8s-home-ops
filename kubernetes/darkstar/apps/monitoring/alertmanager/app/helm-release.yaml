@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: alertmanager
+  name: &app alertmanager
 spec:
   interval: 30m
   chart:
@@ -45,21 +45,19 @@ spec:
         controller: alertmanager
         ports:
           http:
-            port: 9093
-    ingress:
+            port: &port 9093
+    route:
       app:
-        enabled: true
-        className: ingress-nginx-int
-        hosts:
-          - host: &host "alert-manager.p.lan.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - alertmanager.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         type: configMap

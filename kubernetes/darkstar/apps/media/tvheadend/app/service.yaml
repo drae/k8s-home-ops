@@ -6,10 +6,24 @@ metadata:
   labels:
     app.kubernetes.io/instance: *app
 spec:
-  type: ExternalName
-  externalName: ${IP_ADDR_LAN_GRAVITY}
   ports:
     - name: http
       port: &port 9981
       protocol: TCP
       targetPort: *port
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: &app tvheadend
+  labels:
+    kubernetes.io/service-name: *app
+addressType: IPv4
+endpoints:
+  - addresses:
+      - ${IP_ADDR_LAN_GRAVITY}
+    conditions:
+      ready: true
+ports:
+  - name: http
+    port: 9981

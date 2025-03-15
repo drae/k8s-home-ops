@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: kromgo
+  name: &app kromgo
 spec:
   interval: 30m
   chart:
@@ -70,22 +70,18 @@ spec:
             port: *serverPort
           health:
             port: *healthPort
-    ingress:
+    route:
       app:
-        enabled: true
-        className: ingress-nginx-ext
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
-        hosts:
-          - host: &host kromgo.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - kromgo.${SECRET_DOMAIN}
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *serverPort
     persistence:
       config-file:
         type: configMap
