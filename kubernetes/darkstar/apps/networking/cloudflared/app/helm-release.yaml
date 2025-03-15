@@ -37,8 +37,6 @@ spec:
               tag: 2025.2.1
             args:
               - tunnel
-              - --config
-              - /etc/cloudflared/config/config.yaml
               - run
               - "$(TUNNEL_ID)"
             env:
@@ -109,7 +107,7 @@ spec:
         type: configMap
         name: cloudflared-configmap
         globalMounts:
-          - path: /etc/cloudflared/config/config.yaml
+          - path: /etc/cloudflared/config.yaml
             subPath: config.yaml
             readOnly: true
       creds:
