@@ -45,7 +45,7 @@ spec:
                 spec:
                   httpGet:
                     path: /identity
-                    port: 32400
+                    port: &port 32400
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -75,10 +75,9 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: ${SVC_LB_PLEX}
-        externalTrafficPolicy: Cluster
         ports:
           http:
-            port: &port 32400
+            port: *port
     route:
       app:
         hostnames:
@@ -99,6 +98,9 @@ spec:
               - path:
                   type: PathPrefix
                   value: /library/streams
+          - backendRefs:
+              - name: *app
+                port: *port
       app-ext:
         hostnames:
           - plex.${SECRET_DOMAIN}
@@ -118,6 +120,9 @@ spec:
               - path:
                   type: PathPrefix
                   value: /library/streams
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
