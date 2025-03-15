@@ -42,14 +42,15 @@ spec:
           timeout: 30s
           icmp:
             preferred_ip_protocol: "ip6"
-    ingress:
-      enabled: true
-      className: ingress-nginx-int
-      hosts:
-        - host: blackbox-exporter.p.lan.${SECRET_DOMAIN}
-          paths:
-            - path: /
-              pathType: Prefix
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - blackbox-exporter.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
     prometheusRule:
       enabled: true
       additionalLabels:
