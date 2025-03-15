@@ -85,15 +85,15 @@ spec:
           limits:
             memory: 32M
     prometheus:
-      ingress:
-        enabled: true
-        pathType: Prefix
-        ingressClassName: ingress-nginx-int
-        hosts:
-          - "prometheus.p.lan.${SECRET_DOMAIN}"
-        tls:
-          - hosts:
-              - "prometheus.p.lan.${SECRET_DOMAIN}"
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - prometheus.p.lan.${SECRET_DOMAIN}
+          parentRefs:
+            - name: internal
+              namespace: kube-system
+              sectionName: https
       prometheusSpec:
         alertingEndpoints:
           - namespace: monitoring

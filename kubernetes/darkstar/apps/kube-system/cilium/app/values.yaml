@@ -9,7 +9,9 @@ bgp:
   enabled: false
 
 bpf:
+  datapathMode: netkit
   masquerade: true
+  preallocateMaps: true
 
 cgroup:
   autoMount:
@@ -27,7 +29,12 @@ endpointRoutes:
   enabled: true
 
 envoy:
-  enabled: false
+  rollOutPods: true
+
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
+  xffNumTrustedHops: 1
 
 hubble:
   enabled: true
@@ -85,6 +92,8 @@ securityContext:
       - IPC_LOCK
       - SYS_ADMIN
       - SYS_RESOURCE
+      - PERFMON
+      - BPF
       - DAC_OVERRIDE
       - FOWNER
       - SETGID

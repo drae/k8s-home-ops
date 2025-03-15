@@ -68,15 +68,6 @@ spec:
             enabled: true
       serviceMonitor:
         enabled: true
-      ui:
-        ingress:
-          enabled: true
-          className: ingress-nginx-int
-          hosts:
-            - &host "hubble-ui.p.lan.${SECRET_DOMAIN}"
-          tls:
-            - hosts:
-                - *host
       eventQueueSize: "50000" # default is 6144 which fills up
     operator:
       prometheus:

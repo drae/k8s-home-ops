@@ -14,7 +14,6 @@ resources:
   #  - ./democratic-csi-charts.yaml
   - ./external-secrets-charts.yaml
   - ./grafana-charts.yaml
-  - ./ingress-nginx-charts.yaml
   - ./intel-charts.yaml
   - ./jetstack-charts.yaml
   - ./k8tz-charts.yaml

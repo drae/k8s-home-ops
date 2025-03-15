@@ -6,10 +6,24 @@ metadata:
   labels:
     app.kubernetes.io/instance: *app
 spec:
-  type: ExternalName
-  externalName: apollo.lan.${SECRET_DOMAIN}
   ports:
     - name: http
       port: &port 8080
       protocol: TCP
       targetPort: *port
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: &app sabnzbd
+  labels:
+    kubernetes.io/service-name: *app
+addressType: IPv4
+endpoints:
+  - addresses:
+      - ${IP_ADDR_LAN_NAS}
+    conditions:
+      ready: true
+ports:
+  - name: http
+    port: 8080

@@ -72,16 +72,18 @@ spec:
             protocol: TCP
             port: *port
         externalTrafficPolicy: Cluster
-    ingress:
+    route:
       app:
-        className: ingress-nginx-int
-        hosts:
-          - host: *host
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: *port
+        hostnames:
+          - *host
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         existingClaim: ${VOLSYNC_CLAIM}

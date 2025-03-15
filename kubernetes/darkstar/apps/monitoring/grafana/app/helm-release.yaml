@@ -254,12 +254,6 @@ spec:
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
-        nginx:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-          datasource: Prometheus
-        nginx-request-handling-performance:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
-          datasource: Prometheus
       storage:
         smart:
           # renovate: dashboardName="Dashboard for smartctl_exporter"
@@ -319,14 +313,15 @@ spec:
       - grafana-clock-panel
     serviceMonitor:
       enabled: true
-    ingress:
-      enabled: true
-      ingressClassName: ingress-nginx-int
-      hosts:
-        - "grafana.p.lan.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - "grafana.p.lan.${SECRET_DOMAIN}"
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - grafana.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
     persistence:
       enabled: false
     resources:
