@@ -101,7 +101,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: zigbee2mqtt-app
                 port: *port
       codeserver:
         hostnames:

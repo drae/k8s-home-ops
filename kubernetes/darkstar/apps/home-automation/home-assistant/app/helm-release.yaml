@@ -140,6 +140,7 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: ${SVC_LB_HASS}
+        externalTrafficPolicy: Cluster
         ports:
           http:
             port: &port 8123
@@ -166,17 +167,17 @@ spec:
           http:
             port: &code-server-port 12321
     route:
-      #      app:
-      #        hostnames:
-      #          - hass.p.lan.${SECRET_DOMAIN}
-      #        parentRefs:
-      #          - name: internal
-      #            namespace: kube-system
-      #            sectionName: https
-      #        rules:
-      #          - backendRefs:
-      #              - name: *app
-      #                port: *port
+      app:
+        hostnames:
+          - hass.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: home-assistant-app
+                port: *port
       app-ext:
         hostnames:
           - hass.${SECRET_DOMAIN}
@@ -186,19 +187,19 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: home-assistant-app
                 port: *port
-    #      codeserver:
-    #        hostnames:
-    #          - hass-vscode.p.lan.${SECRET_DOMAIN}
-    #        parentRefs:
-    #          - name: internal
-    #            namespace: kube-system
-    #            sectionName: https
-    #        rules:
-    #          - backendRefs:
-    #              - name: home-assistant-codeserver
-    #                port: *code-server-port
+      codeserver:
+        hostnames:
+          - hass-vscode.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: home-assistant-codeserver
+                port: *code-server-port
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
