@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: zigbee2mqtt
+  name: &app zigbee2mqtt
 spec:
   interval: 30m
   chart:
@@ -82,7 +82,7 @@ spec:
         controller: zigbee2mqtt
         ports:
           http:
-            port: 8080
+            port: &port 8080
           metrics:
             enabled: true
             port: 9000
@@ -90,27 +90,30 @@ spec:
         controller: zigbee2mqtt
         ports:
           http:
-            port: 12321
-    ingress:
+            port: &code-server-port 12321
+    route:
       app:
-        enabled: true
-        className: ingress-nginx-int
-        hosts:
-          - host: "zigbee2mqtt.p.lan.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - zigbee2mqtt.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
       codeserver:
-        className: ingress-nginx-int
-        hosts:
-          - host: z2m-vscode.p.lan.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: codeserver
-                  port: http
+        hostnames:
+          - z2m-vscode.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: zigbee2mqtt-codeserver
+                port: *code-server-port
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: &app home-assistant
 spec:
   interval: 30m
   chart:
@@ -115,32 +115,6 @@ spec:
           #                  failureThreshold: 3
           #              readiness:
           #                enabled: false
-          #         whisper:
-          #           image:
-          #             repository: docker.io/rhasspy/wyoming-whisper
-          #             tag: 2.4.0@sha256:2687f79715734606f856fc4478351ce91a76bdaf6899086bcb837eb9ac7cddb8
-          #           args:
-          #             - --model
-          #             - "small-int8"
-          #             - --language
-          #             - "en"
-          #           probes:
-          #             liveness:
-          #               enabled: false
-          #             readiness:
-          #               enabled: false
-          #          piper:
-          #            image:
-          #              repository: docker.io/rhasspy/wyoming-piper
-          #              tag: 1.5.0@sha256:b6bf208855f26168790ed336ad16576b2fb290f31b51fb98aca496a45561516f
-          #            args:
-          #              - --voice
-          #              - "en_GB-jenny_dioco-medium"
-          #            probes:
-          #              liveness:
-          #                enabled: false
-          #              readiness:
-          #                enabled: false
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
@@ -169,7 +143,7 @@ spec:
         externalTrafficPolicy: Cluster
         ports:
           http:
-            port: 8123
+            port: &port 8123
           mdns-tcp:
             port: 5353
             targetPort: 5353
@@ -187,74 +161,50 @@ spec:
       #        ports:
       #          kokoro:
       #            port: 8880
-      #      whisper:
-      #        controller: home-assistant
-      #        ports:
-      #          whisper:
-      #            port: 10300
-      #      piper:
-      #        controller: home-assistant
-      #        ports:
-      #          piper:
-      #            port: 10200
       codeserver:
         controller: home-assistant
         ports:
           http:
-            port: 12321
-    ingress:
+            port: &code-server-port 12321
+    route:
       app:
-        className: ingress-nginx-ext
-        annotations:
-          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
-        hosts:
-          - host: hass.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-      app-local:
-        className: ingress-nginx-int
-        hosts:
-          - host: hass.p.lan.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - hass.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+      app-ext:
+        hostnames:
+          - hass.${SECRET_DOMAIN}
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
       codeserver:
-        className: ingress-nginx-int
-        hosts:
-          - host: hass-vscode.p.lan.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: codeserver
-                  port: http
+        hostnames:
+          - hass-vscode.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: home-assistant-codeserver
+                port: *code-server-port
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /config
-      #      whisper-data:
-      #        existingClaim: whisper-data
-      #        advancedMounts:
-      #          home-assistant:
-      #            whisper:
-      #              - path: /data
-      #      whisper-cache:
-      #        type: emptyDir
-      #        advancedMounts:
-      #          home-assistant:
-      #            whisper:
-      #              - path: /.cache
-      #      piper-data:
-      #        existingClaim: piper-data
-      #        advancedMounts:
-      #          home-assistant:
-      #            piper:
-      #              - path: /data
       logs:
         type: emptyDir
         globalMounts:

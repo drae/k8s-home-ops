@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: plex
+  name: &app plex
 spec:
   interval: 30m
   chart:
@@ -78,32 +78,46 @@ spec:
         externalTrafficPolicy: Cluster
         ports:
           http:
-            port: 32400
-    ingress:
+            port: &port 32400
+    route:
       app:
-        className: ingress-nginx-ext
-        annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-          external-dns.alpha.kubernetes.io/target: ingress.${SECRET_DOMAIN}
-        hosts:
-          - host: plex.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-      app-local:
-        className: ingress-nginx-int
-        annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-        hosts:
-          - host: plex.p.lan.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-
+        hostnames:
+          - plex.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  remove: ["Range"]
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /library/streams
+      app-ext:
+        hostnames:
+          - plex.${SECRET_DOMAIN}
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  remove: ["Range"]
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /library/streams
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"

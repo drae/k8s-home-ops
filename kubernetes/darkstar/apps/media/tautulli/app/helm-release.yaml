@@ -84,20 +84,6 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
-    #    ingress:
-    #      app:
-    #        enabled: true
-    #        className: ingress-nginx-int
-    #        hosts:
-    #          - host: &host "tautulli.p.lan.${SECRET_DOMAIN}"
-    #            paths:
-    #              - path: /
-    #                service:
-    #                  identifier: app
-    #                  port: http
-    #        tls:
-    #          - hosts:
-    #              - *host
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"

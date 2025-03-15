@@ -319,14 +319,15 @@ spec:
       - grafana-clock-panel
     serviceMonitor:
       enabled: true
-    ingress:
-      enabled: true
-      ingressClassName: ingress-nginx-int
-      hosts:
-        - "grafana.p.lan.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - "grafana.p.lan.${SECRET_DOMAIN}"
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - grafana.p.lan.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
     persistence:
       enabled: false
     resources:

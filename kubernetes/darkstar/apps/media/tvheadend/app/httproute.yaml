@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: tvheadend-external-name
+spec:
+  hostnames:
+    - tvheadend.p.lan.${SECRET_DOMAIN}"
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: tvheadend
+          namespace: media
+          port: 9981
+#      nginx.ingress.kubernetes.io/configuration-snippet: |
+#        proxy_set_header Host $host;
+#        proxy_set_header X-Real-IP $remote_addr;
+#        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#        send_timeout 100m;
+#        proxy_set_header Upgrade $http_upgrade;
+#        proxy_set_header Connection "Upgrade";

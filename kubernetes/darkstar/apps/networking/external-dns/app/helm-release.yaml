@@ -28,7 +28,7 @@ spec:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --cloudflare-proxied
-      - --ingress-class=ingress-nginx-ext
+      - --gateway-label-filter=gateway==external
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-secret
     policy: sync
