@@ -12,7 +12,6 @@ bpf:
   datapathMode: netkit
   masquerade: true
   preallocateMaps: true
-  hostLegacyRouting: true
 
 cgroup:
   autoMount:
