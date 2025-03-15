@@ -11,8 +11,6 @@ spec:
   addresses:
     - type: IPAddress
       value: 10.1.10.30
-    - type: IPAddress
-      value: ::ffff:10.1.10.30
   listeners:
     - name: http
       protocol: HTTP

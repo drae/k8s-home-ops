@@ -12,9 +12,7 @@ spec:
   gatewayClassName: cilium
   addresses:
     - type: IPAddress
-      value: ${SVC_LB_INGRESS_NGINX_EXT}
-    - type: IPAddress
-      value: ::ffff:${SVC_LB_INGRESS_NGINX_EXT}
+      value: 10.1.10.31
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
