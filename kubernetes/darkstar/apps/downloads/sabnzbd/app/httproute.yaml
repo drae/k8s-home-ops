@@ -6,7 +6,7 @@ metadata:
   name: sabnzbd-external-name
 spec:
   hostnames:
-    - sabnzbd.p.lan.${SECRET_DOMAIN}"
+    - sabnzbd.p.lan.${SECRET_DOMAIN}
   parentRefs:
     - name: internal
       namespace: kube-system
