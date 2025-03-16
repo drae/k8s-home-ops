@@ -121,6 +121,7 @@ controlPlane:
             allowedKubernetesNamespaces:
               - system-controllers
               - system-upgrade
+              - actions-runner-system
 
     # Enable host DNS resolution but do not forward kube-dns to host
     - |-
