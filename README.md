@@ -10,7 +10,7 @@ Management of my home server
 
 <div align="center">
 
-[![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=blue&label=%20)](https://talos.dev)&nbsp;&nbsp;[![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=%20)](https://kubernetes.io)&nbsp;&nbsp;[![Renovate](https://img.shields.io/github/actions/workflow/status/drae/k8s-home-ops/renovate.yaml?branch=main&label=&style=for-the-badge&logo=renovate&logoColor=white&color=blue)](https://github.com/drae/k8s-home-ops/actions/workflows/renovate.yaml)
+[![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=blue&label=%20)](https://talos.dev)&nbsp;&nbsp;[![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=%20)](https://kubernetes.io)<!-- &nbsp;&nbsp;[![Renovate](https://img.shields.io/github/actions/workflow/status/drae/k8s-home-ops/renovate.yaml?branch=main&label=&style=for-the-badge&logo=renovate&logoColor=white&color=blue)](https://github.com/drae/k8s-home-ops/actions/workflows/renovate.yaml)-->
 
 </div>
 
