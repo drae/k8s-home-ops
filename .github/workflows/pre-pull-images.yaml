@@ -70,7 +70,7 @@ jobs:
           args: >-
             get cluster
             --all-namespaces
-            --path /github/workspace/ubernetes/darkstar/flux/configure
+            --path /github/workspace/kubernetes/darkstar/flux/configure
             --enable-images
             --only-images
             --output json
