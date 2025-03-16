@@ -24,7 +24,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@a284dc1814e3fd07f2e34267fc8f81227ed29fb8 # v45.0.9
         with:
-          files: kubernetes/**
+          files: kubernetes/darkstar/**
 
   test:
     if: ${{ needs.pre-job.outputs.any_changed == 'true' }}
@@ -38,7 +38,7 @@ jobs:
       - name: Run flux-local test
         uses: docker://ghcr.io/allenporter/flux-local:v7.2.1
         with:
-          args: test --enable-helm --all-namespaces --path /github/workspace/kubernetes/flux/cluster -v
+          args: test --enable-helm --all-namespaces --path /github/workspace/kubernetes/darkstar/flux/configure -v
 
   diff:
     if: ${{ needs.pre-job.outputs.any_changed == 'true' }}
@@ -70,8 +70,8 @@ jobs:
           args: >-
             diff ${{ matrix.resources }}
             --unified 6
-            --path /github/workspace/pull/kubernetes/flux/cluster
-            --path-orig /github/workspace/default/kubernetes/flux/cluster
+            --path /github/workspace/pull/kubernetes/darkstar/flux/configure
+            --path-orig /github/workspace/default/kubernetes/darkstar/flux/configure
             --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
             --limit-bytes 10000
             --all-namespaces
