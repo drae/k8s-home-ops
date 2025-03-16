@@ -15,20 +15,6 @@ env:
   HOMEBREW_NO_ANALYTICS: "1"
 
 jobs:
-  pre-job:
-    name: Image Pull - Pre-Job
-    runs-on: ubuntu-latest
-    outputs:
-      any_changed: ${{ steps.changed-files.outputs.any_changed }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Get Changed Files
-        id: changed-files
-        uses: tj-actions/changed-files@2f7c5bfce28377bc069a65ba478de0a74aa0ca32 # v46
-        with:
-          files: kubernetes/**
-
   filter-changes:
     name: Filter changes
     runs-on: ubuntu-latest
@@ -70,7 +56,7 @@ jobs:
           args: >-
             get cluster
             --all-namespaces
-            --path /github/workspace/kubernetes/darkstar/flux/configure
+            --path /github/workspace/kubernetes/darkstar/flux/
             --enable-images
             --only-images
             --output json
@@ -81,36 +67,36 @@ jobs:
           echo "${{ matrix.branches }}=$(jq --compact-output '.' images.json)" >> "${GITHUB_OUTPUT}"
 
   compare-images:
-    if: ${{ needs.filter-changes.outputs.changed-files == 'true' && needs.extract-images.outputs.default != needs.extract-images.outputs.pull }}
-    name: Image Pull - Compare Images
+    if: ${{ needs.extract-images.outputs.default != needs.extract-images.outputs.pull }}
+    name: Compare Images
     runs-on: ubuntu-latest
     needs:
-      - filter-changes
       - extract-images
     outputs:
-      images: ${{ steps.compare.outputs.images }}
+      images: ${{ steps.compare-images.outputs.images }}
     steps:
       - name: Compare Images
-        id: compare
+        id: compare-images
         run: |
           images=$(jq --compact-output --null-input \
               --argjson f1 '${{ needs.extract-images.outputs.default }}' \
               --argjson f2 '${{ needs.extract-images.outputs.pull }}' \
               '$f2 - $f1' \
           )
-          echo "images=${images}" >> $GITHUB_OUTPUT
+          echo "images=${images}" >> "${GITHUB_OUTPUT}"
 
-          echo '## New images to Pull' >> $GITHUB_STEP_SUMMARY
-          echo '```json' >> $GITHUB_STEP_SUMMARY
-          echo $images | jq >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          {
+              echo "## New images to Pull"
+              echo '```json'
+              echo "${images}" | jq
+              echo '```'
+          } >> "${GITHUB_STEP_SUMMARY}"
 
   pre-pull-images:
     if: ${{ needs.compare-images.outputs.images != '[]' }}
     name: Pre-pull Images
     runs-on: arc-k8s-home-ops
     needs:
-      - pre-job
       - compare-images
     strategy:
       matrix:
