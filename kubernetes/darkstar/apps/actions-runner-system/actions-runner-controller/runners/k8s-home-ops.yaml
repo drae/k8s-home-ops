@@ -17,8 +17,9 @@ spec:
       interval: 30m
   values:
     githubConfigUrl: https://github.com/drae/k8s-home-ops
-    minRunners: 0
-    maxRunners: 2
+    githubConfigSecret: arc-k8s-home-ops-secret
+    minRunners: 1
+    maxRunners: 3
     containerMode:
       type: kubernetes
       kubernetesModeWorkVolumeClaim:
@@ -27,7 +28,7 @@ spec:
         storageClassName: local-hostpath
         resources:
           requests:
-            storage: 5Gi
+            storage: 10Gi
     controllerServiceAccount:
       name: actions-runner-controller
       namespace: actions-runner-system
@@ -49,21 +50,8 @@ spec:
               - mountPath: /var/run/secrets/talos.dev
                 name: talos
                 readOnly: true
-        serviceAccountName: actions-runner
+        serviceAccountName: k8s-home-ops-runner
         volumes:
           - name: talos
             secret:
-              secretName: actions-runner
-  valuesFrom:
-    - kind: Secret
-      name: actions-runner-controller-secret
-      valuesKey: github_app_id
-      targetPath: githubConfigSecret.github_app_id
-    - kind: Secret
-      name: actions-runner-controller-secret
-      valuesKey: github_app_installation_id
-      targetPath: githubConfigSecret.github_app_installation_id
-    - kind: Secret
-      name: actions-runner-controller-secret
-      valuesKey: github_app_private_key
-      targetPath: githubConfigSecret.github_app_private_key
+              secretName: k8s-home-ops-runner
