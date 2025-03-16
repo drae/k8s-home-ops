@@ -1,0 +1,33 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: actions-runner-controller
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: actions-runner-controller-charts/gha-runner-scale-set-controller
+      version: 0.10.1
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller-charts
+        namespace: flux-system
+      interval: 30m
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+  values:
+    fullnameOverride: gha-runner-scale-set-controller
+  # TODO: Remove on 0.11.0
+  # Ref: https://github.com/actions/actions-runner-controller/pull/3729
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+            patch: |
+              - op: replace
+                path: /spec/template/metadata/labels/app.kubernetes.io~1version
+                value: 0.10.1
