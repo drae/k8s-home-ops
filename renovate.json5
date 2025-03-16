@@ -20,7 +20,7 @@
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   rebaseWhen: "behind-base-branch",
   suppressNotifications: ["prIgnoreNotification"],
-  ignorePaths: ["_archived/**"],
+  ignorePaths: [".archived/**"],
   flux: {
     fileMatch: ["^kubernetes/.+\\.ya?ml$"],
   },
