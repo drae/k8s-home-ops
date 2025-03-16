@@ -19,6 +19,10 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      APP_UID: "1000"
+      APP_GID: "1000"
+      VOLSYNC_CLAIM: atuin-data
+      VOLSYNC_CAPACITY: 10Gi
   dependsOn:
-    - name: crunchy-postgres-operator-cluster
-    - name: crunchy-postgres-operator-secretstore
+    - name: topolvm
+    - name: volsync
