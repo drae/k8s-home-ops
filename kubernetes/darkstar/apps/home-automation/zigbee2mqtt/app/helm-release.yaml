@@ -83,13 +83,12 @@ spec:
         ports:
           http:
             port: &port 8080
+            primary: true
           metrics:
             enabled: true
             port: 9000
-      codeserver:
-        controller: zigbee2mqtt
-        ports:
-          http:
+          code-server:
+            enabled: true
             port: &code-server-port 12321
     route:
       app:
@@ -100,20 +99,22 @@ spec:
             namespace: kube-system
             sectionName: https
         rules:
-          - backendRefs:
-              - name: zigbee2mqtt-app
-                port: *port
-      codeserver:
-        hostnames:
-          - z2m-vscode.p.lan.${SECRET_DOMAIN}
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: zigbee2mqtt-codeserver
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /code/
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - name: *app
                 port: *code-server-port
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
