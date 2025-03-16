@@ -14,8 +14,11 @@
         "home": "",
         "settings": "",
     },
-    "prettier.configPath": ".ci/prettier/.prettierrc.yaml",
-    "prettier.ignorePath": ".ci/prettier/.prettierignore",
+    "prettier.configPath": ".prettierrc.yaml",
+    "prettier.ignorePath": ".prettierignore",
+    "markdownlint.config": {
+        "extends": ".markdownlint.yaml"
+    },
     "ansible.python.interpreterPath": "/bin/python3",
     "yaml.schemas": {
         "ansible": [
@@ -27,8 +30,5 @@
             "kubernetes/*.yaml"
         ],
         "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json": "file:///home/paul/git/drae/k8s-home-ops-new/kubernetes/darkstar/apps/media/plex/app/helm-release.yaml"
-    },
-    "cSpell.enableFiletypes": [
-        "!yaml"
-    ],
+    }
 }
