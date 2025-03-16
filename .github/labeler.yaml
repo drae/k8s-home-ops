@@ -1,12 +1,21 @@
 ---
 # Area
-area/ci:
+area/github:
   - changed-files:
       - any-glob-to-any-file: ".github/**/*"
+# Talos
+area/talos:
+  - changed-files:
+      - any-glob-to-any-file: "infrastructure/**/talos/**/*"
+# Ansible
+area/ansible:
+  - changed-files:
+      - any-glob-to-any-file: "infrastructure/**/ansible/**/*"
+# Kubernetes
 area/kubernetes:
   - changed-files:
       - any-glob-to-any-file: "kubernetes/**/*"
-# Cluster
+# Which cluster?
 cluster/darkstar:
   - changed-files:
       - any-glob-to-any-file: "**/darkstar/**/*"
