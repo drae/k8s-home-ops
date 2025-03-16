@@ -76,12 +76,12 @@ spec:
               WYOMING_LANGUAGES: en
               STT_OPENAI_URL: https://api.openai.com/v1
               STT_MODELS: "whisper-1"
-              TTS_OPENAI_URL: https://api.openai.com/v1
-              TTS_MODELS: "tts-1"
-              TTS_VOICES: "fable"
-              #TTS_OPENAI_URL: http://localhost:8880/v1
-              #TTS_MODELS: "kokoro"
-              #TTS_VOICES: "bf_emma bf_alice bf_lily bm_daniel bm_george bm_lewis bm_fable"
+              TTS_OPENAI_URL: http://localhost:8880/v1
+              TTS_MODELS: "kokoro"
+              TTS_VOICES: "bf_emma bf_alice bf_lily bm_daniel bm_george bm_lewis bm_fable"
+              #TTS_OPENAI_URL: https://api.openai.com/v1
+              #TTS_MODELS: "tts-1"
+              #TTS_VOICES: "fable"
             envFrom:
               - secretRef:
                   name: home-assistant-openai
@@ -90,31 +90,31 @@ spec:
                 enabled: false
               readiness:
                 enabled: false
-          #          kokoro:
-          #            image:
-          #              repository: ghcr.io/remsky/kokoro-fastapi-cpu
-          #              tag: v0.2.2@sha256:76549cce3c5cc5ed4089619a9cffc3d39a041476ff99c5138cd18b6da832c4d7
-          #            env:
-          #              DEFAULT_VOICE_CODE: b
-          #            securityContext:
-          #              runAsUser: 1000
-          #              runAsGroup: 1000
-          #              fsGroup: 1000
-          #              fsGroupChangePolicy: OnRootMismatch
-          #            probes:
-          #              liveness:
-          #                enabled: true
-          #                custom: true
-          #                spec:
-          #                  httpGet:
-          #                    path: /v1/test
-          #                    port: 8880
-          #                  initialDelaySeconds: 40
-          #                  periodSeconds: 30
-          #                  timeoutSeconds: 10
-          #                  failureThreshold: 3
-          #              readiness:
-          #                enabled: false
+          kokoro:
+            image:
+              repository: ghcr.io/remsky/kokoro-fastapi-cpu
+              tag: v0.2.2@sha256:76549cce3c5cc5ed4089619a9cffc3d39a041476ff99c5138cd18b6da832c4d7
+            env:
+              DEFAULT_VOICE_CODE: b
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+              fsGroupChangePolicy: OnRootMismatch
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /v1/test
+                    port: 8880
+                  initialDelaySeconds: 40
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: false
           codeserver:
             image:
               repository: ghcr.io/coder/code-server
@@ -137,35 +137,16 @@ spec:
     service:
       app:
         controller: home-assistant
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: ${SVC_LB_HASS}
-        externalTrafficPolicy: Cluster
         ports:
           http:
             port: &port 8123
-          mdns-tcp:
-            port: 5353
-            targetPort: 5353
-          mdns-udp:
-            port: 5353
-            protocol: UDP
-            targetPort: 5353
-      wyoming-openai:
-        controller: home-assistant
-        ports:
+            primary: true
+          code-server:
+            port: &code-server-port 12321
           wyoming-openai:
             port: 10301
-      #      kokoro:
-      #        controller: home-assistant
-      #        ports:
-      #          kokoro:
-      #            port: 8880
-      codeserver:
-        controller: home-assistant
-        ports:
-          http:
-            port: &code-server-port 12321
+          kokoro:
+            port: 8880
     route:
       app:
         hostnames:
@@ -175,8 +156,21 @@ spec:
             namespace: kube-system
             sectionName: https
         rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /code/
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
           - backendRefs:
-              - name: home-assistant-app
+              - name: *app
+                port: *code-server-port
+          - backendRefs:
+              - name: *app
                 port: *port
       app-ext:
         hostnames:
@@ -187,19 +181,8 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: home-assistant-app
+              - name: home-assistant
                 port: *port
-      codeserver:
-        hostnames:
-          - hass-vscode.p.lan.${SECRET_DOMAIN}
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: home-assistant-codeserver
-                port: *code-server-port
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
