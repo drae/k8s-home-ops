@@ -76,13 +76,13 @@
     - name: Add the group 'kah'
       ansible.builtin.group:
         name: kah
-        gid: 568
+        gid: 2000
         state: present
 
     - name: Add the user 'kah'
       ansible.builtin.user:
         name: kah
-        uid: 568
+        uid: 2000
         group: kah
         groups: users
         append: true
@@ -224,9 +224,16 @@
           DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -W 4,35,40
       notify: Restart smartd
 
+    - name: Check if swap is enabled
+      ansible.builtin.command:
+        cmd: swapon --summary
+      register: swap_status
+      changed_when: false
+
     - name: Disable swap at runtime
       ansible.builtin.command: swapoff -a
-      when: ansible_swaptotal_mb > 0
+      when: swap_status.stdout != ""
+      changed_when: swap_status.stdout != ""
 
     - name: Disable swap on boot
       ansible.posix.mount:
@@ -238,9 +245,9 @@
         - none
 
     # Configure ZFS
-    - name: zfs
+    - name: ZFS
       ansible.builtin.include_role:
-        role: "mrlesmithjr.zfs"
+        name: "mrlesmithjr.zfs"
 
     # Security
     - name: Check for existence of grub
@@ -287,24 +294,28 @@
         - not mitigations_status.changed
 
     - name: Run grub-mkconfig
-      ansible.builtin.command: update-grub
+      ansible.builtin.command:
+        cmd: update-grub
+        creates: /boot/grub/grub.cfg
       when:
         - grub_result.stat.exists
         - (apparmor_status.changed or mitigations_status.changed)
 
     # Enable cgroupv2 and rootless
-    - name: check if linger is enabled
-      stat:
+    - name: Check if linger is enabled
+      ansible.builtin.stat:
         path: "/var/lib/systemd/linger/{{ ansible_user }}"
       register: linger_enabled_file
       become: false
 
-    - name: enable linger
-      command: "loginctl enable-linger {{ ansible_user }}"
-      when: linger_enabled_file.stat.exists == false
+    - name: Enable Linger
+      ansible.builtin.command:
+        cmd: "loginctl enable-linger {{ ansible_user }}"
+        creates: "/var/lib/systemd/linger/{{ ansible_user }}"
+      when: not linger_enabled_file.stat.exists
       become: false
 
-    - name: install rootless packages
+    - name: Install rootless packages
       ansible.builtin.package:
         name:
           - dbus-user-session
@@ -313,7 +324,7 @@
       become: true
       when: ansible_os_family == "Debian"
 
-    - name: enable dbus-user-session
+    - name: Enable dbus-user-session
       ansible.builtin.systemd:
         name: dbus
         state: started
@@ -321,7 +332,7 @@
         scope: user
       become: false
 
-    - name: set ping sysctl
+    - name: Set ping sysctl
       ansible.posix.sysctl:
         name: net.ipv4.ping_group_range
         value: "0 2147483647"
@@ -329,7 +340,7 @@
         reload: true
       become: true
 
-    - name: set rootfull ports for rootless user sysctl
+    - name: Set rootfull ports for rootless user sysctl
       ansible.posix.sysctl:
         name: net.ipv4.ip_unprivileged_port_start
         value: "0"
@@ -337,13 +348,13 @@
         reload: true
       become: true
 
-    - name: check if cgroupv2 is enabled
-      stat:
+    - name: Check if cgroupv2 is enabled
+      ansible.builtin.stat:
         path: "/sys/fs/cgroup/cgroup.controllers"
       register: cgroupv2_enabled_file
       become: false
 
-    - name: enable cgroupv2
+    - name: Enable cgroupv2
       ansible.builtin.replace:
         path: /etc/default/grub
         regexp: '^(GRUB_CMDLINE_LINUX=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
@@ -351,18 +362,20 @@
       vars:
         option: systemd.unified_cgroup_hierarchy
         value: 1
-      when: cgroupv2_enabled_file.stat.exists == false
+      when: not cgroupv2_enabled_file.stat.exists
       notify: update grub
 
-    - name: ensure user delegate systemd directory exists
+    - name: Ensure user delegate systemd directory exists
       ansible.builtin.file:
         path: /etc/systemd/system/user@.service.d
         state: directory
+        mode: "0755"
 
-    - name: install delegate.conf for rootless users
+    - name: Install delegate.conf for rootless users
       ansible.builtin.copy:
         src: delegate.conf
         dest: "/etc/systemd/system/user@.service.d/delegate.conf"
+        mode: "0644"
       notify: Reload systemd daemon
 
     # Setup udev entries
