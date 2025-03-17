@@ -19,10 +19,7 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      APP_UID: "568"
-      APP_GID: "568"
       VOLSYNC_CLAIM: recyclarr-config
-      VOLSYNC_CAPACITY: 1Gi
   dependsOn:
     - name: topolvm
     - name: volsync

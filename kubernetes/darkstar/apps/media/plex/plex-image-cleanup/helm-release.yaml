@@ -35,8 +35,8 @@ spec:
                           - plex
                   topologyKey: kubernetes.io/hostname
           securityContext:
-            runAsUser: ${APP_UID}
-            runAsGroup: ${APP_GID}
+            runAsUser: 2000
+            runAsGroup: 2000
             runAsNonRoot: true
         containers:
           app:
@@ -53,13 +53,6 @@ spec:
               PLEX_PATH: /data/plex_config/Library/Application Support/Plex Media Server
               MODE: remove
               PHOTO_TRANSCODER: true
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
             resources:
               requests:
                 cpu: 25m

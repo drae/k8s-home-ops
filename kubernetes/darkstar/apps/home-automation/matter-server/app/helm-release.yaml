@@ -90,4 +90,4 @@ spec:
         advancedMounts:
           matter-server:
             app:
-              - path: "/data"
+              - path: /data
