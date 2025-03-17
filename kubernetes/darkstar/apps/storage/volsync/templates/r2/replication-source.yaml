@@ -16,9 +16,9 @@ spec:
     storageClassName: "${VOLSYNC_STORAGECLASS:-topolvm-thin-provisioner}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-topolvm-thin-provisioner}"
     moverSecurityContext:
-      runAsUser: ${APP_UID:-568}
-      runAsGroup: ${APP_GID:-568}
-      fsGroup: ${APP_GID:-568}
+      runAsUser: ${APP_UID:-2000}
+      runAsGroup: ${APP_GID:-2000}
+      fsGroup: ${APP_GID:-2000}
     pruneIntervalDays: 7
     retain:
       daily: 7

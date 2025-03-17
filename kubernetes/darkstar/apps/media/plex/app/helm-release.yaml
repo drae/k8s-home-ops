@@ -22,18 +22,17 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsUser: ${APP_UID}
-            runAsGroup: ${APP_GID}
-            fsGroup: ${APP_GID}
+            runAsUser: 2000
+            runAsGroup: 2000
+            fsGroup: 2000
             fsGroupChangePolicy: "OnRootMismatch"
             supplementalGroups:
               - 44
               - 109
-              - 65539
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/plex
+              repository: ghcr.io/home-operations/plex
               tag: 1.41.5.9522@sha256:6d393c4eee152100bd6762a94bdd891b8c80c1c8a914a7f906b4097ab69fd557
             env:
               ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,http://${SECRET_WAN_IP}:32400,https://plex.${SECRET_DOMAIN}:443"

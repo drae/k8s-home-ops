@@ -19,8 +19,6 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      APP_UID: "568"
-      APP_GID: "568"
       VOLSYNC_CLAIM: esphome-config
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
