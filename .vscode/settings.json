@@ -30,5 +30,6 @@
             "kubernetes/*.yaml"
         ],
         "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json": "file:///home/paul/git/drae/k8s-home-ops-new/kubernetes/darkstar/apps/media/plex/app/helm-release.yaml"
-    }
+    },
+    "markdown.validate.enabled": true
 }
