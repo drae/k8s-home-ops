@@ -31,29 +31,22 @@ spec:
               }]
           securityContext:
             runAsNonRoot: true
-            runAsUser: ${APP_UID}
-            runAsGroup: ${APP_GID}
-            fsGroup: ${APP_GID}
+            runAsUser: 2000
+            runAsGroup: 2000
+            fsGroup: 2000
             fsGroupChangePolicy: OnRootMismatch
             seccompProfile:
               type: RuntimeDefault
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/home-assistant
-              tag: 2025.3.3@sha256:16f8597335dde4ab385069b23f3fbfd46911a4ff356c7f2acf3680c429e2d8d7
+              repository: ghcr.io/home-operations/home-assistant
+              tag: 2025.3.3@sha256:6a0f0a8f7eaebaf4751ddc0e90c4b931121adf4ac6f4e869d648d4cb996b7f70
             envFrom:
               - secretRef:
                   name: home-assistant
             env:
               VENV_FOLDER: /venv
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
             resources:
               requests:
                 cpu: 126m
@@ -85,11 +78,6 @@ spec:
             envFrom:
               - secretRef:
                   name: home-assistant-openai
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
           kokoro:
             image:
               repository: ghcr.io/remsky/kokoro-fastapi-cpu
