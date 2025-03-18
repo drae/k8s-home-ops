@@ -12,6 +12,7 @@ resources:
   - ./coredns-charts.yaml
   - ./crunchy-charts.yaml
   - ./emberstack-charts.yaml
+  - ./emqx-charts.yaml
   #  - ./democratic-csi-charts.yaml
   - ./external-secrets-charts.yaml
   - ./grafana-charts.yaml
