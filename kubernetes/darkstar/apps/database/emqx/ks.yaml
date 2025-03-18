@@ -16,7 +16,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-    namespace: flux-system
   timeout: 5m
   wait: true
   dependsOn:
@@ -39,7 +38,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-    namespace: flux-system
   timeout: 5m
   wait: true
   healthCheckExprs:
