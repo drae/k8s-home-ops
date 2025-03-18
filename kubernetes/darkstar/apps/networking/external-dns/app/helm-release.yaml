@@ -14,6 +14,10 @@ spec:
         name: kubernetes-sigs-external-dns-charts
         namespace: flux-system
       interval: 30m
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
   values:
     fullnameOverride: &name external-dns
     domainFilters:
@@ -22,7 +26,7 @@ spec:
       - name: CF_API_TOKEN
         valueFrom:
           secretKeyRef:
-            name: external-dns-secret
+            name: cloudflare-dns-secret
             key: cf_api_token
     extraArgs:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
