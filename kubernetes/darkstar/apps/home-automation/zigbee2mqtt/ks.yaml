@@ -23,4 +23,4 @@ spec:
   dependsOn:
     - name: topolvm
     - name: volsync
-    - name: mosquitto
+    - name: emqx-operator
