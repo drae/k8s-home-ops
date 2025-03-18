@@ -1,8 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./home-assistant.sops.yaml
-  - ./home-assistant-openai.sops.yaml
+  - ./externalsecret.yaml
   - ./pvc.yaml
   - ./helm-release.yaml
   # PVC and volsync templates

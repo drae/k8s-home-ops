@@ -44,9 +44,11 @@ spec:
               tag: 2025.3.3@sha256:6a0f0a8f7eaebaf4751ddc0e90c4b931121adf4ac6f4e869d648d4cb996b7f70
             envFrom:
               - secretRef:
-                  name: home-assistant
+                  name: home-assistant-secret
             env:
               VENV_FOLDER: /venv
+              # HASS_TRUSTED_PROXIES same as the cluster CIDR address range
+              HASS_TRUSTED_PROXIES: 10.244.0.0/16
             resources:
               requests:
                 cpu: 126m
@@ -77,7 +79,7 @@ spec:
               #TTS_VOICES: "fable"
             envFrom:
               - secretRef:
-                  name: home-assistant-openai
+                  name: home-assistant-ai-secret
           kokoro:
             image:
               repository: ghcr.io/remsky/kokoro-fastapi-cpu
