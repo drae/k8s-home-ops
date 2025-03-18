@@ -19,5 +19,5 @@ spec:
     encoding: PKCS8
     size: 2048
   issuerRef:
-    name: letsencrypt-prod
+    name: bitwarden-certificate-issuer
     kind: ClusterIssuer
