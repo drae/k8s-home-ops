@@ -5,3 +5,4 @@ resources:
   - ./cf-token.sops.yaml
   - ./letsencrypt-staging.yaml
   - ./letsencrypt-prod.yaml
+  - ./bitwarden-self-signed.yaml
