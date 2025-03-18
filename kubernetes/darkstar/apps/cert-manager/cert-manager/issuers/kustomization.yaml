@@ -2,7 +2,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./cf-token.sops.yaml
-  - ./letsencrypt-staging.yaml
+  - ./externalsecret.yaml
   - ./letsencrypt-prod.yaml
   - ./bitwarden-self-signed.yaml
