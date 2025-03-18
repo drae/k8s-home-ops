@@ -5,3 +5,4 @@ namespace: system
 resources:
   - ./helm-release.yaml
   - ./prometheus-rule.yaml
+  - ./mutatingadmissionpolicy.yaml
