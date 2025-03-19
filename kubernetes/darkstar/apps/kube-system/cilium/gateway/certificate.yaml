@@ -5,12 +5,12 @@ kind: Certificate
 metadata:
   name: gateway-certificate
 spec:
-  secretName: "gateway-${SECRET_DOMAIN}-tls"
+  secretName: "gateway-starstreak.net-tls"
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: ${SECRET_DOMAIN}
+  commonName: starstreak.net
   dnsNames:
-    - "${SECRET_DOMAIN}"
-    - "*.${SECRET_DOMAIN}"
-    - "*.p.lan.${SECRET_DOMAIN}"
+    - "starstreak.net"
+    - "*.starstreak.net"
+    - "*.p.lan.starstreak.net"

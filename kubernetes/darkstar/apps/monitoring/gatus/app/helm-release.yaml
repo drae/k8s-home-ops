@@ -101,7 +101,7 @@ spec:
     route:
       app:
         hostnames:
-          - status.${SECRET_DOMAIN}
+          - status.starstreak.net
         parentRefs:
           - name: external
             namespace: kube-system

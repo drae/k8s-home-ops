@@ -40,7 +40,7 @@ spec:
       existingSecret: "grafana-admin-secret"
     grafana.ini:
       server:
-        root_url: "https://grafana.p.lan.${SECRET_DOMAIN}"
+        root_url: "https://grafana.p.lan.starstreak.net"
       paths:
         data: /var/lib/grafana/data
         logs: /var/log/grafana
@@ -317,7 +317,7 @@ spec:
       main:
         enabled: true
         hostnames:
-          - grafana.p.lan.${SECRET_DOMAIN}
+          - grafana.p.lan.starstreak.net
         parentRefs:
           - name: internal
             namespace: kube-system

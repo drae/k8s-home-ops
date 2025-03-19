@@ -6,7 +6,7 @@ metadata:
   name: tvheadend-external-name
 spec:
   hostnames:
-    - tvheadend.p.lan.${SECRET_DOMAIN}
+    - tvheadend.p.lan.starstreak.net
   parentRefs:
     - name: internal
       namespace: kube-system

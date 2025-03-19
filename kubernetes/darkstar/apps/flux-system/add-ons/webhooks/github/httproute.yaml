@@ -6,7 +6,7 @@ metadata:
   name: github-receiver-webhook
 spec:
   hostnames:
-    - &host "flux.${SECRET_DOMAIN}"
+    - &host "flux.starstreak.net"
   parentRefs:
     - name: external
       namespace: kube-system

@@ -75,7 +75,7 @@ spec:
     route:
       app:
         hostnames:
-          - tautulli.p.lan.${SECRET_DOMAIN}
+          - tautulli.p.lan.starstreak.net
         parentRefs:
           - name: internal
             namespace: kube-system

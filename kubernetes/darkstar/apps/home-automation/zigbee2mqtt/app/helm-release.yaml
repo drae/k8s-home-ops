@@ -96,7 +96,7 @@ spec:
     route:
       app:
         hostnames:
-          - zigbee2mqtt.p.lan.${SECRET_DOMAIN}
+          - zigbee2mqtt.p.lan.starstreak.net
         parentRefs:
           - name: internal
             namespace: kube-system

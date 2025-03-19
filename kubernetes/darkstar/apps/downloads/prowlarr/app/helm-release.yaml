@@ -67,7 +67,7 @@ spec:
     route:
       app:
         hostnames:
-          - prowlarr.p.lan.${SECRET_DOMAIN}
+          - prowlarr.p.lan.starstreak.net
         parentRefs:
           - name: internal
             namespace: kube-system
