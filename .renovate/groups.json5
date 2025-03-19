@@ -13,31 +13,73 @@
       separateMinorPatch: true,
     },
     {
-      description: "Cilium image and chart",
-      groupName: "cilium",
-      matchPackageNames: [
-        "quay.io/cilium/cilium",
-        "quay.io/cilium/operator-generic",
-        "cilium",
-      ],
-      matchDatasources: ["helm", "docker"],
+      description: "Flux Operator Group",
+      groupName: "Flux Operator",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: true,
     },
     {
-      description: "Actions Runner Controller charts",
-      groupName: "ARC",
+      description: "Actions Runner Controller Group",
+      groupName: "Actions Runner Controller",
+      matchDatasources: ["docker"],
       matchPackageNames: [
-        "actions-runner-controller-charts/gha-runner-scale-set-controller",
-        "actions-runner-controller-charts/gha-runner-scale-set",
+        "/gha-runner-scale-set-controller/",
+        "/gha-runner-scale-set/",
       ],
-      matchDatasources: ["helm", "docker"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      separateMinorPatch: false,
+    },
+    {
+      description: "Cert-Manager Group",
+      groupName: "Cert-Manager",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/cert-manager/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Cilium Group",
+      groupName: "Cilium",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/cilium/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "CoreDNS Group",
+      groupName: "CoreDNS",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/coredns/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "External Secrets Operator Group",
+      groupName: "External Secrets Operator",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/external-secrets/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+    },
+    {
+      description: "Intel Device Plugins Group",
+      groupName: "Intel-Device-Plugins",
+      matchDatasources: ["docker"],
+      matchPackageNames: [
+        "/intel-device-plugins-operator/",
+        "/intel-device-plugins-gpu/",
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
     },
     {
       description: "Talos",
@@ -47,16 +89,6 @@
         "ghcr.io/siderolabs/talosctl",
       ],
       matchDatasources: ["docker"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      separateMinorPatch: true,
-    },
-    {
-      description: "silence-operator image and CRD",
-      groupName: "silence-operator",
-      matchPackagePatterns: ["silence-operator"],
-      matchDatasources: ["docker", "github-releases"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
