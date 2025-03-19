@@ -35,7 +35,11 @@ spec:
               repository: ghcr.io/home-operations/sonarr
               tag: 4.0.14.2938@sha256:0169c421055790ef8bd9b5c2807663bb487f56daf1f602a20612a0257c491462
             env:
-              SONARR__API_KEY: ${SONARR_API_KEY}
+              SONARR__AUTH__APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarr-secret
+                    key: api_key
               SONARR__INSTANCE_NAME: Sonarr
               SONARR__PORT: &port 8989
               SONARR__AUTHENTICATION_METHOD: External

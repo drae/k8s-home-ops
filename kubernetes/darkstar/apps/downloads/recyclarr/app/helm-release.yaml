@@ -39,9 +39,9 @@ spec:
               tag: 7.4.1
             args:
               - sync
-            env:
-              SONARR_API_KEY: ${SONARR_API_KEY}
-              RADARR_API_KEY: ${RADARR_API_KEY}
+            envFrom:
+              - secretRef:
+                  name: recyclarr-secret
             resources:
               requests:
                 cpu: 5m
