@@ -89,18 +89,18 @@ spec:
         # NAS
         - module: icmp
           name: nas-icmp
-          url: ${IP_ADDR_LAN_GW}
+          url: 10.1.10.1
         # tvheadend
         - module: http_2xx
           name: tvheadend-http
-          url: "http://${IP_ADDR_LAN_GRAVITY}:9981"
+          url: "http://10.1.10.98:9981"
         - module: icmp
           name: tvheadend-icmp
-          url: ${IP_ADDR_LAN_GRAVITY}
+          url: 10.1.10.98
         # Other devices
         - module: icmp
           name: zigbee-controller-icmp
-          url: ${IP_ADDR_IOT_ZIGBEE}
+          url: 10.1.20.101
         - module: icmp
           name: ping-cloudflare
           url: 1.1.1.1

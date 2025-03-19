@@ -21,7 +21,7 @@ metadata:
 addressType: IPv4
 endpoints:
   - addresses:
-      - ${IP_ADDR_LAN_NAS}
+      - 10.1.10.10
     conditions:
       ready: true
 ports:

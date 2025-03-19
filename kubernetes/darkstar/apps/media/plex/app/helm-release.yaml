@@ -35,7 +35,7 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.41.5.9522@sha256:1c35e44828531320f4fccd980da5a3d0da08a438f1c89841d8be97cfefe66e63
             env:
-              ADVERTISE_IP: "http://${SVC_LB_PLEX}:32400/,https://plex.starstreak.net:443"
+              ADVERTISE_IP: "http://10.1.10.32:32400/,https://plex.starstreak.net:443"
               PLEX_NO_AUTH_NETWORKS: 10.244.0.0/16
             probes:
               liveness: &probes
@@ -73,7 +73,7 @@ spec:
         controller: plex
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: ${SVC_LB_PLEX}
+          lbipam.cilium.io/ips: 10.1.10.32
         ports:
           http:
             port: *port

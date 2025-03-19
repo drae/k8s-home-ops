@@ -21,7 +21,7 @@ metadata:
 addressType: IPv4
 endpoints:
   - addresses:
-      - ${IP_ADDR_LAN_GRAVITY}
+      - 10.1.10.98
     conditions:
       ready: true
 ports:
