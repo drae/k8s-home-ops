@@ -65,7 +65,7 @@ spec:
     route:
       app:
         hostnames:
-          - esphome.p.lan.${SECRET_DOMAIN}
+          - esphome.p.lan.starstreak.net
         parentRefs:
           - name: internal
             namespace: kube-system

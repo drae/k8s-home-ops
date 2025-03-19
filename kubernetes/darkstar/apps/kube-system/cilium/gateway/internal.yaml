@@ -15,18 +15,18 @@ spec:
     - name: http
       protocol: HTTP
       port: 80
-      hostname: "*.p.lan.${SECRET_DOMAIN}"
+      hostname: "*.p.lan.starstreak.net"
       allowedRoutes:
         namespaces:
           from: All
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: "*.p.lan.${SECRET_DOMAIN}"
+      hostname: "*.p.lan.starstreak.net"
       allowedRoutes:
         namespaces:
           from: All
       tls:
         certificateRefs:
           - kind: Secret
-            name: "gateway-${SECRET_DOMAIN}-tls"
+            name: "gateway-starstreak.net-tls"

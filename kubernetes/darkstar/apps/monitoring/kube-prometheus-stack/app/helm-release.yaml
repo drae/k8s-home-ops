@@ -89,7 +89,7 @@ spec:
         main:
           enabled: true
           hostnames:
-            - prometheus.p.lan.${SECRET_DOMAIN}
+            - prometheus.p.lan.starstreak.net
           parentRefs:
             - name: internal
               namespace: kube-system

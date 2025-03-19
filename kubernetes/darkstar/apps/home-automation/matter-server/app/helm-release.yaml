@@ -43,7 +43,7 @@ spec:
             env:
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &port 5580
-              MATTER_SERVER__APPLICATION_URL: &host "matter.p.lan.${SECRET_DOMAIN}"
+              MATTER_SERVER__APPLICATION_URL: &host "matter.p.lan.starstreak.net"
               MATTER_SERVER__LOG_LEVEL: info
             probes:
               liveness:

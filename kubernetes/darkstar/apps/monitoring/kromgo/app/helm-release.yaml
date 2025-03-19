@@ -73,7 +73,7 @@ spec:
     route:
       app:
         hostnames:
-          - kromgo.${SECRET_DOMAIN}
+          - kromgo.starstreak.net
         parentRefs:
           - name: external
             namespace: kube-system

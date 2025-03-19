@@ -5,7 +5,7 @@ kind: Gateway
 metadata:
   name: external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname ingress.${SECRET_DOMAIN}
+    external-dns.alpha.kubernetes.io/target: &hostname ingress.starstreak.net
   labels:
     gateway: external
 spec:
@@ -20,18 +20,18 @@ spec:
     - name: http
       protocol: HTTP
       port: 80
-      hostname: "*.${SECRET_DOMAIN}"
+      hostname: "*.starstreak.net"
       allowedRoutes:
         namespaces:
           from: All
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: "*.${SECRET_DOMAIN}"
+      hostname: "*.starstreak.net"
       allowedRoutes:
         namespaces:
           from: All
       tls:
         certificateRefs:
           - kind: Secret
-            name: "gateway-${SECRET_DOMAIN}-tls"
+            name: "gateway-starstreak.net-tls"

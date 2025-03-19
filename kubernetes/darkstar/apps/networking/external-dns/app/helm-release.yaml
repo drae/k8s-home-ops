@@ -21,7 +21,7 @@ spec:
   values:
     fullnameOverride: &name external-dns
     domainFilters:
-      - ${SECRET_DOMAIN}
+      - starstreak.net
     env:
       - name: CF_API_TOKEN
         valueFrom:

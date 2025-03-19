@@ -140,7 +140,7 @@ spec:
     route:
       app:
         hostnames:
-          - hass.p.lan.${SECRET_DOMAIN}
+          - hass.p.lan.starstreak.net
         parentRefs:
           - name: internal
             namespace: kube-system
@@ -164,7 +164,7 @@ spec:
                 port: *port
       app-ext:
         hostnames:
-          - hass.${SECRET_DOMAIN}
+          - hass.starstreak.net
         parentRefs:
           - name: external
             namespace: kube-system
