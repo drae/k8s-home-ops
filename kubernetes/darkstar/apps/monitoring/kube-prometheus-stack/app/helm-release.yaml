@@ -113,7 +113,7 @@ spec:
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
         externalLabels:
-          cluster: ${CLUSTER_NAME}
+          cluster: darkstar
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         replicas: 1
@@ -143,9 +143,9 @@ spec:
             honor_timestamps: true
             static_configs:
               - targets:
-                  - "${IP_ADDR_LAN_GW}:9100"
-                  - "${IP_ADDR_LAN_NAS}:9100"
-                  - "${IP_ADDR_LAN_GRAVITY}:9100"
+                  - "10.1.10.1:9100"
+                  - "10.1.10.10:9100"
+                  - "10.1.10.98:9100"
           - job_name: "topolvm"
             kubernetes_sd_configs:
               - role: pod
