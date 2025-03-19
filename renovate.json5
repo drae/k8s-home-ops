@@ -15,7 +15,6 @@
     "github>drae/k8s-home-ops//.renovate/groups.json5",
     "github>drae/k8s-home-ops//.renovate/labels.json5",
     "github>drae/k8s-home-ops//.renovate/packageRules.json5",
-    "github>drae/k8s-home-ops//.renovate/semanticCommits.json5",
   ],
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   rebaseWhen: "behind-base-branch",

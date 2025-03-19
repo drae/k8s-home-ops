@@ -4,12 +4,42 @@
   commitMessageSuffix: "",
   packageRules: [
     {
-      matchDatasources: ["helm"],
-      commitMessageTopic: "Chart {{depName}}",
+      matchUpdateTypes: ["major"],
+      semanticCommitType: "feat",
+      commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}})!:",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchUpdateTypes: ["minor"],
+      semanticCommitType: "feat",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchUpdateTypes: ["patch"],
+      semanticCommitType: "fix",
+      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+    },
+    {
+      matchUpdateTypes: ["digest"],
+      semanticCommitType: "chore",
+      commitMessageExtra: "( {{currentDigestShort}} → {{newDigestShort}} )",
     },
     {
       matchDatasources: ["docker"],
-      commitMessageTopic: "Image {{depName}}",
+      semanticCommitScope: "container",
+    },
+    {
+      matchDatasources: ["helm"],
+      semanticCommitScope: "helm",
+    },
+    {
+      matchDatasources: ["galaxy", "galaxy-collection"],
+      semanticCommitScope: "ansible",
+    },
+    {
+      matchManagers: ["github-actions"],
+      semanticCommitType: "ci",
+      semanticCommitScope: "github-action",
     },
   ],
 }
