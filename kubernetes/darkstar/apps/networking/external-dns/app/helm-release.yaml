@@ -16,8 +16,10 @@ spec:
       interval: 30m
   install:
     crds: CreateReplace
+    disableSchemaValidation: true
   upgrade:
     crds: CreateReplace
+    disableSchemaValidation: true
   values:
     fullnameOverride: &name external-dns
     domainFilters:
