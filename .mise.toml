@@ -1,0 +1,36 @@
+[settings]
+pipx_uvx = true
+
+[env]
+# Directory paths
+ROOT_DIR = "{{config_root}}"
+# File paths
+KUBECONFIG = "{{config_root}}/kubernetes/darkstar/kubeconfig"
+MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
+SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/personal-keys.txt"
+TALOSCONFIG = "{{config_root}}/infrastructure/darkstar/talos/clusterconfig/talosconfig"
+# Ansible
+VIRTUAL_ENV="{{config_root}}/.venv"
+ANSIBLE_COLLECTIONS_PATH="{{config_root}}/.venv/galaxy"
+ANSIBLE_ROLES_PATH="{{config_root}}/.venv/galaxy/ansible_roles"
+ANSIBLE_VARS_ENABLED="host_group_vars,community.sops.sops"
+
+[tools]
+python = '3.13.2'                       #renovate: packageName=python/cpython
+age = '1.2.1'                           #renovate: packageName=FiloSottile/age
+"pipx:ansible-core" = '2.18.3'          #renovate: packageName=ansible/ansible
+flux2 = '2.5.1'                         #renovate: packageName=fluxcd/flux2
+"pipx:flux-local" = '7.3.0'             #renovate: packageName=allenporter/flux-local
+helm = '3.17.2'                         #renovate: packageName=helm/helm
+helmfile = '0.171.0'                    #renovate: packageName=helmfile/helmfile
+jq = '1.7'                              #renovate: packageName=jqlang/jq
+krew = '0.4.5'                          #renovate: packageName=kubernetes-sigs/krew
+kubectl = '1.32.3'                      #renovate: datasource=github-tags packageName=kubernetes/kubectl versioning=^kubernetes-(?<version>.*)$
+kustomize = '5.6.0'                     #renovate: packageName=kubernetes-sigs/kustomize
+"aqua:mitsuhiko/minijinja" = '2.8.0'    #renovate: packageName=mitsuhiko/minijinja
+sops = '3.9.4'                          #renovate: packageName=mozilla/sops
+stern = '1.32.0'                        #renovate: packageName=stern/stern  
+talhelper = '3.0.21'                    #renovate: packageName=budimanjojo/talhelper
+talosctl = '1.9.5'                      #renovate: packageName=siderolabs/talos
+task = '3.42.1'                         #renovate: packageName=go-task/task
+"pipx:uv" = '0.6.9'                     #renovate: packageName=astral-sh/uv
