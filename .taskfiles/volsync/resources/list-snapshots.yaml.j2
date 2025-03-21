@@ -2,8 +2,8 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "${app}-list-snapshots-${ts}"
-  namespace: "${ns}"
+  name: list-snapshots-{{ ENV.APP }}
+  namespace: {{ ENV.NS }}
 spec:
   ttlSecondsAfterFinished: 3600
   template:
@@ -20,4 +20,12 @@ spec:
             - snapshots
           envFrom:
             - secretRef:
-                name: "${app}-volsync-r2"
+                name: {{ ENV.APP }}-volsync-nfs
+          volumeMounts:
+            - mountPath: /repository
+              name: repository
+      volumes:
+        - name: repository
+          nfs:
+            server: "10.1.10.10"
+            path: "/mnt/zstore/backup/volsync"
