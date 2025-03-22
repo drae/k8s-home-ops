@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/conradludgate/atuin-server-sqlite
-              tag: v18.3.0@sha256:9d8e8b983d8a8113d87a72111b158552d49ad050ef98ebfe3e7bdd12a5207466
+              tag: v18.3.0@sha256:66481958b74e1df0d1fbaaeb437052eb20d03a27c08245590b8340a079f9e7b1
             env:
               ATUIN_HOST: 0.0.0.0
               ATUIN_PORT: &port 80
