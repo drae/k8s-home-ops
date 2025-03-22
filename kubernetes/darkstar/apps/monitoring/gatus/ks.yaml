@@ -28,3 +28,4 @@ spec:
   dependsOn:
     - name: topolvm
     - name: volsync
+    - name: bitwarden-secrets-store
