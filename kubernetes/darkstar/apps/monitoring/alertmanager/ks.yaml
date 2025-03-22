@@ -17,5 +17,5 @@ spec:
     name: k8s-home-ops
   wait: true
   dependsOn:
-    - name: bitwarden-secrets-store
     - name: topolvm
+    - name: bitwarden-secrets-store

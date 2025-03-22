@@ -50,3 +50,4 @@ spec:
       APP: *appname
   dependsOn:
     - name: plex
+    - name: bitwarden-secrets-store
