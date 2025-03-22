@@ -13,3 +13,6 @@ talosconfig
 
 # Task
 .task
+
+# Keys
+*.key
