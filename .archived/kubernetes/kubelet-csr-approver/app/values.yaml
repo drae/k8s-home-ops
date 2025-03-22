@@ -1,5 +1,0 @@
----
-providerRegex: |
-  ^(alpha|beta|gamma)$
-
-bypassDnsResolution: true
