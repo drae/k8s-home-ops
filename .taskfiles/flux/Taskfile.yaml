@@ -61,3 +61,18 @@ tasks:
         msg: "Kustomization file {{.kustomization_file}} not found"
       - sh: kubectl config get-contexts {{.cluster}}
         msg: "Kubectl context {{.cluster}} not found"
+
+  "*-ks-all":
+    desc: Suspend or resume all Flux Kustomizations
+    vars:
+      STATE: "{{index .MATCH 0}}"
+    #      NAMESPACES:
+    #        sh: kubectl get ns --no-headers -o custom-columns='NAME:.metadata.name'
+    preconditions:
+      - '[[ "{{.STATE}}" == "suspend" || "{{.STATE}}" == "resume" ]]'
+      - which flux kubectl
+    cmds:
+      - cmd: flux {{.STATE}} ks -n flux-system --all
+#      - for:
+#          var: NAMESPACES
+#        cmd: flux {{.STATE}} ks -n "{{.ITEM}}" --all

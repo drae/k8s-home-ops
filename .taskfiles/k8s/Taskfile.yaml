@@ -3,26 +3,18 @@
 version: "3"
 
 tasks:
-  delete-failed-pods:
-    desc: Deletes pods with Failed phase
+  cleanup-pods:
+    desc: Clean up pods with a Failed/Pending/Succeeded phase
+    preconditions:
+      - which kubectl
     cmds:
-      - task: _delete_pods_in_phase
-        vars:
-          PHASE: Failed
-
-  delete-succeeded-pods:
-    desc: Deletes pods with Succeeded phase
-    cmds:
-      - task: _delete_pods_in_phase
-        vars:
-          PHASE: Succeeded
-
-  delete-pending-pods:
-    desc: Deletes pods with Pending phase
-    cmds:
-      - task: _delete_pods_in_phase
-        vars:
-          PHASE: Pending
+      - for:
+          matrix:
+            PHASE:
+              - Failed
+              - Pending
+              - Succeeded
+        cmd: kubectl delete pods --field-selector status.phase={{.ITEM.PHASE}} -A --ignore-not-found=true
 
   _delete_pods_in_phase:
     desc: Deletes pods with a specific phase
