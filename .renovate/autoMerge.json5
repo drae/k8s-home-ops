@@ -2,30 +2,76 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      matchManagers: ["github-actions"],
+      matchManagers: [
+        "github-actions"
+      ],
       automerge: true,
       automergeType: "branch",
-      matchUpdateTypes: ["minor", "patch"],
+      matchUpdateTypes: [
+        "minor",
+        "patch"
+      ],
       minimumReleaseAge: "3 days",
       ignoreTests: true,
     },
     {
       description: "Automerge trusted actions sooner",
-      matchManagers: ["github-actions"],
-      matchPackageNames: ["/^bjw-s-labs//"],
+      matchManagers: [
+        "github-actions"
+      ],
+      matchPackageNames: [
+        "/^bjw-s-labs//"
+      ],
       automerge: true,
       automergeType: "branch",
-      matchUpdateTypes: ["minor", "patch", "digest"],
+      matchUpdateTypes: [
+        "minor",
+        "patch",
+        "digest"
+      ],
       minimumReleaseAge: "1 hour",
       ignoreTests: true,
     },
     {
       description: "Auto merge KPS minors and patches",
-      matchDatasources: ["helm"],
+      matchDatasources: [
+        "helm"
+      ],
       automerge: true,
-      matchUpdateTypes: ["minor", "patch"],
-      matchPackageNames: ["kube-prometheus-stack"],
+      matchUpdateTypes: [
+        "minor",
+        "patch"
+      ],
+      matchPackageNames: [
+        "kube-prometheus-stack"
+      ],
       ignoreTests: false,
+    },
+    {
+      matchDatasources: [
+        "galaxy-collection"
+      ],
+      automerge: true,
+      automergeType: "branch",
+      matchUpdateTypes: [
+        "minor",
+        "patch"
+      ],
+      minimumReleaseAge: "3 days",
+      ignoreTests: true
+    },
+    {
+      matchDatasources: [
+        "galaxy-role"
+      ],
+      automerge: true,
+      automergeType: "branch",
+      matchUpdateTypes: [
+        "minor",
+        "patch"
+      ],
+      minimumReleaseAge: "3 days",
+      ignoreTests: true
     },
   ],
 }
