@@ -20,7 +20,8 @@
         "github-actions"
       ],
       matchPackageNames: [
-        "/^bjw-s-labs//"
+        "/^bjw-s-labs//",
+        "/^actions\//"
       ],
       automerge: true,
       automergeType: "branch",
