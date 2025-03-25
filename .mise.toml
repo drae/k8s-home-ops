@@ -16,8 +16,8 @@ ANSIBLE_ROLES_PATH="{{config_root}}/.venv/galaxy/ansible_roles"
 ANSIBLE_VARS_ENABLED="host_group_vars,community.sops.sops"
 
 [tools]
-python = '3.13.2'                       #renovate: packageName=python/cpython
 age = '1.2.1'                           #renovate: packageName=FiloSottile/age
+cilium-cli = "0.18.2"                   #renovate: packageName=cilium/cilium-cli
 "pipx:ansible-core" = '2.18.3'          #renovate: packageName=ansible/ansible
 flux2 = '2.5.1'                         #renovate: packageName=fluxcd/flux2
 "pipx:flux-local" = '7.3.0'             #renovate: packageName=allenporter/flux-local
@@ -26,8 +26,10 @@ helmfile = '0.171.0'                    #renovate: packageName=helmfile/helmfile
 jq = '1.7.1'                            #renovate: packageName=jqlang/jq
 krew = '0.4.5'                          #renovate: packageName=kubernetes-sigs/krew
 kubectl = '1.32.3'                      #renovate: datasource=github-tags packageName=kubernetes/kubectl versioning=^kubernetes-(?<version>.*)$
+kubeconform = '0.6.7'                   #renovate: packageName=yannh/kubeconform
 kustomize = '5.6.0'                     #renovate: packageName=kubernetes-sigs/kustomize
 "aqua:mitsuhiko/minijinja" = '2.8.0'    #renovate: packageName=mitsuhiko/minijinja
+python = '3.13.2'                       #renovate: packageName=python/cpython
 sops = '3.9.4'                          #renovate: packageName=mozilla/sops
 stern = '1.32.0'                        #renovate: packageName=stern/stern  
 talhelper = '3.0.21'                    #renovate: packageName=budimanjojo/talhelper
