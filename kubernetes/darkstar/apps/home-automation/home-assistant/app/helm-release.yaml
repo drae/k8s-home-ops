@@ -71,40 +71,40 @@ spec:
               WYOMING_LANGUAGES: en
               STT_OPENAI_URL: https://api.openai.com/v1
               STT_MODELS: "whisper-1"
-              TTS_OPENAI_URL: http://localhost:8880/v1
-              TTS_MODELS: "kokoro"
-              TTS_VOICES: "bf_emma bf_alice bf_lily bm_daniel bm_george bm_lewis bm_fable"
-              #TTS_OPENAI_URL: https://api.openai.com/v1
-              #TTS_MODELS: "tts-1"
-              #TTS_VOICES: "fable"
+              #              TTS_OPENAI_URL: http://localhost:8880/v1
+              #              TTS_MODELS: "kokoro"
+              #              TTS_VOICES: "bf_emma bf_alice bf_lily bm_daniel bm_george bm_lewis bm_fable"
+              TTS_OPENAI_URL: https://api.openai.com/v1
+              TTS_MODELS: "tts-1"
+              TTS_VOICES: "fable"
             envFrom:
               - secretRef:
                   name: home-assistant-ai-secret
-          kokoro:
-            image:
-              repository: ghcr.io/remsky/kokoro-fastapi-cpu
-              tag: v0.2.2@sha256:76549cce3c5cc5ed4089619a9cffc3d39a041476ff99c5138cd18b6da832c4d7
-            env:
-              DEFAULT_VOICE_CODE: b
-            securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
-              fsGroup: 1000
-              fsGroupChangePolicy: OnRootMismatch
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /v1/test
-                    port: 8880
-                  initialDelaySeconds: 40
-                  periodSeconds: 30
-                  timeoutSeconds: 10
-                  failureThreshold: 3
-              readiness:
-                enabled: false
+          #          kokoro:
+          #            image:
+          #              repository: ghcr.io/remsky/kokoro-fastapi-cpu
+          #              tag: v0.2.2@sha256:76549cce3c5cc5ed4089619a9cffc3d39a041476ff99c5138cd18b6da832c4d7
+          #            env:
+          #              DEFAULT_VOICE_CODE: b
+          #            securityContext:
+          #              runAsUser: 1000
+          #              runAsGroup: 1000
+          #              fsGroup: 1000
+          #              fsGroupChangePolicy: OnRootMismatch
+          #            probes:
+          #              liveness:
+          #                enabled: true
+          #                custom: true
+          #                spec:
+          #                  httpGet:
+          #                    path: /v1/test
+          #                    port: 8880
+          #                  initialDelaySeconds: 40
+          #                  periodSeconds: 30
+          #                  timeoutSeconds: 10
+          #                  failureThreshold: 3
+          #              readiness:
+          #                enabled: false
           code-server:
             image:
               repository: ghcr.io/coder/code-server
@@ -135,8 +135,8 @@ spec:
             port: &code-server-port 12321
           wyoming-openai:
             port: 10301
-          kokoro:
-            port: 8880
+    #          kokoro:
+    #            port: 8880
     route:
       app:
         hostnames:
