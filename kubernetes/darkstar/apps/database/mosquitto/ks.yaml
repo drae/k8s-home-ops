@@ -5,16 +5,17 @@ metadata:
   name: &appname mosquitto
   namespace: flux-system
 spec:
-  targetNamespace: home-automation
+  targetNamespace: database
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/darkstar/apps/home-automation/mosquitto/app"
+  path: "./kubernetes/darkstar/apps/database/mosquitto/app"
   prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+  timeout: 5m
   wait: true
   postBuild:
     substitute:

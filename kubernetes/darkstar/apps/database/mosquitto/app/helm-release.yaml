@@ -29,39 +29,36 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/k8s-at-home/eclipse-mosquitto
-              tag: v2.0.15
+              repository: public.ecr.aws/docker/library/eclipse-mosquitto
+              tag: 2.0.21@sha256:94f5a3d7deafa59fa3440d227ddad558f59d293c612138de841eec61bfa4d353
             resources:
               requests:
                 cpu: 5m
                 memory: 10M
               limits:
                 memory: 10M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
     service:
       app:
         controller: mosquitto
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: ${SVB_LB_MOSQUITO}
-        externalTrafficPolicy: Local
         ports:
           mqtt:
-            enabled: true
             primary: true
             port: 1883
-            protocol: TCP
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
-        advancedMounts:
-          mosquitto:
-            app:
-              - path: /mosquitto/data
       config:
         type: configMap
-        name: mosquitto-config
+        name: mosquitto-configmap
         advancedMounts:
           mosquitto:
             app:
               - path: /mosquitto/config/mosquitto.conf
                 subPath: mosquitto.conf
+                readOnly: true
