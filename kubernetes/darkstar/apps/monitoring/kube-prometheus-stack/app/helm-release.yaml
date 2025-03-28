@@ -108,10 +108,15 @@ spec:
                 labels:
                   server: alertmanager.monitoring
         enableAdminAPI: true
+        # REQUIRED: Cilium Hubble metrics are exposed via OpenMetrics. Prometheus Operator requires the `exemplar-storage` feature to be enabled to scrape OpenMetrics.
+        # https://docs.cilium.io/en/stable/observability/metrics/#openmetrics
+        # https://prometheus.io/docs/prometheus/latest/feature_flags/#exemplars-storage
         enableFeatures:
           - auto-gomaxprocs
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
+          - exemplar-storage
+          - memory-snapshot-on-shutdown
         externalLabels:
           cluster: darkstar
         podMonitorSelectorNilUsesHelmValues: false
