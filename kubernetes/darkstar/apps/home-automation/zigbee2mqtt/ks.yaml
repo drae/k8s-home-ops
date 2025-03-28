@@ -21,7 +21,6 @@ spec:
       APP: *appname
       VOLSYNC_CLAIM: zigbee2mqtt-data
   dependsOn:
-    - name: bitwarden-secrets-store
     - name: topolvm
     - name: volsync
-    - name: emqx-operator
+    - name: mosquitto
