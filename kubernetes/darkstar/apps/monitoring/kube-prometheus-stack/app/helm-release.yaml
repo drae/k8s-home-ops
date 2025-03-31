@@ -113,7 +113,6 @@ spec:
         # https://prometheus.io/docs/prometheus/latest/feature_flags/#exemplars-storage
         enableFeatures:
           - auto-gomaxprocs
-          - memory-snapshot-on-shutdown
           - new-service-discovery-manager
           - exemplar-storage
           - memory-snapshot-on-shutdown
