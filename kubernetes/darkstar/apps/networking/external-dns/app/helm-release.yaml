@@ -29,7 +29,7 @@ spec:
         valueFrom:
           secretKeyRef:
             name: cloudflare-dns-secret
-            key: cf_api_token
+            key: cf_token
     extraArgs:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint

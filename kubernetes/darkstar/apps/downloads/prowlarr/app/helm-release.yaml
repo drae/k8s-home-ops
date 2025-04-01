@@ -35,17 +35,15 @@ spec:
               repository: ghcr.io/home-operations/prowlarr
               tag: 1.33.1.4997@sha256:3bb878cf5d447934f4f3848315f3cf393bdc269eee9f823df34e06768a55ddb3
             env:
-              PROWLARR__AUTH__APIKEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: prowlarr-secret
-                    key: api_key
               PROWLARR__INSTANCE_NAME: Prowlarr
               PROWLARR__PORT: &port 9696
               PROWLARR__LOG_LEVEL: info
               PROWLARR__ANALYTICS_ENABLED: "False"
               PROWLARR__AUTHENTICATION_METHOD: External
               PROWLARR__THEME: dark
+            envFrom:
+              - secretRef:
+                  name: prowlarr-secret
             resources:
               requests:
                 cpu: 25m
