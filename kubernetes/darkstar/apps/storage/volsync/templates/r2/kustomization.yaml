@@ -6,4 +6,4 @@ resources:
   - ./volsync-r2-secret.sops.yaml
   - ./volsync-r2-secret-template.yaml
   #  - ./replication-destination.yaml
-  #- ./replication-source.yaml
+  - ./replication-source.yaml
