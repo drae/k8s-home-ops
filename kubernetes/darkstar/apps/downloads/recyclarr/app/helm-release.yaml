@@ -41,7 +41,9 @@ spec:
               - sync
             envFrom:
               - secretRef:
-                  name: recyclarr-secret
+                  name: radarr-secret
+              - secretRef:
+                  name: sonarr-secret
             resources:
               requests:
                 cpu: 5m
