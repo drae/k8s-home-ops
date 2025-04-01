@@ -21,6 +21,5 @@ spec:
       APP: *appname
       VOLSYNC_CLAIM: prowlarr-config
   dependsOn:
-    - name: bitwarden-secrets-store
     - name: topolvm
     - name: volsync

@@ -19,4 +19,3 @@ spec:
   dependsOn:
     - name: topolvm
     - name: kube-prometheus-stack
-    - name: bitwarden-secrets-store

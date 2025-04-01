@@ -22,6 +22,5 @@ spec:
       VOLSYNC_CLAIM: radarr-config
       VOLSYNC_CAPACITY: 2Gi
   dependsOn:
-    - name: bitwarden-secrets-store
     - name: topolvm
     - name: volsync
