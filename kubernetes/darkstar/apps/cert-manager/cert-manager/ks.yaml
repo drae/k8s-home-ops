@@ -20,26 +20,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname cert-manager-self-signed
-  namespace: flux-system
-spec:
-  targetNamespace: cert-manager
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
-  interval: 10m
-  path: "./kubernetes/darkstar/apps/cert-manager/cert-manager/self-signed"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-home-ops
-  wait: true
-  dependsOn:
-    - name: cert-manager
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: &appname cert-manager-issuers
   namespace: flux-system
 spec:
@@ -56,4 +36,3 @@ spec:
   wait: true
   dependsOn:
     - name: cert-manager
-    - name: bitwarden-secrets-store

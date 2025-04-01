@@ -2,7 +2,7 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
-  - ./externalsecret.yaml
+  - ./sonarr-secret.sops.yaml
   - ./pvc.yaml
   - ./helm-release.yaml
   # PVC and volsync templates

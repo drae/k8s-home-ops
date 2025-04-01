@@ -11,15 +11,13 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
   path: "./kubernetes/darkstar/apps/actions-runner-system/actions-runner-controller/operator"
   prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+  timeout: 5m
   wait: false
-  dependsOn:
-    - name: bitwarden-secrets-store
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -33,12 +31,12 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 30m
-  timeout: 5m
   path: "./kubernetes/darkstar/apps/actions-runner-system/actions-runner-controller/runners"
   prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+  timeout: 5m
   wait: false
   dependsOn:
     - name: actions-runner-controller

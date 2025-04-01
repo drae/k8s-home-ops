@@ -37,10 +37,10 @@ spec:
     testFramework:
       enabled: false
     admin:
-      existingSecret: "grafana-secret"
+      existingSecret: grafana-secret
     grafana.ini:
       server:
-        root_url: "https://grafana.p.lan.starstreak.net"
+        root_url: https://grafana.p.lan.starstreak.net
       paths:
         data: /var/lib/grafana/data
         logs: /var/log/grafana
@@ -277,9 +277,6 @@ spec:
           revision: 4
           datasource: Prometheus
       system:
-        external-secrets:
-          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
-          datasource: Prometheus
         node-exporter-full:
           # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
