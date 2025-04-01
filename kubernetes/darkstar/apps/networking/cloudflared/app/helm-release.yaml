@@ -39,12 +39,17 @@ spec:
               - tunnel
               - run
             env:
-              NO_AUTOUPDATE: "true"
-              TUNNEL_METRICS: 0.0.0.0:8080
-              TUNNEL_TRANSPORT_PROTOCOL: auto
-            envFrom:
-              - secretRef:
-                  name: cloudflared-secret
+              - name: NO_AUTOUPDATE
+                value: "true"
+              - name: TUNNEL_METRICS
+                value: 0.0.0.0:8080
+              - name: TUNNEL_TRANSPORT_PROTOCOL
+                value: auto
+              - name: TUNNEL_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: tunnel-token
+                    key: cloudflared-secret
             probes:
               liveness:
                 enabled: true
