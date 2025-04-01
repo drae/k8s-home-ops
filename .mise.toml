@@ -30,7 +30,7 @@ kubeconform = '0.6.7'                   #renovate: packageName=yannh/kubeconform
 kustomize = '5.6.0'                     #renovate: packageName=kubernetes-sigs/kustomize
 "aqua:mitsuhiko/minijinja" = '2.9.0'    #renovate: packageName=mitsuhiko/minijinja
 python = '3.13.2'                       #renovate: packageName=python/cpython
-sops = '3.10.0'                          #renovate: packageName=mozilla/sops
+sops = '3.10.1'                          #renovate: packageName=mozilla/sops
 stern = '1.32.0'                        #renovate: packageName=stern/stern  
 talhelper = '3.0.21'                    #renovate: packageName=budimanjojo/talhelper
 talosctl = '1.9.5'                      #renovate: packageName=siderolabs/talos
