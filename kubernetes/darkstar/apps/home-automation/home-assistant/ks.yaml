@@ -23,6 +23,5 @@ spec:
       VOLSYNC_CLAIM: home-assistant-config
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
-    - name: bitwarden-secrets-store
     - name: topolvm
     - name: volsync
