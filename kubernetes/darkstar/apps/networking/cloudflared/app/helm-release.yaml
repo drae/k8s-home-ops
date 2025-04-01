@@ -48,8 +48,8 @@ spec:
               - name: TUNNEL_TOKEN
                 valueFrom:
                   secretKeyRef:
-                    name: tunnel-token
-                    key: cloudflared-secret
+                    name: cloudflared-secret
+                    key: tunnel-token
             probes:
               liveness:
                 enabled: true
