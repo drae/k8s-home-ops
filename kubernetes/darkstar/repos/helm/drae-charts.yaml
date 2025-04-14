@@ -7,5 +7,5 @@ metadata:
 spec:
   type: oci
   interval: 30m
-  url: oci://ghcr.io/drae/
+  url: oci://ghcr.io/drae/templated-secret-controller
   timeout: 3m
