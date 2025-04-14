@@ -6,7 +6,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: templated-secret-controller/charts/templated-secret-controller
+      chart: charts/templated-secret-controller
       version: 0.1.1
       interval: 30m
       sourceRef:
