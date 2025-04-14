@@ -11,6 +11,7 @@ resources:
   - ./cilium-charts.yaml
   - ./coredns-charts.yaml
   - ./crunchy-charts.yaml
+  - ./drae-charts.yaml
   - ./emberstack-charts.yaml
   - ./emqx-charts.yaml
   #  - ./democratic-csi-charts.yaml
