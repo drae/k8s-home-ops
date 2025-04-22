@@ -136,6 +136,13 @@ spec:
         globalMounts:
           - path: /mnt/media
             readOnly: true
+      media-2:
+        type: nfs
+        server: 10.1.10.10
+        path: /mnt/zstore-2/media
+        globalMounts:
+          - path: /mnt/media-2
+            readOnly: true
       tmp:
         type: emptyDir
       transcode:
