@@ -25,7 +25,7 @@ helm = '3.17.3'                         #renovate: packageName=helm/helm
 helmfile = '0.171.0'                    #renovate: packageName=helmfile/helmfile
 jq = '1.7.1'                            #renovate: packageName=jqlang/jq
 krew = '0.4.5'                          #renovate: packageName=kubernetes-sigs/krew
-kubectl = '1.32.3'                      #renovate: datasource=github-tags packageName=kubernetes/kubectl versioning=^kubernetes-(?<version>.*)$
+kubectl = '1.32.4'                      #renovate: datasource=github-tags packageName=kubernetes/kubectl versioning=^kubernetes-(?<version>.*)$
 kubeconform = '0.6.7'                   #renovate: packageName=yannh/kubeconform
 kustomize = '5.6.0'                     #renovate: packageName=kubernetes-sigs/kustomize
 "aqua:mitsuhiko/minijinja" = '2.9.0'    #renovate: packageName=mitsuhiko/minijinja
