@@ -20,7 +20,7 @@ age = '1.2.1'                           #renovate: packageName=FiloSottile/age
 cilium-cli = "0.18.2"                   #renovate: packageName=cilium/cilium-cli
 "pipx:ansible-core" = '2.18.5'          #renovate: packageName=ansible/ansible
 flux2 = '2.5.1'                         #renovate: packageName=fluxcd/flux2
-"pipx:flux-local" = '7.3.0'             #renovate: packageName=allenporter/flux-local
+"pipx:flux-local" = '7.4.0'             #renovate: packageName=allenporter/flux-local
 helm = '3.17.3'                         #renovate: packageName=helm/helm
 helmfile = '0.171.0'                    #renovate: packageName=helmfile/helmfile
 jq = '1.7.1'                            #renovate: packageName=jqlang/jq
