@@ -41,7 +41,7 @@ spec:
       app:
         controller: unifi
         ports:
-          http:
+          https:
             port: &port 8443
             protocol: HTTPS
           controller:
@@ -87,3 +87,13 @@ spec:
     persistence:
       unifi:
         existingClaim: unifi-config
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
+      cert:
+        type: secret
+        name: p-lan-starstreak-net-unifi
+        globalMounts:
+          - path: /config/data/keystore
+            subPath: keystore.jks

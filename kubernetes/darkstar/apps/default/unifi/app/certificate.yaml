@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://schemas.tholinka.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: p-lan-starstreak-net-unifi
+spec:
+  secretName: p-lan-starstreak-net-unifi
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: "unifi.p.lan.starstreak.net"
+  dnsNames:
+    - "unifi.p.lan.starstreak.net"
+  keystores:
+    jks:
+      create: true
+      alias: unifi
+      password: aircontrolenterprise
