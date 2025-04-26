@@ -64,7 +64,7 @@ spec:
           wyoming-openai:
             image:
               repository: ghcr.io/roryeckel/wyoming_openai
-              tag: main@sha256:29c81da919a29159fcca9515eadb66afd317c91c0881122ba3244b3ce17986ab
+              tag: main@sha256:b3a1d1371b5cfede64a887f91e301396d89e007198091bfdfd2870c4a541bf28
             env:
               WYOMING_URI: tcp://0.0.0.0:10301
               WYOMING_LOG_LEVEL: INFO
