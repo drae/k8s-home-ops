@@ -90,5 +90,5 @@ spec:
         type: secret
         name: p-lan-starstreak-net-unifi
         globalMounts:
-          - path: /config/data/keystore
+          - path: /config/data/keystore.jks
             subPath: keystore.jks
