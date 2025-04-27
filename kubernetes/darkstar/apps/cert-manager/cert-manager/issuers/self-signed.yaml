@@ -1,0 +1,36 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: cluster-self-signed-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: self-signed-starstreak-net
+  namespace: cert-manager
+spec:
+  # this is discouraged but required by ios
+  commonName: self-signed-starstreak-net
+  secretName: self-signed-starstreak-net-secret
+  isCA: true
+  issuerRef:
+    name: cluster-self-signed-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS8
+    size: 2048
+  subject:
+    organizations:
+      - starstreak.net
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: self-signed-starstreak-net
+spec:
+  ca:
+    secretName: self-signed-starstreak-net-secret
