@@ -6,6 +6,6 @@ metadata:
   name: ramblurr-charts
   namespace: flux-system
 spec:
-  interval: 30m
+  interval: 1h
   url: https://ramblurr.github.io/crunchy-userinit-controller
   timeout: 3m

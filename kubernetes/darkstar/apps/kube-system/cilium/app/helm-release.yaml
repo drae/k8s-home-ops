@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: cilium
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: cilium
@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: cilium-charts
         namespace: flux-system
-      interval: 30m
+      interval: 1h
   install:
     createNamespace: true
   valuesFrom:
