@@ -9,7 +9,7 @@ spec:
   targetRefs:
     - group: ""
       kind: Service
-      name: unifi
+      name: "8443"
       sectionName: https
   validation:
     wellKnownCACertificates: System
