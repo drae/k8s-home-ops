@@ -4,14 +4,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   # - ./actions-runner-controller-charts.yaml
-  - ./angelnu-charts.yaml
-  - ./aqua-charts.yaml
+  # - ./angelnu-charts.yaml
+  # - ./aqua-charts.yaml
   - ./backube-charts.yaml
   # - ./bjw-s-charts.yaml
   - ./cilium-charts.yaml
   # - ./coredns-charts.yaml
   # - ./crunchy-charts.yaml
-  - ./emberstack-charts.yaml
+  # - ./emberstack-charts.yaml
   - ./emqx-charts.yaml
   # - ./democratic-csi-charts.yaml
   - ./external-secrets-charts.yaml
