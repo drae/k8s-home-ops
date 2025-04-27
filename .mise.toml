@@ -34,5 +34,5 @@ sops = '3.10.2'                          #renovate: packageName=mozilla/sops
 stern = '1.32.0'                        #renovate: packageName=stern/stern  
 talhelper = '3.0.21'                    #renovate: packageName=budimanjojo/talhelper
 talosctl = '1.9.5'                      #renovate: packageName=siderolabs/talos
-task = '3.43.2'                         #renovate: packageName=go-task/task
+task = '3.43.3'                         #renovate: packageName=go-task/task
 "pipx:uv" = '0.6.17'                     #renovate: packageName=astral-sh/uv
