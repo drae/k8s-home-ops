@@ -21,7 +21,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: templated-secret-controller
-  interval: 30m
+  interval: 1h
   values:
     replicaCount: 1
     metrics:

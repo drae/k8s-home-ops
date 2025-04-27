@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/darkstar/apps/actions-runner-system/actions-runner-controller/operator"
   prune: true
   sourceRef:
@@ -30,7 +30,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 30m
+  interval: 1h
   path: "./kubernetes/darkstar/apps/actions-runner-system/actions-runner-controller/runners"
   prune: true
   sourceRef:

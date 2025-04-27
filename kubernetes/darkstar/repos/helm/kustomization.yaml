@@ -3,17 +3,17 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./actions-runner-controller-charts.yaml
+  # - ./actions-runner-controller-charts.yaml
   - ./angelnu-charts.yaml
   - ./aqua-charts.yaml
   - ./backube-charts.yaml
-  - ./bjw-s-charts.yaml
+  # - ./bjw-s-charts.yaml
   - ./cilium-charts.yaml
-  - ./coredns-charts.yaml
-  - ./crunchy-charts.yaml
+  # - ./coredns-charts.yaml
+  # - ./crunchy-charts.yaml
   - ./emberstack-charts.yaml
   - ./emqx-charts.yaml
-  #  - ./democratic-csi-charts.yaml
+  # - ./democratic-csi-charts.yaml
   - ./external-secrets-charts.yaml
   - ./grafana-charts.yaml
   - ./intel-charts.yaml
@@ -21,14 +21,13 @@ resources:
   - ./k8tz-charts.yaml
   - ./kubernetes-sigs-external-dns-charts.yaml
   - ./metrics-server-charts.yaml
-  - ./moonbeam-charts.yaml
+  # - ./moonbeam-charts.yaml
   - ./node-feature-discovery-charts.yaml
   - ./openebs-charts.yaml
-  - ./piraeus-charts.yaml
-  - ./postfinance-charts.yaml
-  - ./prometheus-community-charts.yaml
-  - ./ramblurr-charts.yaml
-  #  - ./rook-ceph-charts.yaml
-  - ./spegel-charts.yaml
-  - ./stakater-charts.yaml
+  # - ./piraeus-charts.yaml
+  # - ./postfinance-charts.yaml
+  # - ./prometheus-community-charts.yaml
+  # - ./ramblurr-charts.yaml
+  # - ./spegel-charts.yaml
+  # - ./stakater-charts.yaml
   - ./topolvm-charts.yaml
