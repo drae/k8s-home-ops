@@ -17,7 +17,7 @@ resources:
   - ./external-secrets-charts.yaml
   - ./grafana-charts.yaml
   - ./intel-charts.yaml
-  - ./jetstack-charts.yaml
+  # - ./jetstack-charts.yaml
   - ./k8tz-charts.yaml
   - ./kubernetes-sigs-external-dns-charts.yaml
   - ./metrics-server-charts.yaml

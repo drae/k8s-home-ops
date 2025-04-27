@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./cloudflare-issuer-secret.sops.yaml
   - ./letsencrypt-prod.yaml
+  - ./self-signed.yaml
