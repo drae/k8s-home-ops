@@ -17,8 +17,8 @@ spec:
         containers:
           app:
             image:
-              repository: jacobalberty/unifi
-              tag: v9.1@sha256:150af8f7bd96f597e7441f4598bd82435c2ee73b03b833179d30e6e2666be12b
+              repository: ghcr.io/jacobalberty/unifi-docker
+              tag: v9.1.120@sha256:150af8f7bd96f597e7441f4598bd82435c2ee73b03b833179d30e6e2666be12b
             env:
               RUNAS_UID0: "false"
               UNIFI_UID: "999"
