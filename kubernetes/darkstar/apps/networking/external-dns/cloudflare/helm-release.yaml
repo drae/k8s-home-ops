@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: external-dns
+  name: external-dns-cloudflare
 spec:
   interval: 30m
   chart:
@@ -21,7 +21,7 @@ spec:
     crds: CreateReplace
     disableSchemaValidation: true
   values:
-    fullnameOverride: &name external-dns
+    fullnameOverride: &name external-dns-cloudflare
     domainFilters:
       - starstreak.net
     env:
@@ -49,6 +49,7 @@ spec:
       enabled: true
     sources:
       - gateway-httproute
+      - gateway-tlsroute
       - crd
     txtPrefix: "k8s."
   postRenderers:
