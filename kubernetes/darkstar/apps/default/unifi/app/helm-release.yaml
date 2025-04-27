@@ -38,6 +38,9 @@ spec:
     service:
       app:
         controller: unifi
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.1.10.36
         ports:
           https:
             port: &port 8443
@@ -94,3 +97,4 @@ spec:
         name: p-lan-starstreak-net-unifi
         globalMounts:
           - path: /unifi/cert
+            subPath: cert/
