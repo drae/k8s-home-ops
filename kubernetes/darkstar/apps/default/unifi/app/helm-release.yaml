@@ -24,11 +24,10 @@ spec:
               UNIFI_UID: "999"
               UNIFI_GID: "999"
               UNIFI_STDOUT: "true"
-              JVM_INIT_HEAP_SIZE:
               JVM_MAX_HEAP_SIZE: 1024M
-              CERTNAME: tls.crt
-              CERT_PRIVATE_NAME: tls.key
-              CERT_IS_CHAIN: "true"
+              # CERTNAME: tls.crt
+              # CERT_PRIVATE_NAME: tls.key
+              # CERT_IS_CHAIN: "true"
             resources:
               requests:
                 memory: 1Gi
@@ -49,14 +48,6 @@ spec:
             enabled: true
             port: 8080
             protocol: TCP
-          portal-http:
-            enabled: false
-            port: 8880
-            protocol: HTTP
-          portal-https:
-            enabled: false
-            port: 8843
-            protocol: HTTPS
           speedtest:
             enabled: true
             port: 6789
@@ -95,6 +86,15 @@ spec:
       cert:
         type: secret
         name: p-lan-starstreak-net-unifi
-        globalMounts:
-          - path: /unifi/cert
-            subPath: cert/
+        advancedMounts:
+          unifi:
+            app:
+              - path: /unifi/cert/cert.pem
+                readOnly: true
+                subPath: tls.crt
+              - path: /unifi/cert/privkey.pem
+                readOnly: true
+                subPath: tls.key
+              - path: /unifi/data/keystore
+                readOnly: false
+                subPath: keystore.jks
