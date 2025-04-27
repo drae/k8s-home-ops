@@ -12,8 +12,8 @@ spec:
       - dns01:
           cloudflare:
             apiTokenSecretRef:
-              name: cf-token
-              key: cloudflare-issuer-secret
+              name: cloudflare-issuer-secret
+              key: cf-token
         selector:
           dnsZones:
             - starstreak.net
