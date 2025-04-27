@@ -23,15 +23,22 @@ spec:
   chartRef:
     kind: OCIRepository
     name: smartctl-exporter
-  upgrade:
-    cleanupOnFail: true
   values:
     fullnameOverride: *app
     config:
       devices:
         - /dev/sda # boot drive
         - /dev/nvme0n1 # data drive
+    image:
+      registry: quay.io
     serviceMonitor:
       enabled: true
-    prometheusRules:
-      enabled: false
+      relabelings:
+        - action: labeldrop
+          regex: (pod)
+        - action: replace
+          regex: (.*)
+          replacement: $1.p.lan.starstreak.net
+          sourceLabels:
+            - __meta_kubernetes_endpoint_node_name
+          targetLabel: instance
