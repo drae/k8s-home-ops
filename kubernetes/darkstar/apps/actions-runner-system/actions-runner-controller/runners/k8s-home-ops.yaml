@@ -1,20 +1,28 @@
 ---
+# yaml-language-server: $schema=https://schemas.tholinka.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: gha-runner-scale-set
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.11.0
+  url: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: arc-k8s-home-ops
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: actions-runner-controller-charts/gha-runner-scale-set
-      version: 0.11.0
-      sourceRef:
-        kind: HelmRepository
-        name: actions-runner-controller-charts
-        namespace: flux-system
-      interval: 30m
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: gha-runner-scale-set
   values:
     githubConfigUrl: https://github.com/drae/k8s-home-ops
     githubConfigSecret: arc-k8s-home-ops-secret

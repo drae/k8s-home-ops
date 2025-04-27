@@ -34,7 +34,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
-  interval: 30m
+  interval: 1h
   prune: true
   wait: true
   dependsOn:

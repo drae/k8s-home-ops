@@ -1,19 +1,27 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/ocirepository-source-v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: node-exporter
+spec:
+  interval: 10m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.45.3
+  url: oci://ghcr.io/prometheus-community/charts/prometheus-node-exporter
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: node-exporter
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: prometheus-node-exporter
-      version: 4.45.3
-      sourceRef:
-        kind: HelmRepository
-        name: prometheus-community-charts
-        namespace: flux-system
-      interval: 30m
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: node-exporter
   values:
     fullnameOverride: node-exporter
     image:
