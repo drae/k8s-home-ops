@@ -26,6 +26,9 @@ spec:
               UNIFI_STDOUT: "true"
               JVM_INIT_HEAP_SIZE:
               JVM_MAX_HEAP_SIZE: 1024M
+              CERTNAME: tls.crt
+              CERT_PRIVATE_NAME: tls.key
+              CERT_IS_CHAIN: "true"
             resources:
               requests:
                 memory: 1Gi
@@ -90,5 +93,4 @@ spec:
         type: secret
         name: p-lan-starstreak-net-unifi
         globalMounts:
-          - path: /config/data/keystore.jks
-            subPath: keystore.jks
+          - path: /unifi/cert
