@@ -19,6 +19,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      APP_UID: "999"
+      APP_GID: "999"
       VOLSYNC_CLAIM: unifi-config
       VOLSYNC_CAPACITY: 20Gi
   dependsOn:
