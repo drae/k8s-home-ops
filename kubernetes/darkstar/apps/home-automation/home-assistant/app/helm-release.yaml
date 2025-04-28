@@ -138,7 +138,7 @@ spec:
           - hass.p.lan.starstreak.net
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: networking
             sectionName: https
         rules:
           - matches:
@@ -162,7 +162,7 @@ spec:
           - hass.starstreak.net
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: networking
             sectionName: https
         rules:
           - backendRefs:

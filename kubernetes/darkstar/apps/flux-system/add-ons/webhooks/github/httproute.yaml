@@ -9,7 +9,7 @@ spec:
     - flux.starstreak.net
   parentRefs:
     - name: external
-      namespace: kube-system
+      namespace: networking
       sectionName: https
   rules:
     - backendRefs:
