@@ -1,0 +1,85 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: config
+    namespace: networking
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: internal
+  labels:
+    gateway: internal
+spec:
+  gatewayClassName: envoy
+  #  addresses:
+  #    - type: IPAddress
+  #      value: 10.1.10.30
+  infrastructure:
+    annotations:
+      lbipam.cilium.io/ips: 10.1.10.30,::ffff:10.1.10.30
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "*.p.lan.starstreak.net"
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.p.lan.starstreak.net"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: "gateway-starstreak.net-tls"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: external
+  annotations:
+    external-dns.alpha.kubernetes.io/target: &hostname ingress.starstreak.net
+  labels:
+    gateway: external
+spec:
+  gatewayClassName: envoy
+  #  addresses:
+  #    - type: IPAddress
+  #      value: 10.1.10.31
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: *hostname
+      lbipam.cilium.io/ips: 10.1.10.31,::ffff:10.1.10.31
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "*.starstreak.net"
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.starstreak.net"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: "gateway-starstreak.net-tls"

@@ -326,7 +326,7 @@ spec:
           - grafana.p.lan.starstreak.net
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: networking
             sectionName: https
     persistence:
       enabled: false

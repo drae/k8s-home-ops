@@ -4,7 +4,7 @@ originRequest:
 
 ingress:
   - hostname: "starstreak.net"
-    service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
+    service: &svc https://envoy-network-external-b1d9befd.networking.svc.cluster.local
   - hostname: "*.starstreak.net"
     service: *svc
   - service: http_status:404

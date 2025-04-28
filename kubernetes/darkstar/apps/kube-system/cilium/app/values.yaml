@@ -29,12 +29,13 @@ endpointRoutes:
   enabled: true
 
 envoy:
-  rollOutPods: true
+  enabled: false
+#  rollOutPods: true
 
-gatewayAPI:
-  enabled: true
-  enableAlpn: true
-  xffNumTrustedHops: 1
+#gatewayAPI:
+#  enabled: true
+#  enableAlpn: true
+#  xffNumTrustedHops: 1
 
 hubble:
   enabled: true
