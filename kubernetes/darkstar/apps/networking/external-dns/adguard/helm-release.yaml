@@ -17,7 +17,7 @@ spec:
   values:
     fullnameOverride: &name external-dns-adguard
     domainFilters:
-      - starstreak.net
+      - p.lan.starstreak.net
     podAnnotations:
       secret.reloader.stakater.com/reload: adguard-dns-secret
     policy: sync
