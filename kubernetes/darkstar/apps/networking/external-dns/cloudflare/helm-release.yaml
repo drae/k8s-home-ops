@@ -14,14 +14,7 @@ spec:
         name: kubernetes-sigs-external-dns-charts
         namespace: flux-system
       interval: 1h
-  install:
-    crds: CreateReplace
-    disableSchemaValidation: true
-  upgrade:
-    crds: CreateReplace
-    disableSchemaValidation: true
   values:
-    fullnameOverride: &name external-dns-cloudflare
     domainFilters:
       - starstreak.net
     env:
@@ -35,31 +28,15 @@ spec:
       - --crd-source-kind=DNSEndpoint
       - --cloudflare-proxied
       - --gateway-label-filter=gateway==external
+    fullnameOverride: &name external-dns-cloudflare
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-secret
     policy: sync
     provider: cloudflare
-    resources:
-      requests:
-        cpu: 13m
-        memory: 42M
-      limits:
-        memory: 42M
     serviceMonitor:
       enabled: true
     sources:
       - gateway-httproute
-      - gateway-tlsroute
       - crd
-    txtPrefix: "k8s."
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              version: v1
-              kind: Deployment
-              name: *name
-            patch: |
-              - op: add
-                path: /spec/template/spec/enableServiceLinks
-                value: false
+    txtOwnerId: default
+    txtPrefix: k8s.
