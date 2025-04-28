@@ -12,12 +12,6 @@ spec:
       namespace: networking
       sectionName: https
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      timeouts:
-        request: 100m
     - backendRefs:
         - name: tvheadend
           port: 9981
