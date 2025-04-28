@@ -15,9 +15,16 @@ spec:
         namespace: flux-system
       interval: 1h
   values:
-    fullnameOverride: &name external-dns-adguard
     domainFilters:
       - p.lan.starstreak.net
+    extraArgs:
+      - --ingress-class=internal
+      - --managed-record-types=A
+      - --managed-record-types=AAAA
+      - --managed-record-types=CNAME
+      - --managed-record-types=TXT
+      - --managed-record-types=SRV
+    fullnameOverride: &name external-dns-adguard
     podAnnotations:
       secret.reloader.stakater.com/reload: adguard-dns-secret
     policy: sync
@@ -59,17 +66,12 @@ spec:
                 key: ADGUARD_PASSWORD
           - name: DRY_RUN
             value: "false"
-    resources:
-      requests:
-        cpu: 13m
-        memory: 42M
-      limits:
-        memory: 42M
+    registry: txt
     serviceMonitor:
       enabled: true
     sources:
       - gateway-httproute
-      - gateway-tlsroute
-      - crd
+      - service
     triggerLoopOnEvent: true
-    txtPrefix: "k8s."
+    txtOwnerId: default
+    txtPrefix: k8s.
