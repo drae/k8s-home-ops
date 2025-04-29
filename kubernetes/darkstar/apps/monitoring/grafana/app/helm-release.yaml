@@ -242,6 +242,15 @@ spec:
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
+        envoy-clusters:
+          url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-clusters.json
+          datasource: Prometheus
+        envoy-gateway-global:
+          url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-gateway-global.json
+          datasource: Prometheus
+        envoy-proxy-global:
+          url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-proxy-global.json
+          datasource: Prometheus
         external-dns:
           # renovate: dashboardName="External-DNS"
           gnetId: 15038
