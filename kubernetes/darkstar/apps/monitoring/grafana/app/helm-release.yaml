@@ -278,8 +278,8 @@ spec:
               value: ".*-bootstrap"
         zfs:
           # renovate: dashboardName="ZFS"
-          gnetId: 7845
-          revision: 4
+          gnetId: 15362
+          revision: 1
           datasource: Prometheus
       system:
         node-exporter-full:
