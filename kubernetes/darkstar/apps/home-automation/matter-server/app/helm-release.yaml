@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -34,7 +35,12 @@ spec:
           app:
             image:
               repository: ghcr.io/home-assistant-libs/python-matter-server
-              tag: 7.0.1
+              tag: 7.1.0b0
+            args:
+              - --storage-path=/data
+              - --primary-interface=net1
+              - --log-level=debug
+              - --log-level-sdk=detail
             env:
               MATTER_SERVER__INSTANCE_NAME: *app
               MATTER_SERVER__PORT: &port 5580
@@ -58,9 +64,6 @@ spec:
     service:
       app:
         controller: matter-server
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: 10.1.10.35
         ports:
           api:
             primary: true
@@ -86,3 +89,6 @@ spec:
           matter-server:
             app:
               - path: /data
+      tmp:
+        type: emptyDir
+        medium: Memory
