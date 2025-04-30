@@ -22,7 +22,7 @@ cilium-cli = "0.18.2"                   #renovate: packageName=cilium/cilium-cli
 flux2 = '2.5.1'                         #renovate: packageName=fluxcd/flux2
 "pipx:flux-local" = '7.4.0'             #renovate: packageName=allenporter/flux-local
 helm = '3.17.3'                         #renovate: packageName=helm/helm
-helmfile = '0.171.0'                    #renovate: packageName=helmfile/helmfile
+helmfile = '1.0.0'                    #renovate: packageName=helmfile/helmfile
 jq = '1.7.1'                            #renovate: packageName=jqlang/jq
 krew = '0.4.5'                          #renovate: packageName=kubernetes-sigs/krew
 kubectl = '1.33.0'                      #renovate: datasource=github-tags packageName=kubernetes/kubectl versioning=^kubernetes-(?<version>.*)$
