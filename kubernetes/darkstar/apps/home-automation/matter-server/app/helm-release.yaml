@@ -69,7 +69,6 @@ spec:
             primary: true
             protocol: TCP
             port: *port
-        externalTrafficPolicy: Cluster
     route:
       app:
         hostnames:
