@@ -25,13 +25,12 @@ nodes:
     installDiskSelector:
       size: "<= 256GB"
       type: ssd
-    #    machineDisks:
-    #      - device: /dev/disk/by-id/usb-WDC_PC_S_N730_SDBQNTY-256_012345678906-0:0
-    #        partitions:
-    #          - mountpoint: /var/mnt/usb
     kernelModules:
       - name: dm_thin_pool
       - name: dm_mod
+    machineSpec:
+      secureboot: true
+      useUKI: true
     nameservers:
       - 10.1.10.1
     networkInterfaces:
@@ -72,6 +71,9 @@ controlPlane:
         - mitigations=off # Less security, more speed
         - security=none # Less security, more speed
         - net.ifnames=1 # Enable predictable NIC naming
+        - nvme_core.default_ps_max_latency_us=5500
+        - pci=noaer
+        - -selinux
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
@@ -91,25 +93,11 @@ controlPlane:
             kubernetes:
               disabled: true
         scheduler:
-          config:
-            apiVersion: kubescheduler.config.k8s.io/v1
-            kind: KubeSchedulerConfiguration
-            profiles:
-              - schedulerName: default-scheduler
-                pluginConfig:
-                  - name: PodTopologySpread
-                    args:
-                      defaultingType: List
-                      defaultConstraints:
-                        - maxSkew: 1
-                          topologyKey: kubernetes.io/hostname
-                          whenUnsatisfiable: ScheduleAnyway
-
-    # Enable MutatingAdmissionPolicy
-    - |-
-      cluster:
+          extraArgs:
+            bind-address: 0.0.0.0
         apiServer:
           extraArgs:
+            enable-aggregator-routing: true
             runtime-config: admissionregistration.k8s.io/v1alpha1=true
             feature-gates: MutatingAdmissionPolicy=true
 
@@ -193,21 +181,12 @@ controlPlane:
               wsize=131072
               nconnect=8
 
-    # Configure Linux kernel parameters
-    - |-
-      machine:
-        install:
-          extraKernelArgs:
-            - nvme_core.default_ps_max_latency_us=5500
-            - pci=noaer
-            - mitigations=off
-
     # Configure kubelet
     - |-
       machine:
         kubelet:
           extraConfig:
-            maxPods: 200
+            maxPods: 500
           nodeIP:
             validSubnets:
               - 10.1.10.0/24
@@ -227,7 +206,6 @@ controlPlane:
       machine:
         udev:
           rules:
-            - SUBSYSTEM=="drm", KERNEL=="card*", GROUP="44", MODE="0660"
             - SUBSYSTEM=="drm", KERNEL=="renderD*", GROUP="44", MODE="0660"
 
     # Configure time server
