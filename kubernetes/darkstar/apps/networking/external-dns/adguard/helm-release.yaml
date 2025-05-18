@@ -67,8 +67,6 @@ spec:
           - name: DRY_RUN
             value: "false"
     registry: txt
-    serviceMonitor:
-      enabled: true
     sources:
       - gateway-httproute
       - service
