@@ -11,9 +11,9 @@ includes:
   ansible:
     taskfile: ".taskfiles/ansible"
     dir: .taskfiles/ansible
-#  disk:
-#    taskfile: ".taskfiles/disk"
-#    dir: .taskfiles/disk
+  bootstrap:
+    taskfile: ".taskfiles/bootstrap"
+    dir: .taskfiles/bootstrap
   flux:
     dir: .taskfiles/flux
     taskfile: .taskfiles/flux
