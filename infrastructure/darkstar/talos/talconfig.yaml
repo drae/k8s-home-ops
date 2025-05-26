@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
-clusterName: ${clusterName}
-endpoint: https://${clusterEndpointIP}:6443
+clusterName: darkstar
+endpoint: https://10.1.10.20:6443
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
 talosVersion: v1.10.2
@@ -12,14 +12,13 @@ cniConfig:
   name: none
 
 additionalApiServerCertSans: &san
-  - ${clusterEndpointIP}
-  - ${clusterName}
-  - ${clusterName}.${domainName}
+  - &clusterEndpointIP 10.1.10.20
+  - darkstar.starstreak.net
   - "127.0.0.1"
 additionalMachineCertSans: *san
 
 nodes:
-  - hostname: alpha.${clusterName}.${domainName}
+  - hostname: alpha.darkstar.lan.starstreak.net
     ipAddress: 10.1.10.21
     controlPlane: true
     installDiskSelector:
@@ -150,12 +149,12 @@ controlPlane:
           extraHostEntries:
             - ip: ${clusterEndpointIP}
               aliases:
-                - ${clusterName}
-                - ${clusterName}.${domainName}
+                - darkstar
+                - darkstar.lan.starstreak.net
             - ip: 10.1.10.10
               aliases:
                 - apollo
-                - apollo.${domainName}
+                - apollo.lan.starstreak.net
 
     # Configure containerd
     - |

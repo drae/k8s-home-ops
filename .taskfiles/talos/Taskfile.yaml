@@ -7,53 +7,49 @@ tasks:
     desc: Generate clusterconfig for Talos
     cmds:
       - talhelper genconfig
-        --env-file {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/talenv.sops.yaml
-        --secret-file {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/talsecret.sops.yaml
-        --config-file {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/talconfig.yaml
-        --out-dir {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/clusterconfig
-    requires:
-      vars:
-        - cluster
+        --env-file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talenv.sops.yaml
+        --secret-file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talsecret.sops.yaml
+        --config-file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talconfig.yaml
+        --out-dir {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig
     preconditions:
       - which talhelper
-      - test -f {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/talenv.sops.yaml
-      - test -f {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/talsecret.sops.yaml
-      - test -f {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/talconfig.yaml
+      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talenv.sops.yaml
+      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talsecret.sops.yaml
+      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talconfig.yaml
 
   apply-clusterconfig:
     desc: Apply clusterconfig for a Talos cluster
     vars:
       CLUSTERCONFIG_FILES:
-        sh: find {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/clusterconfig -type f -name '*.yaml' -printf '%f\n'
+        sh: find {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig -type f -name '*.yaml' -printf '%f\n'
     cmds:
       - for:
           var: CLUSTERCONFIG_FILES
         task: apply-machineconfig
         vars:
-          cluster: "{{ .cluster }}"
           filename: "{{.ITEM}}"
           hostname: |-
             {{ trimPrefix (printf "%s-" .cluster) .ITEM | trimSuffix ".yaml" }}
-    requires:
-      vars:
-        - cluster
     preconditions:
-      - talosctl config get-contexts | grep {{.cluster}}
-      - test -d {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/clusterconfig
+      - talosctl config get-contexts | grep darkstar
+      - test -d {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig
 
   apply-machineconfig:
     internal: true
     desc: Apply a single Talos machineConfig to a Talos node
     cmds:
-      - talosctl --context {{.cluster}} apply-config
+      - talosctl --context darkstar apply-config
         --nodes "{{.hostname}}"
-        --file "{{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/clusterconfig/{{.filename}}"
-        {{ if eq "true" .dry_run }}--dry-run{{ end }}
+        --file "{{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig/{{.filename}}"
+        --mode="{{.MODE}}"
+        {{ if eq "true" .INSECURE }}--insecure{{ end }}
+        {{ if eq "true" .DRY_RUN }}--dry-run{{ end }}
+    preconditions:
+      - talosctl config get-contexts | grep darkstar
+      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig/{{.filename}}
     requires:
       vars:
-        - cluster
         - hostname
         - filename
-    preconditions:
-      - talosctl config get-contexts | grep {{.cluster}}
-      - test -f {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/clusterconfig/{{.filename}}
+    vars:
+      MODE: '{{.MODE | default "auto"}}'

@@ -1,11 +1,10 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/helmfile
 helmDefaults:
+  cleanupOnFail: true
   wait: true
   waitForJobs: true
   timeout: 600
-  recreatePods: true
-  force: true
 
 repositories:
   - name: cilium
@@ -35,3 +34,13 @@ releases:
     needs:
       - monitoring/prometheus-operator-crds
       - kube-system/cilium
+
+  - name: format-lvm
+    namespace: kube-system
+    atomic: true
+    chart: oci://ghcr.io/bjw-s-labs/helm/app-template
+    version: 4.0.1
+    values:
+      - ../templates/format-lvm.yaml.gotmpl
+    needs:
+      - kube-system/coredns
