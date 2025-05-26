@@ -5,118 +5,41 @@ version: "3"
 tasks:
   talos:
     desc: Bootstrap Talos
-    summary: |
-      Args:
-        cluster: Cluster to run command against (required)
-        controller: Controller node to run command against (required)
-    prompt: Bootstrap Talos on the '{{.cluster}}' cluster... continue?
+    prompt: Bootstrap Talos on the cluster... continue?
     cmds:
       - task: :talos:apply-clusterconfig
         vars:
           INSECURE: "true"
-      - task: bootstrap-etcd
-        vars: &vars
-          cluster: "{{.cluster}}"
-          controller: "{{.controller}}"
-      - task: fetch-kubeconfig
-        vars: *vars
-      - task: bootstrap-integrations
-        vars: *vars
-    requires:
-      vars:
-        - cluster
-        - controller
-
-  bootstrap-etcd:
-    desc: Bootstrap Etcd
-    cmd: until talosctl --context {{.cluster}} --nodes {{.controller}} bootstrap; do sleep 10; done
-    requires:
-      vars:
-        - cluster
-        - controller
-
-  bootstrap-integrations:
-    desc: Bootstrap core integrations needed for Talos
-    cmds:
-      - until kubectl --context {{.cluster}} wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - helmfile --kube-context {{.cluster}} --file {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/integrations/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - until kubectl --context {{.cluster}} wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
-    requires:
-      vars:
-        - cluster
+      - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
+      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name darkstar {{.KUBERNETES_DIR}}/darkstar
+      - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/integrations/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/integrations/helmfile.yaml destroy --selector name=format-lvm
+    env:
+      NODE_COUNT:
+        sh: talosctl --nodes {{.TALOS_CONTROLLER}} config info --output json | jq --raw-output '.nodes | length'
     preconditions:
-      - which helmfile
-      - sh: kubectl config get-contexts {{.cluster}}
-        msg: "Kubectl context {{.cluster}} not found"
-      - test -f {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/integrations/helmfile.yaml
-
-  fetch-kubeconfig:
-    desc: Fetch kubeconfig from Talos controllers
-    cmd: |
-      talosctl --context {{.cluster}} kubeconfig --nodes {{.controller}} \
-          --force --force-context-name {{.cluster}} {{.KUBERNETES_DIR}}/{{.cluster}}
-    requires:
-      vars:
-        - cluster
-    preconditions:
-      - talosctl config get-contexts | grep {{.cluster}}
+      - which talosctl helmfile kubectl
+      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/integrations/helmfile.yaml
+      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/templates/format-lvm.yaml.gotmpl
+    vars:
+      TALOS_CONTROLLER:
+        sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
 
   flux:
     desc: Bootstrap Flux into a Kubernetes cluster
-    summary: |
-      Args:
-        cluster: Cluster to run command against (required)
-        prompt: Bootstrap Flux into the '{{.cluster}}' cluster... continue?
+    prompt: Bootstrap Flux into the cluster... continue?
     cmds:
       # Install Flux
-      - kubectl --context {{.cluster}} apply --server-side --kustomize {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/
+      - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/darkstar/bootstrap/
       # Install sops secret
-      - sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/age-key.sops.yaml | kubectl --context {{.cluster}} apply -f -
+      - sops --decrypt {{.KUBERNETES_DIR}}/darkstar/bootstrap/age-key.sops.yaml | kubectl apply -f -
       # Install Flux Kustomization resources - this kicks everything off
-      - kubectl --context {{.cluster}} apply --server-side --kustomize {{.KUBERNETES_DIR}}/{{.cluster}}/flux/configure
+      - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/darkstar/flux/configure
     preconditions:
-      - sh: "kubectl config get-contexts {{.cluster}}"
-        msg: "Kubectl context {{.cluster}} not found"
-      - sh: "test -f $HOME/.config/sops/age/personal-keys.txt"
-        msg: "Personel SOPS keys missing from sops/age"
-      - test -f {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/age-key.sops.yaml
-      - sh: "sops --decrypt {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap/age-key.sops.yaml"
+      - which kubectl sops
+      - sh: "test -f {{.PROJECT_DIR}}/age.key"
+        msg: "SOPS age.key missing from {{.PROJECT_DIR}}"
+      - sh: "sops --decrypt {{.KUBERNETES_DIR}}/darkstar/bootstrap/age-key.sops.yaml"
         msg: "Cannot decrypt flux sops key"
-      - kustomize build {{.KUBERNETES_DIR}}/{{.cluster}}/bootstrap
-      - kustomize build {{.KUBERNETES_DIR}}/{{.cluster}}/flux/configure
-    requires:
-      vars:
-        - cluster
-
-  apply:
-    desc: Apply a Flux Kustomization resource for a cluster
-    summary: |
-      Args:
-        cluster: Cluster to run command against (required)
-        path: Path to the Flux Kustomization resource (required)
-        name: Name of the Flux Kustomization to apply (default: last segment of <path> variable)
-        ns: Namespace the Flux Kustomization exists in (default: flux-system)
-    cmds:
-      - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
-      - flux --context {{.cluster}} build ks {{.ks_name}}
-        --namespace {{.ns}}
-        --kustomization-file {{.kustomization_file}}
-        --path {{.kustomization_path}}
-        {{ if contains "not found" .kustomization_found }}--dry-run{{ end }}
-        |
-        kubectl --context {{.cluster}} apply --server-side
-        --field-manager=kustomize-controller -f -
-    vars:
-      kustomization_path: "{{.KUBERNETES_DIR}}/{{.cluster}}/apps/{{.path}}"
-      kustomization_file: "{{.kustomization_path}}/ks.yaml"
-      cluster: '{{ or .cluster (fail "Argument (cluster) is required") }}'
-      path: '{{ or .path (fail "Argument (path) is required") }}'
-      ks_name: '{{ .name | default (splitList "/" .path | last) }}'
-      ns: '{{.ns | default "flux-system"}}'
-      kustomization_found:
-        sh: flux --context {{.cluster}} --namespace {{.ns}} get kustomization {{.ks_name}} 2>&1
-    preconditions:
-      - sh: "test -f {{.kustomization_file}}"
-        msg: "Kustomization file {{.kustomization_file}} not found"
-      - sh: kubectl config get-contexts {{.cluster}}
-        msg: "Kubectl context {{.cluster}} not found"
+      - kustomize build {{.KUBERNETES_DIR}}/darkstar/bootstrap
+      - kustomize build {{.KUBERNETES_DIR}}/darkstar/flux/configure

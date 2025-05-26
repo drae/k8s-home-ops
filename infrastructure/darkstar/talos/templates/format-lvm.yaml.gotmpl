@@ -1,0 +1,52 @@
+controllers:
+  main:
+    type: job
+    annotations:
+      helm.sh/hook: "post-install,post-upgrade"
+      helm.sh/hook-delete-policy: "before-hook-creation"
+    job:
+      backoffLimit: 0
+      parallelism: {{ requiredEnv "NODE_COUNT" }}
+    containers:
+      disk:
+        image:
+          repository: docker.io/library/alpine
+          tag: latest
+        command:
+          - /bin/sh
+          - -c
+        args:
+          - |
+            apk add --no-cache findutils nvme-cli lvm2;
+            echo "=== Wiping $DISK ===";
+            nvme format --lbaf=0 /dev/disk/nvme0n1 --force;
+            nvme format --block-size=4096 /dev/disk/nvme0n1 --force;
+            pvcreate /dev/nvme0n1;
+            vgcreate topolvm_vg /dev/nvme0n1;
+            vgchange -a ey topolvm_vg;
+            lvcreate --thinpool -l 100%FREE -n topolvm_thin topolvm_vg;
+        securityContext:
+          privileged: true
+    pod:
+      restartPolicy: Never
+defaultPodOptions:
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: format-lvm
+persistence:
+  host-var:
+    type: hostPath
+    hostPath: /var
+    hostPathType: Directory
+    globalMounts:
+      - path: /mnt/host_var
+  host-dev:
+    type: hostPath
+    hostPath: /dev
+    hostPathType: Directory
+    globalMounts:
+      - path: /dev
