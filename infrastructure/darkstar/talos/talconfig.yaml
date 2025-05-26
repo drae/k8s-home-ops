@@ -31,8 +31,6 @@ nodes:
     machineSpec:
       secureboot: true
       useUKI: true
-    nameservers:
-      - 10.1.10.1
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
@@ -42,12 +40,16 @@ nodes:
         dhcpOptions:
           ipv4: true
           ipv6: true
+        vip:
+          ip: *clusterEndpointIP
         vlans:
           - vlanId: 20
             mtu: 1500
-            dhcp: true
+            dhcp: false
             dhcpOptions:
               routeMetric: 4096
+    nodeLabels:
+      intel.feature.node.kubernetes.io/gpu: "true"
     patches:
       - |-
         machine:
@@ -88,13 +90,20 @@ controlPlane:
             disabled: true
         proxy:
           disabled: true
-        discovery:
-          registries:
-            kubernetes:
-              disabled: true
         scheduler:
-          extraArgs:
-            bind-address: 0.0.0.0
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
         apiServer:
           extraArgs:
             enable-aggregator-routing: true

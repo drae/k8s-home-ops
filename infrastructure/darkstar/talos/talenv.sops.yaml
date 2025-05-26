@@ -1,11 +1,7 @@
 clusterName: ENC[AES256_GCM,data:WZOjc3dP++4=,iv:dWF+FAzwxC4yW93vVTBrSYNKvqwXSXAs96jYt/RWciI=,tag:iblE8pfOsQXBlTHeFHlcow==,type:str]
 domainName: ENC[AES256_GCM,data:+QsybN1aknjuwP+n6hko+9hH,iv:hViie9J30kIu38OVEwH8bnmlqWHG54x4O03Bw5rObcw=,tag:vccG+XKeH2sgGvqAJTiw3w==,type:str]
-clusterEndpointIP: ENC[AES256_GCM,data:sYFYxR265ZXk1w==,iv:82QuUwojHd0s0vnAkDFv/3nb+CN2HwwMAwZDuqeK2Vc=,tag:yKv5Jx03V2j/YuoG+fNhsw==,type:str]
+clusterEndpointIP: ENC[AES256_GCM,data:LmXW0vc17T/l5Q==,iv:2/lQJsIiY5vBNrm9dlajtymjg0pcG4iyNLE+qzHDqag=,tag:RChUle0t/vY3YP0/V5JUmA==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
     age:
         - recipient: age1kpfj2296mrlq75ffktg9zksgausntzamd7tu88hcxm2mytray3aqqp33yr
           enc: |
@@ -16,8 +12,7 @@ sops:
             dkpFak91TUxmaTVDeXd0c2R5ZnV3cUkKshd4rmsrk9dQSphsKZl93x1RKnBVd4S5
             dNbd86KjWcjzzP0J73PyPLNWvtormNZTGeFswVFqXH0T7V2KfaKzgw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-03-21T22:11:02Z"
-    mac: ENC[AES256_GCM,data:ckL9EO3NlMY++KM6O5ZE/zDE4TL1fR2muTMBYamQYZC1FOBw/HyVNTub1fnCxVt6YpvigCNV8x3hsUnCa+0CYqWK2VWBMORqAYYPUt1azLR79Kbyo0ibqvqQlGlAJTUquEHaQQ/hdbRW9T6RAaRbRUiEWISMQFuyEw9BbI0l4/w=,iv:xWVpprj00rOnY+iHpv1e0fqMzeI9QsEazd3zs+YKL0Y=,tag:Yeb81mzx0xT6nYLuDNkeQg==,type:str]
-    pgp: []
+    lastmodified: "2025-05-23T09:24:26Z"
+    mac: ENC[AES256_GCM,data:t/Squkosw4nFT9BwLfd4Lpk3BEmpMyb7hN8qqVHbOKtH9HKvBKoWe5RbJ8XzAppndkzUWXNtr1R8tCIk2iFwKrRnzaQpnJcqOUITBC3JG2VYYXF411hSY1vTikOpTqvWvJCeNXAJmC32S6tRF82/nDgp7pUM6i1CPNBtPluIezk=,iv:H/IDVsaYdrS9aM49ZiwT+2gOrPeYaKQopb8Trked52o=,tag:S7wrbRIC25TXG7W1dG6xOA==,type:str]
     unencrypted_regex: ^(kind)$
-    version: 3.9.4
+    version: 3.10.2
