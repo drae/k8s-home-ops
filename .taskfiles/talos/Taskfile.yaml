@@ -3,61 +3,6 @@
 version: "3"
 
 tasks:
-  bootstrap:
-    desc: Bootstrap Talos
-    summary: |
-      Args:
-        cluster: Cluster to run command against (required)
-        controller: Controller node to run command against (required)
-    prompt: Bootstrap Talos on the '{{.cluster}}' cluster... continue?
-    cmds:
-      - task: bootstrap-etcd
-        vars: &vars
-          cluster: "{{.cluster}}"
-          controller: "{{.controller}}"
-      - task: fetch-kubeconfig
-        vars: *vars
-      - task: bootstrap-integrations
-        vars: *vars
-    requires:
-      vars:
-        - cluster
-        - controller
-
-  bootstrap-etcd:
-    desc: Bootstrap Etcd
-    cmd: until talosctl --context {{.cluster}} --nodes {{.controller}} bootstrap; do sleep 10; done
-    requires:
-      vars:
-        - cluster
-        - controller
-
-  bootstrap-integrations:
-    desc: Bootstrap core integrations needed for Talos
-    cmds:
-      - until kubectl --context {{.cluster}} wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - helmfile --kube-context {{.cluster}} --file {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/integrations/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - until kubectl --context {{.cluster}} wait --for=condition=Ready nodes --all --timeout=600s; do sleep 10; done
-    requires:
-      vars:
-        - cluster
-    preconditions:
-      - which helmfile
-      - sh: kubectl config get-contexts {{.cluster}}
-        msg: "Kubectl context {{.cluster}} not found"
-      - test -f {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/integrations/helmfile.yaml
-
-  fetch-kubeconfig:
-    desc: Fetch kubeconfig from Talos controllers
-    cmd: |
-      talosctl --context {{.cluster}} kubeconfig --nodes {{.controller}} \
-          --force --force-context-name {{.cluster}} {{.KUBERNETES_DIR}}/{{.cluster}}
-    requires:
-      vars:
-        - cluster
-    preconditions:
-      - talosctl config get-contexts | grep {{.cluster}}
-
   generate-clusterconfig:
     desc: Generate clusterconfig for Talos
     cmds:
@@ -83,7 +28,7 @@ tasks:
     cmds:
       - for:
           var: CLUSTERCONFIG_FILES
-        task: _apply-machineconfig
+        task: apply-machineconfig
         vars:
           cluster: "{{ .cluster }}"
           filename: "{{.ITEM}}"
@@ -96,13 +41,13 @@ tasks:
       - talosctl config get-contexts | grep {{.cluster}}
       - test -d {{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/clusterconfig
 
-  _apply-machineconfig:
+  apply-machineconfig:
     internal: true
     desc: Apply a single Talos machineConfig to a Talos node
     cmds:
       - talosctl --context {{.cluster}} apply-config
         --nodes "{{.hostname}}"
-        --file "{{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/clusterconfig/{{.filename}}" --insecure
+        --file "{{.INFRASTRUCTURE_DIR}}/{{.cluster}}/talos/clusterconfig/{{.filename}}"
         {{ if eq "true" .dry_run }}--dry-run{{ end }}
     requires:
       vars:
