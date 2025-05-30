@@ -283,7 +283,9 @@ spec:
           # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
           revision: 40
-          datasource: Prometheus
+          datasource:
+            - name: DS_PROMETHEUS
+              value: Prometheus
         prometheus:
           # renovate: dashboardName="Prometheus"
           gnetId: 19105
