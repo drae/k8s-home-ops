@@ -22,7 +22,7 @@ resources:
   - ./kubernetes-sigs-external-dns-charts.yaml
   - ./metrics-server-charts.yaml
   # - ./moonbeam-charts.yaml
-  - ./node-feature-discovery-charts.yaml
+  #  - ./node-feature-discovery-charts.yaml
   - ./openebs-charts.yaml
   # - ./piraeus-charts.yaml
   # - ./postfinance-charts.yaml
