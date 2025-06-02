@@ -15,11 +15,13 @@ releases:
     namespace: monitoring
     chart: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
     version: 20.0.1
+    atomic: true
 
   - name: cilium
     namespace: kube-system
     chart: cilium/cilium
     version: 1.17.4
+    atomic: true
     values:
       - ../../../../kubernetes/darkstar/apps/kube-system/cilium/app/values.yaml
     needs:
@@ -29,17 +31,28 @@ releases:
     namespace: kube-system
     chart: oci://ghcr.io/coredns/charts/coredns
     version: 1.42.2
+    atomic: true
     values:
       - ../../../../kubernetes/darkstar/apps/kube-system/coredns/app/values.yaml
     needs:
       - monitoring/prometheus-operator-crds
       - kube-system/cilium
 
+  - name: cert-manager
+    namespace: cert-manager
+    chart: oci://quay.io/jetstack/charts/cert-manager
+    version: v1.17.2
+    atomic: true
+    values:
+      - ../../../../kubernetes/darkstar/apps/cert-manager/cert-manager/app/values.yaml
+    needs:
+      - kube-system/coredns
+      -
   - name: format-lvm
     namespace: kube-system
-    atomic: true
     chart: oci://ghcr.io/bjw-s-labs/helm/app-template
     version: 4.0.1
+    atomic: true
     values:
       - ../templates/format-lvm.yaml.gotmpl
     needs:
