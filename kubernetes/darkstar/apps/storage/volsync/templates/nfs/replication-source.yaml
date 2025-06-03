@@ -7,7 +7,7 @@ metadata:
 spec:
   sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
-    schedule: "0 */6 * * *"
+    schedule: "0 */2 * * *"
   restic:
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-local-hostpath}"
@@ -18,9 +18,8 @@ spec:
       fsGroup: ${APP_GID:-2000}
     pruneIntervalDays: 7
     retain:
-      hourly: 4
+      hourly: 24
       daily: 7
-      weekly: 4
     repository: "${APP}-volsync-nfs"
     storageClassName: "${VOLSYNC_STORAGECLASS:-topolvm-thin-provisioner}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-topolvm-thin-provisioner}"
