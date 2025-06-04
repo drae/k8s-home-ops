@@ -11,7 +11,7 @@ collections:
   - name: community.docker
     version: 4.6.0
   - name: kubernetes.core
-    version: 5.3.0
+    version: 6.0.0
 roles:
   - name: geerlingguy.pip
     version: 3.1.0
