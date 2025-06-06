@@ -34,4 +34,4 @@ stern = '1.32.0'                        #renovate: packageName=stern/stern
 talhelper = '3.0.28'                    #renovate: packageName=budimanjojo/talhelper
 talosctl = '1.10.3'                      #renovate: packageName=siderolabs/talos
 task = '3.43.3'                         #renovate: packageName=go-task/task
-"pipx:uv" = '0.7.11'                     #renovate: packageName=astral-sh/uv
+"pipx:uv" = '0.7.12'                     #renovate: packageName=astral-sh/uv
