@@ -3,7 +3,6 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
   - ./namespace.yaml
-  - ./music-assistant/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
   - ./tvheadend/ks.yaml
