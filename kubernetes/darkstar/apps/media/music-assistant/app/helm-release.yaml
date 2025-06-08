@@ -3,18 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: music-assistant
+  name: &app music-assistant
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.1
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s-charts
-        namespace: flux-system
-      interval: 30m
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
   values:
     controllers:
       music-assistant:
@@ -26,14 +21,14 @@ spec:
               [{
                 "name":"multus-iot",
                 "namespace": "networking",
-                "ips": ["10.1.20.95/24"],
+                "ips": ["10.1.20.36/24"],
                 "mac": "92:cf:d7:05:70:80"
               }]
           securityContext:
             runAsNonRoot: true
-            runAsUser: ${APP_UID}
-            runAsGroup: ${APP_GID}
-            fsGroup: ${APP_GID}
+            runAsUser: 2000
+            runAsGroup: 2000
+            fsGroup: 2000
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
           app:
@@ -64,33 +59,36 @@ spec:
                   - ALL
     service:
       app:
-        controller: music-assistant
+        controller: *app
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: ${SVC_LB_MASS}
-        externalTrafficPolicy: Cluster
+          lbipam.cilium.io/ips: 10.1.10.36
         ports:
           http:
-            port: 8095
+            port: &port 8095
           stream:
             port: 8097
-    ingress:
+    route:
       app:
-        className: ingress-nginx-int
-        hosts:
-          - host: music-assistant.p.lan.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - music-assistant.p.lan.starstreak.net
+        parentRefs:
+          - name: internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
       media:
         type: nfs
         server: 10.1.10.10
-        path: /mnt/zstore/media/music
+        path: /mnt/zstore-2/media/music
         globalMounts:
           - path: /mnt/media/music
             readOnly: true
+      tmp:
+        type: emptyDir
