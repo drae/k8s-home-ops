@@ -80,11 +80,9 @@ spec:
               tag: v2025.1.1@sha256:ff15cfb276045bd61662162d9f70c2596c1cb5acd345c3f62835b2aea397ba69
             env:
               ONNX_PROVIDER: OpenVINOExecutionProvider
+            args:
+              - --debug
             securityContext:
-              #              runAsUser: 1000
-              #              runAsGroup: 1000
-              #              fsGroup: 1000
-              #              fsGroupChangePolicy: OnRootMismatch
               supplementalGroups:
                 - 44
                 - 109
