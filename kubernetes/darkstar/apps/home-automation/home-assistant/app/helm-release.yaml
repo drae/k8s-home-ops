@@ -24,6 +24,14 @@ spec:
                 "ips": ["10.1.20.33/24"],
                 "mac": "92:cf:d7:05:70:82"
               }]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 2000
+            runAsGroup: 2000
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
         containers:
           app:
             image:
@@ -83,6 +91,10 @@ spec:
             args:
               - --debug
             securityContext:
+              runAsNonRoot: false
+              runAsUser: 0
+              runAsGroup: 0
+              fsGroup: 0
               supplementalGroups:
                 - 44
                 - 109
