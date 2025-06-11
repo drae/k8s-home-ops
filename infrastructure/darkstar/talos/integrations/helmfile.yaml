@@ -51,7 +51,7 @@ releases:
   - name: format-lvm
     namespace: kube-system
     chart: oci://ghcr.io/bjw-s-labs/helm/app-template
-    version: 4.0.1
+    version: 4.1.0
     atomic: true
     values:
       - ../templates/format-lvm.yaml.gotmpl
