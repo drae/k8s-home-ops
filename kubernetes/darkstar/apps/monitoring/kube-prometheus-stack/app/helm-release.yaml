@@ -156,7 +156,7 @@ spec:
                   storage: 25Gi
         #        walCompression: true
         additionalScrapeConfigs: |
-          - job_name: node-exporter
+          - job_name: "node-exporter"
             scrape_interval: 1m
             scrape_timeout: 10s
             honor_timestamps: true
@@ -165,6 +165,19 @@ spec:
                   - "10.1.10.1:9100"
                   - "10.1.10.10:9100"
                   - "10.1.10.98:9100"
+          - job_name: "zfs_exporter"
+            metrics_path: /metrics
+            scrape_interval: 5m
+            scrape_timeout: 1m
+            static_configs:
+              - targets: 
+                  - "10.1.10.10:9134"
+            relabel_configs:
+              - source_labels: 
+                  - name
+                regex: ^([^@]*).*$
+                target_label: filesystem
+                replacement: ${1}
           - job_name: "topolvm"
             kubernetes_sd_configs:
               - role: pod
@@ -172,15 +185,19 @@ spec:
                   names:
                     - storage
             relabel_configs:
-              - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+              - source_labels: 
+                  - __meta_kubernetes_pod_label_app_kubernetes_io_name
                 action: keep
                 regex: node
-              - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+              - source_labels: 
+                  - __address__
+                  - __meta_kubernetes_pod_annotation_prometheus_io_port
                 action: replace
                 regex: ([^:]+)(?::\d+)?;(\d+)
                 replacement: $${1}:$${2}
                 target_label: __address__
-              - source_labels: [__address__]
+              - source_labels:
+                  - __address__
                 action: replace
                 regex: ([^:]+)(?::\d+)?
                 replacement: $${1}
