@@ -2,9 +2,11 @@
 - name: Prepare storage server OS
   hosts:
     - storage
+
   become: true
   gather_facts: true
   any_errors_fatal: true
+
   pre_tasks:
     - name: Pausing for 2 seconds...
       ansible.builtin.pause:
@@ -32,64 +34,19 @@
       tags:
         - skip_ansible_lint
 
+    - name: Restart zfs-exporter
+      ansible.builtin.systemd:
+        name: zfs-exporter
+        enabled: true
+        daemon_reload: true
+        state: restarted
+
   tasks:
     # Include vars
     - name: Load vars
       ansible.builtin.include_vars:
         dir: vars
         files_matching: main.yml
-
-    # Configure localadmin
-    - name: Add additional user SSH public keys
-      ansible.posix.authorized_key:
-        user: "{{ ansible_user }}"
-        key: "{{ item }}"
-      loop: "{{ os_ssh_authorized_keys | default([]) }}"
-
-    - name: Check if hushlogin exists
-      ansible.builtin.stat:
-        path: "/home/{{ ansible_user }}/.hushlogin"
-      register: hushlogin_status
-
-    - name: Silence the login prompt
-      ansible.builtin.file:
-        dest: "/home/{{ ansible_user }}/.hushlogin"
-        state: touch
-        owner: "{{ ansible_user }}"
-        mode: "0775"
-      when:
-        - not hushlogin_status.stat.exists
-
-    - name: Add user to sudoers
-      ansible.builtin.copy:
-        content: "{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
-        dest: "/etc/sudoers.d/{{ ansible_user }}_nopasswd"
-        mode: "0440"
-
-    - name: Add user to users
-      ansible.builtin.user:
-        name: localadmin
-        groups: users
-        append: true
-
-    # Add kah user
-    - name: Add the group 'kah'
-      ansible.builtin.group:
-        name: kah
-        gid: 2000
-        state: present
-
-    - name: Add the user 'kah'
-      ansible.builtin.user:
-        name: kah
-        uid: 2000
-        group: kah
-        groups: users
-        append: true
-        create_home: false
-        home: /nonexistent
-        shell: /bin/nologin
-        state: present
 
     # Set locale
     - name: Set timezone
@@ -121,7 +78,7 @@
       retries: 5
       until: apt_upgrade is success
 
-    - name: Install common packages
+    - name: Install required packages
       ansible.builtin.apt:
         name: "{{ os_packages_install | default([]) }}"
         install_recommends: false
@@ -172,14 +129,6 @@
         autoremove: true
 
     # Setup networking
-    - name: Install network tools
-      ansible.builtin.apt:
-        name: "{{ item }}"
-        update_cache: true
-      loop:
-        - iputils-ping
-        - net-tools
-
     - name: Set hostname to inventory hostname
       ansible.builtin.hostname:
         name: "{{ inventory_hostname }}"
@@ -202,20 +151,94 @@
           ff02::1 ip6-allnodes
           ff02::2 ip6-allrouters
 
-    # Setup filesystem tools
-    - name: Install filesystem tools
-      ansible.builtin.apt:
-        name: "{{ item }}"
-        update_cache: true
-      loop:
-        - gdisk
-        - hdparm
-        - lvm2
-        - nfs-common
-        - nfs-kernel-server
-        - samba
-        - smartmontools
+    #
+    # ZFS
+    #
 
+    # Configure ZFS
+    - name: ZFS
+      ansible.builtin.include_role:
+        name: "mrlesmithjr.zfs"
+      vars:
+        zfs_enable_nfs: true
+        zfs_enable_auto_snapshots: false
+
+    - name: Check for existence of /etc/default/zfs
+      ansible.builtin.stat:
+        path: /etc/default/zfs
+      register: zfs_result
+
+    - name: Modify ZFS_POOL_IMPORT_FLAGS to include altroot=/mnt if it exists
+      ansible.builtin.lineinfile:
+        path: /etc/default/zfs
+        regexp: '^(ZFS_POOL_IMPORT_FLAGS=")([^"]*)"$'
+        line: '\1{% if "\2" and "-o altroot=/mnt" not in "\2" %}\2 -o altroot=/mnt{% elif not "\2" %}-o altroot=/mnt{% else %}\2{% endif %}"'
+        backrefs: true
+        state: present
+      register: zfs_pool_flags_modification_result
+      # Only attempt modification if the file exists
+      when: zfs_result.stat.exists
+
+    - name: Add ZFS_POOL_IMPORT_FLAGS line if it does not exist
+      ansible.builtin.lineinfile:
+        path: /etc/default/zfs
+        line: 'ZFS_POOL_IMPORT_FLAGS="-o altroot=/mnt"'
+        create: true # Creates the file if it doesn't exist
+        insertafter: EOF # Adds the line at the end of the file
+        state: present
+        mode: "0644"
+      register: zfs_pool_flags_addition_result
+      # This task runs ONLY if:
+      # 1. The file was found by the initial stat task (or it will be created if missing).
+      # 2. The previous 'modify' task did NOT find a matching line (zfs_pool_flags_modification_result.matched is false).
+      when:
+        - zfs_result.stat.exists
+        - not zfs_pool_flags_modification_result.matched | default(false) # 'matched' is true if regexp found a line
+
+    # Install the zfs exporter for prometheus
+    - name: Test if zfs_exporter binary exists
+      ansible.builtin.stat:
+        path: /usr/local/bin/zfs_exporter
+      register: zfs_exporter_binary
+
+    - name: Install the zfs exporter
+      when: not zfs_exporter_binary.stat.exists
+      block:
+        - name: Unarchive the zfs exporter
+          ansible.builtin.unarchive:
+            src: https://github.com/pdf/zfs_exporter/releases/download/v{{ zfs_exporter_version }}/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
+            dest: /tmp/
+            remote_src: true
+
+        - name: Copy the zfs_exporter binary to the remote host
+          ansible.builtin.copy:
+            src: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64/zfs_exporter # Adjust path if the binary is directly in the extracted folder or if the folder name is different
+            dest: /usr/local/bin/zfs_exporter # Or your desired installation path on the remote host
+            remote_src: true
+            mode: 0755
+
+        - name: Clean up downloaded and extracted files
+          ansible.builtin.file:
+            path: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
+            state: absent
+
+        - name: Clean up extracted directory
+          ansible.builtin.file:
+            path: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64
+            state: absent
+
+    - name: Create the systemd service
+      ansible.builtin.template:
+        src: zfs-exporter.service.j2
+        dest: /etc/systemd/system/zfs-exporter.service
+        mode: "0644"
+      notify: Restart zfs-exporter
+
+    #
+    # Filesystem
+    #
+
+    # Setup filesystem tools
     - name: Configure smartd
       ansible.builtin.copy:
         dest: /etc/smartd.conf
@@ -224,6 +247,7 @@
           DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -W 4,35,40
       notify: Restart smartd
 
+    # Disable swap
     - name: Check if swap is enabled
       ansible.builtin.command:
         cmd: swapon --summary
@@ -244,62 +268,40 @@
         - swap
         - none
 
-    # Configure ZFS
-    - name: ZFS
-      ansible.builtin.include_role:
-        name: "mrlesmithjr.zfs"
-
     # Security
     - name: Check for existence of grub
       ansible.builtin.stat:
         path: /etc/default/grub
       register: grub_result
 
-    - name: Check if apparmor is disabled
-      ansible.builtin.shell:
-        cmd: grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | grep -c "apparmor=0"
-      register: apparmor_status
-      ignore_errors: true
-      changed_when: apparmor_status.rc != 0
-
-    - name: Check if mitigations is disabled
-      ansible.builtin.shell:
-        cmd: grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | grep -c "mitigations=off"
-      register: mitigations_status
-      ignore_errors: true
-      changed_when: mitigations_status.rc != 0
-
-    - name: Disable apparmor
-      ansible.builtin.replace:
+    - name: Ensure apparmor=0 is set in GRUB_CMDLINE_LINUX
+      ansible.builtin.lineinfile:
         path: /etc/default/grub
-        regexp: '^(GRUB_CMDLINE_LINUX=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
-        replace: '\1 {{ option }}={{ value }}\2'
-      vars:
-        option: apparmor
-        value: 0
-      when:
-        - grub_result.stat.exists
-        - not apparmor_status.changed
+        regexp: '^(GRUB_CMDLINE_LINUX=".*)"$'
+        line: '\1 apparmor=0"'
+        backrefs: true
+        state: present
+      when: grub_result.stat.exists
+      register: apparmor_changed
 
-    - name: Disable mitigations
-      ansible.builtin.replace:
+    - name: Ensure mitigations=off is set in GRUB_CMDLINE_LINUX
+      ansible.builtin.lineinfile:
         path: /etc/default/grub
-        regexp: '^(GRUB_CMDLINE_LINUX=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
-        replace: '\1 {{ option }}={{ value }}\2'
-      vars:
-        option: mitigations
-        value: "off"
-      when:
-        - grub_result.stat.exists
-        - not mitigations_status.changed
+        regexp: '^(GRUB_CMDLINE_LINUX=".*)"$'
+        line: '\1 mitigations=off"'
+        backrefs: true
+        state: present
+      when: grub_result.stat.exists
+      register: mitigations_changed
 
-    - name: Run grub-mkconfig
+    - name: Run grub-mkconfig to apply changes
       ansible.builtin.command:
         cmd: update-grub
-        creates: /boot/grub/grub.cfg
+      changed_when: apparmor_changed.changed or mitigations_changed.changed
+      # This task will only run if either apparmor or mitigations was actually changed
       when:
         - grub_result.stat.exists
-        - (apparmor_status.changed or mitigations_status.changed)
+        - apparmor_changed.changed or mitigations_changed.changed
 
     # Enable cgroupv2 and rootless
     - name: Check if linger is enabled
@@ -315,22 +317,12 @@
       when: not linger_enabled_file.stat.exists
       become: false
 
-    - name: Install rootless packages
-      ansible.builtin.package:
-        name:
-          - dbus-user-session
-          - uidmap
-        state: present
-      become: true
-      when: ansible_os_family == "Debian"
-
     - name: Enable dbus-user-session
       ansible.builtin.systemd:
         name: dbus
         state: started
         enabled: true
         scope: user
-      become: false
 
     - name: Set ping sysctl
       ansible.posix.sysctl:
@@ -338,7 +330,6 @@
         value: "0 2147483647"
         state: present
         reload: true
-      become: true
 
     - name: Set rootfull ports for rootless user sysctl
       ansible.posix.sysctl:
@@ -346,7 +337,6 @@
         value: "0"
         state: present
         reload: true
-      become: true
 
     - name: Check if cgroupv2 is enabled
       ansible.builtin.stat:
@@ -384,7 +374,8 @@
         dest: /etc/udev/rules.d/hdparm.rules
         mode: "0644"
         content: |
-          ACTION=="add|change", KERNEL=="sd[a-z]", ATTRS{queue/rotational}=="1", RUN+="/usr/sbin/hdparm -B 150 -S 180 /dev/%k"
+          # Set power saving for HDDs - 10 min spindown
+          ACTION=="add|change", KERNEL=="sd[a-z]", ATTRS{queue/rotational}=="1", RUN+="/usr/sbin/hdparm -B 128 -S 120 /dev/%k"
 
     - name: Set cpu governor to powersaving
       ansible.builtin.copy:
@@ -392,3 +383,59 @@
         mode: "0644"
         content: |
           KERNEL=="cpu", SUBSYSTEM=="event_source", ACTION=="add", RUN+="/bin/sh -c 'echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor'"
+
+    #
+    # Configure users
+    #
+
+    # Configure localadmin
+    - name: Add additional user SSH public keys
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
+        key: "{{ item }}"
+      loop: "{{ os_ssh_authorized_keys | default([]) }}"
+
+    - name: Check if hushlogin exists
+      ansible.builtin.stat:
+        path: "/home/{{ ansible_user }}/.hushlogin"
+      register: hushlogin_status
+
+    - name: Silence the login prompt
+      ansible.builtin.file:
+        dest: "/home/{{ ansible_user }}/.hushlogin"
+        state: touch
+        owner: "{{ ansible_user }}"
+        mode: "0775"
+      when:
+        - not hushlogin_status.stat.exists
+
+    - name: Add user to sudoers
+      ansible.builtin.copy:
+        content: "{{ ansible_user }} ALL=(ALL:ALL) NOPASSWD:ALL"
+        dest: "/etc/sudoers.d/{{ ansible_user }}_nopasswd"
+        mode: "0440"
+
+    - name: Add user to users
+      ansible.builtin.user:
+        name: localadmin
+        groups: users
+        append: true
+
+    # Add 'shared' user
+    - name: Add the group 'shared'
+      ansible.builtin.group:
+        name: shared
+        gid: 2000
+        state: present
+
+    - name: Add the user 'shared'
+      ansible.builtin.user:
+        name: shared
+        uid: 2000
+        group: shared
+        groups: users
+        append: true
+        create_home: false
+        home: /nonexistent
+        shell: /bin/nologin
+        state: present

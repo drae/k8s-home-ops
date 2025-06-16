@@ -7,16 +7,25 @@ os_timezone: "Europe/London"
 os_ssh_authorized_keys:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnp4n7WX1FgQozEi6qY+E/6y3yg6eqnAdpQHp1MkMTH paul@LAPTOP"
 os_packages_install:
+  - acl
   - apt-transport-https
+  - btop
   - ca-certificates
   - curl
+  - dbus-user-session
+  - gdisk
   - gettext
   - git
-  - htop
+  - hdparm
+  - iputils-ping
+  - lvm2
+  - net-tools
+  - nfs-common
   - nfs-kernel-server
   - ntpdate
   - psmisc
   - samba
+  - smartmontools
   - software-properties-common
   - tmux
   - uidmap
@@ -38,3 +47,4 @@ os_packages_remove:
   - sosreport
   - ubuntu-advantage-tools
   - ufw
+  - zfs-auto-snapshot

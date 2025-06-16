@@ -16,3 +16,7 @@ docker_daemon_options:
 
 # -- Base Docker Directory
 docker_base_dir: /opt/docker
+
+# zfs_exporter
+zfs_exporter_version: 2.3.8
+zfs_exporter_arguments: ""
