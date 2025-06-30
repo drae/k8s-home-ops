@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app audiobookshelf
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      audiobookshelf:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: &uid 2000
+            runAsGroup: &gid 2000
+            fsGroup: 2000
+            fsGroupChangePolicy: "OnRootMismatch"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/advplyr/audiobookshelf
+              tag: 2.25.1@sha256:5154518d8215f8e795fde1c1561080b450af8a6bc0c0bd60c2a920084bf930d6
+            env:
+              AUDIOBOOKSHELF_UID: *uid
+              AUDIOBOOKSHELF_GID: *gid
+              CONFIG_PATH: /config
+              METADATA_PATH: /config/metadata
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 25m
+              limits:
+                memory: 500Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+    service:
+      app:
+        controller: audiobookshelf
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - audiobookshelf.p.lan.starstreak.net
+        parentRefs:
+          - name: internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    persistence:
+      config:
+        existingClaim: "${VOLSYNC_CLAIM}"
+      tmp:
+        type: emptyDir
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /.npm
+      media:
+        type: nfs
+        server: 10.1.10.10
+        path: /mnt/zstore/media
+        globalMounts:
+          - path: /mnt/media
