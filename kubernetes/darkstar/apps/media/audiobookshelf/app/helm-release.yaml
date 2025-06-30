@@ -49,7 +49,7 @@ spec:
         controller: audiobookshelf
         ports:
           http:
-            port: *port
+            port: 80
     route:
       app:
         hostnames:
