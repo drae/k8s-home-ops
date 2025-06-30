@@ -12,7 +12,7 @@ spec:
     namespace: flux-system
   values:
     controllers:
-      radarr:
+      readarr:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -50,7 +50,7 @@ spec:
                   - ALL
     service:
       app:
-        controller: radarr
+        controller: readarr
         ports:
           http:
             port: *port
