@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2025.6.2@sha256:a77cf6de9d140fc2a66136336431217a65982f1ed3cf7dd9539046f3be49dc1b
+              tag: 2025.7.0@sha256:2a7732da550433ac6466103f86b3e10b2e7af5139770410a9428e55c0d9f15e8
             envFrom:
               - secretRef:
                   name: home-assistant-secret
