@@ -19,7 +19,7 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      GATUS_PATH: /web/index.html
+      GATUS_PATH: /identity
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 50Gi
   dependsOn:
