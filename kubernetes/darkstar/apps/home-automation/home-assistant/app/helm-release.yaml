@@ -151,19 +151,22 @@ spec:
               - /config
     service:
       app:
-        controller: home-assistant
+        annotations:
+          lbipam.cilium.io/ips: 10.1.10.33
+        primary: true
+        sessionAffinity: ClientIP
+        type: LoadBalancer
         ports:
           http:
             port: &port 8123
-            primary: true
+      code-server:
+        ports:
           code-server:
             port: &code-server-port 12321
-          #          wyoming-openai:
-          #            port: 10301
+      wyoming-kokoro:
+        ports:
           wyoming-kokoro:
             port: 10210
-          #          kokoro:
-          #            port: 8880
     route:
       app:
         hostnames:
@@ -184,10 +187,10 @@ spec:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
             backendRefs:
-              - name: *app
+              - identifier: code-server
                 port: *code-server-port
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
       app-ext:
         hostnames:
