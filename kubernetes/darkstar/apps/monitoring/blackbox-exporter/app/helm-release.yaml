@@ -85,7 +85,8 @@ spec:
       readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
       capabilities:
-        add: ["NET_RAW"]
+        add:
+          - NET_RAW
     serviceMonitor:
       enabled: true
       defaults:
