@@ -7,4 +7,5 @@ spec:
   endpoints:
     - dnsName: ingress.starstreak.net
       recordType: CNAME
-      targets: ["d11b1c5a-a434-4e35-9866-4110deb8e507.cfargotunnel.com"]
+      targets:
+        - "d11b1c5a-a434-4e35-9866-4110deb8e507.cfargotunnel.com"
