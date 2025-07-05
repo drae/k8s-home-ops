@@ -40,7 +40,6 @@ spec:
                   - ALL
     service:
       app:
-        controller: mosquitto
         ports:
           mqtt:
             primary: true

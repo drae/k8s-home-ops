@@ -61,7 +61,6 @@ spec:
                 memory: 256Mi
     service:
       app:
-        controller: atuin
         ports:
           http:
             port: *port
@@ -75,7 +74,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
     persistence:
       config:

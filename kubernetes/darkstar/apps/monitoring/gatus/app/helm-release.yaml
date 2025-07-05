@@ -80,13 +80,11 @@ spec:
           type: RuntimeDefault
     service:
       app:
-        controller: gatus
         ports:
           http:
             port: *port
     serviceMonitor:
       app:
-        serviceName: gatus
         endpoints:
           - port: http
             scheme: http
@@ -103,7 +101,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
     rbac:
       roles:

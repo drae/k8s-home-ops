@@ -77,16 +77,16 @@ spec:
               - /data
     service:
       app:
-        controller: zigbee2mqtt
         ports:
           http:
-            port: &port 8080
             primary: true
+            port: &port 8080
           metrics:
             enabled: true
             port: 9000
+      code-server:
+        ports:
           code-server:
-            enabled: true
             port: &code-server-port 12321
     route:
       app:
@@ -108,10 +108,10 @@ spec:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
             backendRefs:
-              - name: *app
+              - identifier: code-server
                 port: *code-server-port
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
     persistence:
       data:

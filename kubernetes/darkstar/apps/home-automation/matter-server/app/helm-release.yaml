@@ -63,7 +63,6 @@ spec:
                 memory: "500M"
     service:
       app:
-        controller: matter-server
         ports:
           api:
             primary: true
@@ -79,7 +78,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *port
     persistence:
       config:

@@ -58,7 +58,6 @@ spec:
                 memory: 64Mi
     service:
       app:
-        controller: kromgo
         ports:
           http:
             primary: true
@@ -75,7 +74,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - identifier: app
                 port: *serverPort
     persistence:
       config-file:
