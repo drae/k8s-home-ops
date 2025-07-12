@@ -6,4 +6,4 @@ resources:
   - ./helm-release.yaml
   # PVC and volsync templates
   - ../../../storage/volsync/templates
-  - ../../../monitoring/gatus/templates/internal
+  - ../../../observability/gatus/templates/internal
