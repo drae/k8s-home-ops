@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./service.yaml
   - ./httproute.yaml
-  - ../../../monitoring/gatus/templates/internal
+  - ../../../observability/gatus/templates/internal
