@@ -16,11 +16,19 @@ spec:
     routes:
       - receiver: "null"
         matchers:
-          - alertname =~ "InfoInhibitor|Watchdog"
-      - receiver: "discord"
-        continue: true
+          - name: alertname
+            value: Watchdog
+            matchType: =
+      - receiver: "null"
         matchers:
-          - severity = "critical"
+          - name: alertname
+            value: InfoInhibitor
+            matchType: =
+      - receiver: discord
+        matchers:
+          - name: severity
+            value: critical
+            matchType: =
   inhibitRules:
     - sourceMatch:
         - name: severity
