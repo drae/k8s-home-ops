@@ -13,7 +13,7 @@ spec:
     tag: 75.10.0
   url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
 ---
-# yaml-language-server: $schema=https://schemas.tholinka.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -24,16 +24,39 @@ spec:
     kind: OCIRepository
     name: kube-prometheus-stack
   install:
-    createNamespace: true
+    crds: Skip
+  upgrade:
+    crds: Skip
   values:
     crds:
-      enabled: true
+      enabled: false
     cleanPrometheusOperatorObjectNames: true
     #
     # Individual stack components
     #
     alertmanager:
-      enabled: false
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - alertmanager.p.lan.starstreak.net
+          parentRefs:
+            - name: internal
+              namespace: networking
+              sectionName: https
+      alertmanagerSpec:
+        alertmanagerConfiguration:
+          name: alertmanager
+          global:
+            resolveTimeout: 5m
+        externalUrl: https://alertmanager.p.lan.starstreak.net
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: topolvm-thin-provisioner
+              resources:
+                requests:
+                  storage: 1Gi
     kubeApiServer:
       enabled: true
       serviceMonitor:
@@ -107,28 +130,6 @@ spec:
               namespace: networking
               sectionName: https
       prometheusSpec:
-        alertingEndpoints:
-          - namespace: monitoring
-            name: alertmanager
-            port: 9093
-            apiVersion: v2
-        additionalAlertManagerConfigs:
-          - scheme: http
-            static_configs:
-              - targets:
-                  - "alertmanager.monitoring.svc.cluster.local:9093"
-                labels:
-                  server: alertmanager.monitoring
-        # REQUIRED: Cilium Hubble metrics are exposed via OpenMetrics. Prometheus Operator requires the `exemplar-storage` feature to be enabled to scrape OpenMetrics.
-        # https://docs.cilium.io/en/stable/observability/metrics/#openmetrics
-        # https://prometheus.io/docs/prometheus/latest/feature_flags/#exemplars-storage
-        #        enableFeatures:
-        #          - auto-gomaxprocs
-        #          - new-service-discovery-manager
-        #          - exemplar-storage
-        #          - memory-snapshot-on-shutdown
-        externalLabels:
-          cluster: darkstar
         image:
           registry: docker.io
           repository: prompp/prompp
@@ -157,51 +158,3 @@ spec:
               resources:
                 requests:
                   storage: 25Gi
-        #        walCompression: true
-        additionalScrapeConfigs: |
-          - job_name: "node-exporter"
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            honor_timestamps: true
-            static_configs:
-              - targets:
-                  - "10.1.10.1:9100"
-                  - "10.1.10.10:9100"
-                  - "10.1.10.98:9100"
-          - job_name: "zfs_exporter"
-            metrics_path: /metrics
-            scrape_interval: 5m
-            scrape_timeout: 1m
-            static_configs:
-              - targets: 
-                  - "10.1.10.10:9134"
-            relabel_configs:
-              - source_labels: 
-                  - name
-                regex: ^([^@]*).*$
-                target_label: filesystem
-                replacement: ${1}
-          - job_name: "topolvm"
-            kubernetes_sd_configs:
-              - role: pod
-                namespaces:
-                  names:
-                    - storage
-            relabel_configs:
-              - source_labels: 
-                  - __meta_kubernetes_pod_label_app_kubernetes_io_name
-                action: keep
-                regex: node
-              - source_labels: 
-                  - __address__
-                  - __meta_kubernetes_pod_annotation_prometheus_io_port
-                action: replace
-                regex: ([^:]+)(?::\d+)?;(\d+)
-                replacement: $${1}:$${2}
-                target_label: __address__
-              - source_labels:
-                  - __address__
-                action: replace
-                regex: ([^:]+)(?::\d+)?
-                replacement: $${1}
-                target_label: instance
