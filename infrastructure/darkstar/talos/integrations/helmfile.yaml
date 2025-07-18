@@ -9,6 +9,8 @@ helmDefaults:
 repositories:
   - name: cilium
     url: https://helm.cilium.io
+  - name: postfinance
+    url: https://postfinance.github.io/kubelet-csr-approver
 
 releases:
   - name: prometheus-operator-crds
@@ -47,7 +49,16 @@ releases:
       - ../../../../kubernetes/darkstar/apps/cert-manager/cert-manager/app/values.yaml
     needs:
       - kube-system/coredns
-      -
+
+  - chart: postfinance/kubelet-csr-approver
+    name: kubelet-csr-approver
+    namespace: kube-system
+    values:
+      - ../../../../kubernetes/darkstar/kube-system/kubelet-csr-approver/app/values.yaml
+    version: 1.2.10
+    needs:
+      - cert-manager/cert-manager
+
   - name: format-lvm
     namespace: kube-system
     chart: oci://ghcr.io/bjw-s-labs/helm/app-template
@@ -56,4 +67,4 @@ releases:
     values:
       - ../templates/format-lvm.yaml.gotmpl
     needs:
-      - kube-system/coredns
+      - kube-system/kubelet-csr-approver
