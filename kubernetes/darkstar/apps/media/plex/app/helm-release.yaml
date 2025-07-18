@@ -135,7 +135,7 @@ spec:
       media-2:
         type: nfs
         server: 10.1.10.10
-        path: /mnt/zstore-2/media
+        path: /mnt/zstore/media
         globalMounts:
           - path: /mnt/media-2
             readOnly: true

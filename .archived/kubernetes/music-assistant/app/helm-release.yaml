@@ -86,7 +86,7 @@ spec:
       media:
         type: nfs
         server: 10.1.10.10
-        path: /mnt/zstore-2/media/music
+        path: /mnt/zstore/media/music
         globalMounts:
           - path: /mnt/media/music
             readOnly: true
