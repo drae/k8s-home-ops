@@ -25,7 +25,7 @@ resources:
   #  - ./node-feature-discovery-charts.yaml
   - ./openebs-charts.yaml
   # - ./piraeus-charts.yaml
-  # - ./postfinance-charts.yaml
+  - ./postfinance-charts.yaml
   # - ./prometheus-community-charts.yaml
   # - ./ramblurr-charts.yaml
   # - ./spegel-charts.yaml
