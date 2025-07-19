@@ -50,7 +50,7 @@ spec:
                 memory: 250Mi
                 cpu: 500m
               limits:
-                memory: 1000Mi
+                memory: 2048Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
