@@ -71,10 +71,14 @@ spec:
               WYOMING_URI: tcp://0.0.0.0:10301
               WYOMING_LOG_LEVEL: INFO
               WYOMING_LANGUAGES: en
-              STT_MODELS: "gpt-4o-mini-transcribe gpt-4o-transcribe whisper-1"
-              STT_STREAMING_MODELS: "gpt-4o-mini-transcribe gpt-4o-transcribe"
-              TTS_MODELS: "gpt-4o-mini-tts tts-1"
-            #              TTS_VOICES: "fable"
+              STT_OPENAI_URL: https://api.openai.com/v1
+              STT_MODELS: "whisper-1"
+              STT_STREAMING_MODELS: "gpt-4o-transcribe gpt-4o-mini-transcribe"
+              TTS_OPENAI_URL: https://api.openai.com/v1
+              TTS_MODELS: "gpt-4o-mini-tts tts-1-hd tts-1"
+              TTS_BACKEND: "OPENAI"
+              # TTS_VOICES: "alloy ash coral echo fable onyx nova sage shimmer"
+              TTS_SPEED: "1.0"
             #              TTS_OPENAI_URL: http://localhost:8880/v1
             #              TTS_MODELS: "kokoro"
             #              TTS_VOICES: "bf_emma bf_alice bf_lily bm_daniel bm_george bm_lewis bm_fable"
@@ -165,7 +169,7 @@ spec:
       wyoming-openai:
         ports:
           wyoming-kokoro:
-            port: 10300
+            port: 10301
     #      wyoming-kokoro:
     #        ports:
     #          wyoming-kokoro:
