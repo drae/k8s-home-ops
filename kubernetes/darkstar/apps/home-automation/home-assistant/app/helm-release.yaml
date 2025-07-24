@@ -63,25 +63,37 @@ spec:
               capabilities:
                 drop:
                   - ALL
-          wyoming-openai:
+          #          wyoming-openai:
+          #            image:
+          #              repository: ghcr.io/roryeckel/wyoming_openai
+          #              tag: 0.3.5@sha256:b3f5677b18ae9f298bd1d1ede770958b897322a7e13f7a3a9b221241bc7e825d
+          #            env:
+          #              WYOMING_URI: tcp://0.0.0.0:10301
+          #              WYOMING_LOG_LEVEL: INFO
+          #              WYOMING_LANGUAGES: en
+          #              STT_OPENAI_URL: https://api.openai.com/v1
+          #              STT_MODELS: "whisper-1"
+          #              STT_STREAMING_MODELS: "gpt-4o-mini-transcribe gpt-4o-transcribe"
+          #              TTS_OPENAI_URL: https://api.openai.com/v1
+          #              TTS_MODELS: "gpt-4o-mini-tts tts-1-hd tts-1"
+          #              TTS_BACKEND: "OPENAI"
+          #              # TTS_VOICES: "alloy ash coral echo fable onyx nova sage shimmer"
+          #              TTS_SPEED: "1.0"
+          #            #              TTS_OPENAI_URL: http://localhost:8880/v1
+          #            #              TTS_MODELS: "kokoro"
+          #            #              TTS_VOICES: "bf_emma bf_alice bf_lily bm_daniel bm_george bm_lewis bm_fable"
+          #            envFrom:
+          #              - secretRef:
+          #                  name: home-assistant-ai-secret
+          wyoming-proxy-azure-stt:
             image:
-              repository: ghcr.io/roryeckel/wyoming_openai
-              tag: 0.3.5@sha256:b3f5677b18ae9f298bd1d1ede770958b897322a7e13f7a3a9b221241bc7e825d
+              repository: ghcr.io/hugobloem/wyoming-microsoft-stt-noha
+              tag: 1.3.1@sha256:e70b75731fc4c2c4985f604003637e87ce341d5478c66d9a4d6d60cc8288fef4
             env:
-              WYOMING_URI: tcp://0.0.0.0:10301
-              WYOMING_LOG_LEVEL: INFO
-              WYOMING_LANGUAGES: en
-              STT_OPENAI_URL: https://api.openai.com/v1
-              STT_MODELS: "whisper-1"
-              STT_STREAMING_MODELS: "gpt-4o-mini-transcribe gpt-4o-transcribe"
-              TTS_OPENAI_URL: https://api.openai.com/v1
-              TTS_MODELS: "gpt-4o-mini-tts tts-1-hd tts-1"
-              TTS_BACKEND: "OPENAI"
-              # TTS_VOICES: "alloy ash coral echo fable onyx nova sage shimmer"
-              TTS_SPEED: "1.0"
-            #              TTS_OPENAI_URL: http://localhost:8880/v1
-            #              TTS_MODELS: "kokoro"
-            #              TTS_VOICES: "bf_emma bf_alice bf_lily bm_daniel bm_george bm_lewis bm_fable"
+              AZURE_SERVICE_REGION: uksouth
+            args:
+              - --language=en-GB
+              - --uri=tcp://0.0.0.0:10301
             envFrom:
               - secretRef:
                   name: home-assistant-ai-secret
@@ -166,10 +178,6 @@ spec:
         ports:
           code-server:
             port: &code-server-port 12321
-      wyoming-openai:
-        ports:
-          wyoming-kokoro:
-            port: 10301
     #      wyoming-kokoro:
     #        ports:
     #          wyoming-kokoro:
