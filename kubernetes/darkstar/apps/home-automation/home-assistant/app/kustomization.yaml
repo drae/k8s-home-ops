@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./home-assistant-secret.sops.yaml
   - ./home-assistant-ai-secret.sops.yaml
+  - ./home-assistant-matter-secret.sops.yaml
   - ./pvc.yaml
   - ./helm-release.yaml
   # PVC and volsync templates
