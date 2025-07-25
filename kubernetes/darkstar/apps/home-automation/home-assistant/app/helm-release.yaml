@@ -228,6 +228,11 @@ spec:
                   path:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  add:
+                    - name: "x-ingress-path"
+                      value: "matter"
             backendRefs:
               - identifier: matter-hub
                 port: *matter-port

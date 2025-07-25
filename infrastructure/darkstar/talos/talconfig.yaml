@@ -18,7 +18,7 @@ additionalApiServerCertSans: &san
 additionalMachineCertSans: *san
 
 nodes:
-  - hostname: alpha.darkstar.lan.starstreak.net
+  - hostname: alpha.lan.starstreak.net
     ipAddress: 10.1.10.21
     controlPlane: true
     installDiskSelector:
@@ -49,18 +49,6 @@ nodes:
               routeMetric: 4096
     nodeLabels:
       intel.feature.node.kubernetes.io/gpu: "true"
-    patches:
-      - |-
-        machine:
-          kubelet:
-            extraMounts:
-              - destination: /var/mnt/openebs/local
-                type: bind
-                source: /var/mnt/openebs/local
-                options:
-                  - bind
-                  - rshared
-                  - rw
 
 controlPlane:
   schematic:
@@ -223,3 +211,16 @@ controlPlane:
           disabled: false
           servers:
             - time.cloudflare.com
+
+    # Configure openebs hostpath
+    - |-
+      machine:
+        kubelet:
+          extraMounts:
+            - destination: /var/mnt/openebs/local
+              type: bind
+              source: /var/mnt/openebs/local
+              options:
+                - bind
+                - rshared
+                - rw
