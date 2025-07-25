@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app home-assistant
+  name: home-assistant
 spec:
   interval: 1h
   chartRef:
@@ -54,13 +54,6 @@ spec:
               limits:
                 memory: 2048M
             securityContext:
-              runAsNonRoot: true
-              runAsUser: 2000
-              runAsGroup: 2000
-              fsGroup: 2000
-              fsGroupChangePolicy: OnRootMismatch
-              seccompProfile:
-                type: RuntimeDefault
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
@@ -79,13 +72,6 @@ spec:
               - secretRef:
                   name: home-assistant-matter-secret
             securityContext:
-              runAsNonRoot: true
-              runAsUser: 2000
-              runAsGroup: 2000
-              fsGroup: 2000
-              fsGroupChangePolicy: OnRootMismatch
-              seccompProfile:
-                type: RuntimeDefault
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
@@ -122,6 +108,12 @@ spec:
             envFrom:
               - secretRef:
                   name: home-assistant-ai-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
           #          wyoming-openai:
           #            image:
           #              repository: ghcr.io/roryeckel/wyoming_openai
