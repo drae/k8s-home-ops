@@ -10,3 +10,15 @@ spec:
     requests:
       storage: 2Gi
   storageClassName: topolvm-thin-provisioner
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: matter-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: topolvm-thin-provisioner
