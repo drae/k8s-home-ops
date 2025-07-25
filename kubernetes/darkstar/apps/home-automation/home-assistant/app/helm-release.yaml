@@ -69,7 +69,7 @@ spec:
           matter-hub:
             image:
               repository: ghcr.io/t0bst4r/home-assistant-matter-hub
-              tag: 3.0.0-alpha.87@sha256:586f6bc4314b05d6a786b74040b6bc358d9897dd30ba471190fef435e2a040b6
+              tag: 3.0.0-alpha.76@sha256:df045551916bc208d5db43f0c6a5efea14e0d88e585ef9730df9685d783c8147
             env:
               HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
               HAMH_LOG_LEVEL: info
