@@ -71,29 +71,30 @@ sonarr:
           - 89358767a60cc28783cdc3d0be9388a4 # DSNP - 100
           - 81d1fbf600e2540cee87f3a23f9d3c1c # MAX - 90
           - a880d6abc21e7c16884f3ae393f84179 # HMAX - 90
-          - 3ac5d84fce98bab1b531393e9c82f467 # QIBI - 90
           - d660701077794679fd59e8bdf4ce3a29 # AMZN - 70
           - d34870697c9db575f17700212167be23 # NF - 60
           - 1656adc6d7bb2c8cca6acfb6592db421 # PCOK - 60
           - c67a75ae4a1715f2bb4d492755ba4195 # PMTP - 60
           - 1efe8da11bfd74fbbcd4d8117ddb9213 # STAN - 60
           - 77a7b25585c18af08f60b1547bb9b4fb # CC - 50
-          - 4e9a630db98d5391aec1368a0256e2fe # CRAV - 50
           - 36b72f59f4ea20aad9316f475f2d9fbb # DCU - 50
           - 7a235133c87f7da4c8cccceca7e3c7a6 # HBO - 50
           - f6cce30f1733d5c8194222a7507909bb # HULU - 50
           - 0ac24a2a68a9700bcb7eeca8e5cd644c # iT - 50
-          - b2b980877494b560443631eb1f473867 # NLZ - 50
-          - c30d2958827d1867c73318a5a2957eb1 # RED - 50
           - ae58039e1319178e6be73caab5c42166 # SHO - 50
-          - 5d2317d99af813b6529c7ebf01c83533 # VDL - 50
-          - fb1a91cdc0f26f7ca0696e0e95274645 # OViD - 50
           # Unwanted
           - 85c61753df5da1fb2aab6f2a47426b09 # BR-DISK - -10000
           - 9c11cd3f07101cdba90a2d81cf0e56b4 # LQ - -10000
+          - e2315f990da2e2cbfc9fa5b7a6fcfe48 # LQ release title - -10000
           - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD) - -10000
           - fbcb31d8dabd2a319072b84fc0b7249c # Extras - -10000
-          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - -10000
+          - 15a05bc7c1a36e2b57fd628f8977e2fc # AV1 - -10000
+          # Optional
+          - 32b367365729d530ca1c124a0b180c64 # Bad dual groups - -10000
+          - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup - -10000
+          - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated - -10000
+          - 06d66ab109d4d2eddb2794d21526d140 # Retags - -10000
+          - 1b3994c551cbb92a2c781af061f4ab44 # Scene - -10000
         assign_scores_to:
           - name: WEB-1080p
 
@@ -151,14 +152,17 @@ sonarr:
           - 43b3cf48cb385cd3eac608ee6bca7f09 # UHD Streaming Boost - 20
           - d2d299244a92b8a52d4921ce3897a256 # UHD Streaming Cut - -20
           # Optional
-          - 2016d1676f5ee13a5b7257ff86ac9a93 # SDR - -10000
+          # - 2016d1676f5ee13a5b7257ff86ac9a93 # SDR - -10000
+          - 83304f261cf516bb208c18c54c0adf97 # SDR (no WEBDL) - -10000
+          - 9b64dff695c2115facf1b6ea59c9bd07 # x265 (no HDR/DV) - -10000
           # Unwanted
           - 85c61753df5da1fb2aab6f2a47426b09 # BR-DISK - -10000
           - 9c11cd3f07101cdba90a2d81cf0e56b4 # LQ - -10000
           - e2315f990da2e2cbfc9fa5b7a6fcfe48 # LQ (Release Title) - -10000
-          - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD) - -10000
+          # - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD) - -10000
           - fbcb31d8dabd2a319072b84fc0b7249c # Extras - -10000
           - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - -10000
+          - 15a05bc7c1a36e2b57fd628f8977e2fc # AV1 - -10000
         assign_scores_to:
           - name: WEB-2160p
 
