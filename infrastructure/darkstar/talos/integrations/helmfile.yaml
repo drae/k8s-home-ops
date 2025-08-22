@@ -50,15 +50,6 @@ releases:
     needs:
       - kube-system/coredns
 
-  - chart: postfinance/kubelet-csr-approver
-    name: kubelet-csr-approver
-    namespace: kube-system
-    values:
-      - ../../../../kubernetes/darkstar/kube-system/kubelet-csr-approver/app/values.yaml
-    version: 1.2.10
-    needs:
-      - cert-manager/cert-manager
-
   - name: format-lvm
     namespace: kube-system
     chart: oci://ghcr.io/bjw-s-labs/helm/app-template
@@ -67,4 +58,4 @@ releases:
     values:
       - ../templates/format-lvm.yaml.gotmpl
     needs:
-      - kube-system/kubelet-csr-approver
+      - cert-manager/cert-manager
