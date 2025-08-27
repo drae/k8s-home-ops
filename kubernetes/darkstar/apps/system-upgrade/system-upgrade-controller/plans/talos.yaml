@@ -15,10 +15,10 @@ spec:
         values:
           - linux
   secrets:
-    - name: system-upgrade
+    - name: system-upgrade-controller
       path: /var/run/secrets/talos.dev
       ignoreUpdates: true
-  serviceAccountName: system-upgrade
+  serviceAccountName: system-upgrade-controller
   upgrade:
     image: ghcr.io/jfroy/tnu:0.4.3
     args:
