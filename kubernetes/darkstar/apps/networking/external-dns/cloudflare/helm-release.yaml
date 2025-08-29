@@ -17,6 +17,8 @@ spec:
   values:
     domainFilters:
       - starstreak.net
+    excludeDomains:
+      - p.lan.starstreak.net
     env:
       - name: CF_API_TOKEN
         valueFrom:
