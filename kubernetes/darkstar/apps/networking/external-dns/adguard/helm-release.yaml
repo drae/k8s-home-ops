@@ -21,7 +21,6 @@ spec:
       - --ingress-class=internal
       - --managed-record-types=A
       - --managed-record-types=AAAA
-      - --managed-record-types=CNAME
       - --managed-record-types=TXT
       - --managed-record-types=SRV
     fullnameOverride: &name external-dns-adguard
