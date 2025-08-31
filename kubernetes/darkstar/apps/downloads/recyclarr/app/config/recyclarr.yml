@@ -74,7 +74,7 @@ radarr:
     replace_existing_custom_formats: true
 
     media_naming:
-      folder: standard
+      folder: default
       movie:
         rename: true
         standard: plex-imdb
