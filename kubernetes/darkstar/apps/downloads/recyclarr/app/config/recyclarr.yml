@@ -9,7 +9,7 @@ sonarr:
     replace_existing_custom_formats: true
 
     media_naming:
-      series: plex
+      series: plex-tvdb
       season: default
       episodes:
         rename: true
@@ -74,10 +74,10 @@ radarr:
     replace_existing_custom_formats: true
 
     media_naming:
-      folder: plex
+      folder: standard
       movie:
         rename: true
-        standard: default
+        standard: plex-imdb
 
     # Quality Definition
     # >> Only one set of Quality Definitions can be used per instance <<
@@ -166,7 +166,6 @@ radarr:
           - cae4ca30163749b891686f95532519bd # AV1 - -10000
           # Optional
           - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups - -10000
-          - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL) - -10000
           - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup - -10000
           - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated - -10000
           - 5c44f52a8714fdd79bb4d98e2673be1f # Retags - -10000
