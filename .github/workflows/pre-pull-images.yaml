@@ -66,8 +66,13 @@ jobs:
 
       - name: Extract Images
         id: extract-images
-        run: |
-          echo "${{ matrix.branches }}=$(jq --compact-output '.' images.json)" >> "${GITHUB_OUTPUT}"
+        run: |-
+          echo "${{ matrix.branches }}=$(jq --compact-output '.' images.json)" >> $GITHUB_OUTPUT
+
+          echo '## Branch ${{ matrix.branches }} images' >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          jq '.' images.json >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
   compare-images:
     if: ${{ needs.extract-images.outputs.default != needs.extract-images.outputs.pull }}
@@ -106,12 +111,14 @@ jobs:
         images: ${{ fromJSON(needs.compare-images.outputs.images) }}
       max-parallel: 4
       fail-fast: false
+    env:
+      MATRIX_IMAGE: ${{ matrix.images }}
     steps:
       - name: Install talosctl
         run: curl -fsSL https://talos.dev/install | sh
 
       - name: Pre-pull Image
-        run: talosctl -n "$NODE_IP" image pull "${{ matrix.images }}"
+        run: talosctl -n "$NODE" image pull "${MATRIX_IMAGE}"
 
   pre-pull-images-success:
     if: ${{ !cancelled() }}
