@@ -56,6 +56,6 @@ releases:
     version: 4.2.0
     atomic: true
     values:
-      - ../templates/format-lvm.yaml.gotmpl
+      - templates/format-lvm.yaml.gotmpl
     needs:
       - cert-manager/cert-manager
