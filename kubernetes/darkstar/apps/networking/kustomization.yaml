@@ -6,4 +6,3 @@ resources:
   - ./cloudflared/ks.yaml
   - ./envoy-gateway/ks.yaml
   - ./external-dns/ks.yaml
-  - ./multus/ks.yaml
