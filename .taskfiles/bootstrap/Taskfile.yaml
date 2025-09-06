@@ -12,15 +12,16 @@ tasks:
           INSECURE: "true"
       - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
       - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name darkstar {{.KUBERNETES_DIR}}/darkstar
-      - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/integrations/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/integrations/helmfile.yaml destroy --selector name=format-lvm
+      - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/helmfile.yaml destroy --selector name=format-lvm
     env:
       NODE_COUNT:
         sh: talosctl --nodes {{.TALOS_CONTROLLER}} config info --output json | jq --raw-output '.nodes | length'
     preconditions:
       - which talosctl helmfile kubectl
-      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/integrations/helmfile.yaml
+      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/helmfile.yaml
       - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/templates/format-lvm.yaml.gotmpl
+      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/templates/values.yaml.gotmpl
     vars:
       TALOS_CONTROLLER:
         sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
