@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 clusterName: darkstar
-endpoint: https://10.1.10.21:6443
+endpoint: https://darkstar.lan.starstreak.net:6443
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
 talosVersion: v1.11.0
@@ -11,17 +11,16 @@ kubernetesVersion: v1.34.0
 cniConfig:
   name: none
 
-additionalApiServerCertSans: &san
-  - &clusterEndpointIP 10.1.10.21
-  - alpha.lan.starstreak.net
-  - darkstar.lan.starstreak.net
+additionalApiServerCertSans:
   - "127.0.0.1"
-additionalMachineCertSans: *san
+
+allowSchedulingOnMasters: true
 
 nodes:
   - hostname: alpha.lan.starstreak.net
     ipAddress: 10.1.10.21
     controlPlane: true
+    disableSearchDomain: true
     installDiskSelector:
       size: "<= 256GB"
       type: ssd
@@ -37,9 +36,8 @@ nodes:
           hardwareAddr: "*:70:e2"
         mtu: 1500
         dhcp: true
-        dhcpOptions:
-          ipv4: true
-          ipv6: true
+        vip:
+          ip: 10.1.10.20
         vlans:
           - vlanId: 20
             mtu: 1500
@@ -53,15 +51,9 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
-        - apparmor=0 # Less security, more speed
-        - init_on_alloc=0 # Less security, more speed
-        - init_on_free=0 # Less security, more speed
-        - mitigations=off # Less security, more speed
-        - security=none # Less security, more speed
         - net.ifnames=1 # Enable predictable NIC naming
         - nvme_core.default_ps_max_latency_us=5500
         - pci=noaer
-        - -selinux
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
@@ -71,7 +63,11 @@ controlPlane:
     # Configure cluster
     - |-
       cluster:
-        allowSchedulingOnMasters: true
+        apiServer:
+          extraArgs:
+            enable-aggregator-routing: true
+            runtime-config: admissionregistration.k8s.io/v1beta1=true
+            feature-gates: MutatingAdmissionPolicy=true
         coreDNS:
             disabled: true
         proxy:
@@ -90,31 +86,12 @@ controlPlane:
                         - maxSkew: 1
                           topologyKey: kubernetes.io/hostname
                           whenUnsatisfiable: ScheduleAnyway
-        apiServer:
-          extraArgs:
-            enable-aggregator-routing: true
-            runtime-config: admissionregistration.k8s.io/v1beta1=true
-            feature-gates: MutatingAdmissionPolicy=true
 
     # Disable default API server admission plugins.
     - |-
       - op: remove
         path: /cluster/apiServer/admissionControl
 
-    # Enable K8s Talos API Access
-    - |-
-      machine:
-        features:
-          kubernetesTalosAPIAccess:
-            enabled: true
-            allowedRoles:
-              - os:admin
-            allowedKubernetesNamespaces:
-              - system-controllers
-              - system-upgrade
-              - actions-runner-system
-
-    # Enable host DNS resolution but do not forward kube-dns to host
     - |-
       machine:
         features:
@@ -122,30 +99,13 @@ controlPlane:
             enabled: true
             resolveMemberNames: true
             forwardKubeDNSToHost: false
-
-    # Disable searchdomain
-    - |-
-      machine:
-        network:
-          disableSearchDomain: true
-
-    # Define some static host entries
-    - |-
-      machine:
-        network:
-          extraHostEntries:
-            - ip: 10.1.10.1
-              aliases:
-                - gw
-                - gw.lan.starstreak.net
-            - ip: 10.1.10.10
-              aliases:
-                - apollo
-                - apollo.lan.starstreak.net
-
-    # Configure containerd
-    - |
-      machine:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-upgrade
+              - actions-runner-system
         files:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
@@ -158,11 +118,6 @@ controlPlane:
                 discard_unpacked_layers = false
               [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
                 discard_unpacked_layers = false
-
-    # Configure NFS mount options
-    - |
-      machine:
-        files:
           - op: overwrite
             path: /etc/nfsmount.conf
             permissions: 0o644
@@ -175,39 +130,9 @@ controlPlane:
               rsize=131072
               wsize=131072
               nconnect=8
-
-    # Configure kubelet
-    - |-
-      machine:
         kubelet:
           extraConfig:
             maxPods: 500
-          nodeIP:
-            validSubnets:
-              - 10.1.10.0/24
-
-    # Configure sysctls
-    - |-
-      machine:
-        sysctls:
-          fs.inotify.max_queued_events: "65536"
-          fs.inotify.max_user_instances: "8192"
-          fs.inotify.max_user_watches: "524288"
-          net.core.rmem_max: "67108864"
-          net.core.wmem_max: "67108864"
-
-    # Configure time server
-    - |-
-      machine:
-        time:
-          disabled: false
-          servers:
-            - time.cloudflare.com
-
-    # Configure openebs hostpath
-    - |-
-      machine:
-        kubelet:
           extraMounts:
             - destination: /var/mnt/openebs/local
               type: bind
@@ -216,3 +141,24 @@ controlPlane:
                 - bind
                 - rshared
                 - rw
+          nodeIP:
+            validSubnets:
+              - 10.1.10.0/24
+        network:
+          extraHostEntries:
+            - ip: 10.1.10.20
+              aliases:
+                - darkstar
+                - darkstar.lan.starstreak.net
+            - ip: 10.1.10.1
+              aliases:
+                - gw
+                - gw.lan.starstreak.net
+            - ip: 10.1.10.10
+              aliases:
+                - apollo
+                - apollo.lan.starstreak.net
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
