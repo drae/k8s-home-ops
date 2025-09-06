@@ -7,13 +7,11 @@ tasks:
     desc: Generate clusterconfig for Talos
     cmds:
       - talhelper genconfig
-        --env-file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talenv.sops.yaml
         --secret-file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talsecret.sops.yaml
         --config-file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talconfig.yaml
         --out-dir {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig
     preconditions:
       - which talhelper
-      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talenv.sops.yaml
       - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talsecret.sops.yaml
       - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talconfig.yaml
 
