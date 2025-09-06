@@ -25,7 +25,7 @@ releases:
     version: 1.18.1
     atomic: true
     values:
-      - ../../../../kubernetes/darkstar/apps/kube-system/cilium/app/values.yaml
+      - templates/values.yaml.gotmpl
     needs:
       - observability/prometheus-operator-crds
 
@@ -35,7 +35,7 @@ releases:
     version: 1.43.3
     atomic: true
     values:
-      - ../../../../kubernetes/darkstar/apps/kube-system/coredns/app/values.yaml
+      - templates/values.yaml.gotmpl
     needs:
       - observability/prometheus-operator-crds
       - kube-system/cilium
@@ -46,7 +46,7 @@ releases:
     version: v1.18.2
     atomic: true
     values:
-      - ../../../../kubernetes/darkstar/apps/cert-manager/cert-manager/app/values.yaml
+      - templates/values.yaml.gotmpl
     needs:
       - kube-system/coredns
 
