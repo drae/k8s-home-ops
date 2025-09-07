@@ -59,43 +59,43 @@ spec:
               capabilities:
                 drop:
                   - ALL
-          matter-hub:
-            image:
-              repository: ghcr.io/t0bst4r/home-assistant-matter-hub
-              tag: 3.0.0-alpha.76@sha256:df045551916bc208d5db43f0c6a5efea14e0d88e585ef9730df9685d783c8147
-            env:
-              HAMH_STORAGE_LOCATION: /config/matter-hub
-              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
-              HAMH_LOG_LEVEL: info
-              HAMH_HTTP_PORT: "8482"
-            envFrom:
-              - secretRef:
-                  name: home-assistant-matter-secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
-          code-server:
-            image:
-              repository: ghcr.io/coder/code-server
-              tag: 4.103.2@sha256:f9ed058d6b1a4aa80846f77902d344bd97e450aec69201a0f8939baf58b18a5f
-              pullPolicy: IfNotPresent
-            args:
-              - --auth
-              - none
-              - --disable-telemetry
-              - --disable-update-check
-              - --user-data-dir
-              - /config/.vscode
-              - --extensions-dir
-              - /config/.vscode
-              - --port
-              - "12321"
-              - /config
-            env:
-              HASS_SERVER: http://localhost:8123
+          #          matter-hub:
+          #            image:
+          #              repository: ghcr.io/t0bst4r/home-assistant-matter-hub
+          #              tag: 3.0.0-alpha.76@sha256:df045551916bc208d5db43f0c6a5efea14e0d88e585ef9730df9685d783c8147
+          #            env:
+          #              HAMH_STORAGE_LOCATION: /config/matter-hub
+          #              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
+          #              HAMH_LOG_LEVEL: info
+          #              HAMH_HTTP_PORT: "8482"
+          #            envFrom:
+          #              - secretRef:
+          #                  name: home-assistant-matter-secret
+          #            securityContext:
+          #              allowPrivilegeEscalation: false
+          #              readOnlyRootFilesystem: true
+          #              capabilities:
+          #                drop:
+          #                  - ALL
+          #          code-server:
+          #            image:
+          #              repository: ghcr.io/coder/code-server
+          #              tag: 4.103.2@sha256:f9ed058d6b1a4aa80846f77902d344bd97e450aec69201a0f8939baf58b18a5f
+          #              pullPolicy: IfNotPresent
+          #            args:
+          #              - --auth
+          #              - none
+          #              - --disable-telemetry
+          #              - --disable-update-check
+          #              - --user-data-dir
+          #              - /config/.vscode
+          #              - --extensions-dir
+          #              - /config/.vscode
+          #              - --port
+          #              - "12321"
+          #              - /config
+          #            env:
+          #              HASS_SERVER: http://localhost:8123
           wyoming-proxy-azure-stt:
             image:
               repository: ghcr.io/hugobloem/wyoming-microsoft-stt-noha
@@ -198,10 +198,10 @@ spec:
         ports:
           code-server:
             port: &code-server-port 12321
-      matter-hub:
-        ports:
-          matter-hub:
-            port: &matter-port 8482
+    #      matter-hub:
+    #        ports:
+    #          matter-hub:
+    #            port: &matter-port 8482
     route:
       app:
         hostnames:
@@ -224,24 +224,24 @@ spec:
             backendRefs:
               - identifier: code-server
                 port: *code-server-port
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /matter/
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-              - type: RequestHeaderModifier
-                requestHeaderModifier:
-                  add:
-                    - name: "x-ingress-path"
-                      value: "matter"
-            backendRefs:
-              - identifier: matter-hub
-                port: *matter-port
+          #          - matches:
+          #              - path:
+          #                  type: PathPrefix
+          #                  value: /matter/
+          #            filters:
+          #              - type: URLRewrite
+          #                urlRewrite:
+          #                  path:
+          #                    type: ReplacePrefixMatch
+          #                    replacePrefixMatch: /
+          #              - type: RequestHeaderModifier
+          #                requestHeaderModifier:
+          #                  add:
+          #                    - name: "x-ingress-path"
+          #                      value: "matter"
+          #            backendRefs:
+          #              - identifier: matter-hub
+          #                port: *matter-port
           - backendRefs:
               - identifier: app
                 port: *port
@@ -265,8 +265,8 @@ spec:
               - path: /config
             code-server:
               - path: /config
-            matter-hub:
-              - path: /config
+      #            matter-hub:
+      #              - path: /config
       logs:
         type: emptyDir
         globalMounts:
