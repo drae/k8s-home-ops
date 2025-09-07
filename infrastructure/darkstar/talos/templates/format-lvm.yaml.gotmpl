@@ -6,7 +6,7 @@ controllers:
       helm.sh/hook-delete-policy: "before-hook-creation"
     job:
       backoffLimit: 0
-      parallelism: {{ requiredEnv "NODE_COUNT" }}
+      parallelism: 1
     containers:
       disk:
         image:
@@ -19,12 +19,12 @@ controllers:
           - |
             apk add --no-cache findutils nvme-cli lvm2;
             echo "=== Wiping $DISK ===";
-            nvme format --lbaf=0 /dev/disk/nvme0n1 --force;
-            nvme format --block-size=4096 /dev/disk/nvme0n1 --force;
+            nvme format --lbaf=0 /dev/nvme0n1 --force;
+            nvme format --block-size=4096 /dev/nvme0n1 --force;
             pvcreate /dev/nvme0n1;
             vgcreate topolvm_vg /dev/nvme0n1;
             vgchange -a ey topolvm_vg;
-            lvcreate --thinpool -l 100%FREE -n topolvm_thin topolvm_vg;
+            lvcreate --thinpool topolvm_thin -l 100%FREE topolvm_vg;
         securityContext:
           privileged: true
     pod:
