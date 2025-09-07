@@ -19,6 +19,11 @@ releases:
     version: 23.0.0
     atomic: true
 
+  - name: gateway-api-crds
+    namespace: networking
+    chart: oci://ghcr.io/wiremind/wiremind-helm-charts/gateway-api-crds
+    version: 1.3.0
+
   - name: cilium
     namespace: kube-system
     chart: cilium/cilium
@@ -28,6 +33,7 @@ releases:
       - templates/values.yaml.gotmpl
     needs:
       - observability/prometheus-operator-crds
+      - networking/gateway-api-crds
 
   - name: coredns
     namespace: kube-system

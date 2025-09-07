@@ -27,7 +27,7 @@ tasks:
         vars:
           filename: "{{.ITEM}}"
           hostname: |-
-            {{ trimPrefix (printf "%s-" .cluster) .ITEM | trimSuffix ".yaml" }}
+            {{ trimPrefix (printf "%s-" "darkstar") .ITEM | trimSuffix ".yaml" }}
     preconditions:
       - talosctl config get-contexts | grep darkstar
       - test -d {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig

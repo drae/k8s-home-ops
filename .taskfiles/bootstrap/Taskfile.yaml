@@ -10,13 +10,15 @@ tasks:
       - task: :talos:apply-clusterconfig
         vars:
           INSECURE: "true"
-      - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
-      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name darkstar {{.KUBERNETES_DIR}}/darkstar
+      # Wait for bootstrap to complete
+      - until op=$(talosctl -n "{{.TALOS_CONTROLLER}}" bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do sleep 5; done
+      # Get the kubeconfig
+      - talosctl kubeconfig -n "{{.TALOS_CONTROLLER}}" --force --force-context-name darkstar {{.KUBERNETES_DIR}}/darkstar
+      # Wait till we can see the node
+      - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10s; do sleep 5; done
+      # Install our initial apps and crds
       - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/helmfile.yaml apply --skip-diff-on-install --suppress-diff
       - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/helmfile.yaml destroy --selector name=format-lvm
-    env:
-      NODE_COUNT:
-        sh: talosctl --nodes {{.TALOS_CONTROLLER}} config info --output json | jq --raw-output '.nodes | length'
     preconditions:
       - which talosctl helmfile kubectl
       - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/helmfile.yaml
