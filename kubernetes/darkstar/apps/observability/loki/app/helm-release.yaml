@@ -48,14 +48,14 @@ spec:
               prefix: loki_index_
               period: 24h
       limits_config:
-        retention_period: 7d
+        retention_period: 5d
       storage:
         type: filesystem
     singleBinary:
       persistence:
         enabled: true
         storageClass: local-hostpath
-        size: 25Gi
+        size: 10Gi
       replicas: 1
     gateway:
       replicas: 0
