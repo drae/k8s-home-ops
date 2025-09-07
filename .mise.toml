@@ -35,5 +35,4 @@ talhelper                  = '3.0.34'
 talosctl                   = '1.11.0'
 task                       = '3.44.0'
 uv                         = '0.8.15'
-gum = "latest"
-just = "latest"
+gum                        = "0.16.2"
