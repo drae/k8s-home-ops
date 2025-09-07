@@ -1,32 +1,25 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/gitrepository-source-v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository
+kind: OCIRepository
 metadata:
-  name: gateway-api-crd
+  name: gateway-api-crds
 spec:
-  interval: 1h
-  url: https://github.com/kubernetes-sigs/gateway-api
+  interval: 10m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
   ref:
-    # renovate: depName=kubernetes-sigs/gateway-api datasource=github-releases
-    tag: v1.3.0
-  ignore: |
-    # exclude
-    /*
-    # include
-    !config/crd/experimental
+    tag: 1.3.0
+  url: oci://ghcr.io/wiremind/wiremind-helm-charts/gateway-api-crds
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
 metadata:
-  name: gateway-api
+  name: gateway-api-crds
 spec:
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: gateway-api-crd
-  wait: true
-  interval: 1h
-  retryInterval: 1m
-  timeout: 5m
+  chartRef:
+    kind: OCIRepository
+    name: gateway-api-crds
+  interval: 30m
