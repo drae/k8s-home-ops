@@ -31,9 +31,7 @@ spec:
     crds:
       enabled: false
     cleanPrometheusOperatorObjectNames: true
-    #
     # Individual stack components
-    #
     alertmanager:
       route:
         main:
@@ -102,9 +100,7 @@ spec:
         dashboards:
           annotations:
             grafana_folder: Kubernetes
-    #
     # Prometheus configuration
-    #
     prometheusOperator:
       resources:
         requests:
@@ -141,8 +137,8 @@ spec:
             cpu: 10m
           limits:
             memory: 2000Mi
-        retention: 14d
-        retentionSize: 22GB
+        retention: 7d
+        retentionSize: 15GB
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         securityContext:
