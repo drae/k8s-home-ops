@@ -17,3 +17,4 @@ spec:
   values:
     name: i915
     sharedDevNum: 3
+    nodeFeatureRule: false
