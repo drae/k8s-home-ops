@@ -4,9 +4,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname gatus
-  namespace: flux-system
+  namespace: &namespace observability
 spec:
-  targetNamespace: observability
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -17,6 +17,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+    namespace: flux-system
   wait: false
   postBuild:
     substitute:

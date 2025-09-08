@@ -1,20 +1,12 @@
 <div align="center">
 
-<img src="https://www.starstreak.net/kube+star.png" align="center" height="150px">
+<img src="https://www.starstreak.net/kube+star.png" align="center" height="150px" alt="logos">
 
 ### k8s-home-ops
 
 Management of my home server
 
-</div>
-
-<div align="center">
-
 [![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=blue&label=%20)](https://talos.dev)&nbsp;&nbsp;[![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=%20)](https://kubernetes.io)<!-- &nbsp;&nbsp;[![Renovate](https://img.shields.io/github/actions/workflow/status/drae/k8s-home-ops/renovate.yaml?branch=main&label=&style=for-the-badge&logo=renovate&logoColor=white&color=blue)](https://github.com/drae/k8s-home-ops/actions/workflows/renovate.yaml)-->
-
-</div>
-
-<div align="center">
 
 [![Age-Days](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_age_days&style=flat-square&label=Age)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![Uptime-Days](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_uptime_days&style=flat-square&label=Uptime)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![Node-Count](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_node_count&style=flat-square&label=Nodes)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![Pod-Count](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_pod_count&style=flat-square&label=Pods)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![CPU-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_cpu_usage&style=flat-square&label=CPU)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![Memory-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_memory_usage&style=flat-square&label=Memory)](https://github.com/kashalls/kromgo)
 
@@ -35,7 +27,7 @@ Other hardware includes the aging self built NAS (Celeron based, 16GB DDR3, U-NA
 The following applications are used to install and manage the cluster:
 
 - [age](https://github.com/FiloSottile/age)
-- [direnv](https://direnv.net/)
+- [mise](https://github.com/jdx/mise)
 - [flux](https://fluxcd.io/docs/installation/)
 - [helmfile](https://github.com/helmfile/helmfile)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
@@ -47,15 +39,21 @@ The following applications are used to install and manage the cluster:
 
 ## 💾 Installing the cluster
 
-For the k8s "cluster" I use the stable version of [talos](https://talos.dev) as the operating system for running my home cluster. I do not use pxe booting or anything fancy, I burn the [.iso](https://github.com/siderolabs/talos/releases) to a usb and install directly.
+For the k8s "cluster" I use the stable version of [talos](https://talos.dev) as the operating system for running my home cluster. I do not use pxe booting or anything fancy, I burn an [.iso](https://factory.talos.dev/) to a usb and install directly. I currently use secureboot which can add a [few extra steps](https://www.talos.dev/v1.11/talos-guides/install/bare-metal-platforms/secureboot/).
 
 ## 🥾 Bootstraping the cluster
 
-Much of the remaining installation is automated using [task](https://taskfile.dev/), for a list of available tasks run `task list`, or just type `task`.
+Bootstraping the installation is automated using [task](https://taskfile.dev/), for a list of available tasks run `task list`, or just type `task`. A consolidated install can be achieved using:
+
+```sh
+task bootstrap:talos
+```
+
+This will ensure everything that is needed for installation exists, apply the configuration and bootstrap talos, install CRDs and finally kick off cluster installation via fluxcd.
 
 ✳️ When creating the configuration from scratch, [talhelper](https://github.com/budimanjojo/talhelper) is used to generate the certificates required by `talosctl`. In my case I would type:
 
-```
+```sh
 cd infrastructure/darkstar/talos
 talhelper gensecret > talsecret.sops.yaml
 sops -e -i talsecret.sops.yaml
