@@ -20,4 +20,6 @@ spec:
   wait: false # no flux ks dependents
   dependsOn:
     - name: topolvm
+      namespace: storage
     - name: kube-prometheus-stack
+      namespace: *namespace

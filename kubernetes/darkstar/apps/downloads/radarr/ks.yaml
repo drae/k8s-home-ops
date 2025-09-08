@@ -25,4 +25,6 @@ spec:
       VOLSYNC_CAPACITY: 2Gi
   dependsOn:
     - name: topolvm
+      namespace: storage
     - name: volsync
+      namespace: storage

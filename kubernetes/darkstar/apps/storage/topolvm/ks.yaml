@@ -20,3 +20,4 @@ spec:
   interval: 10m
   dependsOn:
     - name: snapshot-controller
+      namespace: system-controllers

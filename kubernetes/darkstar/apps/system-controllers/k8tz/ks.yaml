@@ -20,3 +20,4 @@ spec:
   wait: false # no flux ks dependents
   dependsOn:
     - name: cert-manager
+      namespace: cert-manager

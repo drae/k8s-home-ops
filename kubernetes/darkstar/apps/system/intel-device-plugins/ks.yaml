@@ -20,6 +20,7 @@ spec:
   wait: true
   dependsOn:
     - name: cert-manager
+      namespace: cert-manager
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -42,3 +43,4 @@ spec:
   wait: true
   dependsOn:
     - name: intel-device-plugins-operator
+      namespace: *namespace

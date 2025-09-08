@@ -20,4 +20,6 @@ spec:
   wait: true
   dependsOn:
     - name: topolvm
+      namespace: storage
     - name: volsync
+      namespace: storage

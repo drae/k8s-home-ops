@@ -24,4 +24,6 @@ spec:
       VOLSYNC_CLAIM: prowlarr-config
   dependsOn:
     - name: topolvm
+      namespace: storage
     - name: volsync
+      namespace: storage
