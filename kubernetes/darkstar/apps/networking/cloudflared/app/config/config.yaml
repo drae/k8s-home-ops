@@ -4,7 +4,7 @@ originRequest:
 
 ingress:
   - hostname: "starstreak.net"
-    service: &svc https://envoy-networking-external.networking.svc.cluster.local
+    service: &svc https://envoy-external.networking.svc.cluster.local
   - hostname: "*.starstreak.net"
     service: *svc
   - service: http_status:404
