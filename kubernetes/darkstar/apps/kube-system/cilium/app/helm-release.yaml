@@ -40,6 +40,8 @@ spec:
       enabled: true
       annotations:
         grafana_folder: "Network"
+    enableIPv4BIGTCP: true
+    enableIPv6BIGTCP: true
     endpointRoutes:
       enabled: true
     envoy:
@@ -53,7 +55,12 @@ spec:
       enabled: false
     ipam:
       mode: "kubernetes"
+    ipv4:
+      enabled: true
+    ipv6:
+      enabled: true
     ipv4NativeRoutingCIDR: 10.244.0.0/16
+    ipv6NativeRoutingCIDR: fd79:4c9c:b9c3:2400::/56
     k8sServiceHost: 127.0.0.1
     k8sServicePort: 7445
     kubeProxyReplacement: "true"
