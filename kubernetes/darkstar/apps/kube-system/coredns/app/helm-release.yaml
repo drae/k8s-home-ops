@@ -34,6 +34,13 @@ spec:
     service:
       name: kube-dns
       clusterIP: 10.96.0.10
+      clusterIPs:
+        - 10.96.0.10
+        - fd79:4c9c:b9c3:9600::10
+      ipFamilies:
+        - IPV4
+        - IPV6
+      ipFamilyPolicy: PreferDualStack
     servers:
       - zones:
           - zone: .
@@ -41,28 +48,32 @@ spec:
             use_tcp: true
         port: 53
         plugins:
+          - name: autopath
+            parameters: "@kubernetes"
+          - name: cache
+            configBlock: |-
+              prefetch 20
+              serve_stale
           - name: errors
+          - name: forward
+            parameters: . /etc/resolv.conf
           - name: health
             configBlock: |-
               lameduck 5s
-          - name: ready
-          - name: log
-            configBlock: |-
-              class error
-          - name: prometheus
-            parameters: 0.0.0.0:9153
           - name: kubernetes
             parameters: cluster.local in-addr.arpa ip6.arpa
             configBlock: |-
               pods insecure
               fallthrough in-addr.arpa ip6.arpa
-          - name: forward
-            parameters: . /etc/resolv.conf
-          - name: cache
-            parameters: 30
+          - name: log
+            configBlock: |-
+              class error
           - name: loop
-          - name: reload
           - name: loadbalance
+          - name: prometheus
+            parameters: 0.0.0.0:9153
+          - name: ready
+          - name: reload
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
