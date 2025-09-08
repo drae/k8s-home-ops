@@ -1,25 +1,12 @@
 {
-    "ansible.ansibleLint.arguments": "-c .github/linters/.ansible-lint",
     "files.associations": {
         "**/ansible/**/*.yml": "ansible",
         "**/ansible/**/*.sops.yml": "yaml",
         "**/ansible/**/inventory/**/*.yml": "yaml",
-        "**/terraform/**/*.tf": "terraform",
     },
-    "material-icon-theme.folders.associations": {
-        ".taskfiles": "utils",
-        "app": "",
-        "apps": "",
-        "downloads": "",
-        "home": "",
-        "settings": "",
-    },
-    "prettier.configPath": ".prettierrc.yaml",
-    "prettier.ignorePath": ".prettierignore",
     "markdownlint.config": {
         "extends": ".markdownlint.yaml"
     },
-    "ansible.python.interpreterPath": "/bin/python3",
     "yaml.schemas": {
         "ansible": [
             "infrastructure/ansible/*.yml",
@@ -29,17 +16,9 @@
             "kubernetes/*.yml",
             "kubernetes/*.yaml"
         ],
-        "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json": "file:///home/paul/git/drae/k8s-home-ops-new/kubernetes/darkstar/apps/media/plex/app/helm-release.yaml"
     },
     "markdown.validate.enabled": true,
     "sops.defaults.ageKeyFile": "age.key",
-    "go.goroot": "/home/paul/.local/share/mise/installs/go/1.25.0",
-    "debug.javascript.defaultRuntimeExecutable": {
-        "pwa-node": "/home/paul/.local/share/mise/shims/node"
-    },
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
-    "go.alternateTools": {
-        "go": "/home/paul/.local/share/mise/shims/go"
-    },
     "sops.binPath": "/home/paul/.local/share/mise/shims/sops"
 }
