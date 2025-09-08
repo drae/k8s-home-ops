@@ -1,11 +1,12 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname topolvm
-  namespace: flux-system
+  namespace: &namespace storage
 spec:
-  targetNamespace: storage
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -14,7 +15,9 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+    namespace: flux-system
   wait: true
   interval: 10m
   dependsOn:
     - name: snapshot-controller
+      namespace: system-controllers
