@@ -1,11 +1,12 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname intel-device-plugins-operator
-  namespace: flux-system
+  namespace: &namespace system
 spec:
-  targetNamespace: system
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -13,19 +14,22 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+    namespace: flux-system
   interval: 10m
   prune: true
   wait: true
   dependsOn:
     - name: cert-manager
+      namespace: cert-manager
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname intel-device-plugins-gpu
-  namespace: flux-system
+  namespace: &namespace system
 spec:
-  targetNamespace: system
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -33,8 +37,10 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+    namespace: flux-system
   interval: 1h
   prune: true
   wait: true
   dependsOn:
     - name: intel-device-plugins-operator
+      namespace: *namespace

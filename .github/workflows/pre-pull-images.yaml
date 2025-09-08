@@ -58,7 +58,7 @@ jobs:
           args: >-
             get cluster
             --all-namespaces
-            --path /github/workspace/kubernetes/darkstar/flux/
+            --path /github/workspace/kubernetes/darkstar/flux/cluster
             --enable-images
             --only-images
             --output json
@@ -114,6 +114,17 @@ jobs:
     env:
       MATRIX_IMAGE: ${{ matrix.images }}
     steps:
+      - name: Attest
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          case "${{ matrix.images }}" in
+            *home-operations*)
+              gh attestation verify --owner home-operations oci://${MATRIX_IMAGE} ;;
+            *bjw-s-labs*)
+              gh attestation verify --owner bjw-s-labs oci://${MATRIX_IMAGE} ;;
+          esac
+  
       - name: Install talosctl
         run: curl -fsSL https://talos.dev/install | sh
 

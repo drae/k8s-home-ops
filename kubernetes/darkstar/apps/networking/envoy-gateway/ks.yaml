@@ -1,33 +1,12 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &appname gateway-api
-  namespace: flux-system
-spec:
-  targetNamespace: networking
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
-  interval: 10m
-  path: "./kubernetes/darkstar/apps/networking/envoy-gateway/crds"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: k8s-home-ops
-  wait: true
-  dependsOn:
-    - name: cert-manager
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname envoy-gateway
-  namespace: flux-system
+  namespace: &namespace networking
 spec:
-  targetNamespace: networking
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -37,19 +16,22 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+    namespace: flux-system
   wait: true
   dependsOn:
     - name: cert-manager
-    - name: gateway-api
+      namespace: cert-manager
+    - name: gateway-api-crds
+      namespace: kube-system
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname envoy-gateway-config
-  namespace: flux-system
+  namespace: &namespace networking
 spec:
-  targetNamespace: networking
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -59,6 +41,8 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
+    namespace: flux-system
   wait: true
   dependsOn:
     - name: envoy-gateway
+      namespace: *namespace
