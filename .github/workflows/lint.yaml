@@ -12,6 +12,9 @@ concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   actionlint:
     name: actionlint
@@ -19,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Get changed files
         id: changed-files
@@ -41,6 +46,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Get changed files
         id: changed-files
@@ -68,6 +75,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Get changed files
         id: changed-files
@@ -82,30 +91,9 @@ jobs:
         with:
           markdownlint_config: .markdownlint.yaml
           file_pattern: ${{ join(fromJSON(steps.changed-files.outputs.changed_files), ' ') }}
-
-  prettier:
-    name: prettier
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-
-      - name: Get changed files
-        id: changed-files
-        uses: bjw-s-labs/action-changed-files@930cef8463348e168cab7235c47fe95a7a235f65 # v0.3.3
-
-      - name: Run prettier
-        if: steps.changed-files.outputs.changed_files != '[]'
-        uses: bjw-s/action-prettier-lint@1014e6a3453ff28a8b746715f44a75306d223266 # v0.1.1
-        with:
-          prettier_ignore: .prettierignore
-          prettier_config: .prettierrc.yaml
-          file_pattern: ${{ join(fromJSON(steps.changed-files.outputs.changed_files), ' ') }}
-
   lint_success:
     needs:
       - actionlint
-      - prettier
       - yamllint
       - markdownlint
     if: ${{ !cancelled() }}
