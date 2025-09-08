@@ -1,6 +1,7 @@
 ---
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
+namespace: downloads
 resources:
   - ./namespace.yaml
   - ./recyclarr/ks.yaml
@@ -8,3 +9,5 @@ resources:
   - ./radarr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
+components:
+  - ../../components/flux

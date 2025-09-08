@@ -11,38 +11,30 @@ tasks:
         vars:
           INSECURE: "true"
       # Wait for bootstrap to complete
-      - until op=$(talosctl -n "{{.TALOS_CONTROLLER}}" bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do sleep 5; done
+      - until op=$(talosctl -n {{.TALOS_CONTROLLER}} bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do sleep 5; done
       # Get the kubeconfig
-      - talosctl kubeconfig -n "{{.TALOS_CONTROLLER}}" --force --force-context-name darkstar {{.KUBERNETES_DIR}}/darkstar
+      - talosctl kubeconfig -n {{.TALOS_CONTROLLER}} --force --force-context-name darkstar {{.KUBERNETES_DIR}}/darkstar
       # Wait till we can see the node
       - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10s; do sleep 5; done
-      # Install our initial apps and crds
-      - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - helmfile --quiet --file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/helmfile.yaml destroy --selector name=format-lvm
+      # Create flux-system ns
+      - until op=$(kubectl create ns flux-system 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do sleep 5; done
+      # Install our encryption key
+      - sops --decrypt {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml | kubectl apply -n flux-system --server-side -f -
+      # Install our crds
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-crds.yaml template | kubectl apply --server-side -f
+      # Install our initial apps
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfila-apps.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-apps.yaml destroy --selector name=format-lvm
     preconditions:
       - which talosctl helmfile kubectl
-      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/helmfile.yaml
-      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/templates/format-lvm.yaml.gotmpl
-      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/templates/values.yaml.gotmpl
+      - test -f {{.PROJECT_DIR}}/age.key
+      - test -f {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml
+      - sh: "sops --decrypt {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml"
+        msg: "Cannot decrypt flux sops key"
+      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-crds.yaml
+      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-apps.yaml
+      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/templates/format-lvm.yaml.gotmpl
+      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/templates/values.yaml.gotmpl
     vars:
       TALOS_CONTROLLER:
         sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
-
-  flux:
-    desc: Bootstrap Flux into a Kubernetes cluster
-    prompt: Bootstrap Flux into the cluster... continue?
-    cmds:
-      # Install Flux
-      - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/darkstar/bootstrap/
-      # Install sops secret
-      - sops --decrypt {{.KUBERNETES_DIR}}/darkstar/bootstrap/age-key.sops.yaml | kubectl apply -f -
-      # Install Flux Kustomization resources - this kicks everything off
-      - kubectl apply --server-side --kustomize {{.KUBERNETES_DIR}}/darkstar/flux/configure
-    preconditions:
-      - which kubectl sops
-      - sh: "test -f {{.PROJECT_DIR}}/age.key"
-        msg: "SOPS age.key missing from {{.PROJECT_DIR}}"
-      - sh: "sops --decrypt {{.KUBERNETES_DIR}}/darkstar/bootstrap/age-key.sops.yaml"
-        msg: "Cannot decrypt flux sops key"
-      - kustomize build {{.KUBERNETES_DIR}}/darkstar/bootstrap
-      - kustomize build {{.KUBERNETES_DIR}}/darkstar/flux/configure

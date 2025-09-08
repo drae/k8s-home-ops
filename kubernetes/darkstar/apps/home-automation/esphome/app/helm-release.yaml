@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -22,7 +22,8 @@ spec:
                 "name":"multus-iot",
                 "namespace": "networking",
                 "ips": [
-                  "10.1.20.99/24"
+                  "10.1.20.99/24",
+                  "fd79:4c9c:b9c3:20::99/64"
                 ],
                 "mac": "92:cf:d7:05:70:83"
               }]

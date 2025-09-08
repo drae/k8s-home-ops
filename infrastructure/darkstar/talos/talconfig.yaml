@@ -4,9 +4,9 @@ clusterName: darkstar
 endpoint: https://darkstar.lan.starstreak.net:6443
 
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.11.0
+talosVersion: v1.10.0
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.34.0
+kubernetesVersion: v1.33.0
 
 cniConfig:
   name: none
@@ -15,6 +15,13 @@ additionalApiServerCertSans:
   - "127.0.0.1"
 
 allowSchedulingOnMasters: true
+
+clusterPodNets:
+  - 10.244.0.0/16
+  - fd79:4c9c:b9c3:2400::/56
+clusterSvcNets:
+  - 10.96.0.0/12
+  - fd79:4c9c:b9c3:9600::/112
 
 nodes:
   - hostname: alpha.lan.starstreak.net
@@ -30,6 +37,8 @@ nodes:
     machineSpec:
       secureboot: true
       useUKI: true
+    nameservers:
+      - 10.1.10.1
     networkInterfaces:
       - deviceSelector:
           driver: e1000e
@@ -56,8 +65,8 @@ controlPlane:
         - pci=noaer
       systemExtensions:
         officialExtensions:
-          - siderolabs/intel-ucode
           - siderolabs/i915
+          - siderolabs/intel-ucode
           - siderolabs/mei
   patches:
     # Configure cluster
@@ -144,6 +153,7 @@ controlPlane:
           nodeIP:
             validSubnets:
               - 10.1.10.0/24
+              - fd79:4c9c:b9c3:10::/64
         network:
           extraHostEntries:
             - ip: 10.1.10.1
