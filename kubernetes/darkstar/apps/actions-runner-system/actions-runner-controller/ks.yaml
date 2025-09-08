@@ -42,5 +42,8 @@ spec:
   wait: false
   dependsOn:
     - name: actions-runner-controller
+      namespace: *namespace
     - name: topolvm
+      namespace: storage
     - name: openebs
+      namespace: storage

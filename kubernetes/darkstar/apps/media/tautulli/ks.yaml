@@ -25,3 +25,4 @@ spec:
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
     - name: plex
+      namespace: *namespace

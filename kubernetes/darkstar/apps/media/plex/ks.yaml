@@ -26,8 +26,11 @@ spec:
       VOLSYNC_CAPACITY: 50Gi
   dependsOn:
     - name: topolvm
+      namespace: storage
     - name: volsync
+      namespace: storage
     - name: intel-device-plugins-operator
+      namespace: system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -53,3 +56,4 @@ spec:
       APP: *appname
   dependsOn:
     - name: plex
+      namespace: *namespace

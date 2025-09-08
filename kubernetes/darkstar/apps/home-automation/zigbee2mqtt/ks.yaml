@@ -24,5 +24,8 @@ spec:
       VOLSYNC_CLAIM: zigbee2mqtt-data
   dependsOn:
     - name: topolvm
+      namespace: storage
     - name: volsync
+      namespace: storage
     - name: mosquitto
+      namespace: database
