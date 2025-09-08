@@ -2,31 +2,6 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: [
-        "Loose versioning for non-semver packages"
-      ],
-      matchDatasources: [
-        "docker"
-      ],
-      versioning: "loose",
-      matchPackagePatterns: [
-        "changedetection",
-        "qbittorrent"
-      ],
-    },
-    {
-      description: [
-        "Custom versioning for frigate"
-      ],
-      matchDatasources: [
-        "docker"
-      ],
-      versioning: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<compatibility>beta)(?<build>\\d+))?$",
-      matchPackagePatterns: [
-        "frigate"
-      ],
-    },
-    {
       description: "Configure prompp versioning",
       matchDatasources: [
         "docker"
@@ -35,6 +10,18 @@
         "docker.io/prompp/prompp"
       ],
       versioning: "regex:^(?<build>.*)-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
+    },
+    {
+      description: "Override Helmfile Dependency Name",
+      matchDatasources: ["docker"],
+      matchManagers: ["helmfile"],
+      overrideDepName: "{{packageName}}",
+    },
+    {
+      description: "Override Talos Installer Package Name",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/factory\\.talos\\.dev/"],
+      overridePackageName: "ghcr.io/siderolabs/installer",
     },
   ],
 }
