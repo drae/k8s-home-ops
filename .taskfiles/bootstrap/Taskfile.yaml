@@ -21,9 +21,9 @@ tasks:
       # Install our encryption key
       - sops --decrypt {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml | kubectl apply -n flux-system --server-side -f -
       # Install our crds
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-crds.yaml template | kubectl apply --server-side -f
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-crds.yaml template | kubectl apply --server-side -f -
       # Install our initial apps
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfila-apps.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-apps.yaml apply --skip-diff-on-install --suppress-diff
       - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-apps.yaml destroy --selector name=format-lvm
     preconditions:
       - which talosctl helmfile kubectl
