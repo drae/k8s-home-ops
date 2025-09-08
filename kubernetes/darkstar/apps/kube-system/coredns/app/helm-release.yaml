@@ -34,6 +34,13 @@ spec:
     service:
       name: kube-dns
       clusterIP: 10.96.0.10
+      clusterIPs:
+        - 10.96.0.10
+        - fd79:4c9c:b9c3:9600::10
+      ipFamilies:
+        - IPV4
+        - IPV6
+      ipFamilyPolicy: PreferDualStack
     servers:
       - zones:
           - zone: .
