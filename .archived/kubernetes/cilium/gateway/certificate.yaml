@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gateway-certificate
+spec:
+  secretName: "gateway-starstreak.net-tls"
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: starstreak.net
+  dnsNames:
+    - "starstreak.net"
+    - "*.starstreak.net"
+    - "*.p.lan.starstreak.net"
