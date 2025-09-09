@@ -17,6 +17,6 @@ spec:
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-operated.observability.svc.cluster.local:9090
-        query: probe_success{instance=~"nas-icmp"}
+        query: probe_success{target=~"nas-icmp"}
         threshold: "1"
         ignoreNullValues: "0"
