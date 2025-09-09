@@ -196,36 +196,43 @@
         - not zfs_pool_flags_modification_result.matched | default(false) # 'matched' is true if regexp found a line
 
     # Install the zfs exporter for prometheus
-    - name: Test if zfs_exporter binary exists
-      ansible.builtin.stat:
-        path: /usr/local/bin/zfs_exporter
-      register: zfs_exporter_binary
+    - name: Unarchive the zfs exporter
+      ansible.builtin.unarchive:
+        src: https://github.com/pdf/zfs_exporter/releases/download/v{{ zfs_exporter_version }}/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
+        dest: /tmp/
+        remote_src: true
 
-    - name: Install the zfs exporter
-      when: not zfs_exporter_binary.stat.exists
-      block:
-        - name: Unarchive the zfs exporter
-          ansible.builtin.unarchive:
-            src: https://github.com/pdf/zfs_exporter/releases/download/v{{ zfs_exporter_version }}/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
-            dest: /tmp/
-            remote_src: true
+    - name: Copy the zfs_exporter binary to the remote host
+      ansible.builtin.copy:
+        src: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64/zfs_exporter # Adjust path if the binary is directly in the extracted folder or if the folder name is different
+        dest: /usr/local/bin/zfs_exporter # Or your desired installation path on the remote host
+        remote_src: true
+        mode: 0755
 
-        - name: Copy the zfs_exporter binary to the remote host
-          ansible.builtin.copy:
-            src: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64/zfs_exporter # Adjust path if the binary is directly in the extracted folder or if the folder name is different
-            dest: /usr/local/bin/zfs_exporter # Or your desired installation path on the remote host
-            remote_src: true
-            mode: 0755
+    - name: Clean up downloaded and extracted files
+      ansible.builtin.file:
+        path: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
+        state: absent
 
-        - name: Clean up downloaded and extracted files
-          ansible.builtin.file:
-            path: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
-            state: absent
+    - name: Clean up extracted directory
+      ansible.builtin.file:
+        path: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64
+        state: absent
 
-        - name: Clean up extracted directory
-          ansible.builtin.file:
-            path: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64
-            state: absent
+    - name: Create service group for zfs_exporter
+      group:
+        name: zfs_exporter
+        state: present
+        system: true
+
+    - name: Create service user for zfs_exporter
+      user:
+        name: zfs_exporter
+        group: zfs_exporter
+        shell: /usr/sbin/nologin
+        create_home: false
+        system: true
+        state: present
 
     - name: Create the systemd service
       ansible.builtin.template:
@@ -304,25 +311,25 @@
         - apparmor_changed.changed or mitigations_changed.changed
 
     # Enable cgroupv2 and rootless
-    - name: Check if linger is enabled
-      ansible.builtin.stat:
-        path: "/var/lib/systemd/linger/{{ ansible_user }}"
-      register: linger_enabled_file
-      become: false
-
-    - name: Enable Linger
-      ansible.builtin.command:
-        cmd: "loginctl enable-linger {{ ansible_user }}"
-        creates: "/var/lib/systemd/linger/{{ ansible_user }}"
-      when: not linger_enabled_file.stat.exists
-      become: false
-
-    - name: Enable dbus-user-session
-      ansible.builtin.systemd:
-        name: dbus
-        state: started
-        enabled: true
-        scope: user
+#    - name: Check if linger is enabled
+#      ansible.builtin.stat:
+#        path: "/var/lib/systemd/linger/{{ ansible_user }}"
+#      register: linger_enabled_file
+#      become: false
+#
+#    - name: Enable Linger
+#      ansible.builtin.command:
+#        cmd: "loginctl enable-linger {{ ansible_user }}"
+#        creates: "/var/lib/systemd/linger/{{ ansible_user }}"
+#      when: not linger_enabled_file.stat.exists
+#      become: false
+#
+#    - name: Enable dbus-user-session
+#      ansible.builtin.systemd:
+#        name: dbus
+#        state: started
+#        enabled: true
+#        scope: user
 
     - name: Set ping sysctl
       ansible.posix.sysctl:

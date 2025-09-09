@@ -273,11 +273,6 @@ spec:
               value: Prometheus
             - name: VAR_REPLICATIONDESTNAME
               value: ".*-bootstrap"
-        zfs:
-          # renovate: dashboardName="ZFS-pdf-exporter"
-          gnetId: 12586
-          revision: 1
-          datasource: Prometheus
       system:
         node-exporter-full:
           # renovate: dashboardName="Node Exporter Full"

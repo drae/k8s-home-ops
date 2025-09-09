@@ -1,0 +1,26 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+configMapGenerator:
+  - name: dashboard-zfs-pool
+    files:
+      - ./zfs-pool-overview.json
+  - name: dashboard-zfs-zfs-arc-stats
+    files:
+      - ./zfs-arc-stats.json
+  - name: dashboard-zfs-dataset-list
+    files:
+      - ./zfs-pool-datasets.json
+  - name: dashboard-zfs-dataset-details
+    files:
+      - ./zfs-dataset-details.json
+  - name: dashboard-zfs-vdev-list
+    files:
+      - ./zfs-vdev-list.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana_folder: storage
+  labels:
+    grafana_dashboard: "true"

@@ -1,0 +1,1937 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "ZFS monitoring dashboard",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "ZFS"
+      ],
+      "targetBlank": false,
+      "title": "ZFS",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "node"
+      ],
+      "targetBlank": false,
+      "title": "Node",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Pool",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/AweIwvnk4/zfs-pool-overview?${datasource:queryparam}﻿&﻿${cluster:queryparam}﻿&﻿${instance:queryparam}﻿&${pool:queryparam}﻿&﻿${__url_time_range}"
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 18,
+      "panels": [],
+      "title": "General",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "pool"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filter pool",
+                    "url": "/d/AweIwvnk4g1gmo/zfs-dataset-details?${datasource:queryparam}﻿&﻿${cluster:queryparam}﻿&﻿${instance:queryparam}﻿&var-pool=﻿${__data.fields.pool}&﻿${dataset_filter:queryparam}﻿&﻿${type:queryparam}&${dataset:queryparam}﻿&﻿${__url_time_range}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 148
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Used on disk"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "type"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filter type",
+                    "url": "/d/AweIwvnk4g1gmo/zfs-dataset-details?${datasource:queryparam}&${cluster:queryparam}&${instance:queryparam}&${pool:queryparam}&${dataset_filter:queryparam}&${dataset:queryparam}&var-type=${__data.fields.type}&${__url_time_range}"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 113
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Used (logical)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 153
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "filterable"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ref"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Quota"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Snap delta"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ref used"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ref quota"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 133
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ref reservation"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Filter dataset",
+                    "url": "/d/AweIwvnk4g1gmo/zfs-dataset-details?${datasource:queryparam}&${cluster:queryparam}&${instance:queryparam}&${pool:queryparam}&${dataset_filter:queryparam}&${type:queryparam}&var-dataset=${__data.fields.name}&${__url_time_range}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Available"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 112
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Created"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsIsoNoDateIfToday"
+              },
+              {
+                "id": "custom.width",
+                "value": 211
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "from created",
+                    "url": "/d/AweIwvnk4g1gmo/zfs-dataset-details?${datasource:queryparam}&${cluster:queryparam}&${instance:queryparam}&${pool:queryparam}&${dataset_filter:queryparam}&${type:queryparam}&var-dataset=${__data.fields.name}&from=${__data.fields.created_raw_utc}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #created_raw_utc"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              },
+              {
+                "id": "unit"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 18,
+        "x": 1,
+        "y": 1
+      },
+      "id": 95,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "name"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (zfs_dataset_used_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_used_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "used"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (zfs_dataset_logical_used_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_logical_used_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "logical_used"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (zfs_dataset_referenced_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_referenced_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "referenced"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (zfs_dataset_quota_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_quota_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "quota"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (zfs_dataset_referenced_quota_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_volume_size_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_referenced_quota_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_volume_size_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "ref_quota"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (zfs_dataset_written_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_written_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "written_since_snapshot"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (zfs_dataset_referenced_reservation_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_referenced_reservation_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "ref_reserv"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (zfs_dataset_available_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset\"})\r\nor\r\nmax by(pool, name, type) (zfs_dataset_available_bytes{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "available"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (\r\n  zfs_dataset_creation_timestamp{instance=~\"$instance\", pool=~\"$pool\", name=\"$dataset\"}\r\n  or\r\n  zfs_dataset_creation{instance=~\"$instance\", pool=~\"$pool\", name=\"$dataset\"}\r\n  or\r\n  zfs_dataset_creation_timestamp{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"}\r\n  or\r\n  zfs_dataset_creation{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"}\r\n) * 1000",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "created"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by(pool, name, type) (\r\n  zfs_dataset_creation_timestamp{instance=~\"$instance\", pool=~\"$pool\", name=\"$dataset\"}\r\n  or\r\n  zfs_dataset_creation{instance=~\"$instance\", pool=~\"$pool\", name=\"$dataset\"}\r\n  or\r\n  zfs_dataset_creation_timestamp{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"}\r\n  or\r\n  zfs_dataset_creation{instance=~\"$instance\", pool=~\"$pool\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"}\r\n) * 1000",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "created_raw_utc"
+        }
+      ],
+      "title": "Pool List",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 0,
+              "Value #available": 5,
+              "Value #created": 3,
+              "Value #created_raw_utc": 13,
+              "Value #logical_used": 6,
+              "Value #quota": 9,
+              "Value #ref_quota": 10,
+              "Value #ref_reserv": 11,
+              "Value #referenced": 8,
+              "Value #used": 7,
+              "Value #written_since_snapshot": 12,
+              "name": 2,
+              "pool": 1,
+              "type": 4
+            },
+            "renameByName": {
+              "Value": "",
+              "Value #C (last)": "Used",
+              "Value #D (last)": "CHK Errors",
+              "Value #E (last)": "Fragmentation",
+              "Value #F (last)": "Free",
+              "Value #G (last)": "Read Bytes",
+              "Value #H (last)": "Size",
+              "Value #I (last)": "Write Bytes",
+              "Value #available": "Available",
+              "Value #created": "Created",
+              "Value #created_raw_utc": "created_raw_utc",
+              "Value #creation": "Created",
+              "Value #errors (last)": "Errors",
+              "Value #logical_used": "Used (logical)",
+              "Value #quota": "Quota",
+              "Value #ref_quota": "Ref quota",
+              "Value #ref_reserv": "Ref reservation",
+              "Value #ref_used": "Ref used",
+              "Value #referenced": "Ref",
+              "Value #used": "Used on disk",
+              "Value #used (last)": "Used",
+              "Value #written_since_snapshot": "Snap delta",
+              "host": "",
+              "name": "",
+              "state": "Health",
+              "type": "",
+              "vdev": "VDEV"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 331,
+      "panels": [],
+      "title": "Space",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 31,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 326,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(delta(zfs_dataset_logical_referenced_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__rate_interval])) * $__interval_ms / $__rate_interval_ms",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "self",
+          "range": true,
+          "refId": "ref"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(delta(zfs_dataset_logical_referenced_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval])) * $__interval_ms / $__rate_interval_ms",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "children",
+          "range": true,
+          "refId": "children"
+        }
+      ],
+      "title": "Used delta",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "When quota is not set, this is expected to be empty.\nVolumes without discard can have \"volume\" value artificially high.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 3,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 22,
+      "maxDataPoints": 200,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max(\r\nmax_over_time(zfs_dataset_referenced_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__interval])\r\n/\r\n(max_over_time(zfs_dataset_quota_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__interval]) != 0)\r\n)",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "quota (self)",
+          "range": true,
+          "refId": "quota"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max(\r\nmax_over_time(zfs_dataset_referenced_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__interval])\r\n/\r\n(max_over_time(zfs_dataset_referenced_quota_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__interval]) != 0)\r\n)",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "ref quota",
+          "range": true,
+          "refId": "ref_quota"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max(\r\nmax_over_time(zfs_dataset_used_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__interval])\r\n/\r\n(max_over_time(zfs_dataset_quota_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__interval]) != 0)\r\n)",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "quota (total)",
+          "range": true,
+          "refId": "quot_total"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max(\r\nmax by(instance, pool) (max_over_time(zfs_dataset_used_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__interval]))\r\n/ on(instance, pool)\r\nmax by(instance, pool) (max_over_time(zfs_pool_size_bytes{instance=\"$instance\", pool=~\"$pool\"}[$__interval]))\r\n)",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "pool (total)",
+          "range": true,
+          "refId": "pool_percent"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "# using zfs_dataset_logical_used_bytes here because volumes run out of space when allocated, regardless of compressed size\r\nmax(\r\nmax_over_time(zfs_dataset_logical_used_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__interval])\r\n/\r\nmax_over_time(zfs_dataset_volume_size_bytes{instance=\"$instance\", pool=~\"$pool\", type=~\"$type\", name=~\"$dataset\"}[$__interval])\r\n)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "volume allocated",
+          "range": true,
+          "refId": "volume"
+        }
+      ],
+      "title": "Used %",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 332,
+      "panels": [],
+      "title": "Speed",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 120000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 37
+      },
+      "id": 16,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(dataset) (rate(node_zfs_zpool_dataset_nread{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset\"}[$__rate_interval]))",
+          "hide": false,
+          "legendFormat": "self",
+          "range": true,
+          "refId": "read"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(node_zfs_zpool_dataset_nread{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval]))",
+          "hide": false,
+          "legendFormat": "children",
+          "range": true,
+          "refId": "read_children"
+        }
+      ],
+      "title": "Read Speed",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 120000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 37
+      },
+      "id": 324,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(dataset) (rate(node_zfs_zpool_dataset_nwritten{instance=~\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset\"}[$__rate_interval]))",
+          "legendFormat": "self",
+          "range": true,
+          "refId": "write"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(node_zfs_zpool_dataset_nwritten{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval]))",
+          "hide": false,
+          "legendFormat": "children",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Write Speed",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 120000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 46
+      },
+      "id": 333,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(dataset) (rate(node_zfs_zpool_dataset_nread{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset\"}[$__rate_interval])) * $__interval_ms / 1000",
+          "hide": false,
+          "legendFormat": "self",
+          "range": true,
+          "refId": "read"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(node_zfs_zpool_dataset_nread{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval])) * $__interval_ms / 1000",
+          "hide": false,
+          "legendFormat": "children",
+          "range": true,
+          "refId": "read_children"
+        }
+      ],
+      "title": "read total",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 120000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 46
+      },
+      "id": 334,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(dataset) (rate(node_zfs_zpool_dataset_nwritten{instance=~\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset\"}[$__rate_interval])) * $__interval_ms / 1000",
+          "legendFormat": "self",
+          "range": true,
+          "refId": "write"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(node_zfs_zpool_dataset_nwritten{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval])) * $__interval_ms / 1000",
+          "hide": false,
+          "legendFormat": "children",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "written total",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 55
+      },
+      "id": 330,
+      "panels": [],
+      "title": "IOPS",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 120000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "sishort"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 56
+      },
+      "id": 323,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(dataset) (rate(node_zfs_zpool_dataset_reads{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset\"}[$__rate_interval]))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "self",
+          "range": true,
+          "refId": "read"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(node_zfs_zpool_dataset_reads{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval]))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "children",
+          "range": true,
+          "refId": "read_children"
+        }
+      ],
+      "title": "Read IOPS",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 120000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "sishort"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 56
+      },
+      "id": 325,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(dataset) (rate(node_zfs_zpool_dataset_writes{instance=~\"$instance\", dataset=~\"$dataset\"}[$__rate_interval]))",
+          "legendFormat": "self",
+          "range": true,
+          "refId": "write"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(node_zfs_zpool_dataset_writes{instance=~\"$instance\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval]))",
+          "hide": false,
+          "legendFormat": "children",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Write IOPS",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 120000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "sishort"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 65
+      },
+      "id": 328,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(dataset) (\r\n  rate(node_zfs_zpool_dataset_nread{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset\"}[$__rate_interval])\r\n  /\r\n  (rate(node_zfs_zpool_dataset_reads{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset\"}[$__rate_interval]) + 1e-6)\r\n)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "self",
+          "range": true,
+          "refId": "read"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "avg(\r\n  rate(node_zfs_zpool_dataset_nread{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval])\r\n  /\r\n  (rate(node_zfs_zpool_dataset_reads{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval]) + 1e-6)\r\n)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "children",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Read IO average size",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": 120000,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "sishort"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 65
+      },
+      "id": 329,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(dataset) (\r\n  rate(node_zfs_zpool_dataset_nwritten{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset\"}[$__rate_interval])\r\n  /\r\n  (rate(node_zfs_zpool_dataset_writes{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset\"}[$__rate_interval]) + 1e-6)\r\n)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "self",
+          "range": true,
+          "refId": "read"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum(\r\n  rate(node_zfs_zpool_dataset_nwritten{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval])\r\n  /\r\n  (rate(node_zfs_zpool_dataset_writes{instance=\"$instance\", zpool=~\"$pool\", dataset=~\"$dataset/.*\", invalid=~\"$enable_children\"}[$__rate_interval]) + 1e-6)\r\n)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "children",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Write IO average size",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "auto",
+  "schemaVersion": 41,
+  "tags": [
+    "ZFS",
+    "node"
+  ],
+  "templating": {
+    "list": [
+      {
+        "includeAll": false,
+        "name": "prometheus_datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prometheus_datasource}"
+        },
+        "definition": "query_result(group by(location) (last_over_time(zfs_exporter_build_info{}[$__range])))",
+        "includeAll": true,
+        "name": "location",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(group by(location) (last_over_time(zfs_exporter_build_info{}[$__range])))",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/location=\"(?<text>[^\"]+)|location=\"(?<value>[^\"]+)/g",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prometheus_datasource}"
+        },
+        "definition": "query_result(last_over_time(zfs_exporter_build_info{location=~\"$location\"}[$__range]))",
+        "includeAll": false,
+        "label": "Instance",
+        "name": "instance",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(last_over_time(zfs_exporter_build_info{location=~\"$location\"}[$__range]))",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/instance=\"(?<text>[^\"]+)|instance=\"(?<value>[^\"]+)/g",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prometheus_datasource}"
+        },
+        "definition": "query_result(zfs_dataset_used_bytes{instance=\"$instance\"})",
+        "includeAll": true,
+        "name": "pool",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(zfs_dataset_used_bytes{instance=\"$instance\"})",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/pool=\"(?<text>[^\"]+)|pool=\"(?<value>[^\"]+)/g",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "label": "Dataset selector",
+        "name": "dataset_filter",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      },
+      {
+        "allowCustomValue": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prometheus_datasource}"
+        },
+        "definition": "query_result(zfs_dataset_used_bytes{instance=\"$instance\", pool=\"$pool\"})",
+        "includeAll": true,
+        "name": "type",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(zfs_dataset_used_bytes{instance=\"$instance\", pool=\"$pool\"})",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/, *type=\"(?<text>[^\"]+)|, *type=\"(?<value>[^\"]+)/g",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prometheus_datasource}"
+        },
+        "definition": "query_result(zfs_dataset_used_bytes{instance=\"$instance\", pool=\"$pool\", name=~\".*(${dataset_filter}).*\", type=~\"$type\"})",
+        "includeAll": false,
+        "name": "dataset",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(zfs_dataset_used_bytes{instance=\"$instance\", pool=\"$pool\", name=~\".*(${dataset_filter}).*\", type=~\"$type\"})",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/name=\"(?<text>[^\"]+)|name=\"(?<value>[^\"]+)/g",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "label": "Show children",
+        "name": "enable_children",
+        "options": [
+          {
+            "selected": true,
+            "text": "Show",
+            "value": ".*"
+          },
+          {
+            "selected": false,
+            "text": "Hide",
+            "value": "invalid123"
+          }
+        ],
+        "query": "Show : .*, Hide : invalid123",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "ZFS Dataset Details",
+  "uid": "AweIwvnk4g1gmo",
+  "version": 13
+}
