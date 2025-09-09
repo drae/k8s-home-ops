@@ -5,6 +5,7 @@ namespace: system
 resources:
   - ./namespace.yaml
   - ./fstrim/ks.yaml
+  - ./keda/ks.yaml
   - ./intel-device-plugins/ks.yaml
   - ./reloader/ks.yaml
 components:

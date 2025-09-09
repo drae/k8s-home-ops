@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: keda
-      version: 0.32.1
+      version: 2.17.2
       interval: 1h
       sourceRef:
         kind: HelmRepository
