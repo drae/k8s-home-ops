@@ -7,6 +7,7 @@ resources:
   - ./cilium-charts.yaml
   - ./intel-charts.yaml
   - ./k8tz-charts.yaml
+  - ./keda-charts.yaml
   - ./kubernetes-sigs-external-dns-charts.yaml
   - ./metrics-server-charts.yaml
   - ./openebs-charts.yaml
