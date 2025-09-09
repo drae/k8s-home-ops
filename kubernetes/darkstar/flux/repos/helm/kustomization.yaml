@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./backube-charts.yaml
   - ./cilium-charts.yaml
+  - ./giantswarm-charts.yaml
   - ./intel-charts.yaml
   - ./k8tz-charts.yaml
   - ./keda-charts.yaml

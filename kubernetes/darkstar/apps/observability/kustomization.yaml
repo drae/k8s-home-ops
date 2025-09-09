@@ -11,9 +11,10 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./kube-state-metrics/ks.yaml
   - ./loki/ks.yaml
-  - ./node-exporter/ks.yaml
   - ./lvm-exporter/ks.yaml
+  - ./node-exporter/ks.yaml
   - ./promtail/ks.yaml
+  - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
 components:
   - ../../components/flux
