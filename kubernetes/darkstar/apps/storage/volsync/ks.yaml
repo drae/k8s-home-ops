@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/keda/nas-nfs-scaler
   interval: 10m
   path: "./kubernetes/darkstar/apps/storage/volsync/app"
   prune: true
@@ -19,6 +21,9 @@ spec:
     namespace: flux-system
   wait: false # no flux ks dependents
   timeout: 2m
+  postBuild:
+    substitute:
+      APP: *appname
   dependsOn:
     - name: openebs
       namespace: storage
