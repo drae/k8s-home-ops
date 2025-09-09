@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./grafana-secret.sops.yaml
   - ./helm-release.yaml
+  - ./dashboards

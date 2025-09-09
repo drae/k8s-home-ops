@@ -2,29 +2,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: zfs-alert
+  name: alert-zfs
 spec:
   groups:
-    - name: zfs
+    - name: alert-zfs-exporter
       rules:
-        - alert: ZfsPoolOutOfSpace
-          expr: zfs_pool_free_bytes * 100 / zfs_pool_size_bytes < 10 and ON (instance, device, mountpoint) zfs_pool_readonly == 0
-          for: 5m
-          labels:
-            severity: warning
-          annotations:
-            summary: ZFS pool out of space (instance {{ $labels.instance }})
-            description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-
-        - alert: ZfsPoolUnhealthy
-          expr: last_over_time(zfs_pool_health[1h]) > 0
-          for: 5m
-          labels:
-            severity: critical
-          annotations:
-            summary: ZFS pool unhealthy (instance {{ $labels.instance }})
-            description: "ZFS pool state is {{ $value }}. Where:\n  - 0: ONLINE\n  - 1: DEGRADED\n  - 2: FAULTED\n  - 3: OFFLINE\n  - 4: UNAVAIL\n  - 5: REMOVED\n  - 6: SUSPENDED\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-
         - alert: ZfsCollectorFailed
           expr: zfs_scrape_collector_success != 1
           for: 5m
@@ -33,3 +15,54 @@ spec:
           annotations:
             summary: ZFS collector failed (instance {{ $labels.instance }})
             description: "ZFS collector for {{ $labels.instance }} has failed to collect information\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+    - name: alert-zfs-pool
+      rules:
+        - alert: ZfsPoolOutOfSpace
+          expr: zfs_pool_free_bytes / zfs_pool_size_bytes < 0.1 and zfs_pool_readonly == 0
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: ZFS pool has less than 10% free space
+            description: >-
+              {{ $labels.instance }}: pool {{ $labels.pool }}:
+              {{ $value | humanizePercentage }}
+        - alert: ZfsPoolUnhealthy
+          expr: zfs_pool_health > 0
+          for: 0m
+          labels:
+            severity: critical
+          annotations:
+            summary: ZFS pool is not healthy
+            description: >-
+              {{ $labels.instance }}: pool {{ $labels.pool }}:
+              {{ if eq $value 1.0 }}DEGRADED{{ end }}
+              {{ if eq $value 2.0 }}FAULTED{{ end }}
+              {{ if eq $value 3.0 }}OFFLINE{{ end }}
+              {{ if eq $value 4.0 }}UNAVAILABLE{{ end }}
+              {{ if eq $value 5.0 }}REMOVED{{ end }}
+              {{ if eq $value 6.0 }}SUSPENDED{{ end }}
+    - name: alert-zfs-dataset
+      rules:
+        - alert: ZfsDatasetQuota
+          expr: zfs_dataset_used_bytes / (zfs_dataset_quota_bytes != 0) > 0.9
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: ZFS dataset used more than 90% of quota
+            description: >-
+              {{ $labels.instance }}:
+              {{ $labels.pool }}/{{ $labels.name }} ({{ $labels.type }}):
+              {{ $value | humanizePercentage }}
+        - alert: ZfsDatasetRefQuota
+          expr: zfs_dataset_referenced_bytes / (zfs_dataset_referenced_quota_bytes != 0) > 0.9
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: ZFS dataset used more than 90% of quota
+            description: >-
+              {{ $labels.instance }}:
+              {{ $labels.pool }}/{{ $labels.name }} ({{ $labels.type }}):
+              {{ $value | humanizePercentage }}

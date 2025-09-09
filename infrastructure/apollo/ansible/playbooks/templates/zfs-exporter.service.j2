@@ -1,14 +1,20 @@
 [Unit]
 Description=zfs_exporter
+Wants=network-online.target
 After=network-online.target
 
 [Service]
 Restart=always
 RestartSec=5
 TimeoutSec=5
-User=root
-Group=root
-ExecStart=/usr/local/bin/zfs_exporter {{ zfs_exporter_arguments }}
+User=zfs_exporter
+Group=zfs_exporter
+ExecStart=/usr/local/bin/zfs_exporter \
+    --web.listen-address=:9134 \
+    --properties.dataset-filesystem="available,logicalused,quota,referenced,used,usedbydataset,usedbychildren,usedbysnapshots,written,refquota,refreservation,reservation,snapshot_count,snapshot_limit,logicalreferenced,creation" \
+    --properties.dataset-volume="available,logicalused,referenced,used,usedbydataset,volsize,written,usedbysnapshots,logicalreferenced,creation,snapshot_count" \
+    --properties.pool="allocated,dedupratio,capacity,expandsize,fragmentation,free,freeing,health,leaked,readonly,size" \
+    --web.disable-exporter-metrics
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

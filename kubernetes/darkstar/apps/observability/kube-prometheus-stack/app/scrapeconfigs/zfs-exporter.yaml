@@ -9,8 +9,13 @@ spec:
     - targets:
         - "10.1.10.10:9134"
   metricsPath: /metrics
+  scheme: HTTP
   relabelings:
-    - action: replace
-      regex: ^([^@]*).*$
-      targetLabel: filesystem
-      replacement: ${1}
+    - targetLabel: instance # remove port from instance
+      action: replace
+      sourceLabels: [__address__]
+      regex: (.*):\d*
+  metricRelabelings:
+    - action: drop
+      sourceLabels: [__name__]
+      regex: promhttp_.*
