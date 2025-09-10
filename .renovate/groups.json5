@@ -78,6 +78,7 @@
       matchPackageNames: [
         "/kube-apiserver/",
         "/kube-controller-manager/",
+        "/kube-proxy/",
         "/kube-scheduler/",
         "/kubelet/",
       ],
