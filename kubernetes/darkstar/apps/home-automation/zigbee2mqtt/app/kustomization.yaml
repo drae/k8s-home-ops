@@ -3,5 +3,3 @@ kind: Kustomization
 resources:
   - ./helm-release.yaml
   - ./scaledobject.yaml
-  # PVC and volsync templates
-  - ../../../storage/volsync/templates

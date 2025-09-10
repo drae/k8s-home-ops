@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/gatus/internal
   interval: 10m
   path: "./kubernetes/darkstar/apps/observability/grafana/app"
   prune: true
@@ -18,6 +20,9 @@ spec:
     name: k8s-home-ops
     namespace: flux-system
   wait: false # no flux ks dependents
+  postBuild:
+    substitute:
+      APP: *appname
   dependsOn:
     - name: topolvm
       namespace: storage

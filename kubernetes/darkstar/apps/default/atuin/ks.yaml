@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/volsync
   interval: 10m
   path: "./kubernetes/darkstar/apps/default/atuin/app"
   prune: true
