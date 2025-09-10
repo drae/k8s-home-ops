@@ -11,6 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
+    - ../../../../components/volsync
+    - ../../../../components/gatus/internal
     - ../../../../components/keda/nas-nfs-scaler
   interval: 10m
   path: "./kubernetes/darkstar/apps/downloads/radarr/app"

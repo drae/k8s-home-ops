@@ -7,6 +7,3 @@ resources:
   - ./home-assistant-matter-secret.sops.yaml
   - ./pvc.yaml
   - ./helm-release.yaml
-  # PVC and volsync templates
-  - ../../../storage/volsync/templates
-  - ../../../observability/gatus/templates/external

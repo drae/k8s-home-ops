@@ -5,8 +5,6 @@ kind: Kustomization
 resources:
   - ./gatus-secret.sops.yaml
   - ./helm-release.yaml
-  # PVC and volsync templates
-  - ../../../storage/volsync/templates
 configMapGenerator:
   - name: gatus-configmap
     files:
