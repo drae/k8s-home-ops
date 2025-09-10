@@ -12,7 +12,6 @@ allowSchedulingOnMasters: true
 
 additionalApiServerCertSans: &san
   - darkstar.lan.starstreak.net
-  - &vip 10.1.10.20
   - 127.0.0.1
 additionalMachineCertSans: *san
 
@@ -32,8 +31,7 @@ nodes:
     controlPlane: true
     disableSearchDomain: true
     installDiskSelector:
-      size: "<= 256GB"
-      type: ssd
+      model: INTEL *
     kernelModules:
       - name: dm_thin_pool
       - name: dm_mod
@@ -49,7 +47,7 @@ nodes:
         mtu: 1500
         dhcp: true
         vip:
-          ip: *vip
+          ip: 10.1.10.20
         vlans:
           - vlanId: 20
             mtu: 1500
