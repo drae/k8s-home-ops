@@ -41,6 +41,13 @@
         daemon_reload: true
         state: restarted
 
+    - name: Restart zfs-exporter-chris
+      ansible.builtin.systemd:
+        name: zfs-exporter-chris
+        enabled: true
+        daemon_reload: true
+        state: restarted
+
   tasks:
     # Include vars
     - name: Load vars
@@ -195,7 +202,7 @@
         - zfs_result.stat.exists
         - not zfs_pool_flags_modification_result.matched | default(false) # 'matched' is true if regexp found a line
 
-    # Install the zfs exporter for prometheus
+    # Install the pdf/zfs_exporter for prometheus
     - name: Unarchive the zfs exporter
       ansible.builtin.unarchive:
         src: https://github.com/pdf/zfs_exporter/releases/download/v{{ zfs_exporter_version }}/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
@@ -240,6 +247,26 @@
         dest: /etc/systemd/system/zfs-exporter.service
         mode: "0644"
       notify: Restart zfs-exporter
+
+    # Install the siebenmann/zfs_exporter for prometheus
+    # Note: this assumes the binary has been placed in /usr/local/bin/zfs_exporter_chris
+    #
+    # To build:
+    # git clone --depth 1 -b cks-upstream https://github.com/siebenmann/zfs_exporter.git
+    # CGO_ENABLED=0 go build -ldflags="-w -s" -o zfs-exporter-chris main.go
+    #
+    - name: Create service group for zfs_exporter
+      group:
+        name: zfs_exporter
+        state: present
+        system: true
+
+    - name: Create the systemd service
+      ansible.builtin.template:
+        src: zfs-exporter-chris.service.j2
+        dest: /etc/systemd/system/zfs-exporter-chris.service
+        mode: "0644"
+      notify: Restart zfs-exporter-chris
 
     #
     # Filesystem
