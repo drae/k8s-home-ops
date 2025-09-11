@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: record-zfs-vdev-quantile
+spec:
+  groups:
+    - name: record-zfs-vdev-quantile
+      rules:
+        - record: zfs_vdev_latency_disk_bucket:quantile_irate
+          expr: |-
+            histogram_quantile(0.99, irate(zfs_vdev_latency_disk_bucket[30s])) and (irate(zfs_vdev_latency_disk_count[30s]) != 0)
+          labels:
+            quantile: "0.99"
+        # TODO which buckets would make sense for IO size?
+        # - record: zfs_vdev_io_size_aggregated_bucket:quantile_irate
+        #   expr: |-
+        #     histogram_quantile(0.99, irate(zfs_vdev_io_size_aggregated_bucket[30s])) and (irate(zfs_vdev_io_size_aggregated_count[30s]) != 0)
+        #   labels:
+        #     quantile: '0.99'
+        # - record: zfs_vdev_io_size_individual_bucket:quantile_irate
+        #   expr: |-
+        #     histogram_quantile(0.99, irate(zfs_vdev_io_size_individual_bucket[30s])) and (irate(zfs_vdev_io_size_individual_count[30s]) != 0)
+        #   labels:
+        #     quantile: '0.99'
+        - record: zfs_vdev_queue_latency_bucket:quantile_irate
+          expr: |-
+            histogram_quantile(0.99, irate(zfs_vdev_queue_latency_bucket[30s])) and (irate(zfs_vdev_queue_latency_count[30s]) != 0)
+          labels:
+            quantile: "0.99"
+        - record: zfs_vdev_zio_latency_total_bucket:quantile_irate
+          expr: |-
+            histogram_quantile(0.99, irate(zfs_vdev_zio_latency_total_bucket[30s])) and (irate(zfs_vdev_zio_latency_total_count[30s]) != 0)
+          labels:
+            quantile: "0.99"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: record-zfs-vdev
+spec:
+  groups:
+    - name: record-zfs-vdev
+      rules:
+        # we skip scan_pass metrics because they aren't useful for completion calculation
+        - record: zfs_vdev_trim_processed_ratio
+          expr: zfs_vdev_trim_processed_bytes / (zfs_vdev_trim_estimated_bytes != 0)
+        - record: zfs_vdev_trim_active_processed_ratio
+          expr: zfs_vdev_trim_processed_ratio and (min_over_time(zfs_vdev_trim_state[1m]) == 1)
+        - record: zfs_pool_scan_issued_ratio
+          expr: zfs_pool_scan_issued_bytes / (zfs_pool_scan_to_examine_bytes != 0)
+        - record: zfs_pool_scan_active_issued_ratio
+          expr: zfs_pool_scan_issued_ratio and (min_over_time(zfs_pool_scan_state[1m]) == 1)
+        - record: zfs_pool_scan_examined_ratio
+          expr: zfs_pool_scan_examined_bytes / (zfs_pool_scan_to_examine_bytes != 0)
+        - record: zfs_pool_scan_active_examined_ratio
+          expr: zfs_pool_scan_examined_ratio and (min_over_time(zfs_pool_scan_state[1m]) == 1)
+        - record: zfs_vdev_trim_estimated_remaining_seconds
+          expr: (time() - (zfs_vdev_trim_action_time != 0)) * (1 / (zfs_vdev_trim_active_processed_ratio != 0) - 1)
+        - record: zfs_pool_scan_issue_estimated_remaining_seconds
+          expr: (time() - (zfs_pool_scan_start_time_seconds != 0)) * (1 / (zfs_pool_scan_active_issued_ratio != 0) - 1)
+        - record: zfs_pool_scan_examine_estimated_remaining_seconds
+          expr: (time() - (zfs_pool_scan_start_time_seconds != 0)) * (1 / (zfs_pool_scan_active_examined_ratio != 0) - 1)
