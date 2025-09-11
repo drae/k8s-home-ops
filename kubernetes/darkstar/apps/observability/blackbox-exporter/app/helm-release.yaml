@@ -41,39 +41,20 @@ spec:
               - HTTP/1.1
               - HTTP/2.0
             follow_redirects: true
-            preferred_ip_protocol: "ip4"
+            preferred_ip_protocol: ip4
         icmp:
           prober: icmp
-          timeout: 30s
+          timeout: 5s
           icmp:
-            preferred_ip_protocol: "ip4"
-        icmp6:
-          prober: icmp
-          timeout: 30s
-          icmp:
-            preferred_ip_protocol: "ip6"
+            preferred_ip_protocol: ip4
+        tcp_connect:
+          prober: tcp
+          timeout: 5s
+          tcp:
+            preferred_ip_protocol: ip4
     prometheusRule:
       enabled: true
-      additionalLabels:
-        app: prometheus-operator
-        release: prometheus
       rules:
-        - alert: BlackboxSslCertificateWillExpireSoon
-          expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 3
-          for: 15m
-          labels:
-            severity: critical
-          annotations:
-            summary: |-
-              The SSL certificate for {{ $labels.target }} will expire in less than 3 days
-        - alert: BlackboxSslCertificateExpired
-          expr: probe_ssl_earliest_cert_expiry - time() <= 0
-          for: 15m
-          labels:
-            severity: critical
-          annotations:
-            summary: |-
-              The SSL certificate for {{ $labels.target }} has expired
         - alert: BlackboxProbeFailed
           expr: probe_success == 0
           for: 15m
@@ -81,8 +62,7 @@ spec:
             severity: critical
           annotations:
             summary: |-
-              The host {{ $labels.instance }} is currently unreachable
-    pspEnabled: false
+              The host {{ $labels.target }} is currently unreachable
     securityContext:
       readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
@@ -96,23 +76,3 @@ spec:
           release: prometheus
         interval: 1m
         scrapeTimeout: 30s
-      targets:
-        # NAS
-        - module: icmp
-          name: nas-icmp
-          url: 10.1.10.1
-        # tvheadend
-        - module: http_2xx
-          name: tvheadend-http
-          url: "http://10.1.10.98:9981"
-        - module: icmp
-          name: tvheadend-icmp
-          url: 10.1.10.98
-        # Other devices
-        - module: icmp
-          name: zigbee-controller-icmp
-          url: 10.1.20.101
-        - module: icmp
-          name: ping-cloudflare
-          url: 1.1.1.1
-          scrape_interval: 30s
