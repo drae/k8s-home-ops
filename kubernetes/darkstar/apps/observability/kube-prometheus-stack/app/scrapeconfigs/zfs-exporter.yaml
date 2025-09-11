@@ -19,3 +19,31 @@ spec:
     - action: drop
       sourceLabels: [__name__]
       regex: promhttp_.*
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: zfs-exporter-chris
+spec:
+  staticConfigs:
+    - targets:
+        - "10.1.10.10:9700"
+  metricsPath: /metrics
+  scheme: HTTP
+  relabelings:
+    - targetLabel: instance # remove port from instance
+      action: replace
+      sourceLabels: [__address__]
+      regex: (.*):\d*
+  metricRelabelings:
+    - action: drop
+      sourceLabels: [__name__]
+      regex: go_gc_.*|promhttp_.*
+    - action: drop
+      sourceLabels: [__name__]
+      # zfs_pool_scan_pass_issued_bytes metric simply resets when examine phase finishes
+      # but issued metric keeps incrementing
+      # this is meaningless, issued rate should be calculated since the beginning of overall scan
+      # zfs_pool_scan_pass_examined_bytes also does the same, but it is zero in second phase,
+      # so it can theoretically be used to determine when first phase is finished
+      regex: zfs_pool_scan_pass_issued_bytes

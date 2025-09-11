@@ -1,0 +1,17 @@
+
+[Unit]
+Description=ZFS Exporter by Chris Siebenmann
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+User=zfs_exporter
+ExecStart=/usr/local/bin/zfs_exporter_chris \
+    -depth=2 \
+    -fullpath \
+    -listen-addr=:9700
+
+[Install]
+WantedBy=default.target
