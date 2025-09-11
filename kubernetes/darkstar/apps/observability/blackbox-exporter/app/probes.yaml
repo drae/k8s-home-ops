@@ -31,3 +31,17 @@ spec:
     staticConfig:
       static:
         - apollo.lan.starstreak.net:2049
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: http
+spec:
+  module: http_2xx
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - tvh.lan.starstreak.net:9981
