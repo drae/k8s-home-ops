@@ -12,6 +12,26 @@ spec:
         - "10.1.10.98:9100"
   metricsPath: /metrics
   relabelings:
+    - targetLabel: instance
+      sourceLabels: [__address__]
+      regex: (.*):\d*
+      action: replace
     - action: replace
       targetLabel: job
       replacement: *name
+  metricRelabelings:
+    # for some unknown reason, node-exporter doesn't want to skip loop devices
+    # so we drop loop device metrics on ingestion instead
+    - action: drop
+      sourceLabels: [__name__, device]
+      regex: node_disk_.*;loop.*
+    # there are too many metrics, which have too big cardinality, but too little use
+    - action: drop
+      sourceLabels: [__name__]
+      regex: node_zfs_zpool_dataset_zil_.*
+    # operstate is literally duplicated as node_network_up
+    # separate label for it a just increasing cardinality
+    - targetLabel: operstate
+      sourceLabels: [__name__]
+      regex: node_network_info
+      replacement: ""
