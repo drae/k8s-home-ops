@@ -1,0 +1,39 @@
+---
+#
+# SECRET* vars are encrypted with sops
+#
+
+os_timezone: "Europe/London"
+os_ssh_authorized_keys:
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnp4n7WX1FgQozEi6qY+E/6y3yg6eqnAdpQHp1MkMTH paul@LAPTOP"
+os_packages_install:
+  - acl
+  - apt-transport-https
+  - btop
+  - ca-certificates
+  - curl
+  - dbus-user-session
+  - gettext
+  - git
+  - iputils-ping
+  - lvm2
+  - net-tools
+  - nfs-common
+  - ntpdate
+  - psmisc
+  - software-properties-common
+  - tmux
+  - unzip
+os_packages_remove:
+  - apparmor
+  - apport
+  - byobu
+  - friendly-recovery
+  - landscape-common
+  - lxd-agent-loader
+  - plymouth
+  - plymouth-theme-ubuntu-text
+  - popularity-contest
+  - sosreport
+  - ubuntu-advantage-tools
+  - ufw
