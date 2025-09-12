@@ -28,8 +28,6 @@ spec:
   upgrade:
     crds: Skip
   values:
-    crds:
-      enabled: false
     cleanPrometheusOperatorObjectNames: true
     # Individual stack components
     alertmanager:
@@ -68,29 +66,28 @@ spec:
             sourceLabels:
               - __name__
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
-    kubeControllerManager:
-      enabled: false
     kubeEtcd:
-      enabled: false
-    kubelet:
-      enabled: true
-      serviceMonitor:
-        metricRelabelings:
-          # Drop high cardinality labels
-          - action: labeldrop
-            regex: (uid)
-          - action: labeldrop
-            regex: (id|name)
-          - action: drop
-            sourceLabels:
-              - __name__
-            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
+      service:
+        selector:
+          component: kube-apiserver # etcd runs on control plane nodes
     kubeProxy:
       enabled: false
-    kubeScheduler:
-      enabled: false
-    kubeStateMetrics:
-      enabled: false
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      metricLabelsAllowlist:
+        - pods=[*]
+        - deployments=[*]
+        - persistentvolumeclaims=[*]
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
     nodeExporter:
       enabled: false
     grafana:
@@ -101,20 +98,6 @@ spec:
           annotations:
             grafana_folder: Kubernetes
     # Prometheus configuration
-    prometheusOperator:
-      resources:
-        requests:
-          cpu: 35m
-          memory: 273M
-        limits:
-          memory: 326M
-      prometheusConfigReloader:
-        resources:
-          requests:
-            cpu: 11m
-            memory: 32M
-          limits:
-            memory: 32M
     prometheus:
       route:
         main:
