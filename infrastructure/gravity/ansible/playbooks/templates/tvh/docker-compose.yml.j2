@@ -1,0 +1,19 @@
+---
+version: "3.8"
+
+services:
+  tvh:
+    image: lscr.io/linuxserver/tvheadend:version-b3974f7d
+    container_name: tvheadend
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+#      - RUN_OPTS= #optional
+    network_mode: host
+    volumes:
+      - "{{ docker_base_dir }}/tvh/data:/config"
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/dvb:/dev/dvb
+    restart: unless-stopped
