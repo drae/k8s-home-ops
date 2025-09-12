@@ -23,10 +23,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: kube-prometheus-stack
-  install:
-    crds: Skip
-  upgrade:
-    crds: Skip
   values:
     cleanPrometheusOperatorObjectNames: true
     # Individual stack components
@@ -66,12 +62,20 @@ spec:
             sourceLabels:
               - __name__
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
-    kubeEtcd:
+    kubeControllerManager:
+      enabled: true
       service:
         selector:
-          component: kube-apiserver # etcd runs on control plane nodes
+          k8s-app: kube-controller-manager
+    kubeEtcd:
+      enabled: false
     kubeProxy:
       enabled: false
+    kubeScheduler:
+      enabled: true
+      endpoints:
+        selector:
+          k8s-app: kube-scheduler
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
       metricLabelsAllowlist:
