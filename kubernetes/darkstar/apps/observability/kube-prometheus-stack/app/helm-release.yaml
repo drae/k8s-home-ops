@@ -73,7 +73,7 @@ spec:
       enabled: false
     kubeScheduler:
       enabled: true
-      endpoints:
+      service:
         selector:
           k8s-app: kube-scheduler
     kube-state-metrics:
