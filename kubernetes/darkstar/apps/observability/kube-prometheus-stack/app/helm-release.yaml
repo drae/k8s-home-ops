@@ -50,7 +50,7 @@ spec:
                 requests:
                   storage: 1Gi
     kubeApiServer:
-      enabled: false
+      enabled: true
       serviceMonitor:
         metricRelabelings:
           # Drop high cardinality labels
