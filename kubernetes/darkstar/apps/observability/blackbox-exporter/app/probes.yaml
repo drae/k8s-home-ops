@@ -16,7 +16,7 @@ spec:
         - tvh.lan.starstreak.net
         - zigbee-hub.lan.starstreak.net
         - hive-hub.lan.starstreak.net
-        - one.one.one.one
+        - 1.1.1.1
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
@@ -45,3 +45,4 @@ spec:
     staticConfig:
       static:
         - tvh.lan.starstreak.net:9981
+        - one.one.one.one
