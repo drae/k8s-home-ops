@@ -41,4 +41,7 @@ spec:
     namespace: flux-system
   wait: false
   dependsOn:
+    - name: multus
+      namespace: networking
     - name: blackbox-exporter
+      namespace: observability
