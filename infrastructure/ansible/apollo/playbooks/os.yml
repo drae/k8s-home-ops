@@ -194,17 +194,16 @@
       when: zfs_result.stat.exists
 
     - name: Add ZFS_POOL_IMPORT_FLAGS line if it does not exist
-      ansible.builtin.lineinfile:
+      ansible.builtin.blockinfile:
         path: /etc/default/zfs
-        line: "ZFS_POOL_IMPORT_FLAGS=\"-o altroot=/mnt\""
-        create: true # Creates the file if it doesn't exist
-        insertafter: EOF # Adds the line at the end of the file
+        block: |
+
+          # Custom ZFS import options
+          ZPOOL_IMPORT_OPTS=' -o altroot=/mnt'
+        create: true
         state: present
         mode: "0644"
       register: zfs_pool_flags_addition_result
-      # This task runs ONLY if:
-      # 1. The file was found by the initial stat task (or it will be created if missing).
-      # 2. The previous 'modify' task did NOT find a matching line (zfs_pool_flags_modification_result.matched is false).
       when:
         - zfs_result.stat.exists
         - not zfs_pool_flags_modification_result.matched | default(false) # 'matched' is true if regexp found a line
@@ -263,7 +262,7 @@
         version: "{{ zfs_exporter_chris_repo_branch }}"
         depth: 1
         force: true
-      delegate_to: "{{ groups['storage'][0] }}"
+      delegate_to: localhost
       become: false
 
     - name: Build zfs_exporter binary
