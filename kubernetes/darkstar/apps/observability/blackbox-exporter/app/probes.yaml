@@ -44,5 +44,5 @@ spec:
   targets:
     staticConfig:
       static:
-        - tvh.lan.starstreak.net:9981
+        - tvheadend.lan.starstreak.net
         - one.one.one.one
