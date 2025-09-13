@@ -11,11 +11,15 @@ spec:
     name: app-template
     namespace: flux-system
   values:
+    defaultPodOptions:
+      hostNetwork: true
+      priorityClassName: system-node-critical
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
     controllers:
       multus:
         type: daemonset
-        pod:
-          hostNetwork: true
         initContainers:
           cni-plugins:
             image:
@@ -29,6 +33,7 @@ spec:
             command:
               - /thin_entrypoint
             args:
+              - --multus-cni-conf-dir=/tmp
               - --cleanup-config-on-exit=true
             resources:
               requests:
@@ -36,7 +41,13 @@ spec:
               limits:
                 memory: "512Mi"
             securityContext:
-              privileged: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                add:
+                  - NET_ADMIN
+                drop:
+                  - ALL
     persistence:
       etc-cni-net-d:
         type: hostPath
@@ -48,6 +59,8 @@ spec:
         hostPath: /opt/cni/bin
         globalMounts:
           - path: /host/opt/cni/bin
+      tmp:
+        type: emptyDir
     rbac:
       roles:
         multus:
