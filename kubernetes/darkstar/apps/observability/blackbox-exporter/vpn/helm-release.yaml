@@ -14,12 +14,14 @@ spec:
     image:
       registry: quay.io
     podAnnotations:
-      k8s.v1.cni.cncf.io/networks: |-
+      k8s.v1.cni.cncf.io/networks: |
         [{
-          "name": "multus-vpn",
+          "name":"multus-vpn",
           "namespace": "networking",
-          "ips": ["10.1.30.45/24"],
-          "mac": "92:cf:d7:05:30:45"
+          "ips": [
+            "10.1.30.45/24"
+          ],
+          "mac": "92:cf:d7:05:70:84"
         }]
     podSecurityContext:
       readOnlyRootFilesystem: true
