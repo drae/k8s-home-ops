@@ -28,9 +28,11 @@ spec:
     image:
       registry: quay.io
     podSecurityContext:
-      sysctls:
-        - name: net.ipv4.ping_group_range
-          value: "0 2147483647"
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        add:
+          - NET_RAW
     config:
       modules:
         http_2xx:
@@ -76,3 +78,12 @@ spec:
           release: prometheus
         interval: 1m
         scrapeTimeout: 30s
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: blackbox-exporter
+            patch: |-
+              - op: remove
+                path: /spec/strategy/rollingUpdate
