@@ -27,12 +27,12 @@ tasks:
       - "{{.PROJECT_DIR}}/.venv/pyvenv.cfg"
 
   run:
-    desc: Run an Ansible playbook for configuring a cluster
+    desc: Run an Ansible playbook for configuring a machine
     summary: |
       Args:
         machine: Machine to run command against (required)
         playbook: Playbook to run (required)
-    prompt: Run Ansible playbook '{{.playbook}}' against the 'apollo' cluster ... continue?
+    prompt: Run Ansible playbook '{{.playbook}}' against '{{.machine}}' ... continue?
     cmd: |
       true && {{.PROJECT_DIR}}/.venv/bin/ansible-playbook --inventory {{.INFRASTRUCTURE_DIR}}/ansible/apollo/inventory/hosts.yml \
         {{.INFRASTRUCTURE_DIR}}/ansible/{{.machine}}/playbooks/{{.playbook}}.yml {{.CLI_ARGS}}
