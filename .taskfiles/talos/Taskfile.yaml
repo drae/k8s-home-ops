@@ -7,19 +7,19 @@ tasks:
     desc: Generate clusterconfig for Talos
     cmds:
       - talhelper genconfig
-        --secret-file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talsecret.sops.yaml
-        --config-file {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talconfig.yaml
-        --out-dir {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig
+        --secret-file {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.sops.yaml
+        --config-file {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talconfig.yaml
+        --out-dir {{.INFRASTRUCTURE_DIR}}/talos/darkstar/clusterconfig
     preconditions:
       - which talhelper
-      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talsecret.sops.yaml
-      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/talconfig.yaml
+      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.sops.yaml
+      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talconfig.yaml
 
   apply-clusterconfig:
     desc: Apply clusterconfig for a Talos cluster
     vars:
       CLUSTERCONFIG_FILES:
-        sh: find {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig -type f -name '*.yaml' -printf '%f\n'
+        sh: find {{.INFRASTRUCTURE_DIR}}/talos/darkstar/clusterconfig -type f -name '*.yaml' -printf '%f\n'
     cmds:
       - for:
           var: CLUSTERCONFIG_FILES
@@ -30,7 +30,7 @@ tasks:
             {{ trimPrefix (printf "%s-" "darkstar") .ITEM | trimSuffix ".yaml" }}
     preconditions:
       - talosctl config get-contexts | grep darkstar
-      - test -d {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig
+      - test -d {{.INFRASTRUCTURE_DIR}}/talos/darkstar/clusterconfig
 
   apply-machineconfig:
     internal: true
@@ -38,13 +38,13 @@ tasks:
     cmds:
       - talosctl --context darkstar apply-config
         --nodes "{{.hostname}}"
-        --file "{{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig/{{.filename}}"
+        --file "{{.INFRASTRUCTURE_DIR}}/talos/darkstar/clusterconfig/{{.filename}}"
         --mode="{{.MODE}}"
         {{ if eq "true" .INSECURE }}--insecure{{ end }}
         {{ if eq "true" .DRY_RUN }}--dry-run{{ end }}
     preconditions:
       - talosctl config get-contexts | grep darkstar
-      - test -f {{.INFRASTRUCTURE_DIR}}/darkstar/talos/clusterconfig/{{.filename}}
+      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/clusterconfig/{{.filename}}
     requires:
       vars:
         - hostname

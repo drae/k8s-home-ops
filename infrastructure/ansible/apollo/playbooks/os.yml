@@ -14,7 +14,7 @@
 
   vars:
     zfs_exporter_chris_repo_url: "https://github.com/siebenmann/zfs_exporter.git"
-    zfs_exporter_chris_repo_version: "cks-upstream"
+    zfs_exporter_chris_repo_branch: "cks-upstream"
     zfs_exporter_chris_repo_path: "/tmp/zfs_exporter"
     zfs_exporter_chris_local_binary_path: /tmp/zfs_exporter/zfs_exporter_chris
     zfs_exporter_chris_remote_binary_path: /usr/local/bin/zfs_exporter_chris
@@ -185,8 +185,8 @@
     - name: Modify ZFS_POOL_IMPORT_FLAGS to include altroot=/mnt if it exists
       ansible.builtin.lineinfile:
         path: /etc/default/zfs
-        regexp: '^(ZFS_POOL_IMPORT_FLAGS=")([^"]*)"$'
-        line: '\1{% if "\2" and "-o altroot=/mnt" not in "\2" %}\2 -o altroot=/mnt{% elif not "\2" %}-o altroot=/mnt{% else %}\2{% endif %}"'
+        regexp: "^(ZFS_POOL_IMPORT_FLAGS=\")([^\"]*)\"$"
+        line: "\\1{% if '\\2' and '-o altroot=/mnt' not in '\\2' %}\\2 -o altroot=/mnt{% elif not '\\2' %}-o altroot=/mnt{% else %}\\2{% endif %}\""
         backrefs: true
         state: present
       register: zfs_pool_flags_modification_result
@@ -196,7 +196,7 @@
     - name: Add ZFS_POOL_IMPORT_FLAGS line if it does not exist
       ansible.builtin.lineinfile:
         path: /etc/default/zfs
-        line: 'ZFS_POOL_IMPORT_FLAGS="-o altroot=/mnt"'
+        line: "ZFS_POOL_IMPORT_FLAGS=\"-o altroot=/mnt\""
         create: true # Creates the file if it doesn't exist
         insertafter: EOF # Adds the line at the end of the file
         state: present
@@ -234,13 +234,13 @@
         state: absent
 
     - name: Create service group for zfs_exporter
-      group:
+      ansible.builtin.group:
         name: zfs_exporter
         state: present
         system: true
 
     - name: Create service user for zfs_exporter
-      user:
+      ansible.builtin.user:
         name: zfs_exporter
         group: zfs_exporter
         shell: /usr/sbin/nologin
@@ -260,11 +260,10 @@
       ansible.builtin.git:
         repo: "{{ zfs_exporter_chris_repo_url }}"
         dest: "{{ zfs_exporter_chris_repo_path }}"
-        version: "{{ zfs_exporter_chris_repo_version }}"
+        version: "{{ zfs_exporter_chris_repo_branch }}"
         depth: 1
         force: true
-      delegate_to: localhost
-      run_once: true
+      delegate_to: "{{ groups['storage'][0] }}"
       become: false
 
     - name: Build zfs_exporter binary
@@ -276,9 +275,9 @@
       delegate_to: localhost
       run_once: true
       become: false
-      
+
     - name: Copy zfs_exporter_chris binary
-      copy:
+      ansible.builtin.copy:
         src: "{{ zfs_exporter_chris_local_binary_path }}"
         dest: "{{ zfs_exporter_chris_remote_binary_path }}"
         owner: root
@@ -290,12 +289,11 @@
       ansible.builtin.file:
         path: "{{ zfs_exporter_chris_repo_path }}"
         state: absent
-      delegate_to: localhost
-      run_once: true
+      delegate_to: "{{ groups['storage'][0] }}"
       become: false
 
     - name: Create service group for zfs_exporter
-      group:
+      ansible.builtin.group:
         name: zfs_exporter
         state: present
         system: true
@@ -350,8 +348,8 @@
     - name: Ensure apparmor=0 is set in GRUB_CMDLINE_LINUX
       ansible.builtin.lineinfile:
         path: /etc/default/grub
-        regexp: '^(GRUB_CMDLINE_LINUX=".*)"$'
-        line: '\1 apparmor=0"'
+        regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
+        line: "\\1 apparmor=0\""
         backrefs: true
         state: present
       when: grub_result.stat.exists
@@ -360,8 +358,8 @@
     - name: Ensure mitigations=off is set in GRUB_CMDLINE_LINUX
       ansible.builtin.lineinfile:
         path: /etc/default/grub
-        regexp: '^(GRUB_CMDLINE_LINUX=".*)"$'
-        line: '\1 mitigations=off"'
+        regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
+        line: "\\1 mitigations=off\""
         backrefs: true
         state: present
       when: grub_result.stat.exists
@@ -375,27 +373,6 @@
       when:
         - grub_result.stat.exists
         - apparmor_changed.changed or mitigations_changed.changed
-
-    # Enable cgroupv2 and rootless
-#    - name: Check if linger is enabled
-#      ansible.builtin.stat:
-#        path: "/var/lib/systemd/linger/{{ ansible_user }}"
-#      register: linger_enabled_file
-#      become: false
-#
-#    - name: Enable Linger
-#      ansible.builtin.command:
-#        cmd: "loginctl enable-linger {{ ansible_user }}"
-#        creates: "/var/lib/systemd/linger/{{ ansible_user }}"
-#      when: not linger_enabled_file.stat.exists
-#      become: false
-#
-#    - name: Enable dbus-user-session
-#      ansible.builtin.systemd:
-#        name: dbus
-#        state: started
-#        enabled: true
-#        scope: user
 
     - name: Set ping sysctl
       ansible.posix.sysctl:
@@ -420,8 +397,8 @@
     - name: Enable cgroupv2
       ansible.builtin.replace:
         path: /etc/default/grub
-        regexp: '^(GRUB_CMDLINE_LINUX=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
-        replace: '\1 {{ option }}={{ value }}\2'
+        regexp: "^(GRUB_CMDLINE_LINUX=(?:(?![\" ]{{ option | regex_escape }}=).)*)(?:[\" ]{{ option | regex_escape }}=\\S+)?(.*\")$"
+        replace: "\\1 {{ option }}=\"{{ value }}\"\\2"
       vars:
         option: systemd.unified_cgroup_hierarchy
         value: 1

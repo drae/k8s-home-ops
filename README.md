@@ -54,7 +54,7 @@ This will ensure everything that is needed for installation exists, apply the co
 ✳️ When creating the configuration from scratch, [talhelper](https://github.com/budimanjojo/talhelper) is used to generate the certificates required by `talosctl`. In my case I would type:
 
 ```sh
-cd infrastructure/darkstar/talos
+cd infrastructure/talos/darkstar
 talhelper gensecret > talsecret.sops.yaml
 sops -e -i talsecret.sops.yaml
 ```

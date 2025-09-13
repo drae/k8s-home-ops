@@ -10,8 +10,6 @@ collections:
     version: 2.2.2
   - name: community.docker
     version: 4.7.0
-  - name: kubernetes.core
-    version: 6.1.0
 roles:
   - name: geerlingguy.pip
     version: 3.1.0
@@ -23,5 +21,3 @@ roles:
     version: 7.5.3
   - name: bodsch.snapd
     version: 1.4.0
-  - name: xanmanning.k3s
-    version: v3.5.0

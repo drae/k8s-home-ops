@@ -8,7 +8,7 @@ ROOT_DIR = "{{config_root}}"
 KUBECONFIG            = "{{config_root}}/kubernetes/darkstar/kubeconfig"
 MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 SOPS_AGE_KEY_FILE     = "{{config_root}}/age.key"
-TALOSCONFIG           = "{{config_root}}/infrastructure/darkstar/talos/clusterconfig/talosconfig"
+TALOSCONFIG           = "{{config_root}}/infrastructure/talos/darkstar/clusterconfig/talosconfig"
 # Ansible
 VIRTUAL_ENV              = "{{config_root}}/.venv"
 ANSIBLE_COLLECTIONS_PATH = "{{config_root}}/.venv/galaxy"

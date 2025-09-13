@@ -18,11 +18,11 @@ tasks:
     cmds:
       - true && {{.PYTHON_BIN}} -m venv {{.PROJECT_DIR}}/.venv
       - true && {{.PROJECT_DIR}}/.venv/bin/python3 -m pip install --upgrade pip setuptools wheel
-      - true && {{.PROJECT_DIR}}/.venv/bin/python3 -m pip install --upgrade --requirement {{.INFRASTRUCTURE_DIR}}/apollo/ansible/requirements.txt
-      - true && {{.PROJECT_DIR}}/.venv/bin/ansible-galaxy install --role-file "{{.INFRASTRUCTURE_DIR}}/apollo/ansible/requirements.yml" --force
+      - true && {{.PROJECT_DIR}}/.venv/bin/python3 -m pip install --upgrade --requirement {{.INFRASTRUCTURE_DIR}}/ansible/requirements.txt
+      - true && {{.PROJECT_DIR}}/.venv/bin/ansible-galaxy install --role-file "{{.INFRASTRUCTURE_DIR}}/ansible/requirements.yml" --force
     sources:
-      - "{{.INFRASTRUCTURE_DIR}}/apollo/ansible/requirements.txt"
-      - "{{.INFRASTRUCTURE_DIR}}/apollo/ansible/requirements.yml"
+      - "{{.INFRASTRUCTURE_DIR}}/ansible/requirements.txt"
+      - "{{.INFRASTRUCTURE_DIR}}/ansible/requirements.yml"
     generates:
       - "{{.PROJECT_DIR}}/.venv/pyvenv.cfg"
 
@@ -30,16 +30,17 @@ tasks:
     desc: Run an Ansible playbook for configuring a cluster
     summary: |
       Args:
-        cluster: Cluster to run command against (required)
+        machine: Machine to run command against (required)
         playbook: Playbook to run (required)
     prompt: Run Ansible playbook '{{.playbook}}' against the 'apollo' cluster ... continue?
     cmd: |
-      true && {{.PROJECT_DIR}}/.venv/bin/ansible-playbook \
-        --inventory {{.INFRASTRUCTURE_DIR}}/apollo/ansible/inventory/hosts.yml \
-        {{.INFRASTRUCTURE_DIR}}/apollo/ansible/playbooks/{{.playbook}}.yml {{.CLI_ARGS}}
+      true && {{.PROJECT_DIR}}/.venv/bin/ansible-playbook --inventory {{.INFRASTRUCTURE_DIR}}/ansible/apollo/inventory/hosts.yml \
+        {{.INFRASTRUCTURE_DIR}}/ansible/{{.machine}}/playbooks/{{.playbook}}.yml {{.CLI_ARGS}}
     requires:
-      vars: ["cluster", "playbook"]
+      vars:
+        - machine
+        - playbook
     preconditions:
       - test -d {{.PROJECT_DIR}}/.venv
-      - test -f {{.INFRASTRUCTURE_DIR}}/apollo/ansible/inventory/hosts.yml
-      - test -f {{.INFRASTRUCTURE_DIR}}/apollo/ansible/playbooks/{{.playbook}}.yml
+      - test -f {{.INFRASTRUCTURE_DIR}}/ansible/{{.machine}}/inventory/hosts.yml
+      - test -f {{.INFRASTRUCTURE_DIR}}/ansible/{{.machine}}/playbooks/{{.playbook}}.yml
