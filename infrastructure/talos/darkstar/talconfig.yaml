@@ -52,8 +52,9 @@ nodes:
           - vlanId: 20
             mtu: 1500
             dhcp: false
-            dhcpOptions:
-              routeMetric: 4096
+          - vlanId: 30
+            mtu: 1500
+            dhcp: false
     nodeLabels:
       intel.feature.node.kubernetes.io/gpu: "true"
 
