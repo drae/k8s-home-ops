@@ -6,14 +6,11 @@ metadata:
 spec:
   version: ${TALOS_VERSION}
   concurrency: 1
-  postCompleteDelay: 2m
   exclusive: true
   nodeSelector:
     matchExpressions:
-      - key: kubernetes.io/os
-        operator: In
-        values:
-          - linux
+      - key: kubernetes.io/hostname
+        operator: Exists
   secrets:
     - name: system-upgrade-controller
       path: /var/run/secrets/talos.dev
