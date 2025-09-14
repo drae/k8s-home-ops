@@ -71,6 +71,7 @@ controlPlane:
           - siderolabs/i915
           - siderolabs/intel-ucode
           - siderolabs/mei
+          - siderolabs/nfsrahead
   patches:
     # Configure cluster
     - |-
@@ -78,7 +79,7 @@ controlPlane:
         apiServer:
           extraArgs:
             enable-aggregator-routing: true
-            runtime-config: admissionregistration.k8s.io/v1alpha1=true
+            runtime-config: admissionregistration.k8s.io/v1beta1=true
             feature-gates: MutatingAdmissionPolicy=true
         controllerManager:
           extraArgs:
