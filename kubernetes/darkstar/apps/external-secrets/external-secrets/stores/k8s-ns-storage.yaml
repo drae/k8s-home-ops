@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   name: eso-k8s-auth
 ---
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
   name: k8s-ns-storage
