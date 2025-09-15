@@ -36,6 +36,8 @@ spec:
               - /config
               - --port
               - "8181"
+            env:
+              TZ: Europe/London
             probes:
               liveness: &probes
                 enabled: true

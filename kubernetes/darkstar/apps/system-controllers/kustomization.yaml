@@ -5,7 +5,6 @@ namespace: system-controllers
 resources:
   - ./namespace.yaml
   - ./templated-secret-controller/ks.yaml
-  - ./k8tz/ks.yaml
   - ./snapshot-controller/ks.yaml
 components:
   - ../../components/flux
