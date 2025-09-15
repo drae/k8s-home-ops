@@ -4,14 +4,14 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname snapshot-controller
-  namespace: &namespace system-controllers
+  namespace: &namespace kube-system
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/darkstar/apps/system-controllers/snapshot-controller/app/"
+  path: "./kubernetes/darkstar/apps/kube-system/snapshot-controller/app/"
   prune: true
   sourceRef:
     kind: GitRepository
