@@ -29,6 +29,7 @@ spec:
               repository: ghcr.io/onedr0p/atuin-server-sqlite
               tag: v18.3.0@sha256:9d8e8b983d8a8113d87a72111b158552d49ad050ef98ebfe3e7bdd12a5207466
             env:
+              TZ: Europe/London
               ATUIN_HOST: 0.0.0.0
               ATUIN_PORT: &port 80
               ATUIN_OPEN_REGISTRATION: "true"

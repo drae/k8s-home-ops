@@ -30,6 +30,7 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.42.1.10060@sha256:04563be281364ba2462285aacb2ca13d7ef7e1d0b19e1203f4c19b4a56840c5c
             env:
+              TZ: Europe/London
               ADVERTISE_IP: "http://10.1.10.32:32400/,https://plex.starstreak.net:443"
               PLEX_NO_AUTH_NETWORKS: 10.244.0.0/16
             probes:

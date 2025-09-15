@@ -28,6 +28,7 @@ spec:
               repository: ghcr.io/home-operations/prowlarr
               tag: 2.1.0.5180@sha256:5915438f7226ab8390503cc9f7288412b4584fc80e444faa224ccf2055d5f812
             env:
+              TZ: Europe/London
               PROWLARR__INSTANCE_NAME: Prowlarr
               PROWLARR__PORT: &port 9696
               PROWLARR__LOG_LEVEL: info
