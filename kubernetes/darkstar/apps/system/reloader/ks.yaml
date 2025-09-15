@@ -20,4 +20,4 @@ spec:
   wait: false # no flux ks dependents
   dependsOn:
     - name: snapshot-controller
-      namespace: system-controllers
+      namespace: kube-system

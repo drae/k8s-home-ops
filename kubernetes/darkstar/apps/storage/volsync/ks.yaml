@@ -30,4 +30,4 @@ spec:
     - name: topolvm
       namespace: storage
     - name: snapshot-controller
-      namespace: system-controllers
+      namespace: kube-system
