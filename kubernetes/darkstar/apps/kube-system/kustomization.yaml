@@ -8,5 +8,6 @@ resources:
   - ./coredns/ks.yaml
   - ./gateway-api-crds/ks.yaml
   - ./metrics-server/ks.yaml
+  - ./snapshot-controller/ks.yaml
 components:
   - ../../components/flux
