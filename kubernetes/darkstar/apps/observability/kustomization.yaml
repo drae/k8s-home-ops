@@ -15,5 +15,6 @@ resources:
   - ./promtail/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
+  - ./x509-certificate-exporter/ks.yaml
 components:
   - ../../components/flux
