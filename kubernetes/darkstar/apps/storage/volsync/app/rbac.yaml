@@ -1,0 +1,33 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: eso-secret-reader
+rules:
+  - apiGroups: [""]
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+  # This will allow the role `eso-store-role` to perform **permission reviews** for itself within the defined namespace:
+  - apiGroups:
+      - authorization.k8s.io
+    resources:
+      - selfsubjectrulesreviews # used to review or fetch the list of permissions a user or service account currently has.
+    verbs:
+      - create # `create` allows creating a `selfsubjectrulesreviews` request.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: eso-secret-reader-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: eso-secret-reader
+subjects:
+  - kind: ServiceAccount
+    name: eso-k8s-auth
+    namespace: external-secrets
