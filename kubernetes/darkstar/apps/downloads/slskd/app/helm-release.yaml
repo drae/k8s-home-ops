@@ -22,8 +22,70 @@ spec:
       slskd:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          coredns:
+            image:
+              repository: coredns/coredns
+              tag: 1.12.3
+            args:
+              - -conf
+              - /etc/coredns/Corefile
+            restartPolicy: Always
+          gluetun:
+            dependsOn:
+              - coredns
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.40.0
+            env:
+              DOT: "off"
+              DNS_ADDRESS: "127.0.0.2"
+              VPN_SERVICE_PROVIDER: custom
+              VPN_TYPE: wireguard
+              VPN_INTERFACE: wg0
+              WIREGUARD_ENDPOINT_PORT: 51820
+              FIREWALL_INPUT_PORTS: "50429,9999"
+              HEALTH_SERVER_ADDRESS: ":9999"
+              FIREWALL_OUTBOUND_SUBNETS: 10.96.0.0/12,10.244.0.0/16 # Allow access to k8s subnets
+            envFrom:
+              - secretRef:
+                  name: slskd-secret
+            #            lifecycle:
+            #              postStart:
+            #                exec:
+            #                  command:
+            #                    - /bin/sh
+            #                    - -c
+            #                    - (ip rule del table 50429; ip -6 rule del table 50429) || true
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /check
+                    port: 9999
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /check
+                    port: 9999
+                  initialDelaySeconds: 10
+            resources:
+              limits:
+                squat.ai/tun: "1"
+            restartPolicy: Always
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
+              allowPrivilegeEscalation: false
         containers:
           app:
+            nameOverride: slskd
             image:
               repository: ghcr.io/slskd/slskd
               tag: 0.23.2@sha256:28df5325f301537ea8669b2ef90112a30cc9f2efd3eb714c9a778460b5dc6288
@@ -121,3 +183,12 @@ spec:
             app:
               - path: /tmp
                 subPath: tmp
+      coredns:
+        type: configMap
+        name: slskd-coredns
+        advancedMounts:
+          slskd:
+            coredns:
+              - path: /etc/coredns/Corefile
+                subPath: Corefile
+                readOnly: true
