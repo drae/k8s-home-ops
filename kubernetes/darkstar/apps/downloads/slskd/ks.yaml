@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app slskd
+  namespace: &namespace downloads
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/gatus/internal
+    - ../../../../components/keda/nas-nfs-scaler
+  interval: 1h
+  path: ./kubernetes/darkstar/apps/downloads/slskd/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+    namespace: flux-system
+  wait: false
+  postBuild:
+    substitute:
+      APP: *app
+  dependsOn:
+    - name: topolvm
+      namespace: storage
+    - name: volsync
+      namespace: storage
