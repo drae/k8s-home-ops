@@ -50,13 +50,13 @@ spec:
             envFrom:
               - secretRef:
                   name: slskd-secret
-            #            lifecycle:
-            #              postStart:
-            #                exec:
-            #                  command:
-            #                    - /bin/sh
-            #                    - -c
-            #                    - (ip rule del table 50429; ip -6 rule del table 50429) || true
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -c
+                    - (ip rule del table 50429; ip -6 rule del table 50429) || true
             probes:
               liveness: &probes
                 enabled: true
@@ -82,6 +82,7 @@ spec:
               capabilities:
                 add:
                   - NET_ADMIN
+                  - CHOWN
               allowPrivilegeEscalation: false
         containers:
           app:
