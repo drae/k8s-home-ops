@@ -159,6 +159,7 @@ spec:
             shares:
               directories:
                 - /media/.downloads/soulseek/shared
+                - /media/music
               filters:
                 - \.ini$
                 - Thumbs.db$
