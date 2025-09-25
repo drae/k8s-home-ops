@@ -41,7 +41,7 @@ spec:
               VPN_TYPE: wireguard
               VPN_INTERFACE: wg0
               WIREGUARD_ENDPOINT_PORT: 51820
-              FIREWALL_INPUT_PORTS: "50429,9999"
+              FIREWALL_INPUT_PORTS: "50429,9999,80"
               HEALTH_SERVER_ADDRESS: ":9999"
               FIREWALL_OUTBOUND_SUBNETS: 10.96.0.0/12,10.244.0.0/16 # Allow access to k8s subnets
             envFrom:
