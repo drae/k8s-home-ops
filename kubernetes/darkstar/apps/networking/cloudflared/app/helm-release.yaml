@@ -38,8 +38,11 @@ spec:
                 value: "true"
               - name: TUNNEL_METRICS
                 value: 0.0.0.0:8080
+              # Disable for non-quic
+              - name: TUNNEL_POST_QUANTUM
+                value: "true"
               - name: TUNNEL_TRANSPORT_PROTOCOL
-                value: auto
+                value: quic
               - name: TUNNEL_TOKEN
                 valueFrom:
                   secretKeyRef:
