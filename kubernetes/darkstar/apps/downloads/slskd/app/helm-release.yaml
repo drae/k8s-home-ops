@@ -16,6 +16,16 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
+          #          annotations:
+          #            k8s.v1.cni.cncf.io/networks: |
+          #              [{
+          #                "name":"multus-vpn",
+          #                "namespace": "networking",
+          #                "ips": [
+          #                  "10.1.30.123/24"
+          #                ],
+          #                "mac": "92:cf:d7:05:30:82"
+          #              }]
           securityContext:
             fsGroup: 2000
             fsGroupChangePolicy: "OnRootMismatch"
