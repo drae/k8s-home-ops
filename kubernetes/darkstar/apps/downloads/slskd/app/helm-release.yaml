@@ -156,29 +156,12 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-    configMaps:
-      config:
-        data:
-          slskd.yml: |-
-            directories:
-              downloads: /media/.downloads/soulseek/complete
-              incomplete: /media/.downloads/soulseek/incomplete
-            permissions:
-              file:
-                mode: 750
-            shares:
-              directories:
-                - /media/music
-              filters:
-                - \.ini$
-                - Thumbs.db$
-                - \.DS_Store$
     persistence:
       config:
         existingClaim: slskd-config
       config-file:
-        type: configMap
-        identifier: config
+        type: secret
+        name: slskd-config-secret
         globalMounts:
           - path: /config/slskd.yml
             subPath: slskd.yml
