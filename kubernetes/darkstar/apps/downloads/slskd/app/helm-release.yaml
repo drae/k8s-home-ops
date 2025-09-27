@@ -168,7 +168,6 @@ spec:
                 mode: 750
             shares:
               directories:
-                - /media/.downloads/soulseek/shared
                 - /media/music
               filters:
                 - \.ini$
