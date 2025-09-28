@@ -125,6 +125,7 @@ spec:
               SLSKD_NO_HTTPS: true
               SLSKD_NO_VERSION_CHECK: true
               SLSKD_SLSK_LISTEN_PORT: 50300
+              WRTAG_URL: wrtag.media.svc.cluster.local
             envFrom:
               - secretRef:
                   name: slskd-secret

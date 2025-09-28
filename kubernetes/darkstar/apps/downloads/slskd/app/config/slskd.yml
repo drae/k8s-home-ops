@@ -3,6 +3,13 @@ directories:
   incomplete: /media/.downloads/soulseek/incomplete
 flags:
   no_share_scan: true
+integration:
+  scripts:
+    post_download_script:
+      on:
+        - DownloadDirectoryComplete
+      run:
+        command: /scripts/wrtag.sh
 metrics:
   enabled: true
   url: /metrics
