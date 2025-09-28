@@ -10,5 +10,6 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./slskd/ks.yaml
   - ./sonarr/ks.yaml
+  - ./soulseek/ks.yaml
 components:
   - ../../components/flux
