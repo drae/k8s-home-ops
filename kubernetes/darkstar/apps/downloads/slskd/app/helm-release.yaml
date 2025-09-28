@@ -201,5 +201,13 @@ spec:
             subPath: .downloads/soulseek
           - path: /media/music
             subPath: music
+      scripts:
+        type: configMap
+        name: slskd-configmap
+        defaultMode: 0755
+        globalMounts:
+          - path: /scripts/wrtag.sh
+            subPath: wrtag.sh
+            readOnly: true
       tmp:
         type: emptyDir

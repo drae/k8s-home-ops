@@ -33,7 +33,7 @@ spec:
               WRTAG_WEB_PUBLIC_URL: https://wrtag.p.lan.starstreak.net
               WRTAG_WEB_DB_PATH: /data/wrtag.db
               WRTAG_LOG_LEVEL: debug
-              WRTAG_PATH_FORMAT: '/media/music/{{`{{ artists .Release.Artists | sort | join "; " | safepath }}/{{ .Release.Title | safepath }}{{ if not (eq .ReleaseDisambiguation "") }} ({{ .ReleaseDisambiguation | safepath }}){{ end }} ({{ .Release.ReleaseGroup.FirstReleaseDate.Year }})/{{ pad0 2 .TrackNum }} {{ .Track.Title | safepath }}{{ .Ext }}`}}'
+              WRTAG_PATH_FORMAT: '/media/music/{{`{{ artists .Release.Artists | sort | join "; " | safepath }}/{{ .Release.Title | safepath }}{{ if not (eq .ReleaseDisambiguation "") }} ({{ .ReleaseDisambiguation | safepath }}){{ end }} ({{ .Release.ReleaseGroup.FirstReleaseDate.Year }})/{{ pad0 2 .TrackNum }}. {{ .Track.Title | safepath }}{{ .Ext }}`}}'
             envFrom:
               - secretRef:
                   name: wrtag-secret

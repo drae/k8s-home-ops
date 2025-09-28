@@ -11,7 +11,8 @@ configMapGenerator:
       - ./config/Corefile
   - name: slskd-configmap
     files:
-      - ./config/slskd.yml
+      - slskd.yml=./config/slskd.yml
+      - wrtag.sh=./scripts/wrtag.sh
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
