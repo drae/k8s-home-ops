@@ -13,6 +13,7 @@ spec:
   components:
     - ../../../../components/gatus/internal
     - ../../../../components/keda/nas-nfs-scaler
+    - ../../../../components/volsync
   interval: 1h
   path: ./kubernetes/darkstar/apps/downloads/slskd/app
   prune: true
@@ -24,6 +25,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_CLAIM: slskd-config
+      VOLSYNC_CAPACITY: 5Gi
   dependsOn:
     - name: topolvm
       namespace: storage
