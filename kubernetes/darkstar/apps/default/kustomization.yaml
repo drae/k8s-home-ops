@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: default
 resources:
   - ./namespace.yaml
-  - ./atuin/ks.yaml
   - ./unifi/ks.yaml
 components:
   - ../../components/flux
