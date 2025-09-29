@@ -1,9 +1,0 @@
----
-kind: Kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-resources:
-  - ./readarr-secret.sops.yaml
-  - ./helm-release.yaml
-  # PVC and volsync templates
-  - ../../../storage/volsync/templates
-  - ../../../observability/gatus/templates/internal
