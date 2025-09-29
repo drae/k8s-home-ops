@@ -7,6 +7,5 @@ resources:
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
   - ./tvheadend/ks.yaml
-  - ./wrtag/ks.yaml
 components:
   - ../../components/flux
