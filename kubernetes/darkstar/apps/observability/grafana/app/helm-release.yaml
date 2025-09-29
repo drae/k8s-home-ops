@@ -256,11 +256,6 @@ spec:
           gnetId: 19105
           revision: 7
           datasource: Prometheus
-        x509-certificate-exporter:
-          # renovate: depName="Certificates Expiration (X509 Certificate Exporter)"
-          gnetId: 13922
-          revision: 4
-          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
