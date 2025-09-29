@@ -9,5 +9,6 @@ resources:
   - ./keda/ks.yaml
   - ./intel-device-plugins/ks.yaml
   - ./reloader/ks.yaml
+  - ./templated-secret-controller/ks.yaml
 components:
   - ../../components/flux

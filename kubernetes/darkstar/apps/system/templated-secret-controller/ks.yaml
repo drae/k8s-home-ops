@@ -4,14 +4,14 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &appname templated-secret-controller
-  namespace: &namespace system-controllers
+  namespace: &namespace system
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/darkstar/apps/system-controllers/templated-secret-controller/app"
+  path: "./kubernetes/darkstar/apps/system/templated-secret-controller/app"
   prune: true
   sourceRef:
     kind: GitRepository
