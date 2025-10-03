@@ -9,7 +9,7 @@ collections:
   - name: community.sops
     version: 2.2.3
   - name: community.docker
-    version: 4.7.0
+    version: 4.8.0
 roles:
   - name: geerlingguy.pip
     version: 3.1.0
