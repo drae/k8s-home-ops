@@ -11,9 +11,10 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/volsync
-    - ../../../../components/gatus/external
     - ../../../../components/keda/nas-nfs-scaler
+    - ../../../../components/gatus/external
+    - ../../../../components/gpu
+    - ../../../../components/volsync
   interval: 10m
   path: "./kubernetes/darkstar/apps/media/plex/app"
   prune: true
@@ -33,7 +34,7 @@ spec:
       namespace: storage
     - name: volsync
       namespace: storage
-    - name: intel-device-plugins-operator
+    - name: intel-gpu-resource-driver
       namespace: system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json

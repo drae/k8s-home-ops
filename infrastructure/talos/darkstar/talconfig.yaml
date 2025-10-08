@@ -80,7 +80,7 @@ controlPlane:
           extraArgs:
             enable-aggregator-routing: true
             runtime-config: admissionregistration.k8s.io/v1beta1=true
-            feature-gates: MutatingAdmissionPolicy=true
+            feature-gates: MutatingAdmissionPolicy=true,ResourceHealthStatus=true
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0
@@ -115,14 +115,11 @@ controlPlane:
           - op: create
             path: /etc/cri/conf.d/20-customization.part
             content: |
-              [plugins]
-                [plugins."io.containerd.grpc.v1.cri"]
-                  enable_unprivileged_ports = true
-                  enable_unprivileged_icmp = true
-              [plugins."io.containerd.grpc.v1.cri".containerd]
+              [plugins."io.containerd.cri.v1.images"]
                 discard_unpacked_layers = false
-              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-                discard_unpacked_layers = false
+              [plugins."io.containerd.cri.v1.runtime"]
+                cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+                device_ownership_from_security_context = true
           - op: overwrite
             path: /etc/nfsmount.conf
             permissions: 0o644
@@ -137,6 +134,9 @@ controlPlane:
               nconnect=8
         kubelet:
           extraConfig:
+            featureGates:
+              ImageVolume: true
+              ResourceHealthStatus: true            
             maxPods: 250
           extraMounts:
             - destination: /var/mnt/openebs/local
