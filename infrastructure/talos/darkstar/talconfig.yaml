@@ -55,6 +55,9 @@ nodes:
           - vlanId: 30
             mtu: 1500
             dhcp: false
+          - vlanId: 50
+            mtu: 1500
+            dhcp: false
     nodeLabels:
       intel.feature.node.kubernetes.io/gpu: "true"
 

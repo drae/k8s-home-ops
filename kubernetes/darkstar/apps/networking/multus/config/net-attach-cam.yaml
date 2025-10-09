@@ -1,0 +1,24 @@
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: multus-cam
+spec:
+  config: |-
+    {
+      "cniVersion": "1.1.0",
+      "name": "multus-cam",
+      "plugins": [
+        {
+          "type": "macvlan",
+          "master": "eno1.50",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static"
+          }
+        }
+      ]
+    }
