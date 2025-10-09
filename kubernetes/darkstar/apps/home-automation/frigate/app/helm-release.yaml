@@ -60,6 +60,13 @@ spec:
                 memory: 1Gi
               limits:
                 memory: 4Gi
+            securityContext:
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: false
+              capabilities:
+                add:
+                  - CAP_PERFMON
+
     service:
       app:
         ports:
@@ -74,7 +81,7 @@ spec:
           - frigate.p.lan.starstreak.net
         parentRefs:
           - name: internal
-            namespace: network
+            namespace: networking
             sectionName: https
     persistence:
       data:
