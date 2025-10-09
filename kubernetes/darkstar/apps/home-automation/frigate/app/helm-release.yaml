@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: frigate
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      frigate:
+        annotations:
+          configmap.reloader.stakater.com/reload: frigate-configmap
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-cam",
+                "namespace": "networking",
+                "ips": [
+                  "10.1.50.32/24"
+                ],
+                "mac": "92:cf:d7:05:50:82"
+              }]
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: frigate-gpu
+        containers:
+          app:
+            image:
+              repository: ghcr.io/blakeblackshear/frigate
+              tag: 0.16.1@sha256:cb6624b9075f76ece626139eedca7e728cab1456a5f8c351afbf877320826bc1
+            envFrom:
+              - secretRef:
+                  name: frigate-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: &port 5000
+                  initialDelaySeconds: 120
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              claims:
+                - name: gpu
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                memory: 4Gi
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+          rtsp:
+            port: 8554
+    route:
+      app:
+        enabled: true
+        hostnames:
+          - frigate.p.lan.starstreak.net
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+    persistence:
+      data:
+        existingClaim: frigate-config
+      config:
+        type: configMap
+        name: frigate-configmap
+        globalMounts:
+          - path: /config/config.yml
+            subPath: config.yml
+            readOnly: true
+      cache:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 2Gi
+        globalMounts:
+          - path: /dev/shm
+      media:
+        type: nfs
+        server: 10.1.10.10
+        path: /mnt/zstoreusb/frigate
+        globalMounts:
+          - path: /media

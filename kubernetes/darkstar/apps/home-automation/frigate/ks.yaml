@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname frigate
+  namespace: &namespace home-automation
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/keda/nas-nfs-scaler
+    - ../../../../components/gatus/internal
+    - ../../../../components/gpu
+    - ../../../../components/volsync
+  interval: 10m
+  path: "./kubernetes/darkstar/apps/home-automation/frigate/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+    namespace: flux-system
+  wait: false
+  postBuild:
+    substitute:
+      APP: *appname
+      GATUS_STATUS: "401"
+      VOLSYNC_CLAIM: frigate-config
+      VOLSYNC_CAPACITY: 5Gi
+  dependsOn:
+    - name: topolvm
+      namespace: storage
+    - name: volsync
+      namespace: storage
+    - name: intel-gpu-resource-driver
+      namespace: system
