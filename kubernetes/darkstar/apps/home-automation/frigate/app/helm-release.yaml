@@ -61,12 +61,7 @@ spec:
               limits:
                 memory: 4Gi
             securityContext:
-              allowPrivilegeEscalation: true
-              readOnlyRootFilesystem: false
-              capabilities:
-                add:
-                  - CAP_PERFMON
-
+              privileged: true
     service:
       app:
         ports:
