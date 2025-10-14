@@ -96,6 +96,6 @@ spec:
           - path: /dev/shm
       media:
         type: hostPath
-        hostPath: /var/mnt/frigate
+        hostPath: /var/mnt/usb
         globalMounts:
           - path: /media
