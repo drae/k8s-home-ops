@@ -1,10 +1,4 @@
-const fz = require('zigbee-herdsman-converters/converters/fromZigbee');
-const tz = require('zigbee-herdsman-converters/converters/toZigbee');
-const exposes = require('zigbee-herdsman-converters/lib/exposes');
-const reporting = require('zigbee-herdsman-converters/lib/reporting');
-const extend = require('zigbee-herdsman-converters/lib/extend');
-const e = exposes.presets;
-const ea = exposes.access;
+import * as m from 'zigbee-herdsman-converters/lib/modernExtend';
 
 export default {
     zigbeeModel: ['EGLO_ZM_TW'],
@@ -16,6 +10,5 @@ export default {
     ],
     vendor: 'AwoX',
     description: 'FUEVA-Z Ceiling Light',
-    extend: extend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 370], supportsHueAndSaturation: true}),
-    meta: { turnsOffAtBrightness1: true },
+    extend: [m.light({colorTemp: {range: [153, 370]}, turnsOffAtBrightness1: true})],
 };
