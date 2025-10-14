@@ -119,5 +119,12 @@ spec:
         existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /data
+      convertor:
+        type: configMap
+        name: z2m-convertor
+        globalMounts:
+          - path: /data/external_converters/convertor.mjs
+            subPath: convertor.mjs
+            readOnly: true
       tmp:
         type: emptyDir
