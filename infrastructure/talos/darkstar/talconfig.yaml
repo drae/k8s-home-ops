@@ -61,7 +61,7 @@ nodes:
     nodeLabels:
       intel.feature.node.kubernetes.io/gpu: "true"
     userVolumes:
-      - name: frigate
+      - name: usb
         provisioning:
           diskSelector:
             match: disk.transport == "usb"
