@@ -119,6 +119,10 @@ spec:
         existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
           - path: /data
+      convertors:
+        existingClaim: zigbee2mqtt-convertors
+        globalMounts:
+          - path: /data/external_converters
       convertor:
         type: configMap
         name: z2m-convertor
