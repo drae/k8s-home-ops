@@ -95,8 +95,7 @@ spec:
         globalMounts:
           - path: /dev/shm
       media:
-        type: nfs
-        server: 10.1.10.10
-        path: /mnt/zstoreusb/frigate
+        type: hostPath
+        hostPath: /var/mnt/frigate
         globalMounts:
           - path: /media

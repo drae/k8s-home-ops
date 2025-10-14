@@ -60,6 +60,14 @@ nodes:
             dhcp: false
     nodeLabels:
       intel.feature.node.kubernetes.io/gpu: "true"
+    userVolumes:
+      - name: frigate
+        provisioning:
+          diskSelector:
+            match: disk.transport == "usb"
+          maxSize: 1TB
+        filesystem:
+          type: xfs
 
 controlPlane:
   schematic:
@@ -80,6 +88,8 @@ controlPlane:
     - |-
       cluster:
         apiServer:
+          admissionControl:
+            $$patch: delete
           extraArgs:
             enable-aggregator-routing: true
             runtime-config: admissionregistration.k8s.io/v1beta1=true
@@ -94,11 +104,6 @@ controlPlane:
         scheduler:
           extraArgs:
             bind-address: 0.0.0.0
-
-    # Disable default API server admission plugins.
-    - |-
-      - op: remove
-        path: /cluster/apiServer/admissionControl
 
     - |-
       machine:
