@@ -19,8 +19,10 @@ metadata:
   name: external
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname ingress.starstreak.net
-  labels:
-    gateway: external
+    gatus.home-operations.com/endpoint: |-
+      client:
+        dns-resolver: tcp://1.1.1.1:53
+      group: external
 spec:
   gatewayClassName: envoy-external
   infrastructure:
