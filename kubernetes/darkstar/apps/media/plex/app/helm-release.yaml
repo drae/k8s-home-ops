@@ -78,6 +78,9 @@ spec:
             port: *port
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 401"]
         hostnames:
           - plex.p.lan.starstreak.net
         parentRefs:
@@ -101,6 +104,9 @@ spec:
               - identifier: app
                 port: *port
       app-ext:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 401"]
         hostnames:
           - plex.starstreak.net
         parentRefs:
