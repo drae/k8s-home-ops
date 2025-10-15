@@ -1,46 +1,16 @@
 ---
 # Note: Gatus vars should be escaped with $${VAR_NAME} to avoid interpolation by Flux
 web:
-  port: $${WEB_PORT}
+  port: ${WEB_PORT}
 storage:
   type: sqlite
   path: /data/gatus.db
 metrics: true
-debug: false
 ui:
   title: Health Status
   header: Health Status
-#  logo: https://raw.githubusercontent.com/drae/home-ops/main/docs/src/assets/icons/logo_sml.png
-alerting:
-  discord:
-    webhook-url: $${DISCORD_WEBHOOK_URL}
-    default-alert:
-      description: health-check failed
-      send-on-resolved: true
-      failure-threshold: 3
-      success-threshold: 3
+  logo: https://avatars.githubusercontent.com/u/449736
 connectivity:
   checker:
     target: 1.1.1.1:53
     interval: 1m
-endpoints:
-  - name: status
-    group: external
-    url: https://status.starstreak.net
-    interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 200"
-    alerts:
-      - type: discord
-  - name: flux
-    group: external
-    url: https://flux.starstreak.net
-    interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 404"
-    alerts:
-      - type: discord

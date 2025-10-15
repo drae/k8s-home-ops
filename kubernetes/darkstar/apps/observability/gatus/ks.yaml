@@ -24,8 +24,8 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      APP_UID: "65534"
-      APP_GID: "65534"
+      APP_UID: "1000"
+      APP_GID: "1000"
       VOLSYNC_CLAIM: gatus-data
       VOLSYNC_CAPACITY: 5Gi
   dependsOn:
