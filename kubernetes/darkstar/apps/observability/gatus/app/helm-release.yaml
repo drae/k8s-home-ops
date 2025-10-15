@@ -133,5 +133,3 @@ spec:
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
-      data:
-        existingClaim: "${VOLSYNC_CLAIM}"
