@@ -4,7 +4,7 @@ web:
   port: ${WEB_PORT}
 storage:
   type: sqlite
-  path: /data/gatus.db
+  path: ${GATUS_CONFIG_PATH}/gatus.db
 metrics: true
 ui:
   title: Health Status

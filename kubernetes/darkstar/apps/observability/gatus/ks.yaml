@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  components:
-    - ../../../../components/volsync
   interval: 1h
   timeout: 5m
   path: ./kubernetes/darkstar/apps/observability/gatus/app
@@ -24,12 +22,3 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      APP_UID: "1000"
-      APP_GID: "1000"
-      VOLSYNC_CLAIM: gatus-data
-      VOLSYNC_CAPACITY: 5Gi
-  dependsOn:
-    - name: topolvm
-      namespace: storage
-    - name: volsync
-      namespace: storage
