@@ -25,7 +25,7 @@ spec:
                   "10.1.20.33/24",
                   "fd79:4c9c:b9c3:20::33/64"
                 ],
-                "mac": "92:cf:d7:05:70:82"
+                "mac": "92:cf:d7:05:20:33"
               }]
           securityContext:
             runAsNonRoot: true

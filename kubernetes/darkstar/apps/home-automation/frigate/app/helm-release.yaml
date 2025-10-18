@@ -22,9 +22,9 @@ spec:
                 "name":"multus-cam",
                 "namespace": "networking",
                 "ips": [
-                  "10.1.50.32/24"
+                  "10.1.50.34/24"
                 ],
-                "mac": "92:cf:d7:05:50:82"
+                "mac": "92:cf:d7:05:50:34"
               }]
           resourceClaims:
             - name: gpu
@@ -44,7 +44,7 @@ spec:
                 spec:
                   httpGet:
                     path: /api/version
-                    port: &port 5000
+                    port: 5000
                   initialDelaySeconds: 120
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -63,12 +63,25 @@ spec:
             securityContext:
               privileged: true
     service:
-      app:
+      frigate:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.1.10.34
         ports:
           http:
-            port: *port
+            appProtocol: kubernetes.io/wss
+            port: 5000
+          go2rtc:
+            primary: true
+            port: 1984
           rtsp:
             port: 8554
+          webrtc-tcp:
+            port: 8555
+            protocol: TCP
+          webrtc-udp:
+            port: 8555
+            protocol: UDP
     route:
       app:
         enabled: true
