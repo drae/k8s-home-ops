@@ -71,8 +71,8 @@ spec:
           http:
             appProtocol: kubernetes.io/wss
             port: 5000
-          go2rtc:
             primary: true
+          go2rtc:
             port: 1984
           rtsp:
             port: 8554
