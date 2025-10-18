@@ -53,16 +53,16 @@ record:
     days: 5
     mode: all
 
-#go2rtc:
-#  streams:
-#    front:
-#      - rtsp://{FRIGATE_CAM_USER}:{FRIGATE_CAM_PASSWORD}@10.1.50.100:554/cam/realmonitor?channel=1&subtype=0
-#    front_sub:
-#      - rtsp://{FRIGATE_CAM_USER}:{FRIGATE_CAM_PASSWORD}@10.1.50.100:554/cam/realmonitor?channel=1&subtype=1
-#
+go2rtc:
+  streams:
+    front:
+      - rtsp://{FRIGATE_CAM_USER}:{FRIGATE_CAM_PASSWORD}@10.1.50.100:554/cam/realmonitor?channel=1&subtype=0
+    front_sub:
+      - rtsp://{FRIGATE_CAM_USER}:{FRIGATE_CAM_PASSWORD}@10.1.50.100:554/cam/realmonitor?channel=1&subtype=1
+
 cameras:
   front:
-    enabled: false
+    enabled: true
     ffmpeg:
       inputs:
         - path: rtsp://127.0.0.1:8554/front
