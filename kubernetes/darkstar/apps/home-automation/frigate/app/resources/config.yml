@@ -26,6 +26,9 @@ objects:
   track:
     - person
     - car
+    - cat
+    - fox
+    - dog
   filters:
     person:
       min_area: 2500
