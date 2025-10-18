@@ -25,7 +25,7 @@ spec:
                   "10.1.20.99/24",
                   "fd79:4c9c:b9c3:20::99/64"
                 ],
-                "mac": "92:cf:d7:05:70:83"
+                "mac": "92:cf:d7:05:20:99"
               }]
           securityContext:
             runAsUser: 2000
