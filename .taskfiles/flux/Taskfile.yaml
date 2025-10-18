@@ -38,3 +38,16 @@ tasks:
       - for:
           var: NAMESPACES
         cmd: flux {{.STATE}} ks -n "{{.ITEM}}" --all
+
+  "sync-all-hr":
+    desc: Synchronise all Flux HelmRelease's
+    vars:
+      NS:
+        sh: kubectl get hr -A --no-headers -o custom-columns='NS:.metadata.namespace'
+      HR:
+        sh: kubectl get hr -A --no-headers -o custom-columns='HR:.metadata.name'
+    cmds:
+      - cmd: kubectl get hr --no-headers -A | while read -r ns name _; do kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite hr "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)" reconcile.fluxcd.io/forceAt="$(date +%s)"; done
+      - for:
+          var: HR
+        cmd: kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite hr "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)" reconcile.fluxcd.io/forceAt="$(date +%s)"
