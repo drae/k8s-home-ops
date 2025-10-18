@@ -21,10 +21,7 @@ spec:
               [{
                 "name":"multus-cam",
                 "namespace": "networking",
-                "ips": [
-                  "10.1.50.34/24"
-                ],
-                "mac": "92:cf:d7:05:50:34"
+                "ips": ["10.1.50.34/24"]
               }]
           resourceClaims:
             - name: gpu
