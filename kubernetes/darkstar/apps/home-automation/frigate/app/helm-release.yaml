@@ -71,9 +71,9 @@ spec:
           http:
             appProtocol: kubernetes.io/wss
             port: 5000
-            primary: true
           go2rtc:
             port: 1984
+            primary: true
           rtsp:
             port: 8554
           webrtc-tcp:
@@ -84,13 +84,16 @@ spec:
             protocol: UDP
     route:
       app:
-        enabled: true
         hostnames:
           - frigate.p.lan.starstreak.net
         parentRefs:
           - name: internal
             namespace: networking
             sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: frigate
+                port: 5000
     persistence:
       data:
         existingClaim: frigate-config
