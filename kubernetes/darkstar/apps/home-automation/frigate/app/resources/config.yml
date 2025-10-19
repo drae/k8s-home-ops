@@ -25,7 +25,7 @@ model:
 objects:
   track:
     - person
-    - car
+    #    - car
     - cat
     - fox
     - dog
@@ -77,16 +77,27 @@ cameras:
           roles:
             - detect
     zones:
-      forecourt:
-        coordinates: 1,1,1,0.227,0.797,0.264,0.743,0.339,0.664,0.347,0.634,0.29,0.485,0.296,0,0.469,0,1
-        inertia: 3
+      #      forecourt:
+      #        coordinates: 0.876,1,0.639,0.337,0.663,0.143,0.419,0.119,0.14,0.138,0.158,0.262,0,0.645,0,1
+      #        inertia: 3
+      #        loitering_time: 0
+      #        objects:
+      #          - car
+      entire_front:
+        coordinates: 0,0,1,0,1,1,0,1
+        intertia: 3
         loitering_time: 0
+        objects:
+          - person
+          - cat
+          - dog
+          - fox
     motion:
-      mask: 1,0.035,1,0.08,0.664,0.08,0.664,0.035
+      mask: 0.978,0.03,0.978,0.081,0.725,0.081,0.725,0.03
     detect:
       enabled: true
-      width:
-      height: 720
+      width: 704
+      height: 480
 
 tls:
   enabled: false
