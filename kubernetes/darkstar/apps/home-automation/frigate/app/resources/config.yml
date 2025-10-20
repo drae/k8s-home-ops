@@ -25,17 +25,6 @@ model:
 objects:
   track:
     - person
-    - car
-    - cat
-    - fox
-    - dog
-  filters:
-    person:
-      min_score: 0.7
-      min_area: 5000
-      max_area: 100000
-    car:
-      min_score: 0.7
 
 ffmpeg:
   global_args:
@@ -83,17 +72,12 @@ cameras:
         coordinates: 0.28,0.21,0,1,0.883,1,0.567,0.216
         inertia: 3
         loitering_time: 3
-        objects:
-          - car
       entire_front:
         coordinates: 0,0,1,0,1,1,0,1
         intertia: 3
         loitering_time: 0
         objects:
           - person
-          - cat
-          - dog
-          - fox
     motion:
       mask:
         - 0.978,0.03,0.978,0.081,0.725,0.081,0.725,0.03
