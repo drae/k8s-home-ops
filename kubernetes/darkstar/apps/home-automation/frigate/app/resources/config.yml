@@ -31,9 +31,11 @@ objects:
     - dog
   filters:
     person:
-      min_area: 2500
+      min_score: 0.7
+      min_area: 5000
       max_area: 100000
-      threshold: 0.7
+    car:
+      min_score: 0.7
 
 ffmpeg:
   global_args:
