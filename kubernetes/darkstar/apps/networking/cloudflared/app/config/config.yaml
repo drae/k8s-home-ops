@@ -1,10 +1,8 @@
 ---
-originRequest:
-  originServerName: ingress.starstreak.net
-
 ingress:
-  - hostname: "starstreak.net"
-    service: &svc https://envoy-external.networking.svc.cluster.local
   - hostname: "*.starstreak.net"
-    service: *svc
+    originRequest:
+      http2Origin: true
+      originServerName: ingress.starstreak.net
+    service: https://external.networking.svc.cluster.local
   - service: http_status:404
