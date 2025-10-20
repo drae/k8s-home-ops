@@ -1,17 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.ok8.sh/gateway.networking.k8s.io/gatewayclass_v1.json
-apiVersion: gateway.networking.k8s.io/v1
-kind: GatewayClass
-metadata:
-  name: envoy-internal
-spec:
-  controllerName: gateway.envoyproxy.io/gatewayclass-controller
-  parametersRef:
-    group: gateway.envoyproxy.io
-    kind: EnvoyProxy
-    name: envoy-internal
-    namespace: networking
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -24,7 +11,7 @@ metadata:
         hide-hostname: true
         hide-url: true
 spec:
-  gatewayClassName: envoy-internal
+  gatewayClassName: envoy
   infrastructure:
     annotations:
       lbipam.cilium.io/ips: 10.1.10.30
@@ -46,3 +33,22 @@ spec:
         certificateRefs:
           - kind: Secret
             name: "gateway-starstreak.net-tls"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: internal
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: none
+spec:
+  parentRefs:
+    - name: internal
+      namespace: networking
+      sectionName: http
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
