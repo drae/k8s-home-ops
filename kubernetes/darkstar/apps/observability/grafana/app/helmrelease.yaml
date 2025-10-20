@@ -136,6 +136,7 @@ spec:
             isDefault: true
           - name: VictoriaLogs
             type: victoriametrics-logs-datasource
+            uid: victorialogs
             access: proxy
             url: http://victoria-logs-server.observability.svc.cluster.local:9428
           - name: Alertmanager
@@ -156,7 +157,7 @@ spec:
           datasource: Prometheus
         flux-logs:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
-          datasource: Loki
+          datasource: VictoriaLogs
       kubernetes:
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
