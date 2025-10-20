@@ -101,6 +101,6 @@ spec:
     dashboards:
       enabled: true
       annotations:
-        grafana_folder: system
+        grafana_folder: System
     serviceMonitor:
       enabled: true
