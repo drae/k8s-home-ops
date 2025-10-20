@@ -5,6 +5,7 @@ namespace: observability
 resources:
   - ./namespace.yaml
   - ./blackbox-exporter/ks.yaml
+  - ./fluent-bit/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml
@@ -12,7 +13,6 @@ resources:
   - ./loki/ks.yaml
   - ./lvm-exporter/ks.yaml
   - ./node-exporter/ks.yaml
-  - ./promtail/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./victoria-logs/ks.yaml
