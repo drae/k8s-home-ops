@@ -7,7 +7,6 @@ resources:
   - ./fstrim/ks.yaml
   - ./generic-device-plugin/ks.yaml
   - ./intel-gpu-resource-driver/ks.yaml
-  - ./keda/ks.yaml
   - ./reloader/ks.yaml
   - ./templated-secret-controller/ks.yaml
 components:
