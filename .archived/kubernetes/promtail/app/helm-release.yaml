@@ -28,5 +28,6 @@ spec:
     config:
       clients:
         - url: http://loki-headless.observability.svc.cluster.local:3100/loki/api/v1/push
+    #        - url: http://victoria-logs-server.observability.svc.cluster.local:9428/insert/jsonline?_stream_fields=stream,k_namespace_name,k_pod_name,app&_msg_field=log&_time_field=date
     serviceMonitor:
       enabled: true
