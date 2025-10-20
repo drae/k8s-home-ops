@@ -282,6 +282,7 @@ spec:
       - grafana-piechart-panel
       - grafana-worldmap-panel
       - grafana-clock-panel
+      - victoriametrics-logs-datasource
     serviceMonitor:
       enabled: true
     route:
