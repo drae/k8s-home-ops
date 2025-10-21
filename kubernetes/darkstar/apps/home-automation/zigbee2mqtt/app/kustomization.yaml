@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - ./pvc.yaml
   - ./helm-release.yaml
-  - ./scaledobject.yaml
+#  - ./scaledobject.yaml
 configMapGenerator:
   - name: z2m-convertor
     files:
