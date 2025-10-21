@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/keda/nas-nfs-scaler
+    #    - ../../../../components/keda/nas-nfs-scaler
     - ../../../../components/gatus/external
     - ../../../../components/gpu
     - ../../../../components/volsync
