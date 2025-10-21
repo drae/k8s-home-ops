@@ -33,6 +33,15 @@ spec:
         certificateRefs:
           - kind: Secret
             name: "gateway-starstreak.net-tls"
+    - name: unifi-tls
+      hostname: "unifi.p.lan.starstreak.net"
+      protocol: TLS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Passthrough
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
