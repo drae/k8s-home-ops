@@ -67,6 +67,7 @@ spec:
             value: "false"
     registry: txt
     sources:
+      - gateway-tlsroute
       - gateway-httproute
       - service
     triggerLoopOnEvent: true
