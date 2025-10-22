@@ -8,5 +8,6 @@ resources:
   - ./envoy-gateway/ks.yaml
   - ./external-dns/ks.yaml
   - ./multus/ks.yaml
+  - ./unifi/ks.yaml
 components:
   - ../../components/flux
