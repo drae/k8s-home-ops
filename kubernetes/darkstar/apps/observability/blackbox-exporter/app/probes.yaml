@@ -15,7 +15,7 @@ spec:
         - apollo.lan.starstreak.net
         - tvh.lan.starstreak.net
         - zigbee-hub.lan.starstreak.net
-        - hive-hub.lan.starstreak.net
+        #        - hive-hub.lan.starstreak.net
         - 1.1.1.1
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
