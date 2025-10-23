@@ -14,4 +14,4 @@ spec:
   rules:
     - backendRefs:
         - name: sabnzbd
-          port: 8080
+          port: 8081
