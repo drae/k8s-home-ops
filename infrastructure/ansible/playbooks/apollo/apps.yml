@@ -4,28 +4,8 @@
   become: true
   gather_facts: true
   any_errors_fatal: true
-
-  handlers:
-    - name: Restart smartctl-exporter
-      ansible.builtin.systemd:
-        name: "docker-compose@smartctl-exporter.service"
-        state: restarted
-        enabled: true
-        daemon_reload: true
-
-    - name: Restart sabnzbd
-      ansible.builtin.systemd:
-        name: "docker-compose@sabnzbd.service"
-        state: restarted
-        enabled: true
-        daemon_reload: true
-
-    - name: Restart qbittorrent
-      ansible.builtin.systemd:
-        name: "docker-compose@qbittorrent.service"
-        state: restarted
-        enabled: true
-        daemon_reload: true
+  vars:
+    docker_compose_service_base_dir: "{{ docker_base_dir }}"
 
   tasks:
     - name: Create docker override systemd file
@@ -35,89 +15,11 @@
         mode: "0644"
         remote_src: false
 
-    # smartctl-exporter
-    - name: Create smartctl-exporter directories
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        owner: "{{ ansible_user }}"
-        group: users
-        mode: "0775"
+    - name: Deploy docker compose services
+      ansible.builtin.include_role:
+        name: docker_compose_service
+      vars:
+        docker_compose_service_name: "{{ item }}"
       loop:
-        - "{{ docker_base_dir }}/smartctl-exporter"
-
-    - name: Create docker-compose for smartctl-exporter
-      notify: Restart smartctl-exporter
-      block:
-        - name: Create smartctl-exporter docker compose file
-          ansible.builtin.copy:
-            src: "{{ ansible_files_dir }}/docker-compose/smartctl-exporter/docker-compose.yml"
-            dest: "{{ docker_base_dir }}/smartctl-exporter/docker-compose.yml"
-            owner: "{{ ansible_user }}"
-            group: users
-            mode: "0775"
-        - name: Create smartctl-exporter systemd service file
-          ansible.builtin.template:
-            src: "{{ ansible_templates_dir }}/docker-compose@.service.j2"
-            dest: "/etc/systemd/system/docker-compose@smartctl-exporter.service"
-            mode: "0644"
-          vars:
-            condition_path_is_mount_point: "/"
-
-    # sabnzbd
-    - name: Create sabnzbd directories
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        owner: "{{ ansible_user }}"
-        group: users
-        mode: "0775"
-      loop:
-        - "{{ docker_base_dir }}/sabnzbd"
-
-    - name: Create docker-compose for sabnzbd
-      notify: Restart sabnzbd
-      block:
-        - name: Create sabnzbd docker compose file
-          ansible.builtin.copy:
-            src: "{{ ansible_files_dir }}/docker-compose/sabnzbd/docker-compose.yml"
-            dest: "{{ docker_base_dir }}/sabnzbd/docker-compose.yml"
-            owner: "{{ ansible_user }}"
-            group: users
-            mode: "0775"
-        - name: Create sabnzbd systemd service file
-          ansible.builtin.template:
-            src: "{{ ansible_templates_dir }}/docker-compose@.service.j2"
-            dest: "/etc/systemd/system/docker-compose@sabnzbd.service"
-            mode: "0644"
-          vars:
-            condition_path_is_mount_point: "/"
-
-#    # qbittorrent + gluetun
-#    - name: Create qbittorrent directories
-#      ansible.builtin.file:
-#        path: "{{ item }}"
-#        state: directory
-#        owner: "{{ ansible_user }}"
-#        group: users
-#        mode: "0775"
-#      loop:
-#        - "{{ docker_base_dir }}/qbittorrent"
-#
-#    - name: Create docker-compose for qbittorrent
-#      notify: Restart qbittorrent
-#      block:
-#        - name: Create qbittorrent docker compose file
-#          ansible.builtin.copy:
-#            src: docker-compose/qbittorrent/docker-compose.yml
-#            dest: "{{ docker_base_dir }}/qbittorrent/docker-compose.yml"
-#            owner: "{{ ansible_user }}"
-#            group: users
-#            mode: "0775"
-#        - name: Create qbittorrent systemd service file
-#          ansible.builtin.template:
-#            src: "docker-compose@.service.j2"
-#            dest: "/etc/systemd/system/docker-compose@qbittorrent.service"
-#            mode: "0644"
-#          vars:
-#            condition_path_is_mount_point: "/"
+        - smartctl-exporter
+        - sabnzbd

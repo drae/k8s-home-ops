@@ -1,0 +1,29 @@
+[Unit]
+Description={{ docker_compose_service_name }} service with docker compose
+{% if docker_compose_service_requires %}
+Requires={{ docker_compose_service_requires | join(' ') }}
+{% endif %}
+{% if docker_compose_service_after %}
+After={{ docker_compose_service_after | join(' ') }}
+{% endif %}
+{% if docker_compose_service_wants %}
+Wants={{ docker_compose_service_wants | join(' ') }}
+{% endif %}
+ConditionPathIsMountPoint={{ docker_compose_service_condition_path_is_mount_point }}
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory={{ docker_compose_service_base_dir }}/{{ docker_compose_service_name }}
+ExecStart=/usr/bin/docker compose up -d --remove-orphans
+ExecStop=/usr/bin/docker compose down
+ExecReload=/usr/bin/docker compose pull && /usr/bin/docker compose up -d --remove-orphans
+
+{% if docker_compose_service_health_check_enabled %}
+# Health check
+ExecStartPost=/bin/sleep {{ docker_compose_service_health_check_delay }}
+ExecStartPost=/usr/bin/docker compose ps --services --filter "status=running" | wc -l | grep -q "^[1-9]"
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target

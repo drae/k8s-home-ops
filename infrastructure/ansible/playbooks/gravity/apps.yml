@@ -4,40 +4,12 @@
   become: true
   gather_facts: true
   any_errors_fatal: true
-
-  handlers:
-    - name: Restart tvh
-      ansible.builtin.systemd:
-        name: "docker-compose@tvh.service"
-        state: restarted
-        enabled: true
-        daemon_reload: true
+  vars:
+    docker_compose_service_base_dir: "{{ docker_base_dir }}"
 
   tasks:
-    - name: Create tvh directories
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        owner: "{{ ansible_user }}"
-        group: users
-        mode: "0775"
-      loop:
-        - "{{ docker_base_dir }}/tvh/data"
-
-    - name: Create docker-compose for tvh
-      notify: Restart tvh
-      block:
-        - name: Create tvh docker compose file
-          ansible.builtin.copy:
-            src: "{{ ansible_files_dir }}/docker-compose/tvh/docker-compose.yml"
-            dest: "{{ docker_base_dir }}/tvh/docker-compose.yml"
-            owner: "{{ ansible_user }}"
-            group: users
-            mode: "0775"
-        - name: Create tvh systemd service file
-          ansible.builtin.template:
-            src: "{{ ansible_templates_dir }}/docker-compose@.service.j2"
-            dest: "/etc/systemd/system/docker-compose@tvh.service"
-            mode: "0644"
-          vars:
-            condition_path_is_mount_point: "/"
+    - name: Deploy tvheadend
+      ansible.builtin.include_role:
+        name: docker_compose_service
+      vars:
+        docker_compose_service_name: tvheadend
