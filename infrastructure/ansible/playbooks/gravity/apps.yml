@@ -29,14 +29,14 @@
       block:
         - name: Create tvh docker compose file
           ansible.builtin.copy:
-            src: docker-compose/tvh/docker-compose.yml
+            src: "{{ ansible_files_dir }}/docker-compose/tvh/docker-compose.yml"
             dest: "{{ docker_base_dir }}/tvh/docker-compose.yml"
             owner: "{{ ansible_user }}"
             group: users
             mode: "0775"
         - name: Create tvh systemd service file
           ansible.builtin.template:
-            src: "docker-compose@.service.j2"
+            src: "{{ ansible_templates_dir }}/docker-compose@.service.j2"
             dest: "/etc/systemd/system/docker-compose@tvh.service"
             mode: "0644"
           vars:
