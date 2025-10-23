@@ -12,7 +12,7 @@ env:
   PATH: "{{.PROJECT_DIR}}/.venv/bin:$PATH"
   VIRTUAL_ENV: "{{.PROJECT_DIR}}/.venv"
   ANSIBLE_COLLECTIONS_PATH: "{{.PROJECT_DIR}}/.venv/galaxy"
-  ANSIBLE_ROLES_PATH: "{{.PROJECT_DIR}}/.venv/galaxy/ansible_roles"
+  ANSIBLE_ROLES_PATH: "{{.ANSIBLE_DIR}}/roles:{{.PROJECT_DIR}}/.venv/galaxy/ansible_roles"
   ANSIBLE_VARS_ENABLED: "host_group_vars"
 
 tasks:
