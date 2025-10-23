@@ -72,7 +72,7 @@ spec:
         hostnames:
           - kromgo.starstreak.net
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:

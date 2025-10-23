@@ -33,7 +33,7 @@ spec:
           hostnames:
             - alertmanager.p.lan.starstreak.net
           parentRefs:
-            - name: internal
+            - name: envoy-internal
               namespace: networking
               sectionName: https
       alertmanagerSpec:
@@ -379,7 +379,7 @@ spec:
           hostnames:
             - prometheus.p.lan.starstreak.net
           parentRefs:
-            - name: internal
+            - name: envoy-internal
               namespace: networking
               sectionName: https
       prometheusSpec:

@@ -4,5 +4,5 @@ ingress:
     originRequest:
       http2Origin: true
       originServerName: ingress.starstreak.net
-    service: https://external.networking.svc.cluster.local
+    service: https://envoy-external.networking.svc.cluster.local
   - service: http_status:404

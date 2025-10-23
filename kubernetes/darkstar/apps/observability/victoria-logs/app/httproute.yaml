@@ -8,7 +8,7 @@ spec:
   hostnames:
     - victoria-logs.p.lan.starstreak.net
   parentRefs:
-    - name: internal
+    - name: envoy-internal
       namespace: networking
       sectionName: https
   rules:

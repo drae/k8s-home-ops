@@ -73,7 +73,7 @@ spec:
         hostnames:
           - tautulli.p.lan.starstreak.net
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:
