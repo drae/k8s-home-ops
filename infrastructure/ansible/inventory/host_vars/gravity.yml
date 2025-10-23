@@ -1,0 +1,8 @@
+---
+# Gravity doesn't need additional packages beyond base
+os_packages_install_additional: []
+os_packages_remove_additional: []
+
+# Use just the base lists
+os_packages_install: "{{ os_packages_install_base }}"
+os_packages_remove: "{{ os_packages_remove_base }}"

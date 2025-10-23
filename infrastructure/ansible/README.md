@@ -1,6 +1,6 @@
 # Non-kubernetes Infrastructure
 
-This directory contains the Ansible configuration for setting up "non-kubernetes" elements of my home ops systems. These are apollo - my NAS, and gravity - my tvheadend server. A minimal OS configuration is used, Docker is used for managing additional software components.
+This directory contains the consolidated Ansible configuration for setting up "non-kubernetes" elements of my home ops systems. These are apollo - my NAS, and gravity - my tvheadend server. A minimal OS configuration is used, Docker is used for managing additional software components.
 
 ## Directory Structure
 
@@ -9,28 +9,35 @@ infrastructure/ansible/
 ├── README.md                 # This file
 ├── requirements.txt          # Python dependencies
 ├── requirements.yml          # Ansible collections and roles
-│
-├── apollo/                  # apollo configuration
-│   ├── inventory/
-│   │   ├── hosts.yml        # Inventory file for apollo
-│   │   └── host_vars/       # Host-specific variables
-│   └── playbooks/
-│       ├── apps.yml         # Application deployment playbook
-│       ├── os.yml           # Operating system configuration playbook
-│       ├── files/           # Static files for deployment
-│       ├── templates/       # Jinja2 templates
-│       └── vars/            # Playbook variables
-│
-└── gravity/                 # gravity configuration
-    ├── inventory/
-    │   ├── hosts.yml        # Inventory file for gravity
-    │   └── host_vars/       # Host-specific variables
-    └── playbooks/
-        ├── apps.yml         # Application deployment playbook
-        ├── os.yml           # Operating system configuration playbook
-        ├── files/           # Static files for deployment
-        ├── templates/       # Jinja2 templates
-        └── vars/            # Playbook variables
+├── inventory/
+│   ├── hosts.yml            # Combined inventory for both apollo and gravity
+│   ├── group_vars/
+│   │   └── all.yml         # Common variables (Docker config, base packages, etc.)
+│   └── host_vars/
+│       ├── apollo.yml      # Apollo-specific variables (ZFS packages, etc.)
+│       └── gravity.yml     # Gravity-specific variables (minimal)
+├── playbooks/
+│   ├── site.yml            # Master orchestrator playbook
+│   ├── common/
+│   │   ├── os-base.yml     # Shared OS setup (packages, users, networking)
+│   │   └── docker-base.yml # Shared Docker setup and node-exporter
+│   ├── apollo/
+│   │   ├── os.yml         # Apollo-specific OS (ZFS, storage configs)
+│   │   └── apps.yml       # Apollo-specific applications (downloads)
+│   └── gravity/
+│       ├── os.yml         # Gravity-specific OS (sysctl, rootless containers)
+│       └── apps.yml       # Gravity TVHeadend application
+├── files/                  # Static configuration files and docker-compose YAML
+│   ├── docker-compose/     # Static docker-compose files (no templating)
+│   │   ├── tvh/
+│   │   ├── node-exporter/
+│   │   ├── sabnzbd/
+│   │   └── ...
+│   └── ...                 # Other static files
+└── templates/              # Jinja2 templates with {{ }} variables
+    ├── docker-compose@.service.j2
+    ├── zfs-exporter.service.j2
+    └── ...
 ```
 
 ## Prerequisites
@@ -118,6 +125,27 @@ task ansible:run machine=gravity playbook=apps
 task ansible:run machine=apollo playbook=os -- --check --diff
 ```
 
+### Direct Ansible Playbook Usage
+
+You can also run the consolidated playbooks directly with ansible-playbook:
+
+```bash
+# Run everything for both systems
+ansible-playbook -i inventory/hosts.yml playbooks/site.yml
+
+# Run only Apollo (storage) setup
+ansible-playbook -i inventory/hosts.yml playbooks/apollo/os.yml playbooks/apollo/apps.yml
+
+# Run only Gravity (TVHeadend) setup
+ansible-playbook -i inventory/hosts.yml playbooks/gravity/os.yml playbooks/gravity/apps.yml
+
+# Run only common setup for all hosts
+ansible-playbook -i inventory/hosts.yml playbooks/common/os-base.yml playbooks/common/docker-base.yml
+
+# Run only OS setup (no applications)
+ansible-playbook -i inventory/hosts.yml playbooks/common/os-base.yml playbooks/apollo/os.yml playbooks/gravity/os.yml
+```
+
 ### Environment Variables
 
 The following environment variables are automatically set when running tasks:
@@ -127,6 +155,25 @@ The following environment variables are automatically set when running tasks:
 - `ANSIBLE_COLLECTIONS_PATH` - Path to installed Ansible collections
 - `ANSIBLE_ROLES_PATH` - Path to installed Ansible roles
 - `ANSIBLE_VARS_ENABLED` - Enables host_group_vars for variable loading
+
+## Variable Organization
+
+- **`group_vars/all.yml`**: Variables shared by both systems (Docker config, base packages, SSH keys, timezone)
+- **`host_vars/apollo.yml`**: Apollo-specific variables (additional ZFS/storage packages)
+- **`host_vars/gravity.yml`**: Gravity-specific variables (minimal - just empty additional package lists)
+
+The variable structure uses a base + additional pattern:
+
+- `os_packages_install_base` (common packages) + `os_packages_install_additional` (system-specific)
+- Final merged list: `os_packages_install: "{{ os_packages_install_base + os_packages_install_additional }}"`
+
+## Consolidated Structure Benefits
+
+1. **DRY (Don't Repeat Yourself)**: Common tasks defined once, no duplication
+2. **Clear Separation**: System-specific needs are clearly isolated
+3. **Maintainable**: Easy to see what's shared vs system-specific
+4. **Flexible Execution**: Run specific parts or everything
+5. **Scalable**: Easy to add new systems following the same pattern
 
 ## Safety Features
 

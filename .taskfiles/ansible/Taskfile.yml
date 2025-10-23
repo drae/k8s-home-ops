@@ -4,6 +4,9 @@ version: "3"
 
 vars:
   PYTHON_BIN: python3
+  ANSIBLE_DIR: "{{.INFRASTRUCTURE_DIR}}/ansible"
+  ANSIBLE_PLAYBOOK: "{{.PROJECT_DIR}}/.venv/bin/ansible-playbook"
+  INVENTORY: "{{.ANSIBLE_DIR}}/inventory/hosts.yml"
 
 env:
   PATH: "{{.PROJECT_DIR}}/.venv/bin:$PATH"
@@ -16,31 +19,44 @@ tasks:
   venv:
     desc: Set up Python virtual environment
     cmds:
-      - true && {{.PYTHON_BIN}} -m venv {{.PROJECT_DIR}}/.venv
-      - true && {{.PROJECT_DIR}}/.venv/bin/python3 -m pip install --upgrade pip setuptools wheel
-      - true && {{.PROJECT_DIR}}/.venv/bin/python3 -m pip install --upgrade --requirement {{.INFRASTRUCTURE_DIR}}/ansible/requirements.txt
-      - true && {{.PROJECT_DIR}}/.venv/bin/ansible-galaxy install --role-file "{{.INFRASTRUCTURE_DIR}}/ansible/requirements.yml" --force
+      - "{{.PYTHON_BIN}} -m venv {{.PROJECT_DIR}}/.venv"
+      - "{{.PROJECT_DIR}}/.venv/bin/python3 -m pip install --upgrade pip setuptools wheel"
+      - "{{.PROJECT_DIR}}/.venv/bin/python3 -m pip install --upgrade --requirement {{.ANSIBLE_DIR}}/requirements.txt"
+      - "{{.PROJECT_DIR}}/.venv/bin/ansible-galaxy install --role-file {{.ANSIBLE_DIR}}/requirements.yml --force"
     sources:
-      - "{{.INFRASTRUCTURE_DIR}}/ansible/requirements.txt"
-      - "{{.INFRASTRUCTURE_DIR}}/ansible/requirements.yml"
+      - "{{.ANSIBLE_DIR}}/requirements.txt"
+      - "{{.ANSIBLE_DIR}}/requirements.yml"
     generates:
       - "{{.PROJECT_DIR}}/.venv/pyvenv.cfg"
 
   run:
-    desc: Run an Ansible playbook for configuring a machine
-    summary: |
-      Args:
-        machine: Machine to run command against (required)
-        playbook: Playbook to run (required)
-    prompt: Run Ansible playbook '{{.playbook}}' against '{{.machine}}' ... continue?
-    cmd: |
-      true && {{.PROJECT_DIR}}/.venv/bin/ansible-playbook --inventory {{.INFRASTRUCTURE_DIR}}/ansible/apollo/inventory/hosts.yml \
-        {{.INFRASTRUCTURE_DIR}}/ansible/{{.machine}}/playbooks/{{.playbook}}.yml {{.CLI_ARGS}}
+    desc: Run Ansible playbook for a machine
+    prompt: Run '{{.playbook}}' on '{{.machine}}'?
+    cmd: "{{.ANSIBLE_PLAYBOOK}} -i {{.INVENTORY}} {{.ANSIBLE_DIR}}/playbooks/{{.machine}}/{{.playbook}}.yml {{.CLI_ARGS}}"
     requires:
-      vars:
-        - machine
-        - playbook
+      vars: [machine, playbook]
     preconditions:
       - test -d {{.PROJECT_DIR}}/.venv
-      - test -f {{.INFRASTRUCTURE_DIR}}/ansible/{{.machine}}/inventory/hosts.yml
-      - test -f {{.INFRASTRUCTURE_DIR}}/ansible/{{.machine}}/playbooks/{{.playbook}}.yml
+      - test -f {{.INVENTORY}}
+      - test -f {{.ANSIBLE_DIR}}/playbooks/{{.machine}}/{{.playbook}}.yml
+
+  site:
+    desc: Run complete site playbook
+    prompt: Run site playbook on all machines?
+    cmd: "{{.ANSIBLE_PLAYBOOK}} -i {{.INVENTORY}} {{.ANSIBLE_DIR}}/playbooks/site.yml {{.CLI_ARGS}}"
+    preconditions:
+      - test -d {{.PROJECT_DIR}}/.venv
+      - test -f {{.INVENTORY}}
+      - test -f {{.ANSIBLE_DIR}}/playbooks/site.yml
+
+  common:
+    desc: Run common OS and Docker setup
+    prompt: Run common setup on all machines?
+    cmd: |
+      {{.ANSIBLE_PLAYBOOK}} -i {{.INVENTORY}} {{.ANSIBLE_DIR}}/playbooks/common/os.yml {{.CLI_ARGS}} &&
+      {{.ANSIBLE_PLAYBOOK}} -i {{.INVENTORY}} {{.ANSIBLE_DIR}}/playbooks/common/docker.yml {{.CLI_ARGS}}
+    preconditions:
+      - test -d {{.PROJECT_DIR}}/.venv
+      - test -f {{.INVENTORY}}
+      - test -f {{.ANSIBLE_DIR}}/playbooks/common/os.yml
+      - test -f {{.ANSIBLE_DIR}}/playbooks/common/docker.yml

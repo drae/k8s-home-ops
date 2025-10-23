@@ -1,0 +1,23 @@
+---
+# Apollo-specific additional packages
+os_packages_install_additional:
+  - gdisk
+  - hdparm
+  - nfs-kernel-server
+  - samba
+  - smartmontools
+  - uidmap
+  - wsdd2
+  - zfs-zed
+  - zfsutils-linux
+
+os_packages_remove_additional:
+  - snapd
+  - zfs-auto-snapshot
+
+# Merged lists for tasks
+os_packages_install: "{{ os_packages_install_base + os_packages_install_additional }}"
+os_packages_remove: "{{ os_packages_remove_base + os_packages_remove_additional }}"
+
+# zfs_exporter
+zfs_exporter_version: 2.3.10
