@@ -10,6 +10,6 @@ services:
     ports:
       - 8081:8080/tcp # sabnzbd web
     volumes:
-      - "/opt/docker/sabnzbd/config:/config"
+      - /opt/docker/sabnzbd/config:/config
       - /mnt/zstore/media/.downloads:/downloads
     restart: unless-stopped
