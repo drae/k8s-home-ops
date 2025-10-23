@@ -1,0 +1,45 @@
+---
+version: "3.8"
+
+services:
+  gluetun:
+    image: qmcgaw/gluetun:v3.39.1
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 8082:8080/tcp # qb web
+      - 6881:6881
+      - 6881:6881/udp
+    volumes:
+      - "/opt/docker/downloads/gluetun:/gluetun"
+    environment:
+      ***REMOVED***
+      - VPN_TYPE=wireguard
+      # Firewall
+      - FIREWALL_OUTBOUND_SUBNETS=10.1.10.0/24
+      # Timezone for accurate log times
+      - TZ=Europe/London
+      # Other
+      - PUBLICIP_PERIOD=12h
+      - VERSION_INFORMATION=on
+      - UPDATER_PERIOD=24h
+    env_file:
+      - ./secrets.enc.env
+    restart: unless-stopped
+
+  qbittorrent:
+    image: quay.io/linuxserver.io/qbittorrent:4.5.5
+    container_name: qbittorrent
+    environment:
+      - PUID=2000
+      - PGID=2000
+      - TZ=Europe/London
+      - WEBUI_PORT=8080
+    network_mode: "service:gluetun"
+    volumes:
+      - "/opt/docker/downloads/qbittorrent:/config"
+      - /mnt/zstore/media/.downloads:/downloads
+    restart: unless-stopped

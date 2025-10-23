@@ -1,0 +1,59 @@
+---
+os_timezone: "Europe/London"
+os_ssh_authorized_keys:
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnp4n7WX1FgQozEi6qY+E/6y3yg6eqnAdpQHp1MkMTH paul@LAPTOP"
+
+# Common base packages that both systems need
+os_packages_install_base:
+  - acl
+  - apt-transport-https
+  - btop
+  - ca-certificates
+  - curl
+  - dbus-user-session
+  - gettext
+  - git
+  - iputils-ping
+  - lvm2
+  - net-tools
+  - nfs-common
+  - ntpdate
+  - psmisc
+  - software-properties-common
+  - tmux
+  - unzip
+
+# Common packages to remove
+os_packages_remove_base:
+  - apparmor
+  - apport
+  - byobu
+  - friendly-recovery
+  - landscape-common
+  - lxd-agent-loader
+  - plymouth
+  - plymouth-theme-ubuntu-text
+  - popularity-contest
+  - sosreport
+  - ubuntu-advantage-tools
+  - ufw
+
+# Common Docker settings for all hosts
+
+docker_add_repo: true
+
+docker_edition: ce
+docker_packages:
+  - "docker-{{ docker_edition }}"
+  - "docker-{{ docker_edition }}-cli"
+
+docker_users: "{{ ansible_user }}"
+docker_install_compose_plugin: true
+docker_compose_package: docker-compose-plugin
+docker_compose_package_state: present
+
+docker_daemon_options:
+  log-driver: journald
+
+# Base Docker Directory
+docker_base_dir: /opt/docker
