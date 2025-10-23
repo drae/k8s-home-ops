@@ -57,3 +57,7 @@ docker_daemon_options:
 
 # Base Docker Directory
 docker_base_dir: /opt/docker
+
+# Ansible files and templates directories
+ansible_files_dir: "{{ inventory_dir }}/../files"
+ansible_templates_dir: "{{ inventory_dir }}/../templates"

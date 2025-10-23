@@ -1,6 +1,4 @@
 ---
-version: "3.8"
-
 services:
   gluetun:
     image: qmcgaw/gluetun:v3.39.1
@@ -40,6 +38,6 @@ services:
       - WEBUI_PORT=8080
     network_mode: "service:gluetun"
     volumes:
-      - "/opt/docker/downloads/qbittorrent:/config"
+      - "/opt/docker/qbittorrent/config:/config"
       - /mnt/zstore/media/.downloads:/downloads
     restart: unless-stopped
