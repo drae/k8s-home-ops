@@ -3,6 +3,7 @@
 
 # sops
 .decrypted~*
+._decrypted~*
 
 # kubeconfig from cp
 kubeconfig

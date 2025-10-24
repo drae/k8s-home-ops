@@ -1,0 +1,40 @@
+---
+# Main tasks for docker_compose_service role
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - docker_compose_service_name is defined
+      - docker_compose_service_name | length > 0
+    fail_msg: "docker_compose_service_name is required and must not be empty"
+
+- name: Create service directory
+  ansible.builtin.file:
+    path: "{{ docker_compose_service_base_dir }}/{{ docker_compose_service_name }}"
+    state: directory
+    owner: "{{ docker_compose_service_user }}"
+    group: "{{ docker_compose_service_group }}"
+    mode: "{{ docker_compose_service_file_mode }}"
+
+- name: Deploy docker-compose file
+  ansible.builtin.template:
+    src: "{{ docker_compose_file_src | default(docker_compose_service_ansible_files_dir + '/docker-compose/' + docker_compose_service_name + '/docker-compose.yml.j2') }}"
+    dest: "{{ docker_compose_service_base_dir }}/{{ docker_compose_service_name }}/docker-compose.yml"
+    owner: "{{ docker_compose_service_user }}"
+    group: "{{ docker_compose_service_group }}"
+    mode: "{{ docker_compose_service_file_mode }}"
+  notify: Restart docker compose service
+
+- name: Create systemd service file
+  ansible.builtin.template:
+    src: docker-compose.service.j2
+    dest: "/etc/systemd/system/docker-compose@{{ docker_compose_service_name }}.service"
+    mode: "{{ docker_compose_service_systemd_file_mode }}"
+  notify: Restart docker compose service
+
+- name: Start and enable docker compose service
+  ansible.builtin.systemd:
+    name: "docker-compose@{{ docker_compose_service_name }}.service"
+    state: "{{ docker_compose_service_state }}"
+    enabled: "{{ docker_compose_service_enabled }}"
+    daemon_reload: true

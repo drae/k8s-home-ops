@@ -1,0 +1,71 @@
+---
+- name: Common Docker setup for all hosts
+  hosts: all
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+  vars:
+    docker_compose_service_base_dir: "{{ docker_base_dir }}"
+
+  pre_tasks:
+    - name: Pausing for 2 seconds...
+      ansible.builtin.pause:
+        seconds: 2
+
+  roles:
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
+
+  handlers:
+    - name: Restart docker-cleanup
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: restarted
+        enabled: true
+        daemon_reload: true
+      loop:
+        - docker-cleanup.service
+        - docker-cleanup.timer
+
+    - name: Restart node-exporter
+      ansible.builtin.systemd:
+        name: "docker-compose@node-exporter.service"
+        state: restarted
+        enabled: true
+        daemon_reload: true
+
+  tasks:
+    - name: Create default directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: users
+        mode: "0775"
+      loop:
+        - "{{ docker_base_dir }}"
+      tags:
+        - always
+
+    - name: Ensure docker.service.d directory exists
+      ansible.builtin.file:
+        path: /etc/systemd/system/docker.service.d
+        state: directory
+        mode: "0755"
+
+    - name: Create docker clean up systemd files
+      notify: Restart docker-cleanup
+      ansible.builtin.copy:
+        src: "{{ ansible_files_dir }}/{{ item }}"
+        dest: "/etc/systemd/system/{{ item }}"
+        mode: "0644"
+        remote_src: false
+      loop:
+        - docker-cleanup.service
+        - docker-cleanup.timer
+
+    - name: Deploy smartctl-exporter
+      ansible.builtin.include_role:
+        name: docker_compose_service
+      vars:
+        docker_compose_service_name: smartctl-exporter

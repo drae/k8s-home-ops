@@ -1,0 +1,26 @@
+---
+- name: NAS (apollo) application deployment
+  hosts: nas
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+  vars:
+    docker_compose_service_base_dir: "{{ docker_base_dir }}"
+
+  tasks:
+    - name: Create docker override systemd file
+      ansible.builtin.copy:
+        src: "{{ ansible_files_dir }}/docker-override.conf"
+        dest: "/etc/systemd/system/docker.service.d/override.conf"
+        mode: "0644"
+        remote_src: false
+
+    - name: Deploy docker compose services
+      ansible.builtin.include_role:
+        name: docker_compose_service
+      vars:
+        docker_compose_service_name: "{{ item }}"
+      loop:
+        - qbittorrent
+        - sabnzbd
+        - smartctl-exporter

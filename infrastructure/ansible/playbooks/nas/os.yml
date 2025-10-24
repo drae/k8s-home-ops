@@ -1,0 +1,302 @@
+---
+- name: NAS (apollo) OS setup
+  hosts: nas
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+
+  vars:
+    zfs_exporter_chris_repo_url: "https://github.com/siebenmann/zfs_exporter.git"
+    zfs_exporter_chris_repo_branch: "cks-upstream"
+    zfs_exporter_chris_repo_path: "/tmp/zfs_exporter"
+    zfs_exporter_chris_local_binary_path: /tmp/zfs_exporter/zfs_exporter_chris
+    zfs_exporter_chris_remote_binary_path: /usr/local/bin/zfs_exporter_chris
+
+  handlers:
+    - name: Restart zfs-exporter
+      ansible.builtin.systemd:
+        name: zfs-exporter
+        enabled: true
+        daemon_reload: true
+        state: restarted
+
+    - name: Restart zfs-exporter-chris
+      ansible.builtin.systemd:
+        name: zfs-exporter-chris
+        enabled: true
+        daemon_reload: true
+        state: restarted
+
+    - name: Update grub
+      ansible.builtin.command: update-grub
+      tags:
+        - skip_ansible_lint
+
+  tasks:
+    #
+    # ZFS
+    #
+
+    # Configure ZFS
+    - name: ZFS
+      ansible.builtin.include_role:
+        name: "mrlesmithjr.zfs"
+      vars:
+        zfs_enable_nfs: true
+        zfs_enable_auto_snapshots: false
+
+    - name: Check for existence of /etc/default/zfs
+      ansible.builtin.stat:
+        path: /etc/default/zfs
+      register: zfs_result
+
+    - name: Modify ZFS_POOL_IMPORT_FLAGS to include altroot=/mnt if it exists
+      ansible.builtin.lineinfile:
+        path: /etc/default/zfs
+        regexp: "^(ZFS_POOL_IMPORT_FLAGS=\")([^\"]*)\"$"
+        line: "\\1{% if '\\2' and '-o altroot=/mnt' not in '\\2' %}\\2 -o altroot=/mnt{% elif not '\\2' %}-o altroot=/mnt{% else %}\\2{% endif %}\""
+        backrefs: true
+        state: present
+      register: zfs_pool_flags_modification_result
+      # Only attempt modification if the file exists
+      when: zfs_result.stat.exists
+
+    - name: Add ZFS_POOL_IMPORT_FLAGS line if it does not exist
+      ansible.builtin.blockinfile:
+        path: /etc/default/zfs
+        block: |
+
+          # Custom ZFS import options
+          ZPOOL_IMPORT_OPTS=' -o altroot=/mnt'
+        create: true
+        state: present
+        mode: "0644"
+      register: zfs_pool_flags_addition_result
+      when:
+        - zfs_result.stat.exists
+        - not zfs_pool_flags_modification_result.matched | default(false) # 'matched' is true if regexp found a line
+
+    # Install the pdf/zfs_exporter for prometheus
+    - name: Unarchive the zfs exporter
+      ansible.builtin.unarchive:
+        src: https://github.com/pdf/zfs_exporter/releases/download/v{{ zfs_exporter_version }}/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
+        dest: /tmp/
+        remote_src: true
+
+    - name: Copy the zfs_exporter binary to the remote host
+      ansible.builtin.copy:
+        src: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64/zfs_exporter # Adjust path if the binary is directly in the extracted folder or if the folder name is different
+        dest: /usr/local/bin/zfs_exporter # Or your desired installation path on the remote host
+        remote_src: true
+        mode: 0755
+
+    - name: Clean up downloaded and extracted files
+      ansible.builtin.file:
+        path: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64.tar.gz
+        state: absent
+
+    - name: Clean up extracted directory
+      ansible.builtin.file:
+        path: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64
+        state: absent
+
+    - name: Create service group for zfs_exporter
+      ansible.builtin.group:
+        name: zfs_exporter
+        state: present
+        system: true
+
+    - name: Create service user for zfs_exporter
+      ansible.builtin.user:
+        name: zfs_exporter
+        group: zfs_exporter
+        shell: /usr/sbin/nologin
+        create_home: false
+        system: true
+        state: present
+
+    - name: Create the systemd service
+      ansible.builtin.template:
+        src: zfs-exporter.service.j2
+        dest: /etc/systemd/system/zfs-exporter.service
+        mode: "0644"
+      notify: Restart zfs-exporter
+
+    # Install the siebenmann/zfs_exporter for prometheus
+    - name: Clone zfs_exporter repo
+      ansible.builtin.git:
+        repo: "{{ zfs_exporter_chris_repo_url }}"
+        dest: "{{ zfs_exporter_chris_repo_path }}"
+        version: "{{ zfs_exporter_chris_repo_branch }}"
+        depth: 1
+        force: true
+      delegate_to: localhost
+      become: false
+
+    - name: Check if zfs_exporter binary exists
+      ansible.builtin.stat:
+        path: "{{ zfs_exporter_chris_local_binary_path }}"
+      delegate_to: localhost
+      become: false
+      register: zfs_exporter_binary_exists
+
+    - name: Build zfs_exporter binary
+      ansible.builtin.command:
+        cmd: >
+          go build -ldflags="-w -s" -o {{ zfs_exporter_chris_local_binary_path }} main.go
+      args:
+        chdir: "{{ zfs_exporter_chris_repo_path }}"
+        creates: "{{ zfs_exporter_chris_local_binary_path }}"
+      delegate_to: localhost
+      become: false
+      when: not zfs_exporter_binary_exists.stat.exists
+
+    - name: Copy zfs_exporter_chris binary
+      ansible.builtin.copy:
+        src: "{{ zfs_exporter_chris_local_binary_path }}"
+        dest: "{{ zfs_exporter_chris_remote_binary_path }}"
+        owner: root
+        group: root
+        mode: "0755"
+      notify: Restart zfs-exporter-chris
+
+    - name: Cleanup cloned repo
+      ansible.builtin.file:
+        path: "{{ zfs_exporter_chris_repo_path }}"
+        state: absent
+      delegate_to: "{{ groups['storage'][0] }}"
+      become: false
+
+    - name: Create service group for zfs_exporter
+      ansible.builtin.group:
+        name: zfs_exporter
+        state: present
+        system: true
+
+    - name: Create the systemd service
+      ansible.builtin.template:
+        src: zfs-exporter-chris.service.j2
+        dest: /etc/systemd/system/zfs-exporter-chris.service
+        mode: "0644"
+      notify: Restart zfs-exporter-chris
+
+    #
+    # Filesystem
+    #
+
+    # Setup filesystem tools
+    - name: Configure smartd
+      ansible.builtin.copy:
+        dest: /etc/smartd.conf
+        mode: 0644
+        content: |
+          DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -W 4,35,40
+      notify: Restart smartd
+
+    # Disable swap
+    - name: Check if swap is enabled
+      ansible.builtin.command:
+        cmd: swapon --summary
+      register: swap_status
+      changed_when: false
+
+    - name: Disable swap at runtime
+      ansible.builtin.command: swapoff -a
+      when: swap_status.stdout != ""
+      changed_when: swap_status.stdout != ""
+
+    - name: Disable swap on boot
+      ansible.posix.mount:
+        name: "{{ item }}"
+        fstype: swap
+        state: absent
+      loop:
+        - swap
+        - none
+
+    # Security
+    - name: Check for existence of grub
+      ansible.builtin.stat:
+        path: /etc/default/grub
+      register: grub_result
+
+    - name: Ensure apparmor=0 is set in GRUB_CMDLINE_LINUX
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
+        line: "\\1 apparmor=0\""
+        backrefs: true
+        state: present
+      when: grub_result.stat.exists
+      register: apparmor_changed
+
+    - name: Ensure mitigations=off is set in GRUB_CMDLINE_LINUX
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
+        line: "\\1 mitigations=off\""
+        backrefs: true
+        state: present
+      when: grub_result.stat.exists
+      register: mitigations_changed
+
+    - name: Run grub-mkconfig to apply changes
+      ansible.builtin.command:
+        cmd: update-grub
+      changed_when: apparmor_changed.changed or mitigations_changed.changed
+      # This task will only run if either apparmor or mitigations was actually changed
+      when:
+        - grub_result.stat.exists
+        - apparmor_changed.changed or mitigations_changed.changed
+
+    - name: Check if cgroupv2 is enabled
+      ansible.builtin.stat:
+        path: "/sys/fs/cgroup/cgroup.controllers"
+      register: cgroupv2_enabled_file
+      become: false
+
+    - name: Enable cgroupv2
+      ansible.builtin.replace:
+        path: /etc/default/grub
+        regexp: "^(GRUB_CMDLINE_LINUX=(?:(?![\" ]{{ option | regex_escape }}=).)*)(?:[\" ]{{ option | regex_escape }}=\\S+)?(.*\")$"
+        replace: "\\1 {{ option }}=\"{{ value }}\"\\2"
+      vars:
+        option: systemd.unified_cgroup_hierarchy
+        value: 1
+      when: not cgroupv2_enabled_file.stat.exists
+      notify: update grub
+
+    # Setup udev entries
+    - name: Power saving on hdd's
+      ansible.builtin.copy:
+        dest: /etc/udev/rules.d/hdparm.rules
+        mode: "0644"
+        content: |
+          # Set power saving for HDDs - 10 min spindown
+          ACTION=="add|change", KERNEL=="sd[a-z]", ATTRS{queue/rotational}=="1", RUN+="/usr/sbin/hdparm -B 128 -S 120 /dev/%k"
+
+    - name: Set cpu governor to powersaving
+      ansible.builtin.copy:
+        dest: /etc/udev/rules.d/cpu.rules
+        mode: "0644"
+        content: |
+          KERNEL=="cpu", SUBSYSTEM=="event_source", ACTION=="add", RUN+="/bin/sh -c 'echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor'"
+
+    # Add 'shared' user
+    - name: Add the group 'shared'
+      ansible.builtin.group:
+        name: shared
+        gid: 2000
+        state: present
+
+    - name: Add the user 'shared'
+      ansible.builtin.user:
+        name: shared
+        uid: 2000
+        group: shared
+        groups: users
+        append: true
+        create_home: false
+        home: /nonexistent
+        shell: /bin/nologin
+        state: present

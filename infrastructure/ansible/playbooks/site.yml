@@ -1,0 +1,23 @@
+---
+# Master site playbook - orchestrates all system setup
+# Usage: ansible-playbook -i inventory/hosts.yml playbooks/site.yml
+
+# Phase 1: Common OS setup for all hosts
+- name: Common OS setup for all hosts
+  import_playbook: common/os-base.yml
+
+# Phase 2: System-specific OS configuration
+- name: NAS (apollo) OS configuration
+  import_playbook: nas/os.yml
+- name: TVHeadend (gravity) OS configuration
+  import_playbook: tvh/os.yml
+
+# Phase 3: Common Docker setup for all hosts
+- name: Common Docker setup for all hosts
+  import_playbook: common/docker-base.yml
+
+# Phase 4: System-specific application deployment
+- name: NAS (apollo) applications
+  import_playbook: nas/apps.yml
+- name: TVHeadend (gravity) applications
+  import_playbook: tvh/apps.yml

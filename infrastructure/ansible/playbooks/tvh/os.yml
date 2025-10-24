@@ -1,0 +1,39 @@
+---
+- name: TVHeadend (gravity) OS setup
+  hosts: tvh
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+
+  handlers:
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+  tasks:
+    - name: Set ping sysctl
+      ansible.posix.sysctl:
+        name: net.ipv4.ping_group_range
+        value: "0 2147483647"
+        state: present
+        reload: true
+
+    - name: Set rootfull ports for rootless user sysctl
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_unprivileged_port_start
+        value: "0"
+        state: present
+        reload: true
+
+    - name: Ensure user delegate systemd directory exists
+      ansible.builtin.file:
+        path: /etc/systemd/system/user@.service.d
+        state: directory
+        mode: "0755"
+
+    - name: Install delegate.conf for rootless users
+      ansible.builtin.copy:
+        src: delegate.conf
+        dest: "/etc/systemd/system/user@.service.d/delegate.conf"
+        mode: "0644"
+      notify: Reload systemd daemon

@@ -1,0 +1,35 @@
+---
+# Default variables for docker_compose_service role
+
+# Base directory where docker-compose projects are stored
+docker_compose_service_base_dir: "/opt/docker"
+
+# Ansible files directory (override this variable when using the role)
+docker_compose_service_ansible_files_dir: "../../templates"
+
+# Default user and group for file ownership
+docker_compose_service_user: "{{ ansible_user }}"
+docker_compose_service_group: "users"
+
+# Default file permissions
+docker_compose_service_file_mode: "0775"
+docker_compose_service_systemd_file_mode: "0644"
+
+# Systemd service configuration
+docker_compose_service_condition_path_is_mount_point: "/"
+
+# Service management
+docker_compose_service_enabled: true
+docker_compose_service_state: started
+
+# Whether to restart the service if configuration changes
+docker_compose_service_restart_on_change: true
+
+# Additional systemd service options (optional)
+docker_compose_service_wants: []
+docker_compose_service_after: ["docker.service"]
+docker_compose_service_requires: ["docker.service"]
+
+# Health check options (optional)
+docker_compose_service_health_check_enabled: false
+docker_compose_service_health_check_delay: 10

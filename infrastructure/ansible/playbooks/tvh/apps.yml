@@ -1,0 +1,15 @@
+---
+- name: TVHeadend (gravity) application deployment
+  hosts: tvh
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+  vars:
+    docker_compose_service_base_dir: "{{ docker_base_dir }}"
+
+  tasks:
+    - name: Deploy tvheadend
+      ansible.builtin.include_role:
+        name: docker_compose_service
+      vars:
+        docker_compose_service_name: tvheadend
