@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname qbittorrent
+  namespace: &namespace downloads
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/gatus/internal
+  interval: 10m
+  path: "./kubernetes/darkstar/apps/downloads/qbittorrent/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-home-ops
+    namespace: flux-system
+  wait: false # no flux ks dependents
+  postBuild:
+    substitute:
+      APP: *appname
