@@ -1,28 +1,34 @@
 {
-  commitMessageTopic: "{{depName}}",
-  commitMessageExtra: "to {{newVersion}}",
-  commitMessageSuffix: "",
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
       matchUpdateTypes: ["major"],
       semanticCommitType: "feat",
+      commitMessageTopic: "{{depName}}",
       commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}})!:",
-      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+      commitMessageExtra: "( {{currentVersion}} ➔ {{newVersion}} )",
+      commitMessageSuffix: ""
     },
     {
       matchUpdateTypes: ["minor"],
       semanticCommitType: "feat",
-      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} ➔ {{newVersion}} )",
+      commitMessageSuffix: ""
     },
     {
       matchUpdateTypes: ["patch"],
       semanticCommitType: "fix",
-      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentVersion}} ➔ {{newVersion}} )",
+      commitMessageSuffix: ""
     },
     {
       matchUpdateTypes: ["digest"],
       semanticCommitType: "chore",
-      commitMessageExtra: "( {{currentDigestShort}} → {{newDigestShort}} )",
+      commitMessageTopic: "{{depName}}",
+      commitMessageExtra: "( {{currentDigestShort}} ➔ {{newDigestShort}} )",
+      commitMessageSuffix: ""
     },
     {
       matchDatasources: ["docker"],
@@ -43,3 +49,4 @@
     },
   ],
 }
+

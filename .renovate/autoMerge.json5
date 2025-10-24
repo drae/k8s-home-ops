@@ -1,78 +1,37 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  packageRules: [
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
     {
-      matchManagers: [
-        "github-actions"
-      ],
-      automerge: true,
-      automergeType: "branch",
-      matchUpdateTypes: [
-        "minor",
-        "patch"
-      ],
-      minimumReleaseAge: "3 days",
-      ignoreTests: true,
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "3 days",
+      "ignoreTests": true
     },
     {
-      description: "Automerge trusted actions sooner",
-      matchManagers: [
-        "github-actions"
-      ],
-      matchPackageNames: [
-        "/^bjw-s-labs//",
+      "description": "Automerge trusted actions sooner",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": [
+        "/^bjw-s-labs\//",
         "/^actions\//"
       ],
-      automerge: true,
-      automergeType: "branch",
-      matchUpdateTypes: [
-        "minor",
-        "patch",
-        "digest"
-      ],
-      minimumReleaseAge: "1 hour",
-      ignoreTests: true,
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "minimumReleaseAge": "1 minute",
+      "ignoreTests": true
     },
     {
-      description: "Auto merge KPS minors and patches",
-      matchDatasources: [
-        "helm"
-      ],
+      description: "Auto merge minors and patches",
+      matchDatasources: ["docker"],
       automerge: true,
-      matchUpdateTypes: [
-        "minor",
-        "patch"
-      ],
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch"],
       matchPackageNames: [
-        "kube-prometheus-stack"
+        "/kube-prometheus-stack/",
       ],
       ignoreTests: false,
     },
-    {
-      matchDatasources: [
-        "galaxy-collection"
-      ],
-      automerge: true,
-      automergeType: "branch",
-      matchUpdateTypes: [
-        "minor",
-        "patch"
-      ],
-      minimumReleaseAge: "3 days",
-      ignoreTests: true
-    },
-    {
-      matchDatasources: [
-        "galaxy-role"
-      ],
-      automerge: true,
-      automergeType: "branch",
-      matchUpdateTypes: [
-        "minor",
-        "patch"
-      ],
-      minimumReleaseAge: "3 days",
-      ignoreTests: true
-    },
-  ],
+  ]
 }

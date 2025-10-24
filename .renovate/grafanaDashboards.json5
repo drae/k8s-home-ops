@@ -11,7 +11,7 @@
     {
       customType: "regex",
       description: "Process Grafana dashboards",
-      fileMatch: ["(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"],
+      managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"],
       matchStrings: [
         '# renovate: dashboardName="(?<depName>.*)"\\n(?<indentation>\\s+)gnetId: (?<packageName>\\d+)\\n.+revision: (?<currentValue>\\d+)',
       ],
@@ -25,12 +25,13 @@
       addLabels: ["renovate/grafana-dashboard"],
       automerge: true,
       automergeType: "branch",
+      ignoreTests: true,
       matchDatasources: ["custom.grafana-dashboards"],
       matchUpdateTypes: ["major"],
       semanticCommitScope: "grafana-dashboards",
       semanticCommitType: "chore",
       commitMessageTopic: "dashboard {{depName}}",
-      commitMessageExtra: "( {{currentVersion}} → {{newVersion}} )",
+      commitMessageExtra: "( {{currentVersion}} ➔ {{newVersion}} )",
     },
   ],
 }

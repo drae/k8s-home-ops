@@ -1,29 +1,32 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: [
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
     "config:recommended",
     "docker:enableMajor",
+    "helpers:pinGitHubActionDigests",
+    "github>drae/k8s-home-ops//.renovate/autoMerge.json5",
+    "github>drae/k8s-home-ops//.renovate/customManagers.json5",
+    "github>drae/k8s-home-ops//.renovate/commitMessage.json5",
+    "github>drae/k8s-home-ops//.renovate/labels.json5",
+    "github>drae/k8s-home-ops//.renovate/overrides.json5",
+    "github>drae/k8s-home-ops//.renovate/groups.json5",
+    "github>drae/k8s-home-ops//.renovate/grafanaDashboards.json5",
     ":dependencyDashboard",
     ":disableRateLimiting",
-    ":enablePreCommit",
-    ":timezone(Europe/London)",
-    "github>drae/k8s-home-ops//.renovate/autoMerge.json5",
-    "github>drae/k8s-home-ops//.renovate/clusters.json5",
-    "github>drae/k8s-home-ops//.renovate/commitMessage.json5",
-    "github>drae/k8s-home-ops//.renovate/customManagers.json5",
-    "github>drae/k8s-home-ops//.renovate/grafanaDashboards.json5",
-    "github>drae/k8s-home-ops//.renovate/groups.json5",
-    "github>drae/k8s-home-ops//.renovate/labels.json5",
-    "github>drae/k8s-home-ops//.renovate/packageRules.json5",
+    ":enablePreCommit"
   ],
-  dependencyDashboardTitle: "Renovate Dashboard 🤖",
-  rebaseWhen: "behind-base-branch",
-  suppressNotifications: [
-    "prIgnoreNotification"
-  ],
+  "commitBodyTable": true,
+  "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   ignorePaths: [
     ".archived/**"
   ],
+  "platformCommit": "enabled",
+  "rebaseWhen": "auto",
+  "suppressNotifications": [
+    "prEditedNotification",
+    "prIgnoreNotification"
+  ],
+  "timezone": "Europe/Amsterdam",
   flux: {
     managerFilePatterns: [
       "/^kubernetes/.+\\.ya?ml$/"
