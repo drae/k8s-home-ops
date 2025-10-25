@@ -24,7 +24,28 @@ model:
 
 objects:
   track:
+    - bike
+    - car
+    - cat
+    - dog
+    - fox
     - person
+  filters:
+    bike:
+      threshold: 0.7
+      min_score: 0.65
+    car:
+      threshold: 0.7
+      min_score: 0.65
+    cat:
+      threshold: 0.6
+      min_score: 0.5
+    dog:
+      threshold: 0.6
+      min_score: 0.5
+    fox:
+      threshold: 0.7
+      min_score: 0.5
 
 ffmpeg:
   global_args:
@@ -40,6 +61,9 @@ snapshots:
   bounding_box: true
   retain:
     default: 7
+  required_zones:
+    - entire_front
+    - forecourt
 
 record:
   enabled: true
@@ -67,21 +91,32 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - detect
+    review:
+      alerts:
+        required_zones:
+          - entire_front
+          - forecourt
+      detections:
+        required_zones:
+          - entire_front
+          - forecourt
     zones:
       forecourt:
-        coordinates: 0.28,0.21,0,1,0.883,1,0.567,0.216
-        inertia: 3
+        coordinates: 0.349,0.275,0.113,1,0.951,1,0.675,0.275
         loitering_time: 3
+        objects:
+          - car
       entire_front:
         coordinates: 0,0,1,0,1,1,0,1
-        intertia: 3
-        loitering_time: 0
         objects:
+          - bike
+          - cat
+          - dog
+          - fox
           - person
     motion:
       mask:
         - 0.978,0.03,0.978,0.081,0.725,0.081,0.725,0.03
-        - 0.024,0.92,0.132,0.92,0.132,0.97,0.024,0.97
     detect:
       enabled: true
       width: 704
