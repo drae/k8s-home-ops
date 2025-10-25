@@ -24,14 +24,15 @@ model:
 
 objects:
   track:
-    - bike
+    - bicycle
     - car
     - cat
     - dog
     - fox
+    - motorcycle
     - person
   filters:
-    bike:
+    bicycle:
       threshold: 0.7
       min_score: 0.65
     car:
@@ -46,6 +47,9 @@ objects:
     fox:
       threshold: 0.7
       min_score: 0.5
+    motorcycle:
+      threshold: 0.7
+      min_score: 0.65
 
 ffmpeg:
   global_args:
@@ -109,10 +113,11 @@ cameras:
       entire_front:
         coordinates: 0,0,1,0,1,1,0,1
         objects:
-          - bike
+          - bicycle
           - cat
           - dog
           - fox
+          - motorcycle
           - person
     motion:
       mask:
