@@ -3,7 +3,12 @@
   "extends": [
     "config:recommended",
     "docker:enableMajor",
-    "helpers:pinGitHubActionDigests",
+    "helpers:pinGitHubActionDigestsToSemver",
+    ":configMigration",
+    ":dependencyDashboard",
+    ":disableRateLimiting",
+    ":enablePreCommit",
+    ":timezone(Europe/London)",
     "github>drae/k8s-home-ops//.renovate/autoMerge.json5",
     "github>drae/k8s-home-ops//.renovate/customManagers.json5",
     "github>drae/k8s-home-ops//.renovate/commitMessage.json5",
@@ -11,22 +16,17 @@
     "github>drae/k8s-home-ops//.renovate/overrides.json5",
     "github>drae/k8s-home-ops//.renovate/groups.json5",
     "github>drae/k8s-home-ops//.renovate/grafanaDashboards.json5",
-    ":dependencyDashboard",
-    ":disableRateLimiting",
-    ":enablePreCommit"
   ],
-  "commitBodyTable": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   ignorePaths: [
-    ".archived/**"
+    ".archived/**",
+    "**/*.sops.*",
+    "**/resources/**"
   ],
-  "platformCommit": "enabled",
-  "rebaseWhen": "auto",
   "suppressNotifications": [
     "prEditedNotification",
     "prIgnoreNotification"
   ],
-  "timezone": "Europe/London",
   flux: {
     managerFilePatterns: [
       "/^kubernetes/.+\\.ya?ml$/"

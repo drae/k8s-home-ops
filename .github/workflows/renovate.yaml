@@ -4,11 +4,11 @@ name: "Renovate"
 
 on: # yamllint disable-line rule:truthy
   push:
-    branches: ["main"]
+    branches:
+      - main
     paths:
-      - .github/renovate-bot.json5
-      - .github/renovate.json5
-      - .github/renovate/**.json5
+      - renovate.json5
+      - .renovate/**.json5
   schedule:
     - cron: "0 * * * *"
   workflow_dispatch:
