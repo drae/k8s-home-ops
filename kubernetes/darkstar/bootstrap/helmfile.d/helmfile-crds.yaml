@@ -18,22 +18,22 @@ repositories:
     url: https://kedacore.github.io/charts/
 
 releases:
-  - name: kube-prometheus-stack
-    namespace: observability
-    chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
-    version: 78.5.0
-
-  - name: gateway-api-crds
+  - name: envoy-gateway
     namespace: networking
-    chart: oci://ghcr.io/wiremind/wiremind-helm-charts/gateway-api-crds
-    version: 1.4.0
+    chart: oci://docker.io/envoyproxy/gateway-helm
+    version: 1.5.4
+
+  - name: external-dns
+    namespace: networking
+    chart: oci://ghcr.io/home-operations/charts-mirror/external-dns
+    version: 1.19.0
 
   - name: keda
     namespace: kube-system
     chart: kedacore/keda
     version: 2.18.0
 
-  - name: external-dns
-    namespace: networking
-    chart: oci://ghcr.io/home-operations/charts-mirror/external-dns
-    version: 1.19.0
+  - name: kube-prometheus-stack
+    namespace: observability
+    chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
+    version: 78.5.0
