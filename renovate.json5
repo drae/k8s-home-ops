@@ -15,7 +15,6 @@
     ":timezone(Europe/London)",
 
     "github>drae/k8s-home-ops//.renovate/autoMerge.json5",
-    "github>drae/k8s-home-ops//.renovate/customManagers.json5",
     "github>drae/k8s-home-ops//.renovate/commitMessage.json5",
     "github>drae/k8s-home-ops//.renovate/labels.json5",
     "github>drae/k8s-home-ops//.renovate/overrides.json5",
