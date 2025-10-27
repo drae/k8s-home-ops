@@ -21,20 +21,20 @@ tasks:
       # Install our encryption key
       - sops --decrypt {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml | kubectl apply -n flux-system --server-side -f -
       # Install our crds
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-crds.yaml template | kubectl apply --server-side -f -
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-crds.yaml template | kubectl apply --server-side -f -
       # Install our initial apps
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-apps.yaml apply --skip-diff-on-install --suppress-diff
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-apps.yaml destroy --selector name=format-lvm
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-apps.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-apps.yaml destroy --selector name=format-lvm
     preconditions:
       - which talosctl helmfile kubectl
       - test -f {{.PROJECT_DIR}}/age.key
       - test -f {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml
       - sh: "sops --decrypt {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml"
         msg: "Cannot decrypt flux sops key"
-      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-crds.yaml
-      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile-apps.yaml
-      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/templates/format-lvm.yaml.gotmpl
-      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/templates/values.yaml.gotmpl
+      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-crds.yaml
+      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-apps.yaml
+      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/templates/format-lvm.yaml.gotmpl
+      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/templates/values.yaml.gotmpl
     vars:
       TALOS_CONTROLLER:
         sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
