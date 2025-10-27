@@ -28,22 +28,6 @@
     },
     {
       customType: "regex",
-      description: [
-        "mise package regex manager"
-      ],
-      fileMatch: [
-        "\\.mise\\.toml$"
-      ],
-      matchStrings: [
-        "(\"\\S+:(\\S+/)?)?(?<depName>\\S+?)\"? = '(?<currentValue>[^\\s]*?)'[ \\t]*?#renovate:( datasource=(?<datasource>.*?))?( packageName=(?<packageName>.*?))?( versioning=(?<versioning>.*?=?))?( versionTemplate=(?<versionTemplate>.*?=?))?([\\s\\t]+)?\\n",
-      ],
-      packageNameTemplate: "{{#if packageName}}{{{packageName}}}{{else}}{{/if}}",
-      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
-      extractVersionTemplate: "{{#if versionTemplate}}{{{versionTemplate}}}{{else}}^v?(?<version>.*)${{/if}}",
-    },
-    {
-      customType: "regex",
       description: "Process OCI dependencies",
       managerFilePatterns: [
         "/^kubernetes/.+\\.yaml(?:\\.j2)?$/"
