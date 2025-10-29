@@ -15,8 +15,6 @@ spec:
         namespace: flux-system
       interval: 1h
   values:
-    domainFilters:
-      - p.lan.starstreak.net
     extraArgs:
       - --ingress-class=envoy-internal
       - --managed-record-types=A

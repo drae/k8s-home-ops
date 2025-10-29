@@ -15,10 +15,6 @@ spec:
         namespace: flux-system
       interval: 1h
   values:
-    domainFilters:
-      - starstreak.net
-    excludeDomains:
-      - p.lan.starstreak.net
     env:
       - name: CF_API_TOKEN
         valueFrom:
