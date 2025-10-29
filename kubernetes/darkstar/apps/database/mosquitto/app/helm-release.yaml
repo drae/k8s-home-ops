@@ -11,6 +11,16 @@ spec:
     name: app-template
     namespace: flux-system
   values:
+    configMaps:
+      config:
+        data:
+          mosquitto.conf: |
+            allow_anonymous true
+            autosave_interval 60
+            listener 1883
+            per_listener_settings false
+            persistence true
+            persistence_location /data
     controllers:
       mosquitto:
         annotations:
@@ -42,16 +52,20 @@ spec:
                   - ALL
     service:
       app:
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "mosquitto.starstreak.net."
+          lbipam.cilium.io/ips: 10.1.10.35
+        externalTrafficPolicy: Local
         ports:
           mqtt:
-            primary: true
             port: 1883
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
       config:
         type: configMap
-        name: mosquitto-configmap
+        identifier: config
         advancedMounts:
           mosquitto:
             app:
