@@ -26,7 +26,6 @@ spec:
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: "*.starstreak.net"
       allowedRoutes:
         namespaces:
           from: All
