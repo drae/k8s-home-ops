@@ -13,4 +13,3 @@ spec:
   dnsNames:
     - "starstreak.net"
     - "*.starstreak.net"
-    - "*.p.lan.starstreak.net"

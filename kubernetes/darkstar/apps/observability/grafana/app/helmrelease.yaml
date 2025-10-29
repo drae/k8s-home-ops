@@ -49,7 +49,7 @@ spec:
       existingSecret: grafana-secret
     grafana.ini:
       server:
-        root_url: https://grafana.p.lan.starstreak.net
+        root_url: https://grafana.starstreak.net
       paths:
         data: /var/lib/grafana/data
         logs: /var/log/grafana
@@ -292,7 +292,7 @@ spec:
       main:
         enabled: true
         hostnames:
-          - grafana.p.lan.starstreak.net
+          - grafana.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking

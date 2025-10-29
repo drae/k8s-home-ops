@@ -68,7 +68,7 @@ spec:
     route:
       app:
         hostnames:
-          - esphome.p.lan.starstreak.net
+          - esphome.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking

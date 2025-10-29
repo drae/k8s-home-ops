@@ -82,7 +82,7 @@ spec:
     route:
       app:
         hostnames:
-          - frigate.p.lan.starstreak.net
+          - frigate.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking

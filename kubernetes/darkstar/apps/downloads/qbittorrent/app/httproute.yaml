@@ -6,7 +6,7 @@ metadata:
   name: qbittorrent
 spec:
   hostnames:
-    - qbittorrent.p.lan.starstreak.net
+    - qbittorrent.starstreak.net
   parentRefs:
     - name: envoy-internal
       namespace: networking

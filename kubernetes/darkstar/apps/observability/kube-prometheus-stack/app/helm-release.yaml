@@ -31,7 +31,7 @@ spec:
         main:
           enabled: true
           hostnames:
-            - alertmanager.p.lan.starstreak.net
+            - alertmanager.starstreak.net
           parentRefs:
             - name: envoy-internal
               namespace: networking
@@ -41,7 +41,7 @@ spec:
           name: alertmanager
           global:
             resolveTimeout: 5m
-        externalUrl: https://alertmanager.p.lan.starstreak.net
+        externalUrl: https://alertmanager.starstreak.net
         storage:
           volumeClaimTemplate:
             spec:
@@ -377,7 +377,7 @@ spec:
         main:
           enabled: true
           hostnames:
-            - prometheus.p.lan.starstreak.net
+            - prometheus.starstreak.net
           parentRefs:
             - name: envoy-internal
               namespace: networking

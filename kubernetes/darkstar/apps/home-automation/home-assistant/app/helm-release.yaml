@@ -205,7 +205,7 @@ spec:
     route:
       app:
         hostnames:
-          - hass.p.lan.starstreak.net
+          - hass.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking

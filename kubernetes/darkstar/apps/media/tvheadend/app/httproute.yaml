@@ -6,7 +6,7 @@ metadata:
   name: tvheadend
 spec:
   hostnames:
-    - tvheadend.p.lan.starstreak.net
+    - tvheadend.starstreak.net
   parentRefs:
     - name: envoy-internal
       namespace: networking

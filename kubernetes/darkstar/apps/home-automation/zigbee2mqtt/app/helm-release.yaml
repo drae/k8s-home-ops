@@ -92,7 +92,7 @@ spec:
     route:
       app:
         hostnames:
-          - zigbee2mqtt.p.lan.starstreak.net
+          - zigbee2mqtt.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking

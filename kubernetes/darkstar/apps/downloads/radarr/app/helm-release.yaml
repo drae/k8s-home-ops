@@ -57,7 +57,7 @@ spec:
     route:
       app:
         hostnames:
-          - radarr.p.lan.starstreak.net
+          - radarr.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking

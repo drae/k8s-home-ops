@@ -6,7 +6,7 @@ metadata:
   name: victoria-logs
 spec:
   hostnames:
-    - victoria-logs.p.lan.starstreak.net
+    - victoria-logs.starstreak.net
   parentRefs:
     - name: envoy-internal
       namespace: networking

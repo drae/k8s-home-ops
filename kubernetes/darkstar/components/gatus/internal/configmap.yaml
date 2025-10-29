@@ -16,7 +16,7 @@ data:
           hide-hostname: true
           hide-url: true
         dns:
-          query-name: "${GATUS_SUBDOMAIN:-${APP}}.p.lan.starstreak.net"
+          query-name: "${GATUS_SUBDOMAIN:-${APP}}.starstreak.net"
           query-type: A
         conditions:
           - "len([BODY]) == 0"

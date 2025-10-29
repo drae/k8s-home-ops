@@ -82,7 +82,7 @@ spec:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 401"]
         hostnames:
-          - plex.p.lan.starstreak.net
+          - plex.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking

@@ -58,7 +58,7 @@ spec:
     route:
       app:
         hostnames:
-          - prowlarr.p.lan.starstreak.net
+          - prowlarr.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking

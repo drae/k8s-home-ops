@@ -71,7 +71,7 @@ spec:
     route:
       app:
         hostnames:
-          - tautulli.p.lan.starstreak.net
+          - tautulli.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking

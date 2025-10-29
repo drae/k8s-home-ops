@@ -59,7 +59,7 @@ spec:
     route:
       app:
         hostnames:
-          - sonarr.p.lan.starstreak.net
+          - sonarr.starstreak.net
         parentRefs:
           - name: envoy-internal
             namespace: networking
