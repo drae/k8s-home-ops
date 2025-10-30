@@ -15,12 +15,6 @@ spec:
         namespace: flux-system
       interval: 1h
   values:
-    extraArgs:
-      - --ingress-class=envoy-internal
-      - --managed-record-types=A
-      - --managed-record-types=AAAA
-      - --managed-record-types=TXT
-      - --managed-record-types=SRV
     fullnameOverride: external-dns-adguard
     podAnnotations:
       secret.reloader.stakater.com/reload: adguard-dns-secret
