@@ -86,7 +86,7 @@ spec:
         hostnames:
           - status.starstreak.net
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:
