@@ -35,7 +35,7 @@ spec:
             env:
               TZ: Europe/London
               ADVERTISE_IP: "http://10.1.10.32:32400/,https://plex.starstreak.net:443"
-              PLEX_NO_AUTH_NETWORKS: 10.244.0.0/16
+              PLEX_NO_AUTH_NETWORKS: 10.1.10.0/24,10.244.0.0/16
             probes:
               liveness: &probes
                 enabled: true
@@ -78,32 +78,6 @@ spec:
             port: *port
     route:
       app:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 401"]
-        hostnames:
-          - plex.starstreak.net
-        parentRefs:
-          - name: envoy-internal
-            namespace: networking
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
-            filters:
-              - type: RequestHeaderModifier
-                requestHeaderModifier:
-                  remove:
-                    - Range
-            matches:
-              - path:
-                  type: PathPrefix
-                  value: /library/streams
-          - backendRefs:
-              - identifier: app
-                port: *port
-      app-ext:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 401"]
