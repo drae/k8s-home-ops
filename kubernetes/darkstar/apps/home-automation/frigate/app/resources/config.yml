@@ -57,7 +57,7 @@ ffmpeg:
     - -loglevel
     - warning
     - -an
-  hwaccel_args: preset-vaapi
+  hwaccel_args: preset-intel-qsv-h264
 
 snapshots:
   enabled: true
