@@ -52,31 +52,31 @@ spec:
                 cpu: 126m
                 memory: 512M
               limits:
-                memory: 2048M
+                memory: 3Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
-          matter-hub:
-            image:
-              repository: ghcr.io/t0bst4r/home-assistant-matter-hub
-              tag: 3.0.0-alpha.95@sha256:835f26027ef7ad007fd6038e0f83f9f390fe157f60190f8381cb20b293753443
-            env:
-              HAMH_STORAGE_LOCATION: /config/matter-hub
-              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
-              HAMH_LOG_LEVEL: info
-              HAMH_HTTP_PORT: "8482"
-            envFrom:
-              - secretRef:
-                  name: home-assistant-matter-secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+          #          matter-hub:
+          #            image:
+          #              repository: ghcr.io/t0bst4r/home-assistant-matter-hub
+          #              tag: 3.0.0-alpha.95@sha256:835f26027ef7ad007fd6038e0f83f9f390fe157f60190f8381cb20b293753443
+          #            env:
+          #              HAMH_STORAGE_LOCATION: /config/matter-hub
+          #              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
+          #              HAMH_LOG_LEVEL: info
+          #              HAMH_HTTP_PORT: "8482"
+          #            envFrom:
+          #              - secretRef:
+          #                  name: home-assistant-matter-secret
+          #            securityContext:
+          #              allowPrivilegeEscalation: false
+          #              readOnlyRootFilesystem: true
+          #              capabilities:
+          #                drop:
+          #                  - ALL
           wyoming-proxy-azure-stt:
             image:
               repository: ghcr.io/hugobloem/wyoming-microsoft-stt-noha
