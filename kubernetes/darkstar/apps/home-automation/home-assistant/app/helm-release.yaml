@@ -59,24 +59,24 @@ spec:
               capabilities:
                 drop:
                   - ALL
-          #          matter-hub:
-          #            image:
-          #              repository: ghcr.io/t0bst4r/home-assistant-matter-hub
-          #              tag: 3.0.0-alpha.95@sha256:835f26027ef7ad007fd6038e0f83f9f390fe157f60190f8381cb20b293753443
-          #            env:
-          #              HAMH_STORAGE_LOCATION: /config/matter-hub
-          #              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
-          #              HAMH_LOG_LEVEL: info
-          #              HAMH_HTTP_PORT: "8482"
-          #            envFrom:
-          #              - secretRef:
-          #                  name: home-assistant-matter-secret
-          #            securityContext:
-          #              allowPrivilegeEscalation: false
-          #              readOnlyRootFilesystem: true
-          #              capabilities:
-          #                drop:
-          #                  - ALL
+          matter-hub:
+            image:
+              repository: ghcr.io/t0bst4r/home-assistant-matter-hub
+              tag: 3.0.1@sha256:7d61541d0bb2137def4d8384e0f9b3b26f0e572e1e1d3e98c1c5ee7cb85a4621
+            env:
+              HAMH_STORAGE_LOCATION: /config/matter-hub
+              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
+              HAMH_LOG_LEVEL: info
+              HAMH_HTTP_PORT: "8482"
+            envFrom:
+              - secretRef:
+                  name: home-assistant-matter-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
           wyoming-proxy-azure-stt:
             image:
               repository: ghcr.io/hugobloem/wyoming-microsoft-stt-noha
@@ -201,10 +201,6 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /config/logs
-      tts:
-        type: emptyDir
-        globalMounts:
-          - path: /config/tts
       hass-cache:
         existingClaim: hass-cache
         advancedMounts:
