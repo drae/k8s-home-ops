@@ -8,7 +8,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     ports:
-      - 8082:8080/tcp # qb web
+      - 8082:8082/tcp # qb (vuetorrent) web
       - 6881:6881
       - 6881:6881/udp
     volumes:
@@ -42,8 +42,48 @@ services:
       - PGID=2000
       - TZ=Europe/London
       - WEBUI_PORT=8080
-    network_mode: "service:gluetun"
+    network_mode: service:gluetun
     volumes:
       - "/opt/docker/qbittorrent/config:/config"
       - /mnt/zstore/media/.downloads:/downloads
     restart: unless-stopped
+
+  vuetorrent-backend:
+    # build: .
+    image: ghcr.io/vuetorrent/vuetorrent-backend:latest
+    container_name: vuetorrent-backend
+    restart: unless-stopped
+    network_mode: service:gluetun
+    environment:
+      # Backend port can't match qbit one because of the network_mode
+      # You'll have to remove "Host header validation" in qbit settings > WebUI
+      - PORT=8082
+
+      # Here we can use localhost because both qbit and backend container are on the same docker host (network_mode)
+      - QBIT_BASE=http://localhost:8080
+      # Use "dev" for nightly releases
+      - RELEASE_TYPE=stable
+      # Optional, refer to the node-schedule package for compatible syntax
+      - UPDATE_VT_CRON=0 * * * *
+
+      # Define this if using self-signed certificates on qBittorrent
+      # - NODE_EXTRA_CA_CERTS=/config/ssl/cert.pem
+      # You can also disable SSL verification (not recommended)
+      # - USE_INSECURE_SSL=true
+
+      # Only enable if backend container is behind a proxy server which already add x-forward headers
+      # - SKIP_X_FORWARD_HEADERS=true
+      # Create a Github PAT with your account to increase API rate limit, fine-grained with only public repo access is enough
+      # - GITHUB_AUTH=${GITHUB_AUTH}
+
+      # Log all received requests
+      # - LOG_REQUESTS=true
+
+      # If you want HTTPS, define the following variables with respective paths
+      # - SSL_CERT_PATH=/config/ssl/cert.pem
+      # - SSL_KEY_PATH=/config/ssl/key.pem
+      # Use these instead for passing the value directly
+      # - SSL_CERT=*****
+      # - SSL_KEY=*****
+    volumes:
+      - "/opt/docker/qbittorrent/config/vuetorrent:/config"
