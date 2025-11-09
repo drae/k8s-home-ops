@@ -25,6 +25,8 @@ spec:
     name: kube-prometheus-stack
   values:
     cleanPrometheusOperatorObjectNames: true
+    crds:
+      enabled: true
     # Individual stack components
     alertmanager:
       route:
@@ -383,6 +385,7 @@ spec:
               namespace: networking
               sectionName: https
       prometheusSpec:
+        version: v2.55.1 # override 'unsupported Prometheus version' error
         image:
           registry: docker.io
           repository: prompp/prompp
