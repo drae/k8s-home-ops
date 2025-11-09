@@ -3,9 +3,9 @@
 clusterName: darkstar
 endpoint: https://darkstar.lan.starstreak.net:6443
 
-# renovate: depName=ghcr.io/siderolabs/installer datasource=docker
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.11.3
-# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.34.1
 
 allowSchedulingOnMasters: true
