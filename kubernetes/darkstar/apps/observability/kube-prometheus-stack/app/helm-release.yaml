@@ -386,7 +386,7 @@ spec:
         image:
           registry: docker.io
           repository: prompp/prompp
-          tag: 2.53.2-0.4.0
+          tag: 0.6.2
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         resources:
