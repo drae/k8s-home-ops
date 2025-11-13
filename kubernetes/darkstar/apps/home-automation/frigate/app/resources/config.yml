@@ -98,28 +98,28 @@ cameras:
     review:
       alerts:
         required_zones:
-          - entire_front
           - forecourt
+          - path
       detections:
         required_zones:
-          - entire_front
           - forecourt
+          - path
     zones:
       forecourt:
-        coordinates: 0.349,0.275,0.113,1,0.951,1,0.675,0.275
-        loitering_time: 3
+        coordinates: 0.351,0.304,0.113,1,0.976,1,0.713,0.289
+        loitering_time: 2
         objects:
           - car
-          - person
-      entire_front:
-        coordinates: 0,0,1,0,1,1,0,1
-        objects:
           - bicycle
-          - cat
-          - dog
-          - fox
           - motorcycle
+      path:
+        coordinates: 0.116,1,0.977,1,0.73,0.335,0.598,0.334
+        loitering_time: 2
+        objects:
           - person
+          - dog
+          - cat
+          - fox
     motion:
       mask:
         - 0.978,0.03,0.978,0.081,0.725,0.081,0.725,0.03
