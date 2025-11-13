@@ -38,7 +38,6 @@
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
-      minimumGroupSize: 4,
     },
     {
       description: "Talos Group",
