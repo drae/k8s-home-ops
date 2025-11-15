@@ -16,11 +16,11 @@ spec:
       failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   interval: 1h
-  path: "./kubernetes/apps/external-secrets/doppler/app"
+  path: "./kubernetes/darkstar/apps/external-secrets/doppler/app"
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: k8s-home-ops
     namespace: flux-system
   dependsOn:
     - name: external-secrets
