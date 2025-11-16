@@ -5,4 +5,4 @@ namespace: default
 resources:
   - ./namespace.yaml
 components:
-  - ../../components/flux
+  - ../../components/alerts

@@ -7,4 +7,4 @@ resources:
   - ./namespace.yaml
   - ./tuppr/ks.yaml
 components:
-  - ../../components/flux
+  - ../../components/alerts

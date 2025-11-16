@@ -6,4 +6,4 @@ resources:
   - ./namespace.yaml
   - ./cert-manager/ks.yaml
 components:
-  - ../../components/flux
+  - ../../components/alerts

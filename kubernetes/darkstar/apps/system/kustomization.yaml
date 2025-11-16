@@ -10,4 +10,4 @@ resources:
   - ./keda/ks.yaml
   - ./reloader/ks.yaml
 components:
-  - ../../components/flux
+  - ../../components/alerts

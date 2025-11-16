@@ -16,4 +16,4 @@ resources:
   - ./smartctl-exporter/ks.yaml
   - ./victoria-logs/ks.yaml
 components:
-  - ../../components/flux
+  - ../../components/alerts

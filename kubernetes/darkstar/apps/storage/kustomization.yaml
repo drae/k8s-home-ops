@@ -8,4 +8,4 @@ resources:
   - ./topolvm/ks.yaml
   - ./volsync/ks.yaml
 components:
-  - ../../components/flux
+  - ../../components/alerts

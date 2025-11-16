@@ -8,4 +8,4 @@ resources:
   - ./tautulli/ks.yaml
   - ./tvheadend/ks.yaml
 components:
-  - ../../components/flux
+  - ../../components/alerts
