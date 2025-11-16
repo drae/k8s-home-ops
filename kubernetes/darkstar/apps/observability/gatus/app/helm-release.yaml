@@ -58,6 +58,8 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
+                add:
+                  - NET_RAW
                 drop:
                   - ALL
             resources:
@@ -72,11 +74,12 @@ spec:
               accessMode: ReadWriteOnce
               size: 5Gi
     defaultPodOptions:
-      hostUsers: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
@@ -96,10 +99,6 @@ spec:
           - name: envoy-internal
             namespace: networking
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
     rbac:
       roles:
         gatus:
