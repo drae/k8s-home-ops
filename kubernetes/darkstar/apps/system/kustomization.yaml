@@ -9,6 +9,5 @@ resources:
   - ./intel-gpu-resource-driver/ks.yaml
   - ./keda/ks.yaml
   - ./reloader/ks.yaml
-  - ./templated-secret-controller/ks.yaml
 components:
   - ../../components/flux
