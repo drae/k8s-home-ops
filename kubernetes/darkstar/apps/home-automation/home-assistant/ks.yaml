@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/volsync
-    - ../../../../components/gatus/external
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/home-assistant/app"
   prune: true

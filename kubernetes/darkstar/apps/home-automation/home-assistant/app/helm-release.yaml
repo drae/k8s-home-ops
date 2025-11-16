@@ -134,48 +134,9 @@ spec:
             port: &matter-port 8482
     route:
       app:
-        hostnames:
-          - hass.starstreak.net
-        parentRefs:
-          - name: envoy-internal
-            namespace: networking
-            sectionName: https
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /code/
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-            backendRefs:
-              - identifier: code-server
-                port: *code-server-port
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /matter/
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-              - type: RequestHeaderModifier
-                requestHeaderModifier:
-                  add:
-                    - name: "x-ingress-path"
-                      value: "matter"
-            backendRefs:
-              - identifier: matter-hub
-                port: *matter-port
-          - backendRefs:
-              - identifier: app
-                port: *port
-      app-ext:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
         hostnames:
           - hass.starstreak.net
         parentRefs:
@@ -186,6 +147,29 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
+      code:
+        hostnames:
+          - hass-code.starstreak.net
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: code-server
+                port: *code-server-port
+      matter:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+        hostnames:
+          - hass-matter.starstreak.net
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: matter-hub
+                port: *matter-port
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"

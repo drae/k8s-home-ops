@@ -11,8 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    #    - ../../../../components/keda/nas-nfs-scaler
-    - ../../../../components/gatus/external
+    - ../../../../components/keda/nas-nfs-scaler
     - ../../../../components/gpu
     - ../../../../components/volsync
   interval: 10m

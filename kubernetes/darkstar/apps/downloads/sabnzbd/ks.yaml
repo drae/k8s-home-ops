@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  components:
-    - ../../../../components/gatus/internal
   interval: 10m
   path: "./kubernetes/darkstar/apps/downloads/sabnzbd/app"
   prune: true

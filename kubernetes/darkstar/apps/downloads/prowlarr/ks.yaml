@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/volsync
-    - ../../../../components/gatus/internal
   interval: 10m
   path: "./kubernetes/darkstar/apps/downloads/prowlarr/app"
   prune: true

@@ -3,10 +3,10 @@ kind: Kustomization
 resources:
   - ./pvc.yaml
   - ./helm-release.yaml
-#  - ./scaledobject.yaml
-configMapGenerator:
-  - name: z2m-convertor
-    files:
-      - ./resources/convertor.mjs
-generatorOptions:
-  disableNameSuffixHash: true
+  - ./scaledobject.yaml
+#configMapGenerator:
+#  - name: z2m-convertor
+#    files:
+#      - ./resources/convertor.mjs
+#generatorOptions:
+#  disableNameSuffixHash: true
