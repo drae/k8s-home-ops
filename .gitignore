@@ -2,8 +2,8 @@
 .env
 
 # sops
-.decrypted~*
-._decrypted~*
+.decrypted*
+*_decrypted*
 
 # kubeconfig from cp
 kubeconfig
