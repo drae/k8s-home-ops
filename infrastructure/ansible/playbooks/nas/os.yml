@@ -85,10 +85,10 @@
 
     - name: Copy the zfs_exporter binary to the remote host
       ansible.builtin.copy:
-        src: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64/zfs_exporter # Adjust path if the binary is directly in the extracted folder or if the folder name is different
-        dest: /usr/local/bin/zfs_exporter # Or your desired installation path on the remote host
+        src: /tmp/zfs_exporter-{{ zfs_exporter_version }}.linux-amd64/zfs_exporter
+        dest: /usr/local/bin/zfs_exporter
         remote_src: true
-        mode: 0755
+        mode: "0755"
 
     - name: Clean up downloaded and extracted files
       ansible.builtin.file:
@@ -188,7 +188,7 @@
     - name: Configure smartd
       ansible.builtin.copy:
         dest: /etc/smartd.conf
-        mode: 0644
+        mode: "0644"
         content: |
           DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -W 4,35,40
       notify: Restart smartd
@@ -280,7 +280,8 @@
         dest: /etc/udev/rules.d/cpu.rules
         mode: "0644"
         content: |
-          KERNEL=="cpu", SUBSYSTEM=="event_source", ACTION=="add", RUN+="/bin/sh -c 'echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor'"
+          KERNEL=="cpu", SUBSYSTEM=="event_source", ACTION=="add", \
+            RUN+="/bin/sh -c 'echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor'"
 
     # Add 'shared' user
     - name: Add the group 'shared'

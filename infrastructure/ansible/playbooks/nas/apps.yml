@@ -21,6 +21,5 @@
       vars:
         docker_compose_service_name: "{{ item }}"
       loop:
-        - qbittorrent
         - sabnzbd
         - smartctl-exporter

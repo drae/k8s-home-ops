@@ -18,7 +18,9 @@
 
 - name: Deploy docker-compose file
   ansible.builtin.template:
-    src: "{{ docker_compose_file_src | default(docker_compose_service_ansible_files_dir + '/docker-compose/' + docker_compose_service_name + '/docker-compose.yml.j2') }}"
+    src: >-
+      {{ docker_compose_file_src | default(docker_compose_service_ansible_files_dir +
+        '/docker-compose/' + docker_compose_service_name + '/docker-compose.yml.j2') }}
     dest: "{{ docker_compose_service_base_dir }}/{{ docker_compose_service_name }}/docker-compose.yml"
     owner: "{{ docker_compose_service_user }}"
     group: "{{ docker_compose_service_group }}"
