@@ -30,26 +30,6 @@ spec:
             fsGroup: 2000
             fsGroupChangePolicy: "OnRootMismatch"
         initContainers:
-          config-setup:
-            image:
-              repository: ghcr.io/dmfrey/bash
-              tag: 5.2.26-alpine3.20
-            command:
-              - "/usr/local/bin/bash"
-              - -c
-              - |
-                rm /config/slskd.yml
-                envsubst < /tmp/slskd.yml > /config/slskd.yml
-                chown 2000:2000 /config/slskd.yml
-                exit 0
-            envFrom:
-              - secretRef:
-                  name: slskd-secret
-            securityContext:
-              runAsNonRoot: false
-              runAsUser: 0
-              runAsGroup: 0
-              fsGroup: 0
           coredns:
             image:
               repository: coredns/coredns
@@ -165,7 +145,7 @@ spec:
     route:
       app:
         hostnames:
-          - slskd.p.lan.starstreak.net
+          - slskd.starstreak.net
         parentRefs:
           - name: internal
             namespace: networking
@@ -181,7 +161,7 @@ spec:
         type: configMap
         name: slskd-configmap
         globalMounts:
-          - path: /tmp/slskd.yml
+          - path: /config/slskd.yml
             subPath: slskd.yml
       coredns:
         type: configMap
