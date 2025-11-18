@@ -2,39 +2,58 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  DOPPLER_PROJECT: darkstar
+
 tasks:
+  setup:
+    desc: Setup environment
+    preconditions:
+      - which jq mise doppler
+    interactive: true
+    cmds:
+      - mise install
+      - if ! doppler whoami > /dev/null 2>&1; then doppler login; fi
+      - rm -rf {{ .ROOT_DIR }}/.github/hooks # hk use
+
   talos:
     desc: Bootstrap Talos
     prompt: Bootstrap Talos on the cluster... continue?
+    vars:
+      TALOS_CONTROLLER:
+        sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
+    preconditions:
+      - which doppler talosctl
+      - test -f "${TALOSCONFIG}"
+      - talosctl config info
     cmds:
-      - task: :talos:apply-clusterconfig
+      - task: :talos:genconfig
+      - task: :talos:applyconfig
         vars:
           INSECURE: "true"
       # Wait for bootstrap to complete
       - until op=$(talosctl -n {{.TALOS_CONTROLLER}} bootstrap 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do sleep 5; done
       # Get the kubeconfig
       - talosctl kubeconfig -n {{.TALOS_CONTROLLER}} --force --force-context-name darkstar {{.KUBERNETES_DIR}}/darkstar
+
+  flux:
+    desc: Bootstrap Flux
+    prompt: Bootstrap Flux on the cluster... continue?
+    preconditions:
+      - which doppler helmfile kubectl minijinja-cli
+      - test -f "${TALOSCONFIG}"
+      - test -f "${KUBECONFIG}"
+      - test -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-crds.yaml
+      - test -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-apps.yaml
+      - test -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/templates/format-lvm.yaml.gotmpl
+      - test -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/templates/values.yaml.gotmpl
+    cmds:
       # Wait till we can see the node
       - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10s; do sleep 5; done
-      # Create flux-system ns
-      - until op=$(kubectl create ns flux-system 2>&1 || true) && [[ "$op" == *"AlreadyExists"* ]]; do sleep 5; done
-      # Install our encryption key
-      - sops --decrypt {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml | kubectl apply -n flux-system --server-side -f -
+      # Create basic secrets for flux and external-secrets (doppler)
+      - doppler -p {{.DOPPLER_PROJECT}} run -- minijinja-cli {{.KUBERNETES_DIR}}/darkstar/.bootstrap/resources.yaml.j2 | kubectl apply --server-side --filename -
       # Install our crds
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-crds.yaml template | kubectl apply --server-side -f -
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-crds.yaml template | kubectl apply --server-side -f -
       # Install our initial apps
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-apps.yaml apply --skip-diff-on-install --suppress-diff
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-apps.yaml destroy --selector name=format-lvm
-    preconditions:
-      - which talosctl helmfile kubectl
-      - test -f {{.PROJECT_DIR}}/age.key
-      - test -f {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml
-      - sh: "sops --decrypt {{.KUBERNETES_DIR}}/darkstar/components/flux/sops/age-key.sops.yaml"
-        msg: "Cannot decrypt flux sops key"
-      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-crds.yaml
-      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/helmfile-apps.yaml
-      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/templates/format-lvm.yaml.gotmpl
-      - test -f {{.KUBERNETES_DIR}}/darkstar/bootstrap/helmfile.d/templates/values.yaml.gotmpl
-    vars:
-      TALOS_CONTROLLER:
-        sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-apps.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-apps.yaml destroy --selector name=format-lvm

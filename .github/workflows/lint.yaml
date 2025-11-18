@@ -37,7 +37,7 @@ jobs:
         if: steps.changed-files.outputs.changed_files != '[]'
         uses: bjw-s/action-actionlint@b346813e82708106544f48a93a5b3fbeeb8e37eb # v0.1.1
         with:
-          actionlint_config: .github/actionlint.yaml
+          actionlint_config: .github/linters/actionlint.yaml
           file_pattern: ${{ join(fromJSON(steps.changed-files.outputs.changed_files), ' ') }}
 
   yamllint:
@@ -67,7 +67,7 @@ jobs:
         if: steps.changed-files.outputs.changed_files != '[]'
         shell: bash
         run: |
-          yamllint --config-file .yamllint.yaml --format github ${{ join(fromJSON(steps.changed-files.outputs.changed_files), ' ') }}
+          yamllint --config-file .github/linters/yamllint.yaml --format github ${{ join(fromJSON(steps.changed-files.outputs.changed_files), ' ') }}
 
   markdownlint:
     name: markdownlint
@@ -89,7 +89,7 @@ jobs:
         if: steps.changed-files.outputs.changed_files != '[]'
         uses: bjw-s/action-markdownlint-cli2@c3c44cc6f77516007f1a85d982ed6276e840dcec # v0.1.0
         with:
-          markdownlint_config: .markdownlint.yaml
+          markdownlint_config: .github/linters/markdownlint.yaml
           file_pattern: ${{ join(fromJSON(steps.changed-files.outputs.changed_files), ' ') }}
   lint_success:
     needs:

@@ -20,9 +20,6 @@ includes:
   k8s:
     taskfile: .taskfiles/k8s
     dir: .taskfiles/k8s
-  sops:
-    taskfile: ".taskfiles/sops"
-    dir: .taskfiles/sops
   talos:
     taskfile: ".taskfiles/talos"
     dir: .taskfiles/talos

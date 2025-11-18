@@ -2,20 +2,24 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  DOPPLER_PROJECT: talos
+
 tasks:
-  generate-clusterconfig:
+  genconfig:
     desc: Generate clusterconfig for Talos
+    silent: true
     cmds:
-      - talhelper genconfig
-        --secret-file {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.sops.yaml
+      - doppler run -p {{.DOPPLER_PROJECT}} -- talhelper genconfig
+        --secret-file {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.yaml
         --config-file {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talconfig.yaml
         --out-dir {{.INFRASTRUCTURE_DIR}}/talos/darkstar/clusterconfig
     preconditions:
-      - which talhelper
-      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.sops.yaml
+      - which doppler talhelper
+      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.yaml
       - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talconfig.yaml
 
-  apply-clusterconfig:
+  applyconfig:
     desc: Apply clusterconfig for a Talos cluster
     vars:
       CLUSTERCONFIG_FILES:
@@ -23,7 +27,7 @@ tasks:
     cmds:
       - for:
           var: CLUSTERCONFIG_FILES
-        task: apply-machineconfig
+        task: _apply-machineconfig
         vars:
           filename: "{{.ITEM}}"
           hostname: |-
@@ -32,7 +36,49 @@ tasks:
       - talosctl config get-contexts | grep darkstar
       - test -d {{.INFRASTRUCTURE_DIR}}/talos/darkstar/clusterconfig
 
-  apply-machineconfig:
+  kubeconfig:
+    desc: Generate kubeconfig for a Talos cluster
+    preconditions:
+      - which talosctl
+      - test -f "${TALOSCONFIG}"
+    silent: true
+    dir: "{{ .TALOS_DIR }}"
+    cmds:
+      - talosctl kubeconfig
+
+  reset:
+    desc: Reset a node to maintenance mode
+    silent: true
+    prompt: "Reset node {{ .HOSTNAME }}?"
+    preconditions:
+      - which talosctl
+      - test -f "${TALOSCONFIG}"
+    requires:
+      vars:
+        - HOSTNAME
+    cmds:
+      - talosctl reset --graceful=false -n {{ .HOSTNAME }} --reboot
+
+  upgrade-node:
+    desc: Upgrade Talos on a single node [NODE=required]
+    dir: "{{ .TALOS_DIR }}"
+    preconditions:
+      - which talosctl
+      - test -f "${TALOSCONFIG}"
+      - talosctl --nodes {{ .NODE }} get machineconfig
+    requires:
+      vars:
+        - NODE
+    vars:
+      FILE:
+        sh: ls clusterconfig/darkstar-{{ .NODE }}*.yaml
+      TALOS_IMAGE:
+        sh: yq '.machine.install.image' < "{{ .FILE }}"
+    cmds:
+      - talosctl --nodes {{ .NODE }} upgrade --image="{{ .TALOS_IMAGE }}" --timeout=10m
+      - talosctl --nodes {{ .NODE }} health
+
+  _apply-machineconfig:
     internal: true
     desc: Apply a single Talos machineConfig to a Talos node
     cmds:

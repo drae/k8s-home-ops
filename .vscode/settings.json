@@ -1,7 +1,6 @@
 {
     "files.associations": {
         "**/ansible/**/*.yml": "ansible",
-        "**/ansible/**/*.sops.yml": "yaml",
         "**/ansible/**/inventory/**/*.yml": "yaml",
     },
     "markdownlint.config": {
@@ -18,8 +17,6 @@
         ],
     },
     "markdown.validate.enabled": true,
-    "sops.defaults.ageKeyFile": "age.key",
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
-    "sops.binPath": "/home/paul/.local/share/mise/shims/sops",
     "ansible.python.interpreterPath": "/home/paul/git/drae/k8s-home-ops/.venv/bin/python"
 }

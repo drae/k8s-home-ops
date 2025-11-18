@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flux-system
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sops-age
+  namespace: flux-system
+stringData:
+  age.agekey: {{ ENV.SOPS_AGE_KEY }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: external-secrets
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: doppler-secret
+  namespace: external-secrets
+stringData:
+  service_token: {{ ENV.DOPPLER_SERVICE_TOKEN }}

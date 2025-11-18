@@ -8,7 +8,6 @@ Management of my home server
 
 [![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=blue&label=talos)](https://talos.dev)&nbsp;&nbsp;[![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=k8s)](https://kubernetes.io)&nbsp;&nbsp;[![Flux](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fflux_version&style=for-the-badge&logo=flux&logoColor=white&color=blue&label=flux)](https://fluxcd.io)
 
-
 [![Age-Days](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_age_days&style=flat-square&label=Age)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![Uptime-Days](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_uptime_days&style=flat-square&label=Uptime)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![Node-Count](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_node_count&style=flat-square&label=Nodes)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![Pod-Count](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_pod_count&style=flat-square&label=Pods)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![CPU-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_cpu_usage&style=flat-square&label=CPU)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;[![Memory-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.starstreak.net%2Fcluster_memory_usage&style=flat-square&label=Memory)](https://github.com/kashalls/kromgo)
 
 </div>
@@ -27,16 +26,13 @@ Other hardware includes the aging self built NAS (Celeron based, 16GB DDR3, U-NA
 
 The following applications are used to install and manage the cluster:
 
-- [age](https://github.com/FiloSottile/age)
 - [mise](https://github.com/jdx/mise)
+- [doppler](https://www.doppler.com/)
 - [flux](https://fluxcd.io/docs/installation/)
 - [helmfile](https://github.com/helmfile/helmfile)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
-- [sops](https://github.com/mozilla/sops/)
-- [task](https://taskfile.dev/)
 - [talhelper](https://github.com/budimanjojo/talhelper)
-
-✳️ The repo contains data encrypted using my personal [age](https://github.com/FiloSottile/age) key. You cannot clone this repo and have a functioning cluster. You will need to use your own key (GPG, age, azure keystore, etc.) to re-create and encrypt the existing (`*.sops.yaml`) sops encrypted files.
+- [task](https://taskfile.dev/)
 
 ## 💾 Installing the cluster
 
@@ -48,17 +44,10 @@ Bootstraping the installation is automated using [task](https://taskfile.dev/), 
 
 ```sh
 task bootstrap:talos
+task bootstrap:flux
 ```
 
 This will ensure everything that is needed for installation exists, apply the configuration and bootstrap talos, install CRDs and finally kick off cluster installation via fluxcd.
-
-✳️ When creating the configuration from scratch, [talhelper](https://github.com/budimanjojo/talhelper) is used to generate the certificates required by `talosctl`. In my case I would type:
-
-```sh
-cd infrastructure/talos/darkstar
-talhelper gensecret > talsecret.sops.yaml
-sops -e -i talsecret.sops.yaml
-```
 
 ## 💽 Backup and recovery
 

@@ -3,6 +3,17 @@
 version: "3"
 
 tasks:
+  node-shell:
+    desc: Open a node-shell on specified node [NODE=required]
+    preconditions:
+      - which kubectl
+      - test -f "${KUBECONFIG}"
+    requires:
+      vars: [NODE]
+    cmds:
+      - kubectl debug node/{{ .NODE }} -n default -it --image='mirror.gcr.io/alpine:latest' --profile sysadmin
+      - kubectl delete pod -n default -l app.kubernetes.io/managed-by=kubectl-debug
+
   cleanup-pods:
     desc: Clean up pods with a Failed/Pending/Succeeded phase
     preconditions:
@@ -16,14 +27,22 @@ tasks:
               - Succeeded
         cmd: kubectl delete pods --field-selector status.phase={{.ITEM.PHASE}} -A --ignore-not-found=true
 
-  _delete_pods_in_phase:
-    desc: Deletes pods with a specific phase
-    internal: true
-    requires:
-      vars:
-        - PHASE
+  sync-es:
+    desc: Force sync ExternalSecret resources [APP=optional]
+    preconditions:
+      - which kubectl
+      - test -f "${KUBECONFIG}"
+    vars:
+      SECRETS:
+        sh: kubectl get externalsecret --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'{{ if .APP }} --selector=app.kubernetes.io/name={{ .APP }}{{ end }}
     cmds:
       - for:
-          var: PHASE
-          split: ","
-        cmd: kubectl delete pods --field-selector status.phase={{.ITEM}} -A --ignore-not-found=true
+          var: SECRETS
+          split: "\n"
+        cmd: kubectl --namespace {{ splitList "," .ITEM | first }} annotate externalsecret {{ splitList "," .ITEM | last }} force-sync="{{ now | unixEpoch }}" --overwrite
+
+  schemas:
+    desc: Show YAML files without a schema
+    silent: true
+    cmds:
+      - find {{.KUBERNETES_DIR}} -type f -name '*.yaml' -exec grep -L '^# yaml-language-server:' {} \;

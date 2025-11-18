@@ -6,14 +6,13 @@ pipx_uvx = true
 ROOT_DIR = "{{config_root}}"
 # File paths
 KUBECONFIG            = "{{config_root}}/kubernetes/darkstar/kubeconfig"
-MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
-SOPS_AGE_KEY_FILE     = "{{config_root}}/age.key"
+MINIJINJA_CONFIG_FILE = "{{config_root}}/.github/.minijinja.toml"
 TALOSCONFIG           = "{{config_root}}/infrastructure/talos/darkstar/clusterconfig/talosconfig"
 # Ansible
 VIRTUAL_ENV              = "{{config_root}}/.venv"
 ANSIBLE_COLLECTIONS_PATH = "{{config_root}}/.venv/galaxy"
 ANSIBLE_ROLES_PATH       = "{{config_root}}/.venv/galaxy/ansible_roles"
-ANSIBLE_VARS_ENABLED     = "host_group_vars,community.sops.sops"
+ANSIBLE_VARS_ENABLED     = "host_group_vars"
 
 [tools]
 age                        = '1.2.1'
@@ -29,10 +28,9 @@ kubeconform                = '0.7.0'
 kustomize                  = '5.8.0'
 "aqua:mitsuhiko/minijinja" = '2.12.0'
 python                     = "3.14.0"
-sops                       = '3.11.0'
 stern                      = '1.32.0'
 talhelper                  = '3.0.39'
 talosctl                   = '1.11.5'
 task                       = '3.44.0'
 uv                         = '0.9.9'
-gum                        = "0.16.2"
+"github:DopplerHQ/cli"     = "3.75.1"

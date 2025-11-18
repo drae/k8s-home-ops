@@ -4,7 +4,6 @@ ignore: |
   .direnv/
   .private/
   .vscode/
-  *.sops.*
   ansible/roles/xanmanning.k3s/
 
 extends: default
