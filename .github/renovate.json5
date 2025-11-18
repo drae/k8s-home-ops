@@ -24,8 +24,7 @@
   ],
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   ignorePaths: [
-    ".archived/**",
-    "**/*.sops.*",
+    "**/kubernetes/**/.archive/**",
     "**/resources/**"
   ],
   "suppressNotifications": [
