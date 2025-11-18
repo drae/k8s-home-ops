@@ -9,7 +9,7 @@ tasks:
   setup:
     desc: Setup environment
     preconditions:
-      - which jq mise doppler
+      - which mise doppler
     interactive: true
     cmds:
       - mise install
