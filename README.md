@@ -26,13 +26,22 @@ Other hardware includes the aging self built NAS (Celeron based, 16GB DDR3, U-NA
 
 The following applications are used to install and manage the cluster:
 
-- [mise](https://github.com/jdx/mise)
-- [doppler](https://www.doppler.com/)
+- [mise](https://github.com/jdx/mise) - tool management
+- [doppler](https://www.doppler.com/) - secrets management
+- [task](https://taskfile.dev/) - task runner
+
+Everything else can be installed via task and mise. The easy way is to run:
+
+```sh
+task bootstrap:setup
+```
+
+This will install all the additional tools which include:
+
 - [flux](https://fluxcd.io/docs/installation/)
 - [helmfile](https://github.com/helmfile/helmfile)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 - [talhelper](https://github.com/budimanjojo/talhelper)
-- [task](https://taskfile.dev/)
 
 ## 💾 Installing the cluster
 
@@ -55,13 +64,9 @@ This will ensure everything that is needed for installation exists, apply the co
 
 To simplify the setup of both pvc and an associated volsync _replicationsource_ backup, a series of templates are used, see [/kubernetes/darkstar/apps/storage/volsync/templates](https://github.com/drae/k8s-home-ops/tree/main/kubernetes/darkstar/apps/storage/volsync/templates). The variables used in the templates are automatically substituted by flux during reconciliation. These are defined in the _'fluxtomization'_ for each application, see `ks.yaml` in the root of each applications folder.
 
-For a list of available backup snapshots use `task volsync:list`. You will be prompted for any missing parameters.
+For a list of available backup snapshots use `task volsync:list` - you will be prompted for any missing parameters.
 
 Recovery is performed via a `task`, see `task volsync:restore`. One off backups can be performed using `task volsync:snapshot` - note that one off backups are still subject to the retention period for the _replicationsource_! Example, if you have retention set to "retain one per day", performing a one-off backup will replace any other backup performed that day (scheduled or otherwise).
-
-✳️ When doing a restore you have two choices for how the snapshot to be recovered is selected, either "recover the previous X snapshot" or "recover after a given date/time". This can be changed in the volsync taskfile, see [/.taskfiles/volsync/templates/recplicationdestination.tmpl.yaml](https://github.com/drae/k8s-home-ops/tree/main/.taskfiles/volsync/templates/recplicationdestination.tmpl.yaml) - as noted in the comments in the file.
-
-✳️ When doing a cluster (re-)install volsync will do an initial backup of the associated persistent volumes. If you were to immediately restore the volume using the last backup it would not contain the correct data. Thus, if using the "restore the last X snapshot" option you probably want to set the `previous=` value as "2", to restore the previous bar one backup. There is an open issue on this: "[Option to NOT run backup as soon as replicationsource is applied to the cluster#627](https://github.com/backube/volsync/issues/627)". The current "workaround" for this used by most is volsync's _replicationdestination_ feature. When first creating the pvc, if a backup exists it will immediately attempt to restore it. A new backup is still subsequently performed but at least it will be from the just restored data!
 
 ## 👍 Thanks
 
