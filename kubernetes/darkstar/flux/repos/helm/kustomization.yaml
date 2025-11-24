@@ -11,6 +11,5 @@ resources:
   - ./keda-charts.yaml
   - ./kubernetes-sigs-external-dns-charts.yaml
   - ./metrics-server-charts.yaml
-  - ./openebs-charts.yaml
   - ./postfinance-charts.yaml
   - ./topolvm-charts.yaml
