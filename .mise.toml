@@ -32,5 +32,5 @@ stern                      = '1.32.0'
 talhelper                  = '3.0.39'
 talosctl                   = '1.11.5'
 task                       = '3.44.0'
-uv                         = '0.9.11'
+uv                         = '0.9.12'
 "github:DopplerHQ/cli"     = "3.75.1"
