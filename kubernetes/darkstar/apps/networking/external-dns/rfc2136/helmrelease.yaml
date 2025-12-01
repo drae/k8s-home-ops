@@ -1,0 +1,41 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: external-dns-rfc2136
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: external-dns
+      version: 1.19.0
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-sigs-external-dns-charts
+        namespace: flux-system
+      interval: 1h
+  values:
+    env:
+      - name: EXTERNAL_DNS_RFC2136_TSIG_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: rfc2136-dns-secret
+            key: tsig_key
+    extraArgs:
+      - --rfc2136-host=10.1.10.1
+      - --rfc2136-port=53
+      - --rfc2136-zone=starstreak.net
+      - --rfc2136-tsig-secret-alg=hmac-sha256
+      - --rfc2136-tsig-keyname=external-dns # TSIG Key Name
+      - --rfc2136-tsig-axfr
+    fullnameOverride: external-dns-rfc2136
+    policy: sync
+    provider: rfc2136
+    serviceMonitor:
+      enabled: true
+    sources:
+      - gateway-tlsroute
+      - gateway-httproute
+      - service
+    txtOwnerId: default
+    txtPrefix: k8s.
