@@ -18,32 +18,12 @@ spec:
     name: k8s-home-ops
     namespace: flux-system
   wait: true
-#---
-## yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-#apiVersion: kustomize.toolkit.fluxcd.io/v1
-#kind: Kustomization
-#metadata:
-#  name: &appname external-dns-adguard
-#  namespace: &namespace networking
-#spec:
-#  targetNamespace: *namespace
-#  commonMetadata:
-#    labels:
-#      app.kubernetes.io/name: *appname
-#  interval: 10m
-#  path: "./kubernetes/darkstar/apps/networking/external-dns/adguard"
-#  prune: true
-#  sourceRef:
-#    kind: GitRepository
-#    name: k8s-home-ops
-#    namespace: flux-system
-#  wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname external-dns-rfc2136
+  name: &appname external-dns-adguard
   namespace: &namespace networking
 spec:
   targetNamespace: *namespace
@@ -51,10 +31,30 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   interval: 10m
-  path: "./kubernetes/darkstar/apps/networking/external-dns/rfc2136"
+  path: "./kubernetes/darkstar/apps/networking/external-dns/adguard"
   prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
     namespace: flux-system
   wait: true
+#---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+#apiVersion: kustomize.toolkit.fluxcd.io/v1
+#kind: Kustomization
+#metadata:
+#  name: &appname external-dns-rfc2136
+#  namespace: &namespace networking
+#spec:
+#  targetNamespace: *namespace
+#  commonMetadata:
+#    labels:
+#      app.kubernetes.io/name: *appname
+#  interval: 10m
+#  path: "./kubernetes/darkstar/apps/networking/external-dns/rfc2136"
+#  prune: true
+#  sourceRef:
+#    kind: GitRepository
+#    name: k8s-home-ops
+#    namespace: flux-system
+#  wait: true
