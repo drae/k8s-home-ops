@@ -6,7 +6,6 @@ resources:
   - ./namespace.yaml
   - ./recyclarr/ks.yaml
   - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
