@@ -49,3 +49,5 @@ spec:
         enabled: true
     controller:
       replicaCount: 1
+      updateStrategy:
+        type: Recreate
