@@ -30,18 +30,18 @@ function main() {
 # Places the GAN Client Keystore into the Ignition data/local folder
 ###############################################################################
 function populateGanKeystore() {
-  info "Populating GAN Client Keystore into Ignition data/local/metro-keystore"
+  info "Populating GAN Client Keystore into Ignition data/config/local/ignition/gateway-network/keystore/metro-keystore"
 
   # Replace any existing GAN client keystore with the updated one from the mounted secret
-  rm -v -f "${IGNITION_DATA_DIR}/local/metro-keystore"
-  cp "${GAN_SECRETS_DIR}/keystore.p12" "${IGNITION_DATA_DIR}/local/metro-keystore"
+  rm -v -f "${IGNITION_DATA_DIR}/config/local/ignition/gateway-network/keystore/metro-keystore"
+  cp "${GAN_SECRETS_DIR}/keystore.p12" "${IGNITION_DATA_DIR}/config/local/ignition/gateway-network/keystore/metro-keystore"
 
   # Modify the GAN client keystore to use the alias "metro-key" to align with Ignition defaults
-  existing_alias=$(keytool -list -keystore "${IGNITION_DATA_DIR}/local/metro-keystore" -storepass ${METRO_KEYSTORE_PASSPHRASE} | grep PrivateKeyEntry | cut -d, -f 1)
+  existing_alias=$(keytool -list -keystore "${IGNITION_DATA_DIR}/config/local/ignition/gateway-network/keystore/metro-keystore" -storepass ${METRO_KEYSTORE_PASSPHRASE} | grep PrivateKeyEntry | cut -d, -f 1)
   target_alias="${METRO_KEYSTORE_ALIAS}"
   if [ "${existing_alias}" != "${target_alias}" ]; then
     keytool -changealias -alias "${existing_alias}" -destalias "${target_alias}" \
-      -keystore "${IGNITION_DATA_DIR}/local/metro-keystore" -storepass ${METRO_KEYSTORE_PASSPHRASE}
+      -keystore "${IGNITION_DATA_DIR}/config/local/ignition/gateway-network/keystore/metro-keystore" -storepass ${METRO_KEYSTORE_PASSPHRASE}
   fi
 }
 
