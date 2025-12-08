@@ -14,4 +14,4 @@ spec:
   rules:
     - backendRefs:
         - name: ignition
-          port: 8089
+          port: 8088
