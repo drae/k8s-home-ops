@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./externalsecret.yaml
+  - ./certificate.yaml
+  - ./helmrelease.yaml
+commonLabels:
+  app.kubernetes.io/name: ignition
+  app.kubernetes.io/instance: ignition
+configMapGenerator:
+  - name: ignition-config-scripts
+    files:
+      - ./scripts/seed-data-volume.sh
+      - ./scripts/seed-redundancy.sh
+      - ./scripts/prepare-gan-certificates.sh
+      - ./scripts/prepare-tls-certificates.sh
+      - ./scripts/invoke-args.sh
+      - ./scripts/redundant-health-check.sh
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+  - name: ignition-config-files
+    files:
+      - ./config/redundancy-primary.xml
+      - ./config/redundancy-backup.xml
+      - ./config/logback.xml
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+  - name: gateway-base-config
+    envs:
+      - ./config/gateway-base-config.env
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+generatorOptions:
+  disableNameSuffixHash: true

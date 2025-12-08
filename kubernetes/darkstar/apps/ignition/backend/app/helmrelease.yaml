@@ -1,0 +1,132 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ignition
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      ignition:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 2003
+            runAsGroup: 2003
+            fsGroup: 2003
+            runAsNonRoot: true
+            fsGroupChangePolicy: OnRootMismatch
+        initContainers:
+          preconfigure:
+            image:
+              repository: docker.io/inductiveautomation/ignition
+              tag: 8.3.2
+            command:
+              - /config/scripts/invoke-args.sh
+            args:
+              - /config/scripts/seed-data-volume.sh
+              - /config/scripts/seed-redundancy.sh
+              - /config/scripts/prepare-gan-certificates.sh
+              - cp /config/files/logback.xml /data/logback.xml
+        containers:
+          gateway:
+            image:
+              repository: docker.io/inductiveautomation/ignition
+              tag: 8.3.2
+            args:
+              - -m
+              - "1024"
+            #              - -n
+            #              - "backend"
+            #              - --
+            #              - gateway.useProxyForwardedHeader=true
+            envFrom:
+              - configMapRef:
+                  name: gateway-base-config
+              - secretRef:
+                  name: gateway-base-secret
+            env:
+              - name: EAM_SETUP_INSTALLSELECTION
+                value: "Controller"
+            probes:
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      ["/config/scripts/redundant-health-check.sh", "-t", "3"]
+                  initialDelaySeconds: 30
+                  periodSeconds: 5
+                  failureThreshold: 2
+                  timeoutSeconds: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - ALL
+    service:
+      ignition:
+        controller: ignition
+        ports:
+          http:
+            port: &port 8088
+          https:
+            port: 8043
+          gan:
+            port: 8060
+    route:
+      app:
+        hostnames:
+          - ignition.starstreak.net
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: ignition
+                port: *port
+    persistence:
+      data:
+        existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          ignition:
+            preconfigure:
+              - path: /data
+            gateway:
+              - path: /usr/local/bin/ignition/data
+      config-scripts:
+        type: configMap
+        name: ignition-config-scripts
+        defaultMode: 0755
+        globalMounts:
+          - path: /config/scripts
+      config-files:
+        type: configMap
+        name: ignition-config-files
+        defaultMode: 0644
+        advancedMounts:
+          ignition:
+            preconfigure:
+              - path: /config/files
+      ignition-gan-ca:
+        type: secret
+        name: ignition-gan-ca
+        advancedMounts:
+          ignition:
+            preconfigure:
+              - path: /run/secrets/ignition-gan-ca
+                readOnly: true
+      gan-tls:
+        type: secret
+        name: backend-gan-tls
+        globalMounts:
+          - path: /run/secrets/gan-tls
