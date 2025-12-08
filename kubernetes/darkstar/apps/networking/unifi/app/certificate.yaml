@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: starstreak-net-unifi
+spec:
+  secretName: starstreak-net-unifi
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: "unifi.starstreak.net"
+  dnsNames:
+    - "unifi.starstreak.net"
+  keystores:
+    jks:
+      create: true
+      alias: unifi
+      password: aircontrolenterprise
