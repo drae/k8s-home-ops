@@ -17,18 +17,28 @@ spec:
   values:
     certManager:
       enabled: true
+    commissioning:
+      acceptIgnitionEULA: true
+      auth:
+        adminUsername: localadmin
+        adminPasswordKey: gateway-admin-password
+        existingSecret: ignition-gateway-secret
+      edition: "maker"
+      disableQuickstart: true
     gateway:
       dataVolumeStorageClass: topolvm-thin-provisioner
       dataVolumeStorageSize: 5Gi
       env:
         - name: EAM_SETUP_INSTALLSELECTION
           value: "Controller"
-      envFrom:
-        - secretRef:
-            name: gateway-base-secret
       tls:
         enabled: true
     ingress:
       enabled: false
+    licensing:
+      leasedActivation:
+        activationTokenKey: ignition-activation-token
+        licenseKeyKey: ignition-license-key
+        secretName: ignition-gateway-secret
     podAnnotations:
       reloader.stakater.com/auto: "true"
