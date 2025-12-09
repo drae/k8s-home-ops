@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./letsencrypt-prod.yaml
-  - ./self-signed.yaml
+  - ./selfsigned.yaml
