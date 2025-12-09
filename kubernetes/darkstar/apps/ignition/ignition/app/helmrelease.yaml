@@ -24,7 +24,6 @@ spec:
         adminPasswordKey: gateway-admin-password
         existingSecret: ignition-gateway-secret
       edition: "maker"
-      disableQuickstart: true
     gateway:
       dataVolumeStorageClass: topolvm-thin-provisioner
       dataVolumeStorageSize: 5Gi
