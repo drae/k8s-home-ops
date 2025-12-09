@@ -31,14 +31,14 @@ spec:
       env:
         - name: EAM_SETUP_INSTALLSELECTION
           value: "Controller"
+      licensing:
+        leasedActivation:
+          activationTokenKey: ignition-activation-token
+          licenseKeyKey: ignition-license-key
+          secretName: ignition-gateway-secret
       tls:
         enabled: true
     ingress:
       enabled: false
-    licensing:
-      leasedActivation:
-        activationTokenKey: ignition-activation-token
-        licenseKeyKey: ignition-license-key
-        secretName: ignition-gateway-secret
     podAnnotations:
       reloader.stakater.com/auto: "true"
