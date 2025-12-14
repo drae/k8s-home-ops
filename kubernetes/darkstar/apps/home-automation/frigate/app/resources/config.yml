@@ -94,6 +94,11 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - detect
+    objects:
+      filters:
+        car:
+          mask:
+            - 0,0.858,0.271,0.331,0.238,0.214,0.175,0.151,0.06,0.192,0,0.242
     review:
       alerts:
         required_zones:
