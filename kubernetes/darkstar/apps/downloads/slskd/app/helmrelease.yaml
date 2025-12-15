@@ -166,7 +166,7 @@ spec:
         globalMounts:
           - path: /media/.downloads/soulseek
             subPath: .downloads/soulseek
-          - path: /media/music
-            subPath: music
+          - path: /media/soulseek
+            subPath: soulseek
       tmp:
         type: emptyDir

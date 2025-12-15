@@ -13,7 +13,7 @@ permissions:
     mode: 664
 shares:
   directories:
-    - /media/.downloads/soulseek/shared
+    - /media/soulseek
   filters:
     - \.ini$
     - Thumbs.db$
