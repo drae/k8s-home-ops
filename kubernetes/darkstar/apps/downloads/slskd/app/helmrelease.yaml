@@ -50,15 +50,32 @@ spec:
                     - /bin/sh
                     - -c
                     - (ip rule del table 50300; ip -6 rule del table 50300) || true
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /check
+                    port: 9999
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /check
+                    port: 9999
+                  initialDelaySeconds: 10
             resources:
               limits:
                 squat.ai/tun: "1"
             restartPolicy: Always
             securityContext:
-              allowPrivilegeEscalation: false
               capabilities:
                 add:
                   - NET_ADMIN
+              allowPrivilegeEscalation: false
         containers:
           app:
             image:
@@ -124,34 +141,12 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-    configMaps:
-      config:
-        data:
-          slskd.yml: |-
-            directories:
-              downloads: /media/.downloads/soulseek/complete
-              incomplete: /media/.downloads/soulseek/incomplete
-            metrics:
-              enabled: true
-              url: /metrics
-              authentication:
-                disabled: true
-            permissions:
-              file:
-                mode: 664
-            shares:
-              directories:
-                - /media/.downloads/soulseek/shared
-              filters:
-                - \.ini$
-                - Thumbs.db$
-                - \.DS_Store$
     persistence:
       config:
         existingClaim: slskd-config
       config-file:
         type: configMap
-        identifier: config
+        name: slskd-configmap
         globalMounts:
           - path: /config/slskd.yml
             subPath: slskd.yml

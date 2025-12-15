@@ -9,7 +9,12 @@ configMapGenerator:
   - name: slskd-coredns
     files:
       - ./config/Corefile
+  - name: slskd-configmap
+    files:
+      - slskd.yml=./config/slskd.yml
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
   disableNameSuffixHash: true
+configurations:
+  - kustomizeconfig.yaml
