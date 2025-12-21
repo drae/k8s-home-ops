@@ -75,7 +75,20 @@ spec:
           lbipam.cilium.io/ips: 10.1.10.32
         ports:
           http:
+            primary: true
             port: *port
+          gdm1:
+            port: 32410
+            protocol: UDP
+          gdm2:
+            port: 32412
+            protocol: UDP
+          gdm3:
+            port: 32413
+            protocol: UDP
+          gdm4:
+            protocol: UDP
+            port: 32414
     route:
       app:
         annotations:
