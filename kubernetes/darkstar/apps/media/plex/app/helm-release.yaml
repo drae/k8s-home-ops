@@ -77,6 +77,14 @@ spec:
           http:
             primary: true
             port: *port
+          dlna:
+            port: 1900
+            protocol: UDP
+          dlna2:
+            port: 32469
+          avahi:
+            port: 5353
+            protocol: UDP
           gdm1:
             port: 32410
             protocol: UDP
