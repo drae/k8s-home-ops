@@ -55,7 +55,7 @@ spec:
               tag: dev@sha256:68c29a37828d729c45c0c8244c0226a79c4a9d08811dd845bdeef38ee416fc23
             env:
               TZ: Europe/London
-              MA_HOSTNAME: mass-alexa-api.starsreak.net
+              MA_HOSTNAME: mass.starsreak.net
               PORT: 5000
               DEBUG_PORT: 5678
               AWS_DEFAULT_REGION: us-east-1
