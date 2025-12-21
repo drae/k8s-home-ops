@@ -20,8 +20,8 @@ spec:
                 "name":"multus-iot",
                 "namespace": "networking",
                 "ips": [
-                  "10.1.20.34/24",
-                  "fd79:4c9c:b9c3:20::34/64"
+                  "10.1.20.38/24",
+                  "fd79:4c9c:b9c3:20::38/64"
                 ]
               }]
         annotations:
@@ -52,7 +52,9 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: music-assistant
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.1.10.38
         ports:
           http:
             port: 8095
