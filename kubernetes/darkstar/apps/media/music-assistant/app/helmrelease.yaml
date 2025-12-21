@@ -1,0 +1,72 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: music-assistant
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      music-assistant:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/music-assistant/server
+              tag: 2.7.1@sha256:35dc0ea99095e96d99538cdef6d52de8939a84096ba49a391474409b3d7bcb71
+            env:
+              TZ: Europe/London
+              LOG_LEVEL: info
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+                add:
+                  - SYS_ADMIN
+                  - DAC_READ_SEARCH
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000
+        runAsGroup: 2000
+        fsGroup: 2000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: music-assistant
+        ports:
+          http:
+            port: 8095
+          stream:
+            port: 8097
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+        hostnames:
+          - mass.starstreak.net
+        parentRefs:
+          - name: envoy-external
+            namespace: networking
+            sectionName: https
+    persistence:
+      data:
+        existingClaim: music-assistant-config
+        advancedMounts:
+          music-assistant:
+            app:
+              - path: /data
+                subPath: data
+              - path: /cache
+                subPath: cache
+      tmp:
+        type: emptyDir
