@@ -49,6 +49,19 @@ spec:
                 add:
                   - SYS_ADMIN
                   - DAC_READ_SEARCH
+          alexa-api:
+            image:
+              repository: ghcr.io/alams154/music-assistant-skill
+              tag: dev@sha256:68c29a37828d729c45c0c8244c0226a79c4a9d08811dd845bdeef38ee416fc23
+            env:
+              TZ: Europe/London
+              MA_HOSTNAME: mass-alexa-api.starsreak.net
+              PORT: 5000
+              DEBUG_PORT: 5678
+              AWS_DEFAULT_REGION: us-east-1
+            envFrom:
+              - secretRef:
+                  name: mass-alexa-api-secret
     service:
       app:
         type: LoadBalancer
@@ -56,7 +69,7 @@ spec:
           lbipam.cilium.io/ips: 10.1.10.38
         ports:
           http:
-            port: 8095
+            port: &port 8095
             primary: true
           stream:
             port: 8097
@@ -74,6 +87,15 @@ spec:
           gdm4:
             protocol: UDP
             port: 32414
+      alexa-api:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.1.10.39
+        ports:
+          alexa-api:
+            port: &alexa-api-port 5000
+          alexa-api-debug:
+            port: 5678
     route:
       app:
         annotations:
@@ -82,9 +104,24 @@ spec:
         hostnames:
           - mass.starstreak.net
         parentRefs:
+          - name: envoy-internal
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+      alexa-api:
+        hostnames:
+          - mass-alexa-api.starstreak.net
+        parentRefs:
           - name: envoy-external
             namespace: networking
             sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: alexa-api
+                port: *alexa-api-port
     persistence:
       data:
         existingClaim: music-assistant-config
