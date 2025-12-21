@@ -57,8 +57,23 @@ spec:
         ports:
           http:
             port: 8095
+            primary: true
           stream:
             port: 8097
+          connect:
+            port: 32500
+          gdm1:
+            port: 32410
+            protocol: UDP
+          gdm2:
+            port: 32412
+            protocol: UDP
+          gdm3:
+            port: 32413
+            protocol: UDP
+          gdm4:
+            protocol: UDP
+            port: 32414
     route:
       app:
         annotations:
