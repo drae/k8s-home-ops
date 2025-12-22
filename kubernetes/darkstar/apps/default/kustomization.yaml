@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: default
 resources:
   - ./namespace.yaml
-  - ./bichon/ks.yaml
+#  - ./bichon/ks.yaml
 components:
   - ../../components/alerts
