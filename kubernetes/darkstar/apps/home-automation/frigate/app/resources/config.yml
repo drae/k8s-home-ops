@@ -70,9 +70,18 @@ snapshots:
 
 record:
   enabled: true
-  retain:
-    days: 5
-    mode: all
+  continuous:
+    days: 3
+  motion:
+    days: 7
+  alerts:
+    retain:
+      days: 14
+      mode: all
+  detections:
+    retain:
+      days: 30
+      mode: all
 
 go2rtc:
   streams:
