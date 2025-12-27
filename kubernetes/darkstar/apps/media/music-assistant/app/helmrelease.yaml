@@ -24,6 +24,8 @@ spec:
                   "fd79:4c9c:b9c3:20::38/64"
                 ]
               }]
+          dnsPolicy: ClusterFirstWithHostNet
+          hostNetwork: true
           securityContext:
             runAsNonRoot: true
             runAsUser: 2000
