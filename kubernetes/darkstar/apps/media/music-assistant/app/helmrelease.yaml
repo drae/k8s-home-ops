@@ -60,8 +60,10 @@ spec:
             primary: true
           stream:
             port: 8097
-          connect:
+          connect1:
             port: 32500
+          connect2:
+            port: 32501
           gdm1:
             port: 32410
             protocol: UDP
