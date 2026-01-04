@@ -10,7 +10,7 @@ collections:
     version: 5.0.5
 roles:
   - name: geerlingguy.pip
-    version: 3.1.1
+    version: 3.1.2
   - name: mrlesmithjr.zfs
     scm: git
     src: https://github.com/mrlesmithjr/ansible-zfs.git
