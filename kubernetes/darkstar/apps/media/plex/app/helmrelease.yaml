@@ -138,12 +138,6 @@ spec:
           plex:
             app:
               - path: /config
-      logs:
-        type: emptyDir
-        advancedMounts:
-          plex:
-            app:
-              - path: /config/Library/Application Support/Plex Media Server/Logs
       media:
         type: nfs
         server: 10.1.10.10
@@ -159,9 +153,3 @@ spec:
               - path: /config/Library/Application Support/Plex Media Server/Cache
       tmp:
         type: emptyDir
-      transcode:
-        type: emptyDir
-        advancedMounts:
-          plex:
-            app:
-              - path: /transcode
