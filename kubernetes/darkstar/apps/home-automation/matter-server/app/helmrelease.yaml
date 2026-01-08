@@ -21,7 +21,8 @@ spec:
                 "name":"multus-iot",
                 "namespace": "networking",
                 "ips": [
-                  "10.1.20.40/24"
+                  "10.1.20.40/24",
+                  "fd79:4c9c:b9c3:20::40/64"
                 ]
               }]
           securityContext:
