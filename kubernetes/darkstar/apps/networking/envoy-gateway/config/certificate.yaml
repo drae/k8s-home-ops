@@ -9,7 +9,6 @@ spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: starstreak.net
   dnsNames:
     - "starstreak.net"
     - "*.starstreak.net"
