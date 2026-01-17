@@ -13,3 +13,6 @@ spec:
   dnsNames:
     - "starstreak.net"
     - "*.starstreak.net"
+  duration: 160h
+  usages:
+    - "digital signature"
