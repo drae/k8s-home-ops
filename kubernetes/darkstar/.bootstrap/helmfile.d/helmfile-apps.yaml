@@ -39,7 +39,7 @@ releases:
   - name: format-lvm
     namespace: kube-system
     chart: oci://ghcr.io/bjw-s-labs/helm/app-template
-    version: 4.6.1
+    version: 4.6.2
     values:
       - templates/format-lvm.yaml.gotmpl
     needs:
