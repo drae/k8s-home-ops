@@ -3,9 +3,9 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: gateway-certificate
+  name: starstreak-net
 spec:
-  secretName: "gateway-starstreak.net-tls"
+  secretName: "starstreak-net-tls"
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
