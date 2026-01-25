@@ -56,6 +56,7 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 10.1.10.38
+        ipFamilyPolicy: PreferDualStack
         ports:
           http:
             port: &port 8095
@@ -78,6 +79,8 @@ spec:
           gdm4:
             port: 32414
             protocol: UDP
+          gdm5:
+            port: 32500
     route:
       app:
         annotations:
