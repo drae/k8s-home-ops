@@ -123,10 +123,10 @@ spec:
         existingClaim: zigbee2mqtt-convertors
         globalMounts:
           - path: /data/external_converters
-      #      convertor:
       #        type: configMap
       #        name: z2m-convertor
       #        globalMounts:
+      #      convertor:
       #          - path: /data/external_converters/convertor.mjs
       #            subPath: convertor.mjs
       #            readOnly: true
