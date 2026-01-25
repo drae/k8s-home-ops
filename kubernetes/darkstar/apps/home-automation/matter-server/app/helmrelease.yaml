@@ -34,8 +34,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-assistant-libs/python-matter-server
-              tag: 8.1.0@sha256:170aa093ce91c76cde4cc390918307590f0f5558fcec93f913af3cb019e6562a
+              repository: ghcr.io/matter-js/matterjs-server
+              tag: 0.2.9@sha256:bf6054748bf7055920dcebbed284e49e84532f1cfebf91fcd2eea87b1b456d05
             env:
               TZ: Europe/London
               MATTER_SERVER__INSTANCE_NAME: matter-server
@@ -46,7 +46,7 @@ spec:
               - --storage-path=/data
               - --primary-interface=net1
               - --log-level=debug
-              - --log-level-sdk=info
+              - --log-level-sdk=error
             resources:
               limits:
                 memory: 1Gi
