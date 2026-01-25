@@ -16,13 +16,13 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": ["10.1.20.32/24"]
-              }]
+          #          annotations:
+          #            k8s.v1.cni.cncf.io/networks: |
+          #              [{
+          #                "name":"multus-iot",
+          #                "namespace": "networking",
+          #                "ips": ["10.1.20.32/24"]
+          #              }]
           resourceClaims:
             - name: gpu
               resourceClaimTemplateName: plex-gpu
@@ -102,8 +102,8 @@ spec:
             port: 32413
             protocol: UDP
           gdm4:
-            protocol: UDP
             port: 32414
+            protocol: UDP
     route:
       app:
         annotations:
