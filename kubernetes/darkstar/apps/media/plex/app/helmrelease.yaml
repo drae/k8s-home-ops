@@ -159,3 +159,5 @@ spec:
               - path: /config/Library/Application Support/Plex Media Server/Cache
       tmp:
         type: emptyDir
+      transcode:
+        type: emptyDir
