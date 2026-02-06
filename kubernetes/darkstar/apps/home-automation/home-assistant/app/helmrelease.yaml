@@ -62,7 +62,7 @@ spec:
           wyoming-proxy-azure-stt:
             image:
               repository: ghcr.io/hugobloem/wyoming-microsoft-stt-noha
-              tag: 1.3.4@sha256:6334ba737b632662f041be9e0429503c3531fc3ef4dbe8a49d75966de49be4ec
+              tag: 1.3.8@sha256:121c697b0c5827bd0887eca32792cc3863ecc76053e428843b5003bdab715479
             args:
               - --language=en-GB
               - --uri=tcp://0.0.0.0:10301
