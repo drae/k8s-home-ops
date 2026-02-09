@@ -123,6 +123,8 @@ spec:
         ports:
           http:
             port: &presence-port 42069
+          firmware:
+            port: 38080
       code-server:
         ports:
           code-server:
