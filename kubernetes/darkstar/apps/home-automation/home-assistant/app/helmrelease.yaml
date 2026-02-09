@@ -65,6 +65,8 @@ spec:
               tag: 2.0.12
             env:
               HA_BASE_URL: http://localhost:8123
+              APP_PORT: 42069
+              FIRMWARE_LAN_PORT: 38080
             envFrom:
               - secretRef:
                   name: home-assistant-secret
