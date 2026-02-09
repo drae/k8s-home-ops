@@ -59,6 +59,21 @@ spec:
               capabilities:
                 drop:
                   - ALL
+          presence-sensor-configurator:
+            image:
+              repository: docker.io/everythingsmarthome/everything-presence-mmwave-configurator
+              tag: 2.0.12
+            env:
+              HA_BASE_URL: http://localhost:8123
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
           wyoming-proxy-azure-stt:
             image:
               repository: ghcr.io/hugobloem/wyoming-microsoft-stt-noha
@@ -104,6 +119,10 @@ spec:
         ports:
           http:
             port: &port 8123
+      presence-sensor-configurator:
+        ports:
+          http:
+            port: &presence-port 3000
       code-server:
         ports:
           code-server:
@@ -123,6 +142,16 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
+      presence:
+        hostnames:
+          - hass-presence.starstreak.net
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: presence-sensor-configurator
+                port: *presence-port
       code:
         hostnames:
           - hass-code.starstreak.net
