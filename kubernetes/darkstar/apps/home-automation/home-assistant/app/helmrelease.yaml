@@ -76,22 +76,22 @@ spec:
               capabilities:
                 drop:
                   - ALL
-          wyoming-proxy-azure-stt:
-            image:
-              repository: ghcr.io/hugobloem/wyoming-microsoft-stt-noha
-              tag: 1.3.8@sha256:121c697b0c5827bd0887eca32792cc3863ecc76053e428843b5003bdab715479
-            args:
-              - --language=en-GB
-              - --uri=tcp://0.0.0.0:10301
-            envFrom:
-              - secretRef:
-                  name: home-assistant-ai-secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+          #          wyoming-proxy-azure-stt:
+          #            image:
+          #              repository: ghcr.io/hugobloem/wyoming-microsoft-stt-noha
+          #              tag: 1.3.8@sha256:121c697b0c5827bd0887eca32792cc3863ecc76053e428843b5003bdab715479
+          #            args:
+          #              - --language=en-GB
+          #              - --uri=tcp://0.0.0.0:10301
+          #            envFrom:
+          #              - secretRef:
+          #                  name: home-assistant-ai-secret
+          #            securityContext:
+          #              allowPrivilegeEscalation: false
+          #              readOnlyRootFilesystem: true
+          #              capabilities:
+          #                drop:
+          #                  - ALL
           code-server:
             image:
               repository: ghcr.io/coder/code-server
@@ -139,33 +139,39 @@ spec:
         hostnames:
           - hass.starstreak.net
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: networking
             sectionName: https
         rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /code/
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - identifier: code-server
+                port: *code-server-port
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /presence/
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - identifier: presence-sensor-configurator
+                port: *presence-port
           - backendRefs:
               - identifier: app
                 port: *port
-      presence:
-        hostnames:
-          - hass-presence.starstreak.net
-        parentRefs:
-          - name: envoy-internal
-            namespace: networking
-        rules:
-          - backendRefs:
-              - identifier: presence-sensor-configurator
-                port: *presence-port
-      code:
-        hostnames:
-          - hass-code.starstreak.net
-        parentRefs:
-          - name: envoy-internal
-            namespace: networking
-        rules:
-          - backendRefs:
-              - identifier: code-server
-                port: *code-server-port
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
