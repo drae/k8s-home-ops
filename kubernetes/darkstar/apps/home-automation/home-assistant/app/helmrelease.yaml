@@ -122,7 +122,7 @@ spec:
       presence-sensor-configurator:
         ports:
           http:
-            port: &presence-port 3000
+            port: &presence-port 42069
       code-server:
         ports:
           code-server:
