@@ -175,6 +175,8 @@ spec:
               - path: /config
             code-server:
               - path: /config
+            presence-sensor-configurator:
+              - path: /config
       logs:
         type: emptyDir
         globalMounts:
