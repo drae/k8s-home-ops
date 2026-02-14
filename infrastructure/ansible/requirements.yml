@@ -7,7 +7,7 @@ collections:
   - name: community.general
     version: 12.3.0
   - name: community.docker
-    version: 5.0.5
+    version: 5.0.6
 roles:
   - name: geerlingguy.pip
     version: 3.1.2
