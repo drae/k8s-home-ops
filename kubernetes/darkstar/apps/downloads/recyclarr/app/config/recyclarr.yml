@@ -29,6 +29,7 @@ sonarr:
           enabled: true
     custom_format_groups:
       add:
+        - trash_id: d776a1ea912a117d66d83b880ff2055d # [HDR Formats] DV (w/o HDR fallback)
         - trash_id: e0b2774083df4265f25c9e5bc6c80940 # [HDR Formats] DV Boost
         - trash_id: ddab3095a5d2f436f369263840af34f9 # [Streaming Services] UK
         - trash_id: f4a0410a1df109a66d6e47dcadcce014 # [Optional] Miscellaneous
@@ -56,6 +57,7 @@ radarr:
 
     custom_format_groups:
       add:
+        - trash_id: 7fc2751eef7e6bdc70b74136e5e35c76 # [HDR Formats] DV (w/o HDR fallback)
         - trash_id: 1616617ab3a14397a2b2321bcbda44d1 # [HDR Formats] DV Boost
         - trash_id: c4492eebd0c2ddc14c2c91623aa7f95d # [Optional] Miscellaneous SQP
         - trash_id: f4f1474b963b24cf983455743aa9906c # [Optional] Movie Versions
