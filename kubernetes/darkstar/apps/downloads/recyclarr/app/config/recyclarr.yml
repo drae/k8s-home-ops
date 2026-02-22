@@ -3,10 +3,9 @@
 sonarr:
   sonarr:
     base_url: http://sonarr.downloads.svc.cluster.local:8989
-    api_key: !env_var SONARR__AUTH__APIKEY
+    api_key: !env_var SONARR_API_KEY
 
     delete_old_custom_formats: true
-    replace_existing_custom_formats: true
 
     media_naming:
       series: plex-tvdb
@@ -16,62 +15,30 @@ sonarr:
         standard: default
         daily: default
         anime: default
-
-    include:
-      - template: sonarr-quality-definition-series
-      - template: sonarr-v4-quality-profile-web-1080p
-      - template: sonarr-v4-custom-formats-web-1080p
-      - template: sonarr-v4-quality-profile-web-2160p
-      - template: sonarr-v4-custom-formats-web-2160p
+    quality_definition:
+      type: series
     quality_profiles:
-      - name: WEB-1080p
-      - name: WEB-2160p
-    custom_formats:
-      # HDR/DV
-      - trash_ids:
-          - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL) - -10000
-          - 7c3a61a9c6cb04f52f1544be6d44a026 # DV Boost
-        assign_scores_to:
-          - name: WEB-2160p
-
-      # Disallow x265 for 1080p when SDR
-      - trash_ids:
-          - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD)
-        assign_scores_to:
-          - name: WEB-1080p
-            score: 0
-
-      # Allow x265 for 1080p when HDR/DV
-      - trash_ids:
-          - 9b64dff695c2115facf1b6ea59c9bd07 # x265 (no HDR/DV)
-        assign_scores_to:
-          - name: WEB-1080p
-
-      # Optional
-      - trash_ids:
-          - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups
-          - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
-          - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
-          - 06d66ab109d4d2eddb2794d21526d140 # Retags
-          - 1b3994c551cbb92a2c781af061f4ab44 # Scene
-        assign_scores_to:
-          - name: WEB-1080p
-          - name: WEB-2160p
-
-      # Disallow SDR for non-webdl 2160p
-      - trash_ids:
-          # - 2016d1676f5ee13a5b7257ff86ac9a93 # SDR
-          - 83304f261cf516bb208c18c54c0adf97 # SDR (no WEBDL)
-        assign_scores_to:
-          - name: WEB-2160p
+      - trash_id: 72dae194fc92bf828f32cde7744e51a1 # WEB-1080p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: d1498e7d189fbe6c7110ceaabb7473e6 # WEB-2160p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
+        reset_unmatched_scores:
+          enabled: true
+    custom_format_groups:
+      add:
+        - trash_id: e0b2774083df4265f25c9e5bc6c80940 # [HDR Formats] DV Boost
+        - trash_id: ddab3095a5d2f436f369263840af34f9 # [Streaming Services] UK
+        - trash_id: f4a0410a1df109a66d6e47dcadcce014 # [Optional] Miscellaneous
 
 radarr:
   radarr:
     base_url: http://radarr.downloads.svc.cluster.local:7878
-    api_key: !env_var RADARR__AUTH__APIKEY
+    api_key: !env_var RADARR_API_KEY
 
     delete_old_custom_formats: true
-    replace_existing_custom_formats: true
 
     media_naming:
       folder: default
