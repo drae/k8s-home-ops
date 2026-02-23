@@ -73,10 +73,10 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
-        - net.ifnames=1 # Enable predictable NIC naming
         - nvme_core.default_ps_max_latency_us=5500
         - pci=noaer
-        - -selinux
+        - -lockdown
+        - lockdown=integrity
       systemExtensions:
         officialExtensions:
           - siderolabs/i915
