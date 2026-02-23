@@ -59,6 +59,24 @@ spec:
               capabilities:
                 drop:
                   - ALL
+          matter-hub:
+            image:
+              repository: ghcr.io/riddix/home-assistant-matter-hub
+              tag: 2.0.25@sha256:50dcb6be2e96bdb0f18e676ec50d51530883b697f3e4cf6fb4742ce8459c2a16
+            env:
+              HAMH_STORAGE_LOCATION: /config/matter-hub
+              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
+              HAMH_LOG_LEVEL: info
+              HAMH_HTTP_PORT: "8482"
+            envFrom:
+              - secretRef:
+                  name: home-assistant-matter-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
           presence-sensor-configurator:
             image:
               repository: docker.io/everythingsmarthome/everything-presence-mmwave-configurator
@@ -121,6 +139,10 @@ spec:
         ports:
           http:
             port: &port 8123
+      matter-hub:
+        ports:
+          matter-hub:
+            port: &matter-port 8482
       presence-sensor-configurator:
         ports:
           http:
@@ -159,6 +181,24 @@ spec:
           - matches:
               - path:
                   type: PathPrefix
+                  value: /matter/
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  add:
+                    - name: "x-ingress-path"
+                      value: "matter"
+            backendRefs:
+              - identifier: matter-hub
+                port: *matter-port
+          - matches:
+              - path:
+                  type: PathPrefix
                   value: /presence/
             filters:
               - type: URLRewrite
@@ -179,9 +219,11 @@ spec:
           home-assistant:
             app:
               - path: /config
-            code-server:
+            matter-hub:
               - path: /config
             presence-sensor-configurator:
+              - path: /config
+            code-server:
               - path: /config
       logs:
         type: emptyDir
