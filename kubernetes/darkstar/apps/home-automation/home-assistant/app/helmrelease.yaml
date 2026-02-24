@@ -131,13 +131,9 @@ spec:
               HASS_SERVER: http://localhost:8123
     service:
       app:
-        annotations:
-          lbipam.cilium.io/ips: 10.1.10.33
-        primary: true
-        sessionAffinity: ClientIP
-        type: LoadBalancer
         ports:
           http:
+            appProtocol: kubernetes.io/ws
             port: &port 8123
       matter-hub:
         ports:
@@ -163,7 +159,6 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: networking
-            sectionName: https
         rules:
           - matches:
               - path:
