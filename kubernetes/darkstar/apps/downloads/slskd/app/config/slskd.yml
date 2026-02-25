@@ -6,9 +6,6 @@ metrics:
   url: /metrics
   authentication:
     disabled: true
-permissions:
-  file:
-    mode: 664
 shares:
   directories:
     - /media/soulseek
