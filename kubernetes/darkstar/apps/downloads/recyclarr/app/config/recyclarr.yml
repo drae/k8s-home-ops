@@ -65,7 +65,6 @@ radarr:
       add:
         - trash_id: 7fc2751eef7e6bdc70b74136e5e35c76 # [HDR Formats] DV (w/o HDR fallback)
         - trash_id: 1616617ab3a14397a2b2321bcbda44d1 # [HDR Formats] DV Boost
-        - trash_id: f737e18b5824d6ebb2d57b957ae2fd6c # [Streaming Services] UK
         - trash_id: c4492eebd0c2ddc14c2c91623aa7f95d # [Optional] Miscellaneous SQP
           select:
             - b6832f586342ef70d9c128d40c07b872 # Bad dual groups
