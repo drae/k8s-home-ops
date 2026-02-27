@@ -53,7 +53,7 @@ tasks:
       # Create basic secrets for flux and external-secrets (doppler)
       - doppler -p {{.DOPPLER_PROJECT}} run -- minijinja-cli {{.KUBERNETES_DIR}}/darkstar/.bootstrap/resources.yaml.j2 | kubectl apply --server-side --filename -
       # Install our crds
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-crds.yaml template | kubectl apply --server-side -f -
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-crds.yaml template -q | yq ea -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -
       # Install our initial apps
-      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-apps.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-apps.yaml sync --hide-notes
       - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-apps.yaml destroy --selector name=format-lvm
