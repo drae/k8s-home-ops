@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/volsync.backube/replicationdestination_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas-bki.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
@@ -26,3 +26,9 @@ spec:
     repository: "${APP}-volsync-nfs"
     storageClassName: "${VOLSYNC_STORAGECLASS:-topolvm-thin-provisioner}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-topolvm-thin-provisioner}"
+    moverVolumes:
+      - mountPath: repository
+        volumeSource:
+          nfs:
+            server: 10.1.10.10
+            path: /mnt/zstore/backup/volsync
