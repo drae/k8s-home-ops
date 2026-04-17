@@ -81,6 +81,7 @@ spec:
             protocol: UDP
           gdm5:
             port: 32500
+            protocol: UDP
     route:
       app:
         annotations:
