@@ -23,10 +23,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: kube-prometheus-stack
-  valuesFrom:
-    - kind: ConfigMap
-      name: flux-metrics-configmap
-      valuesKey: flux-metrics.yaml
   values:
     cleanPrometheusOperatorObjectNames: true
     crds:
@@ -62,30 +58,37 @@ spec:
           # Drop high cardinality labels
           - action: drop
             sourceLabels:
-              - __name__
+              - "__name__"
             regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
           - action: drop
             sourceLabels:
-              - __name__
+              - "__name__"
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
     kubeControllerManager:
-      enabled: true
-      service:
-        selector:
-          k8s-app: kube-controller-manager
+      enabled: false
     kubeEtcd:
       enabled: false
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels
+          - action: labeldrop
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
+          - action: drop
+            sourceLabels:
+              - "__name__"
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
     kubeProxy:
       enabled: false
     kubeScheduler:
-      enabled: true
-      service:
-        selector:
-          k8s-app: kube-scheduler
-    kube-state-metrics:
-      fullnameOverride: kube-state-metrics
-    prometheus-node-exporter:
-      fullnameOverride: node-exporter
+      enabled: false
+    kubeStateMetrics:
+      enabled: false
+    nodeExporter:
+      enabled: false
     grafana:
       enabled: false
       forceDeployDashboards: true
@@ -93,6 +96,21 @@ spec:
         dashboards:
           annotations:
             grafana_folder: Kubernetes
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 35m
+          memory: 273M
+        limits:
+          memory: 326M
+      prometheusConfigReloader:
+        # resource config for prometheusConfigReloader
+        resources:
+          requests:
+            cpu: 5m
+            memory: 32M
+          limits:
+            memory: 32M
     # Prometheus configuration
     prometheus:
       route:
