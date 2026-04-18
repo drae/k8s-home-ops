@@ -29,6 +29,8 @@ spec:
       valuesKey: flux-metrics.yaml
   values:
     cleanPrometheusOperatorObjectNames: true
+    crds:
+      enabled: true
     # Individual stack components
     alertmanager:
       route:
@@ -53,12 +55,33 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-    kubeEtcd:
+    kubeApiServer:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          # Drop high cardinality labels
+          - action: drop
+            sourceLabels:
+              - __name__
+            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+          - action: drop
+            sourceLabels:
+              - __name__
+            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+    kubeControllerManager:
+      enabled: true
       service:
         selector:
-          component: kube-apiserver # etcd runs on control plane nodes
+          k8s-app: kube-controller-manager
+    kubeEtcd:
+      enabled: false
     kubeProxy:
       enabled: false
+    kubeScheduler:
+      enabled: true
+      service:
+        selector:
+          k8s-app: kube-scheduler
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
     prometheus-node-exporter:
