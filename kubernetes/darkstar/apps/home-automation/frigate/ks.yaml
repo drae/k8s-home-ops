@@ -33,4 +33,4 @@ spec:
     - name: volsync
       namespace: storage
     - name: intel-gpu-resource-driver
-      namespace: system
+      namespace: kube-system

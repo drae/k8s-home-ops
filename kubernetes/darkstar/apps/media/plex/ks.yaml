@@ -34,7 +34,7 @@ spec:
     - name: volsync
       namespace: storage
     - name: intel-gpu-resource-driver
-      namespace: system
+      namespace: kube-system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
