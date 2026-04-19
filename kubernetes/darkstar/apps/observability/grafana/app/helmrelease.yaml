@@ -96,16 +96,6 @@ spec:
     dashboards:
       default: []
       flux:
-        flux-cluster:
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/refs/heads/main/monitoring/configs/dashboards/cluster.json
-        flux-control-plane:
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/refs/heads/main/monitoring/configs/dashboards/control-plane.json
         flux-performance:
           datasource:
             - name: DS_PROMETHEUS
