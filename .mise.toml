@@ -1,6 +1,3 @@
-[settings]
-pipx_uvx = true
-
 [env]
 # Directory paths
 ROOT_DIR = "{{config_root}}"
