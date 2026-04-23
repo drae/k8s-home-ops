@@ -8,3 +8,11 @@ resources:
   - ./scrapeconfigs
   - ./record
   - ./rules
+configMapGenerator:
+  - name: flux-metrics-configmap
+    files:
+      - flux-metrics.yaml=./configs/flux-metrics.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

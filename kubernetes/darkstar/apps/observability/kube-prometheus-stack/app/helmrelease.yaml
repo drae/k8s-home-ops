@@ -23,6 +23,10 @@ spec:
   chartRef:
     kind: OCIRepository
     name: kube-prometheus-stack
+  valuesFrom:
+    - kind: ConfigMap
+      name: flux-metrics-configmap
+      valuesKey: flux-metrics.yaml
   values:
     cleanPrometheusOperatorObjectNames: true
     crds:
@@ -86,7 +90,7 @@ spec:
     kubeScheduler:
       enabled: false
     kubeStateMetrics:
-      enabled: false
+      fullnameOverride: kube-state-metrics
     nodeExporter:
       enabled: false
     grafana:
