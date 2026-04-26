@@ -62,7 +62,7 @@ spec:
           matter-hub:
             image:
               repository: ghcr.io/riddix/home-assistant-matter-hub
-              tag: 2.0.41@sha256:400b1d6e167656733d8fefb0afc2c11e2a2f0257c19ac58cf498ed65a7432057
+              tag: 2.0.42@sha256:c95aef9983549b168d6accc3179d7b1c71d4a3fb893e63c10eb798aefe4393e0
             env:
               HAMH_STORAGE_LOCATION: /config/matter-hub
               HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
