@@ -22,7 +22,7 @@ releases:
   - name: external-dns
     namespace: networking
     chart: oci://ghcr.io/home-operations/charts-mirror/external-dns
-    version: 1.20.0
+    version: 1.21.1
 
   - name: keda
     namespace: kube-system
