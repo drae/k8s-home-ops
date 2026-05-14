@@ -1,9 +1,9 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/ocirepository-source-v1beta2.json
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/ocirepository-source-v1beta2.json
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: envoy-gateway
+  name: envoy-gateway-crds
 spec:
   interval: 1h
   layerSelector:
@@ -11,29 +11,23 @@ spec:
     operation: copy
   ref:
     tag: 1.8.0
-  url: oci://mirror.gcr.io/envoyproxy/gateway-helm
+  url: oci://docker.io/envoyproxy/gateway-crds-helm
+  # Not signed
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: envoy-gateway
+  name: envoy-gateway-crds
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: envoy-gateway
-  install:
-    crds: Skip
-  upgrade:
-    crds: Skip
+    name: envoy-gateway-crds
   values:
-    config:
+    crds:
+      gatewayAPI:
+        enabled: false
+        channel: experimental
       envoyGateway:
-        provider:
-          type: Kubernetes
-          kubernetes:
-            deploy:
-              type: GatewayNamespace
-        extensionApis:
-          enableBackend: true
+        enabled: true
