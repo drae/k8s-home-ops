@@ -23,10 +23,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: envoy-gateway
-  install:
-    crds: Skip
-  upgrade:
-    crds: Skip
   values:
     config:
       envoyGateway:
