@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  #  components:
-  #    - ../../../../components/keda/nas-nfs-scaler
   interval: 10m
   path: "./kubernetes/darkstar/apps/storage/volsync/app"
   prune: true

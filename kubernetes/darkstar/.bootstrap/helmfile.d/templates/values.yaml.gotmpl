@@ -1,1 +1,14 @@
-{{ exec "yq" (list "select(.kind == \"HelmRelease\").spec.values" (printf "../../../../kubernetes/darkstar/apps/%s/%s/app/helm-release.yaml" .Release.Namespace .Release.Name)) }}
+{{- /* Define the path relative to the helmfile */ -}}
+{{- $path := printf "../../../../../kubernetes/darkstar/apps/%s/%s/app/helmrelease.yaml" .Release.Namespace .Release.Name -}}
+
+{{- $content := readFile $path -}}
+{{- /* Split by the YAML document separator */ -}}
+{{- range $doc := (split "---" $content) -}}
+{{- $parsed := fromYaml $doc -}}
+{{- /* Check if the document is a map and has the correct Kind */ -}}
+{{- if and $parsed (eq (default "" $parsed.kind) "HelmRelease") -}}
+    {{- if and $parsed.spec $parsed.spec.values -}}
+    {{- $parsed.spec.values | toYaml -}}
+    {{- end -}}
+{{- end -}}
+{{- end -}}
