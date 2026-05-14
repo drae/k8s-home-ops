@@ -12,6 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/volsync
+    - ../../../../components/zeroscaler
   interval: 10m
   path: "./kubernetes/darkstar/apps/media/music-assistant/app"
   prune: true
