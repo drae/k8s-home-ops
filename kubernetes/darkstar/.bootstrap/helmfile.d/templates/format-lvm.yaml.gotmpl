@@ -17,10 +17,11 @@ controllers:
           - -c
         args:
           - |
-            apk add --no-cache findutils nvme-cli lvm2;
+            apk add --no-cache findutils nvme-cli lvm2 device-mapper;
             echo "=== Wiping $DISK ===";
             nvme format --lbaf=0 /dev/nvme0n1 --force;
             nvme format --block-size=4096 /dev/nvme0n1 --force;
+            dmsetup remove_all --force;
             pvcreate /dev/nvme0n1;
             vgcreate topolvm_vg /dev/nvme0n1;
             vgchange -a ey topolvm_vg;

@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/volsync
-    - ../../../../components/keda/nas-nfs-scaler
   interval: 1h
   path: ./kubernetes/darkstar/apps/downloads/slskd/app
   prune: true

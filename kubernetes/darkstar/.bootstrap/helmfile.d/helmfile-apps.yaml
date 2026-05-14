@@ -36,6 +36,15 @@ releases:
     needs:
       - kube-system/coredns
 
+  - name: external-secrets
+    namespace: external-secrets
+    chart: oci://ghcr.io/external-secrets/charts/external-secrets
+    version: 2.4.1
+    values:
+      - templates/values.yaml.gotmpl
+    needs:
+      - cert-manager/cert-manager
+
   - name: format-lvm
     namespace: kube-system
     chart: oci://ghcr.io/bjw-s-labs/helm/app-template
@@ -43,7 +52,7 @@ releases:
     values:
       - templates/format-lvm.yaml.gotmpl
     needs:
-      - cert-manager/cert-manager
+      - external-secrets/external-secrets
 
   - name: flux-operator
     namespace: flux-system
