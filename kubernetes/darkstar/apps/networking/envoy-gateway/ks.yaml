@@ -3,25 +3,6 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname envoy-gateway-crds
-  namespace: &namespace networking
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
-  interval: 10m
-  path: "./kubernetes/darkstar/apps/networking/envoy-gateway/crds"
-  prune: false
-  sourceRef:
-    kind: GitRepository
-    name: k8s-home-ops
-    namespace: flux-system
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: &appname envoy-gateway
   namespace: &namespace networking
 spec:
@@ -38,8 +19,6 @@ spec:
     namespace: flux-system
   wait: true
   dependsOn:
-    - name: envoy-gateway-crds
-      namespace: networking
     - name: cert-manager
       namespace: cert-manager
 ---
