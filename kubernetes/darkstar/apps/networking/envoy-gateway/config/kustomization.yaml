@@ -6,6 +6,8 @@ resources:
   - ./certificate.yaml
   - ./envoyproxy.yaml
   - ./gatewayclass.yaml
+  - ./podmonitor.yaml
+  - ./servicemonitor.yaml
   - ./internal
   - ./external
   - ./policies
