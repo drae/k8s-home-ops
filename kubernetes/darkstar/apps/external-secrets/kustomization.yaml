@@ -4,5 +4,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 resources:
   - ./namespace.yaml
   - ./external-secrets/ks.yaml
-  - ./doppler/ks.yaml
   - ./infisical/ks.yaml
