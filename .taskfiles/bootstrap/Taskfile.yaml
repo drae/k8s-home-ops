@@ -2,18 +2,15 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-vars:
-  DOPPLER_PROJECT: darkstar
-
 tasks:
   setup:
     desc: Setup environment
     preconditions:
-      - which mise doppler
+      - which mise infisical
     interactive: true
     cmds:
       - mise install
-      - if ! doppler whoami > /dev/null 2>&1; then doppler login; fi
+      - if ! infisical user get token > /dev/null 2>&1; then infisical login; fi
       - rm -rf {{ .ROOT_DIR }}/.github/hooks # hk use
 
   talos:
@@ -23,7 +20,7 @@ tasks:
       TALOS_CONTROLLER:
         sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
     preconditions:
-      - which doppler talosctl
+      - which infisical talosctl
       - test -f "${TALOSCONFIG}"
       - talosctl config info
     cmds:
@@ -40,7 +37,7 @@ tasks:
     desc: Bootstrap Flux
     prompt: Bootstrap Flux on the cluster... continue?
     preconditions:
-      - which doppler helmfile kubectl minijinja-cli
+      - which infisical helmfile kubectl minijinja-cli
       - test -f "${TALOSCONFIG}"
       - test -f "${KUBECONFIG}"
       - test -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-crds.yaml
@@ -50,8 +47,8 @@ tasks:
     cmds:
       # Wait till we can see the node
       - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10s; do sleep 5; done
-      # Create basic secrets for flux and external-secrets (doppler)
-      - doppler -p {{.DOPPLER_PROJECT}} run -- minijinja-cli {{.KUBERNETES_DIR}}/darkstar/.bootstrap/resources.yaml.j2 | kubectl apply --server-side --filename -
+      # Create basic secrets for flux and external-secrets (infisical)
+      - infisical --path=/darkstar/k8s --env=prod run -- minijinja-cli {{.KUBERNETES_DIR}}/darkstar/.bootstrap/resources.yaml.j2 | kubectl apply --server-side --filename -
       # Install our crds
       - helmfile -q -f {{.KUBERNETES_DIR}}/darkstar/.bootstrap/helmfile.d/helmfile-crds.yaml template -q | yq ea -e 'select(.kind == "CustomResourceDefinition")' | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -
       # Install our initial apps

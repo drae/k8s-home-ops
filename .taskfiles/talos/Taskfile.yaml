@@ -2,20 +2,17 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-vars:
-  DOPPLER_PROJECT: talos
-
 tasks:
   genconfig:
     desc: Generate clusterconfig for Talos
     silent: true
     cmds:
-      - doppler run -p {{.DOPPLER_PROJECT}} -- talhelper genconfig
+      - infisical run --path=/darkstar/talos -- talhelper genconfig
         --secret-file {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.yaml
         --config-file {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talconfig.yaml
         --out-dir {{.INFRASTRUCTURE_DIR}}/talos/darkstar/clusterconfig
     preconditions:
-      - which doppler talhelper
+      - which infisical talhelper
       - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.yaml
       - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talconfig.yaml
 

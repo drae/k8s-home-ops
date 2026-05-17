@@ -20,7 +20,8 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: doppler-secret
+  name: infisical-secret
   namespace: external-secrets
 stringData:
-  service_token: {{ ENV.DOPPLER_SERVICE_TOKEN }}
+  client_id: {{ ENV.INFISICAL_CLIENT_ID }}
+  client_token: {{ ENV.INFISICAL_AUTH_TOKEN }}
