@@ -3,6 +3,7 @@ services:
   sabnzbd:
     image: ghcr.io/linuxserver/sabnzbd:5.0.3
     container_name: sabnzbd
+    restart: always
     environment:
       - PUID=2000
       - PGID=2000
@@ -10,6 +11,34 @@ services:
     ports:
       - 8081:8080/tcp # sabnzbd web
     volumes:
-      - /opt/docker/sabnzbd/config:/config
       - /mnt/zstore/media/.downloads:/downloads
-    restart: unless-stopped
+    configs:
+      - source: config
+        target: /config/sabnzbd.ini
+        mode: 0600
+
+configs:
+  config:
+    content: |
+      __version__ = 19
+      __encoding__ = utf-8
+      [misc]
+      api_key = ${SABNZBD_API_KEY}
+      host_whitelist = sabnzbd.starstreak.net
+      download_dir = /downloads/usenet/intermediate
+      complete_dir = /downloads/usenet/completed
+      schedlines = "1 59 15 1234567 pause ", "1 1 19 1234567 resume "
+      [servers]
+      [[${SABNZBD_SERVER_1}]]
+      name = ${SABNZBD_SERVER_1}
+      displayname = ${SABNZBD_SERVER_1}
+      host = ${SABNZBD_SERVER_1}
+      port = 563
+      timeout = 60
+      username = ${SABNZBD_SERVER_1_USER}
+      password = ${SABNZBD_SERVER_1_PASS}
+      connections = 60
+      ssl = 1
+      ssl_verify = 3
+      enable = 1
+      priority = 0
