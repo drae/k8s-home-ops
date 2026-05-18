@@ -1,16 +1,16 @@
 ---
 services:
   tvh:
-    image: ghcr.io/tvheadend/tvheadend:latest@sha256:c03d174ad61e215b2c0f33d7e86a5910baa769a5f48752c80397b8d5b1d2cd95
+    image: ghcr.io/linuxserver/tvheadend:latest@sha256:708222e2a9374b3812cd533878dac30920dc8feb3b7ed3714a449588f4dbef9f
     container_name: tvheadend
+    restart: always
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
     network_mode: host
     volumes:
-      - "/opt/docker/tvh/data:/config"
+      - /opt/docker/tvh/data:/config
     devices:
       - /dev/dri:/dev/dri
       - /dev/dvb:/dev/dvb
-    restart: unless-stopped
