@@ -2,55 +2,6 @@
 
 This directory contains the consolidated Ansible configuration for setting up "non-kubernetes" elements of my home ops systems. These are apollo - my NAS, and gravity - my tvheadend server. A minimal OS configuration is used, Docker is used for managing additional software components.
 
-## Directory Structure
-
-```text
-infrastructure/ansible/
-├── README.md                 # This file
-├── ansible.cfg              # Ansible configuration (paths, SOPS, callbacks)
-├── requirements.txt          # Python dependencies
-├── requirements.yml          # Ansible collections and roles
-├── inventory/
-│   ├── hosts.yml            # Combined inventory for both apollo and gravity
-│   ├── group_vars/
-│   │   └── all.yml         # Common variables (Docker config, base packages, etc.)
-│   └── host_vars/
-│       └── apollo.sops.yaml # Apollo SOPS-encrypted secrets (VPN keys, etc.)
-├── playbooks/
-│   ├── site.yml            # Master orchestrator playbook
-│   ├── common/
-│   │   ├── os-base.yml     # Shared OS setup (packages, users, networking)
-│   │   └── docker-base.yml # Shared Docker setup and node-exporter
-│   ├── nas/                # NAS group playbooks (targets apollo)
-│   │   ├── os.yml         # NAS-specific OS (ZFS, storage configs)
-│   │   └── apps.yml       # NAS applications (qbittorrent, sabnzbd, etc.)
-│   └── tvh/                # TVH group playbooks (targets gravity)
-│       ├── os.yml         # TVH-specific OS (sysctl, rootless containers)  
-│       └── apps.yml       # TVHeadend application
-├── roles/                  # Custom Ansible roles
-│   └── docker_compose_service/  # Role for deploying docker-compose services
-│       ├── defaults/main.yml    # Default variables
-│       ├── tasks/main.yml       # Main role tasks
-│       └── templates/           # Role-specific templates
-├── files/                  # Static configuration files
-│   ├── docker-override.conf     # Docker systemd override
-│   ├── docker-cleanup.service   # Docker cleanup systemd service
-│   ├── docker-cleanup.timer     # Docker cleanup timer
-│   └── delegate.conf           # SSH delegate configuration
-└── templates/              # Jinja2 templates with {{ }} variables
-    ├── docker-compose@.service.j2  # Systemd service template
-    ├── zfs-exporter.service.j2     # ZFS exporter service
-    └── docker-compose/             # Docker compose templates
-        ├── qbittorrent/
-        │   └── docker-compose.yml.j2
-        ├── sabnzbd/
-        │   └── docker-compose.yml.j2
-        ├── smartctl-exporter/
-        │   └── docker-compose.yml.j2
-        └── tvheadend/
-            └── docker-compose.yml.j2
-```
-
 ## Prerequisites
 
 - Python 3.x
@@ -130,7 +81,7 @@ task ansible:run machine=<machine> playbook=<playbook>
 task ansible:run machine=nas playbook=os
 
 # Deploy applications to TVH services
-task ansible:run machine=tvh playbook=apps
+task ansible:run machine=tvh playbook=docker
 
 # Run with additional Ansible arguments (dry-run with diff)
 task ansible:run machine=nas playbook=apps -- --check --diff
@@ -141,17 +92,11 @@ task ansible:run machine=nas playbook=apps -- --check --diff
 You can also run the consolidated playbooks directly with ansible-playbook:
 
 ```bash
-# Run everything for both systems
-ansible-playbook -i inventory/hosts.yml playbooks/site.yml
-
 # Run only NAS (storage) setup
 ansible-playbook -i inventory/hosts.yml playbooks/nas/os.yml playbooks/nas/apps.yml
 
 # Run only TVH (TVHeadend) setup  
 ansible-playbook -i inventory/hosts.yml playbooks/tvh/os.yml playbooks/tvh/apps.yml
-
-# Run only common setup for all hosts
-ansible-playbook -i inventory/hosts.yml playbooks/common/os-base.yml playbooks/common/docker-base.yml
 
 # Run only OS setup (no applications)
 ansible-playbook -i inventory/hosts.yml playbooks/common/os-base.yml playbooks/nas/os.yml playbooks/tvh/os.yml
@@ -185,21 +130,11 @@ The `ansible.cfg` file provides centralized configuration:
 - **`group_vars/all.yml`**: Variables shared by both systems (Docker config, base packages, SSH keys, timezone, file paths)
 - **`host_vars/apollo.sops.yaml`**: SOPS-encrypted secrets for apollo host (VPN keys, passwords, etc.)
 
-### SOPS Integration
-
-This setup uses SOPS (Secrets OPerationS) for encrypting sensitive variables:
-
-- **SOPS files**: Use `.sops.yaml` extension for encrypted variable files  
-- **Automatic decryption**: The `community.sops` plugin automatically decrypts variables during playbook runs
-- **AGE encryption**: Uses AGE encryption keys for secure secret management
-- **Host-specific secrets**: Secrets are stored in `host_vars/` and named after the actual hostname
-
 ### Path Resolution
 
 File and template paths are configured to work from different contexts:
 
 - **Playbook files**: `ansible_files_dir: ../../files` (relative to playbook directory)
-- **Role templates**: `docker_compose_service_ansible_files_dir: ../../templates` (relative to role directory)  
 - **Absolute paths**: Ansible configuration uses absolute paths from project root
 
 ## Consolidated Structure Benefits

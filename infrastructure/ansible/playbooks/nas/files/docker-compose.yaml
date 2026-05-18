@@ -1,0 +1,50 @@
+---
+secrets:
+  api_secret:
+    file: /opt/docker/doco-cd/.config/api_secret
+  webhook_secret:
+    file: /opt/docker/doco-cd/.config/webhook_secret
+  infisical_secret:
+    file: /opt/docker/doco-cd/.config/infisical_secret
+
+services:
+  app:
+    container_name: doco-cd
+    environment:
+      API_SECRET_FILE: /run/secrets/api_secret
+      DEPLOY_CONFIG_BASE_DIR: ./docker/apollo
+      HTTP_PORT: 8880
+      LOG_LEVEL: info
+      POLL_CONFIG: |-
+        - url: https://github.com/drae/k8s-home-ops.git
+          reference: refs/heads/main
+          interval: 3600
+      SECRET_PROVIDER: infisical
+      SECRET_PROVIDER_SITE_URL: https://eu.infisical.com/
+      SECRET_PROVIDER_CLIENT_ID: bf4cb727-bd78-4fbf-a874-e5eecfc2f3ed
+      SECRET_PROVIDER_CLIENT_SECRET_FILE: /run/secrets/infisical_secret
+      TZ: Europe/Amsterdam
+      WEBHOOK_SECRET_FILE: /run/secrets/webhook_secret
+    healthcheck:
+      test:
+        - CMD
+        - /doco-cd
+        - healthcheck
+      start_period: 15s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    image: ghcr.io/kimdre/doco-cd:0.88.0@sha256:1b62d6f90e160ca8f368814f70616ca5b3d3b488bbf8ee9a9ca271a67212e8e7
+    ports:
+      - 8880:8880
+    restart: unless-stopped
+    secrets:
+      - api_secret
+      - webhook_secret
+      - infisical_secret
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - data:/data
+
+volumes:
+  data: {}
