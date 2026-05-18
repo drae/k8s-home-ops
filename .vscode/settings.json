@@ -20,6 +20,8 @@
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
     "ansible.python.interpreterPath": "/home/paul/git/drae/k8s-home-ops/.venv/bin/python",
     "conventionalCommits.scopes": [
-        "doco-cd"
+        "doco-cd",
+        "docker",
+        "vscode"
     ]
 }
