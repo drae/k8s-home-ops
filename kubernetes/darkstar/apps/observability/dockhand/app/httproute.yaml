@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: dockhand
+spec:
+  hostnames:
+    - dockhand.starstreak.net
+  parentRefs:
+    - name: envoy-internal
+      namespace: networking
+      sectionName: https
+  rules:
+    - backendRefs:
+        - group: gateway.envoyproxy.io
+          kind: Backend
+          name: dockhand-apollo
+      matches:
+        - path:
+            type: PathPrefix
+            value: /apollo/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+    - backendRefs:
+        - group: gateway.envoyproxy.io
+          kind: Backend
+          name: dockhand-gravity
+      matches:
+        - path:
+            type: PathPrefix
+            value: /gravity/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
