@@ -22,6 +22,7 @@
     "conventionalCommits.scopes": [
         "doco-cd",
         "docker",
-        "vscode"
+        "vscode",
+        "container"
     ]
 }
