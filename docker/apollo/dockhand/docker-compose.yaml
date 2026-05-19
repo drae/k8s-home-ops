@@ -4,6 +4,9 @@ services:
     image: docker.io/fnsys/dockhand:v1.0.29
     container_name: dockhand
     restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
     ports:
       - 3000:3000
     volumes:
