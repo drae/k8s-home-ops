@@ -6,7 +6,7 @@ metadata:
   name: dockhand-apollo
 spec:
   hostnames:
-    - apollo.dockhand.starstreak.net
+    - dh-apollo.starstreak.net
   parentRefs:
     - name: envoy-internal
       namespace: networking
@@ -28,7 +28,7 @@ metadata:
   name: dockhand-gravity
 spec:
   hostnames:
-    - gravity.dockhand.starstreak.net
+    - dh-gravity.starstreak.net
   parentRefs:
     - name: envoy-internal
       namespace: networking
