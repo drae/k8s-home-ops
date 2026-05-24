@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
@@ -18,7 +18,7 @@ spec:
         - hive-hub.iot.starstreak.net
         - 1.1.1.1
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
@@ -33,7 +33,7 @@ spec:
       static:
         - apollo.lan.starstreak.net:2049
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
