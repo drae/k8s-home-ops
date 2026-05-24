@@ -8,6 +8,7 @@ services:
       - PUID=1000
       - PGID=1000
       - STACKS_DIR=/opt/hawser-stacks
+      - TOKEN=${HAWSER_TOKEN}
     ports:
       - 2376:2376
     volumes:

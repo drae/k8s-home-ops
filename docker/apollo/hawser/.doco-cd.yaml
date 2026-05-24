@@ -1,0 +1,2 @@
+external_secrets:
+  HAWSER_TOKEN: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/HAWSER_TOKEN
