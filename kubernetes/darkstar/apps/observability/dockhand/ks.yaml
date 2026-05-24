@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/volsync
   interval: 10m
   path: "./kubernetes/darkstar/apps/observability/dockhand/app"
   prune: true
@@ -21,3 +23,5 @@ spec:
   postBuild:
     substitute:
       APP: *appname
+      VOLSYNC_CLAIM: dockhand-data
+      VOLSYNC_CAPACITY: 5Gi
