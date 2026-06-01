@@ -26,12 +26,6 @@ spec:
               }]
           dnsPolicy: ClusterFirstWithHostNet
           hostNetwork: true
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 2000
-            runAsGroup: 2000
-            fsGroup: 2000
-            fsGroupChangePolicy: OnRootMismatch
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -43,6 +37,11 @@ spec:
               TZ: Europe/London
               LOG_LEVEL: info
             securityContext:
+              runAsNonRoot: true
+              runAsUser: 2000
+              runAsGroup: 2000
+              fsGroup: 2000
+              fsGroupChangePolicy: OnRootMismatch
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
@@ -51,6 +50,26 @@ spec:
                 add:
                   - SYS_ADMIN
                   - DAC_READ_SEARCH
+          alexa-skill:
+            image:
+              repository: ghcr.io/alams154/music-assistant-skill
+              tag: latest@sha256:ad7ec55a51d9304032a74d8ae0fda43743bf64ae68afa49dd6949d9477726ccf
+            env:
+              TZ: Europe/London
+              SKILL_HOSTNAME: mass-ax.starstreak.net
+              MA_HOSTNAME: mass-st.starstreak.net
+              PORT: 5000
+              DEBUG_PORT: 5678
+              LOCALE: en-GB
+              AWS_DEFAULT_REGION: eu-west-2
+            envFrom:
+              - secretRef:
+                  name: mass-alexa-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
     service:
       app:
         type: LoadBalancer
@@ -82,6 +101,16 @@ spec:
           gdm5:
             port: 32500
             protocol: UDP
+      alexa-skill:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.1.10.39
+        ports:
+          http:
+            port: 5000
+            primary: true
+          debug:
+            port: 5678
     route:
       app:
         annotations:
@@ -90,13 +119,35 @@ spec:
         hostnames:
           - mass.starstreak.net
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-external
             namespace: networking
             sectionName: https
         rules:
           - backendRefs:
               - identifier: app
                 port: *port
+      stream:
+        hostnames:
+          - mass-st.starstreak.net
+        parentRefs:
+          - name: envoy-external
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 8097
+      alexa-skill:
+        hostnames:
+          - mass-ax.starstreak.net
+        parentRefs:
+          - name: envoy-external
+            namespace: networking
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: alexa-skill
+                port: 5000
     persistence:
       data:
         existingClaim: music-assistant-config
@@ -109,5 +160,8 @@ spec:
                 subPath: cache
               - path: /.local
                 subPath: .local
+            alexa-skill:
+              - path: /root/.ask
+                subPath: .ask
       tmp:
         type: emptyDir
