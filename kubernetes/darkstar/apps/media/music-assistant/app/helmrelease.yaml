@@ -59,7 +59,6 @@ spec:
               SKILL_HOSTNAME: mass-ax.starstreak.net
               MA_HOSTNAME: mass-st.starstreak.net
               PORT: 5000
-              DEBUG_PORT: 5678
               LOCALE: en-GB
               AWS_DEFAULT_REGION: eu-west-2
             envFrom:
@@ -102,15 +101,9 @@ spec:
             port: 32500
             protocol: UDP
       alexa-skill:
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 10.1.10.39
         ports:
           http:
             port: 5000
-            primary: true
-          debug:
-            port: 5678
     route:
       app:
         annotations:
