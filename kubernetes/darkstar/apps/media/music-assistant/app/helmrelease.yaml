@@ -120,6 +120,8 @@ spec:
               - identifier: app
                 port: *port
       stream:
+        annotations:
+          gatus.home-operations.com/enabled: "false"
         hostnames:
           - mass-st.starstreak.net
         parentRefs:
@@ -131,6 +133,8 @@ spec:
               - identifier: app
                 port: 8097
       alexa-skill:
+        annotations:
+          gatus.home-operations.com/enabled: "false"
         hostnames:
           - mass-ax.starstreak.net
         parentRefs:
