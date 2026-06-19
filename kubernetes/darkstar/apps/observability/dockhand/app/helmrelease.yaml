@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: docker.io/fnsys/dockhand
-              tag: v1.0.34
+              tag: v1.0.35
             env:
               TZ: Europe/London
               PUID: 2000
