@@ -117,7 +117,7 @@ cameras:
           - forecourt
     zones:
       forecourt:
-        coordinates: 0.308,0.370.032,1,1,1,0.742,0.370
+        coordinates: 0.308,0.370,0.032,1,1,1,0.742,0.370
         loitering_time: 2
         objects:
           - bicycle
