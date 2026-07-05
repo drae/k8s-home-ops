@@ -1,7 +1,7 @@
 ---
 services:
   tvh:
-    image: ghcr.io/linuxserver/tvheadend:latest@sha256:62ce7b51e6dc6f74d84c16ed46f1f8553d88e618c16598be294dfb19bd358066
+    image: ghcr.io/linuxserver/tvheadend:latest@sha256:e8715f103ba15eafe360e1c4257dfe8e015e80401bd9ba71bc7663b328e8e9ca
     container_name: tvheadend
     restart: always
     environment:
