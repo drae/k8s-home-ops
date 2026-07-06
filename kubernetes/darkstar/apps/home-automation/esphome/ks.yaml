@@ -12,6 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/esphome/app"
   prune: true
@@ -25,8 +26,12 @@ spec:
       APP: *appname
       VOLSYNC_CLAIM: esphome-config
       VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_CLAIM: esphome-config
+      KOPIUR_CAPACITY: 5Gi
   dependsOn:
     - name: topolvm
       namespace: storage
     - name: volsync
+      namespace: storage
+    - name: kopiur
       namespace: storage

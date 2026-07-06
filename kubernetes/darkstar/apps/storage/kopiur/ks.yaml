@@ -3,20 +3,20 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname plex
-  namespace: &namespace media
+  name: &appname kopiur
+  namespace: &namespace storage
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  components:
-    - ../../../../components/gpu
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/backup
-    - ../../../../components/zeroscaler
-  interval: 10m
-  path: "./kubernetes/darkstar/apps/media/plex/app"
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: kopiur
+      namespace: storage
+  interval: 1h
+  path: "./kubernetes/darkstar/apps/storage/kopiur/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -26,43 +26,35 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      GATUS_PATH: /identity
-      VOLSYNC_CLAIM: plex-config
-      VOLSYNC_CAPACITY: 50Gi
-      KOPIUR_CLAIM: plex-config
-      KOPIUR_CAPACITY: 50Gi
   dependsOn:
+    - name: openebs
+      namespace: storage
     - name: topolvm
-      namespace: storage
-    - name: volsync
-      namespace: storage
-    - name: intel-gpu-resource-driver
-      namespace: kube-system
-    - name: kopiur
       namespace: storage
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname plex-image-cleanup
-  namespace: &namespace media
+  name: &appname kopiur-repository
+  namespace: &namespace storage
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 10m
-  path: "./kubernetes/darkstar/apps/media/plex/plex-image-cleanup"
+  healthChecks:
+    - apiVersion: kopiur.home-operations.com/v1alpha1
+      kind: ClusterRepository
+      name: nas
+  interval: 1h
+  path: "./kubernetes/darkstar/apps/storage/kopiur/repository"
   prune: true
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
     namespace: flux-system
   wait: false
-  postBuild:
-    substitute:
-      APP: *appname
   dependsOn:
-    - name: plex
-      namespace: *namespace
+    - name: kopiur
+      namespace: storage

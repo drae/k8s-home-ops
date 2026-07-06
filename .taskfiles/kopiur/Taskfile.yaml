@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  doctor:
+    desc: Diagnose the kopiur install and every repository [NS=all namespaces]
+    preconditions:
+      - which kubectl-kopiur
+    cmds:
+      - |-
+        {{ if .NS }}kubectl kopiur doctor -n {{.NS}}{{ else }}kubectl kopiur doctor -A{{ end }}
+
+  status:
+    desc: One-screen health overview [NS=default]
+    preconditions:
+      - which kubectl-kopiur
+    vars:
+      NS: "{{.NS | default \"default\"}}"
+    cmds:
+      - kubectl kopiur status -n {{.NS}}
+
+  list:
+    desc: List snapshots for an app [NS=default] [APP=required]
+    preconditions:
+      - which kubectl-kopiur
+    requires:
+      vars:
+        - APP
+    vars:
+      NS: "{{.NS | default \"default\"}}"
+    cmds:
+      - kubectl kopiur snapshots list -n {{.NS}} --policy {{.APP}}
+
+  snapshot:
+    desc: Snapshot an app now [NS=default] [APP=required] [WAIT=true]
+    preconditions:
+      - which kubectl-kopiur
+    requires:
+      vars:
+        - APP
+    vars:
+      WAIT: "{{.WAIT | default \"true\"}}"
+      NS: "{{.NS | default \"default\"}}"
+    cmds:
+      - |-
+        kubectl kopiur snapshot now --policy {{.APP}} -n {{.NS}} {{ if eq "true" .WAIT }}--wait{{ end }}
+
+  snapshot-all:
+    desc: Snapshot all apps across all namespaces without waiting
+    preconditions:
+      - which kubectl kubectl-kopiur
+    vars:
+      ALL_POLICIES:
+        sh: |
+          kubectl get snapshotpolicies -A --no-headers -o jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
+    cmds:
+      - for:
+          var: ALL_POLICIES
+          split: "\n"
+        task: snapshot
+        vars:
+          WAIT: "false"
+          NS: "{{splitList \",\" .ITEM | first}}"
+          APP: "{{splitList \",\" .ITEM | last}}"
+
+  restore:
+    desc: Restore an app [NS=default] [APP=required]
+    summary: |
+      Restores the latest snapshot for APP's SnapshotPolicy into a scratch PVC
+      named "<APP>-restored" for inspection — it does NOT touch the app's live
+      PVC or scale the workload down. Mount the restored PVC in a throwaway pod,
+      verify the data, then delete it when done.
+    preconditions:
+      - which kubectl-kopiur
+      - kubectl --namespace {{.NS}} get snapshotpolicy {{.APP}}
+    requires:
+      vars:
+        - APP
+    vars:
+      NS: "{{.NS | default \"default\"}}"
+    cmds:
+      - kubectl kopiur restore --from-policy {{.APP}} --create-pvc {{.APP}}-restored --size {{.SIZE | default "10Gi"}} -n {{.NS}} --wait

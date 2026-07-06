@@ -13,6 +13,7 @@ spec:
   components:
     - ../../../../components/gpu
     - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/frigate/app"
   prune: true
@@ -27,6 +28,8 @@ spec:
       GATUS_STATUS: "401"
       VOLSYNC_CLAIM: frigate-config
       VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_CLAIM: frigate-config
+      KOPIUR_CAPACITY: 5Gi
   dependsOn:
     - name: topolvm
       namespace: storage
@@ -34,3 +37,5 @@ spec:
       namespace: storage
     - name: intel-gpu-resource-driver
       namespace: kube-system
+    - name: kopiur
+      namespace: storage
