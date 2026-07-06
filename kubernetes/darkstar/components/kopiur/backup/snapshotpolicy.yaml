@@ -7,6 +7,11 @@ metadata:
 spec:
   credentialProjection:
     enabled: true
+  # restic (VolSync's mover) silently tolerates unreadable files; kopia treats
+  # one as fatal by default. Match restic's leniency so a stray root-owned
+  # dotfile in an app's config PVC doesn't fail the whole snapshot.
+  errorHandling:
+    ignoreFileErrors: true
   mover:
     securityContext:
       runAsUser: ${APP_UID:-2000}
