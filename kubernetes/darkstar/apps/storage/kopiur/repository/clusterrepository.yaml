@@ -7,9 +7,6 @@ metadata:
 spec:
   allowedNamespaces:
     all: true
-  # Fresh kopia repository — the existing NFS export (/mnt/zstore/backup/volsync)
-  # is a restic repository and cannot be reused. This path must exist on the NAS,
-  # chowned 2000:2000 (the UID/GID every app's backup mover already runs as).
   backend:
     filesystem:
       path: /repo
@@ -29,14 +26,18 @@ spec:
     usernameExpr: policyName
   moverDefaults:
     cache:
+      capacity: 1Mi
+      mode: Ephemeral
       storageClassName: local-hostpath
+    podSecurityContext:
+      fsGroup: 2000
+      fsGroupChangePolicy: OnRootMismatch
     scratch:
+      capacity: 1Mi
       storageClassName: local-hostpath
-  server:
-    namespace: storage
-    readOnly: true
-    auth:
-      generate: {}
     securityContext:
       runAsUser: 2000
       runAsGroup: 2000
+    ttlSecondsAfterFinished: 300
+  scheduleDefaults:
+    timezone: Europe/London
