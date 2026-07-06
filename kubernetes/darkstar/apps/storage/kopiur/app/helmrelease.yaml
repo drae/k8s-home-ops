@@ -30,13 +30,7 @@ spec:
   values:
     installScope: cluster
     features:
-      # Lets the operator copy the shared KOPIA_PASSWORD secret into each of the
-      # 13 app namespaces instead of hand-wiring a per-app ExternalSecret.
       credentialProjection:
-        enabled: true
-      # Needed for the ClusterRepository's spec.server (kopia web UI) to write
-      # its generated-auth secret / mirror credentials cross-namespace.
-      kopiaUi:
         enabled: true
     monitoring:
       serviceMonitor:
