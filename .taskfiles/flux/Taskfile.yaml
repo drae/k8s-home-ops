@@ -15,10 +15,10 @@ tasks:
         - DIR
     preconditions:
       - '[[ "{{.OPERATION}}" == "build" || "{{.OPERATION}}" == "apply" || "{{.OPERATION}}" == "delete" ]]'
-      - which kubectl flux-local
+      - which kubectl flate
       - test -d {{.KS_DIR}}
     cmds:
-      - flux-local build ks --all-namespaces {{.NS}} --path {{.KS_DIR}} {{.NAME}}
+      - flate build ks --namepsace {{.NS}} --output yaml {{.NAME}}
         | yq -
         {{ if or (eq .OPERATION "apply") (eq .OPERATION "delete") -}}
         | kubectl {{.OPERATION}} {{- .OPERATION_ARGS}} --filename -
