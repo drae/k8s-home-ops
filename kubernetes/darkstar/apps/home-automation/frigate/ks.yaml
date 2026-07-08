@@ -13,7 +13,7 @@ spec:
   components:
     - ../../../../components/gpu
     - ../../../../components/volsync
-    - ../../../../components/kopiur/backup
+    # - ../../../../components/kopiur/backup
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/frigate/app"
   prune: true
