@@ -37,5 +37,3 @@ spec:
       namespace: storage
     - name: intel-gpu-resource-driver
       namespace: kube-system
-    - name: kopiur
-      namespace: storage

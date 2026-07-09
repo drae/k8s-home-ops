@@ -33,5 +33,3 @@ spec:
       namespace: storage
     - name: volsync
       namespace: storage
-    - name: kopiur
-      namespace: storage

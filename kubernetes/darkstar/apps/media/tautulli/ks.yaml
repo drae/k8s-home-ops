@@ -31,5 +31,5 @@ spec:
   dependsOn:
     - name: plex
       namespace: *namespace
-    - name: kopiur
+    - name: volsync
       namespace: storage

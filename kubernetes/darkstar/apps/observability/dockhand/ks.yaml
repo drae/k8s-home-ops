@@ -29,5 +29,5 @@ spec:
       KOPIUR_CLAIM: dockhand-data
       KOPIUR_CAPACITY: 5Gi
   dependsOn:
-    - name: kopiur
+    - name: volsync
       namespace: storage
