@@ -41,4 +41,17 @@ configs:
       ssl = 1
       ssl_verify = 3
       enable = 1
+      priority = 1
+      [[${SABNZBD_SERVER_2}]]
+      name = ${SABNZBD_SERVER_2}
+      displayname = ${SABNZBD_SERVER_2}
+      host = ${SABNZBD_SERVER_2}
+      port = 563
+      timeout = 60
+      username = ${SABNZBD_SERVER_2_USER}
+      password = ${SABNZBD_SERVER_2_PASS}
+      connections = 60
+      ssl = 1
+      ssl_verify = 3
+      enable = 1
       priority = 0
