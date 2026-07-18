@@ -11,3 +11,4 @@ resources:
 #  - ./frontend/ks.yaml
 components:
   - ../../components/alerts
+  - ../../components/kopiur/secret

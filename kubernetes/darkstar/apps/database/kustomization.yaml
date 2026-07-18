@@ -8,3 +8,4 @@ resources:
   - ./mosquitto/ks.yaml
 components:
   - ../../components/alerts
+  - ../../components/kopiur/secret

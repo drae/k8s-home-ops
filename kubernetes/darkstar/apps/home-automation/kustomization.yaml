@@ -11,3 +11,4 @@ resources:
   - ./zigbee2mqtt/ks.yaml
 components:
   - ../../components/alerts
+  - ../../components/kopiur/secret

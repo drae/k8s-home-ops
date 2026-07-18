@@ -5,14 +5,13 @@ kind: SnapshotPolicy
 metadata:
   name: ${APP}
 spec:
-  credentialProjection:
-    enabled: true
-  # restic (VolSync's mover) silently tolerates unreadable files; kopia treats
-  # one as fatal by default. Match restic's leniency so a stray root-owned
-  # dotfile in an app's config PVC doesn't fail the whole snapshot.
-  errorHandling:
-    ignoreFileErrors: true
+  compression:
+    compressor: zstd
   mover:
+    cache:
+      capacity: ${KOPIUR_CAPACITY:=5Gi}
+      mode: Persistent
+      storageClassName: local-hostpath
     securityContext:
       runAsUser: ${APP_UID:-2000}
       runAsGroup: ${APP_GID:-2000}

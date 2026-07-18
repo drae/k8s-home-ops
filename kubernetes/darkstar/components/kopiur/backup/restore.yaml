@@ -5,12 +5,6 @@ kind: Restore
 metadata:
   name: ${APP}
 spec:
-  credentialProjection:
-    enabled: true
-  mover:
-    securityContext:
-      runAsUser: ${APP_UID:-2000}
-      runAsGroup: ${APP_GID:-2000}
   policy:
     onMissingSnapshot: Continue
   source:

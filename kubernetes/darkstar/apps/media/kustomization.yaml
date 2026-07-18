@@ -11,3 +11,4 @@ resources:
   - ./tvheadend/ks.yaml
 components:
   - ../../components/alerts
+  - ../../components/kopiur/secret

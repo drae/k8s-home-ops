@@ -24,5 +24,5 @@ spec:
   dependsOn:
     - name: topolvm
       namespace: storage
-    - name: volsync
+    - name: kopiur
       namespace: storage
