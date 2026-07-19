@@ -11,7 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/kopiur/backup
+    #    - ../../../../components/kopiur/backup
+    - ../../../../components/volsync
     - ../../../../components/zeroscaler
   interval: 10m
   path: "./kubernetes/darkstar/apps/downloads/sonarr/app"
@@ -29,5 +30,5 @@ spec:
   dependsOn:
     - name: topolvm
       namespace: storage
-    - name: kopiur
+    - name: volsync
       namespace: storage

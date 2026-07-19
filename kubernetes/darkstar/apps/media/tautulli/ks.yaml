@@ -11,7 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    - ../../../../components/kopiur/backup
+    #    - ../../../../components/kopiur/backup
+    - ../../../../components/volsync
   interval: 10m
   path: "./kubernetes/darkstar/apps/media/tautulli/app"
   prune: true
@@ -30,5 +31,5 @@ spec:
   dependsOn:
     - name: plex
       namespace: *namespace
-    - name: kopiur
+    - name: volsync
       namespace: storage

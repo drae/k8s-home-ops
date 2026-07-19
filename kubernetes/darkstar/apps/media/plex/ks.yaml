@@ -12,7 +12,8 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/gpu
-    - ../../../../components/kopiur/backup
+    #    - ../../../../components/kopiur/backup
+    - ../../../../components/volsync
     - ../../../../components/zeroscaler
   interval: 10m
   path: "./kubernetes/darkstar/apps/media/plex/app"
@@ -33,7 +34,7 @@ spec:
   dependsOn:
     - name: topolvm
       namespace: storage
-    - name: kopiur
+    - name: volsync
       namespace: storage
     - name: intel-gpu-resource-driver
       namespace: kube-system
