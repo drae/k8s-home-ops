@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/gpu
-    #    - ../../../../components/kopiur/backup
+    - ../../../../components/kopiur/backup
     - ../../../../components/volsync
     - ../../../../components/zeroscaler
   interval: 10m

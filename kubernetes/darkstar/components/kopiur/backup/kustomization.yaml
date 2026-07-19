@@ -6,4 +6,4 @@ resources:
   - ./snapshotpolicy.yaml
   - ./snapshotschedule.yaml
   #  - ./pvc.yaml
-  - ./restore.yaml
+  #  - ./restore.yaml
