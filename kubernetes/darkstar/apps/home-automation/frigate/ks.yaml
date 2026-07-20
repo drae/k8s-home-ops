@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/gpu
-    - ../../../../components/kopiur/backup
+    #    - ../../../../components/kopiur/backup
     - ../../../../components/volsync
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/frigate/app"
