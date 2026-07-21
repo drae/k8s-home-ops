@@ -14,7 +14,7 @@ ANSIBLE_VARS_ENABLED     = "host_group_vars"
 [tools]
 ansible-core                   = '2.21.2'
 "github:DopplerHQ/cli"         = '3.76.0'
-"github:home-operations/flate" = '0.4.11'
+"github:home-operations/flate" = '0.4.12'
 flux2                          = '2.9.2'
 helm                           = '4.2.3'
 helmfile                       = '1.7.1'
