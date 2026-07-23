@@ -10,7 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  path: "./kubernetes/darkstar/apps/system/generic-device-plugin/app"
+  path: ./kubernetes/darkstar/apps/system/generic-device-plugin/app
   sourceRef:
     kind: GitRepository
     name: k8s-home-ops
