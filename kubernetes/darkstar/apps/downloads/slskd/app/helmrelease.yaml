@@ -81,9 +81,11 @@ spec:
             image:
               repository: ghcr.io/slskd/slskd
               tag: 0.26.0@sha256:ecd4026d4f8fb504e2cc55323efa2c1f5b56d20d3686b018249cc36b48ea17a6
+            command:
+              - --app-dir
+              - /config
             env:
               DOTNET_BUNDLE_EXTRACT_BASE_DIR: /tmp/.net
-              SLSKD_APP_DIR: /config
               SLSKD_HTTP_PORT: &port 80
               SLSKD_METRICS: true
               SLSKD_METRICS_NO_AUTH: true
