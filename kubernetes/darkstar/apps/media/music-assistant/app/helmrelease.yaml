@@ -53,7 +53,7 @@ spec:
           alexa-skill:
             image:
               repository: ghcr.io/alams154/music-assistant-skill
-              tag: latest@sha256:ad7ec55a51d9304032a74d8ae0fda43743bf64ae68afa49dd6949d9477726ccf
+              tag: latest@sha256:0e3ddd9b7aeb060e86aa6d7db8c9188d062483dc6eb6e660bee1445d1e13ddf8
             env:
               TZ: Europe/London
               SKILL_HOSTNAME: mass-ax.starstreak.net
