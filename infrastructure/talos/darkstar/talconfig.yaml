@@ -142,6 +142,8 @@ controlPlane:
               wsize=131072
               nconnect=8
         kubelet:
+          extraArgs:
+            allowed-unsafe-sysctls: net.ipv6.conf.*
           extraConfig:
             featureGates:
               ImageVolume: true

@@ -20,42 +20,59 @@ spec:
               [{
                 "name":"multus-iot",
                 "namespace": "networking",
+                "interface": "iot",
                 "ips": [
                   "10.1.20.40/24",
                   "fd79:4c9c:b9c3:20::40/64"
                 ]
               }]
           securityContext:
-            runAsNonRoot: false
-            runAsUser: 0
-            runAsGroup: 0
-            fsGroup: 0
+            fsGroup: 2000
             fsGroupChangePolicy: OnRootMismatch
+            runAsNonRoot: false
+            runAsUser: 2000
+            runAsGroup: 2000
+            seccompProfile:
+              type: RuntimeDefault
+            sysctls:
+              # accept RA route-info (Thread OMR prefix)
+              - name: net.ipv6.conf.iot.accept_ra_rt_info_max_plen
+                value: "64"
         containers:
           app:
             image:
               repository: ghcr.io/matter-js/matterjs-server
-              tag: 0.2.9@sha256:bf6054748bf7055920dcebbed284e49e84532f1cfebf91fcd2eea87b1b456d05
+              tag: 1.4.0@sha256:54232d0d3e7dff5a54759469d2753399270412b4c30c55b31750a4595e4cb236
             env:
               TZ: Europe/London
-              MATTER_SERVER__INSTANCE_NAME: matter-server
-              MATTER_SERVER__PORT: &port 5580
-              MATTER_SERVER__APPLICATION_URL: matter.starstreak.net
-              MATTER_SERVER__LOG_LEVEL: info
             args:
               - --storage-path=/data
-              - --primary-interface=net1
-              - --log-level=debug
-              - --log-level-sdk=error
+              - --ota-provider-dir=/data/ota
+              - --production-mode
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 5580
+              readiness: *probe
             resources:
               limits:
-                memory: 1Gi
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
     service:
       app:
         controller: *app
         ports:
           http:
-            port: *port
+            port: &port 5580
     route:
       app:
         hostnames:
