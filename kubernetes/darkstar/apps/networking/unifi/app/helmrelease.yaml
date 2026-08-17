@@ -36,6 +36,7 @@ spec:
                 memory: 1250Mi
     service:
       app:
+        controller: unifi
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 10.1.10.36
@@ -44,6 +45,7 @@ spec:
             port: &port 8443
             protocol: HTTPS
             primary: true
+            appProtocol: https
           controller:
             enabled: true
             port: 8080
