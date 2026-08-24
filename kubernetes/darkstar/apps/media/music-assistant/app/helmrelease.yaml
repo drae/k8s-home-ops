@@ -88,25 +88,6 @@ spec:
             primary: true
           stream:
             port: 8097
-          connect1:
-            port: 32500
-          connect2:
-            port: 32501
-          gdm1:
-            port: 32410
-            protocol: UDP
-          gdm2:
-            port: 32412
-            protocol: UDP
-          gdm3:
-            port: 32413
-            protocol: UDP
-          gdm4:
-            port: 32414
-            protocol: UDP
-          gdm5:
-            port: 32500
-            protocol: UDP
       alexa-skill:
         ports:
           http:
