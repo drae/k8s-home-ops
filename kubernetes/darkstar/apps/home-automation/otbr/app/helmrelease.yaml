@@ -1,0 +1,124 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: otbr
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 1h
+  values:
+    controllers:
+      otbr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/ownbee/hass-otbr-docker
+              tag: v0.3.0@sha256:5ca7008462e94d4c937aca8c1c9a60e709d6d300625363c161b946683032d5b1
+            env:
+              DEVICE: /dev/ttyUSB0
+              BACKBONE_IF: iot
+              OTBR_REST_PORT: &port 8081
+              OTBR_WEB_PORT: &web 7586
+              BAUDRATE: "460800"
+              FLOW_CONTROL: "1"
+              NAT64: "0"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec: &probeSpec
+                  httpGet:
+                    path: /node
+                    port: *port
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                <<: *probes
+                spec:
+                  <<: *probeSpec
+                  periodSeconds: 10
+              startup:
+                <<: *probes
+                spec:
+                  <<: *probeSpec
+                  failureThreshold: 10
+                  periodSeconds: 30
+                  timeoutSeconds: 1
+            resources:
+              requests:
+                memory: 256M
+              limits:
+                memory: 512M
+            securityContext:
+              privileged: true
+        pod:
+          nodeSelector:
+            feature.node.kubernetes.io/usb-zigbee: "true"
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name":"multus-iot",
+            "namespace": "networking",
+            "interface": "iot",
+            "ips": [
+              "10.1.20.41/24",
+              "fd79:4c9c:b9c3:20::41/64"
+            ]
+          }]
+      securityContext:
+        runAsNonRoot: false # Must be run as root user
+        runAsUser: 0 # Must be run as root user
+        runAsGroup: 0
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
+        sysctls:
+          - name: net.ipv6.conf.all.forwarding
+            value: "1"
+          - name: net.ipv6.conf.iot.accept_ra_rt_info_max_plen
+            value: "64"
+          - name: net.ipv6.conf.iot.accept_ra
+            value: "2"
+    service:
+      app:
+        controller: otbr
+        ports:
+          http:
+            port: *port
+      web:
+        controller: otbr
+        ports:
+          http:
+            port: *web
+    route:
+      web:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+        hostnames:
+          - otbr.starstreak.net
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: web
+                port: *web
+    persistence:
+      data:
+        existingClaim: "${VOLSYNC_CLAIM}"
+      #      usb:
+      #        type: hostPath
+      #        hostPath: /dev/serial/by-id/usb-Nabu_Casa_Home_Assistant_Connect_ZBT-1_fc2af04589ffef11a24ee81497bbefe1-if00-port0
+      #        hostPathType: CharDevice
+      #        globalMounts:
+      #          - path: /dev/ttyUSB0
+      tmp:
+        type: emptyDir

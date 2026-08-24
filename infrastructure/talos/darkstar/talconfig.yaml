@@ -60,6 +60,8 @@ nodes:
             dhcp: false
     nodeLabels:
       intel.feature.node.kubernetes.io/gpu: "true"
+      # ZBT-2
+      feature.node.kubernetes.io/usb-zigbee: "true"
     userVolumes:
       - name: usb
         provisioning:

@@ -43,6 +43,9 @@ spec:
               capabilities:
                 drop:
                   - ALL
+        pod:
+          nodeSelector:
+            feature.node.kubernetes.io/usb-zigbee: "true"
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
@@ -88,7 +91,6 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
-
     persistence:
       data:
         existingClaim: matter-server-config
