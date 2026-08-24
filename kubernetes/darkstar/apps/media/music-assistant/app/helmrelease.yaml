@@ -13,19 +13,6 @@ spec:
   values:
     controllers:
       music-assistant:
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": [
-                  "10.1.20.38/24",
-                  "fd79:4c9c:b9c3:20::38/64"
-                ]
-              }]
-          dnsPolicy: ClusterFirstWithHostNet
-          hostNetwork: true
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -69,6 +56,25 @@ spec:
               capabilities:
                 drop:
                   - ALL
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name":"multus-iot",
+            "namespace": "networking",
+            "ips": [
+              "10.1.20.38/24",
+              "fd79:4c9c:b9c3:20::38/64"
+            ]
+          }]
+      securityContext:
+        sysctls:
+          - name: net.ipv6.conf.all.forwarding
+            value: "1"
+          - name: net.ipv6.conf.iot.accept_ra_rt_info_max_plen
+            value: "64"
+          - name: net.ipv6.conf.iot.accept_ra
+            value: "2"
     service:
       app:
         type: LoadBalancer

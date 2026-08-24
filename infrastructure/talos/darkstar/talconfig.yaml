@@ -175,6 +175,13 @@ controlPlane:
               aliases:
                 - darkstar
                 - darkstar.lan.starstreak.net
+        sysctls:
+          net.ipv6.conf.all.accept_ra: "2"
+          net.ipv6.conf.default.accept_ra: "2"
+          net.ipv6.conf.eno1.accept_ra: "2"
+          net.ipv6.conf.ethSel0/20.accept_ra: "0"
+          net.ipv6.conf.ethSel0/30.accept_ra: "0"
+          net.ipv6.conf.ethSel0/50.accept_ra: "0"
         time:
           disabled: false
           servers:
