@@ -62,6 +62,7 @@ spec:
           [{
             "name":"multus-iot",
             "namespace": "networking",
+            "interface": "iot",
             "ips": [
               "10.1.20.38/24",
               "fd79:4c9c:b9c3:20::38/64"
