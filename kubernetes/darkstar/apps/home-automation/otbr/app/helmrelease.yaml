@@ -82,12 +82,12 @@ spec:
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
-      #      usb:
-      #        type: hostPath
-      #        hostPath: /dev/serial/by-id/usb-Nabu_Casa_Home_Assistant_Connect_ZBT-1_fc2af04589ffef11a24ee81497bbefe1-if00-port0
-      #        hostPathType: CharDevice
-      #        globalMounts:
-      #          - path: /dev/ttyUSB0
+      usb:
+        type: hostPath
+        hostPath: /dev/serial/by-id/usb-Nabu_Casa_Home_Assistant_Connect_ZBT-1_fc2af04589ffef11a24ee81497bbefe1-if00-port0
+        hostPathType: CharDevice
+        globalMounts:
+          - path: /dev/ttyUSB0
       tmp:
         type: emptyDir
         globalMounts:
