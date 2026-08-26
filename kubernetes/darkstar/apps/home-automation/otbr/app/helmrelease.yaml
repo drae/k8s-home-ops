@@ -18,24 +18,24 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/wittdennis/homeassistant-otbr
-              tag: 4.2.2@sha256:80f35717025aa5a15ce593232c2531e67e123e3e439545d5320e35a7c60da017
+              repository: ghcr.io/ownbee/hass-otbr-docker
+              tag: v0.3.0@sha256:5ca7008462e94d4c937aca8c1c9a60e709d6d300625363c161b946683032d5b1
             env:
               DEVICE: /dev/ttyUSB0
               BACKBONE_IF: iot
+              OTBR_REST_PORT: &port 8081
+              OTBR_WEB_PORT: &web 7586
               BAUDRATE: "460800"
               FLOW_CONTROL: "1"
-              NAT64: "1"
-              S6_YES_I_WANT_A_WORLD_WRITABLE_RUN_BECAUSE_KUBERNETES: 1
-              S6_READ_ONLY_ROOT: 1
+              NAT64: "0"
             probes:
               liveness: &probe
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /node/state
-                    port: &port 8081
+                    path: /node
+                    port: *port
               readiness: *probe
             resources:
               requests:
@@ -60,11 +60,16 @@ spec:
             ]
           }]
       securityContext:
+        runAsNonRoot: false # Must be run as root user
+        runAsUser: 0 # Must be run as root user
+        runAsGroup: 0
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
         sysctls:
           - name: net.ipv6.conf.all.forwarding
             value: "1"
-          - name: net.ipv6.conf.iot.accept_ra_rt_info_max_plen
-            value: "64"
+          - name: net.ipv6.conf.iot.forwarding
+            value: "1"
           - name: net.ipv6.conf.iot.accept_ra
             value: "2"
     service:
@@ -73,6 +78,32 @@ spec:
         ports:
           http:
             port: *port
+      web:
+        controller: otbr
+        ports:
+          http:
+            port: *web
+    route:
+      app:
+        hostnames:
+          - otbr-api.starstreak.net
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+      web:
+        hostnames:
+          - otbr.starstreak.net
+        parentRefs:
+          - name: envoy-internal
+            namespace: networking
+        rules:
+          - backendRefs:
+              - identifier: web
+                port: *web
     persistence:
       data:
         existingClaim: "${VOLSYNC_CLAIM}"
