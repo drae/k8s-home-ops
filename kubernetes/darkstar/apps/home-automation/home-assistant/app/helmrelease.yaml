@@ -40,24 +40,24 @@ spec:
               capabilities:
                 drop:
                   - ALL
-          matter-hub:
-            image:
-              repository: ghcr.io/riddix/home-assistant-matter-hub
-              tag: 2.0.56@sha256:0255708cac22bc5109fec84c9c87605a82825c557ca07cecbcb36a7aac795c8f
-            env:
-              HAMH_STORAGE_LOCATION: /config/matter-hub
-              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
-              HAMH_LOG_LEVEL: info
-              HAMH_HTTP_PORT: "8482"
-            envFrom:
-              - secretRef:
-                  name: home-assistant-matter-secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+          #          matter-hub:
+          #            image:
+          #              repository: ghcr.io/riddix/home-assistant-matter-hub
+          #              tag: 2.0.56@sha256:0255708cac22bc5109fec84c9c87605a82825c557ca07cecbcb36a7aac795c8f
+          #            env:
+          #              HAMH_STORAGE_LOCATION: /config/matter-hub
+          #              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
+          #              HAMH_LOG_LEVEL: info
+          #              HAMH_HTTP_PORT: "8482"
+          #            envFrom:
+          #              - secretRef:
+          #                  name: home-assistant-matter-secret
+          #            securityContext:
+          #              allowPrivilegeEscalation: false
+          #              readOnlyRootFilesystem: true
+          #              capabilities:
+          #                drop:
+          #                  - ALL
           code-server:
             image:
               repository: ghcr.io/coder/code-server
@@ -110,10 +110,10 @@ spec:
           http:
             appProtocol: kubernetes.io/ws
             port: &port 8123
-      matter-hub:
-        ports:
-          matter-hub:
-            port: &matter-port 8482
+      #      matter-hub:
+      #        ports:
+      #          matter-hub:
+      #            port: &matter-port 8482
       code-server:
         ports:
           code-server:
@@ -142,24 +142,24 @@ spec:
             backendRefs:
               - identifier: code-server
                 port: *code-server-port
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /matter/
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-              - type: RequestHeaderModifier
-                requestHeaderModifier:
-                  add:
-                    - name: "x-ingress-path"
-                      value: "matter"
-            backendRefs:
-              - identifier: matter-hub
-                port: *matter-port
+          #          - matches:
+          #              - path:
+          #                  type: PathPrefix
+          #                  value: /matter/
+          #            filters:
+          #              - type: URLRewrite
+          #                urlRewrite:
+          #                  path:
+          #                    type: ReplacePrefixMatch
+          #                    replacePrefixMatch: /
+          #              - type: RequestHeaderModifier
+          #                requestHeaderModifier:
+          #                  add:
+          #                    - name: "x-ingress-path"
+          #                      value: "matter"
+          #            backendRefs:
+          #              - identifier: matter-hub
+          #                port: *matter-port
           - backendRefs:
               - identifier: app
                 port: *port
@@ -170,8 +170,8 @@ spec:
           home-assistant:
             app:
               - path: /config
-            matter-hub:
-              - path: /config
+            #            matter-hub:
+            #              - path: /config
             code-server:
               - path: /config
       logs:
