@@ -100,10 +100,10 @@ spec:
         sysctls:
           - name: net.ipv6.conf.all.forwarding
             value: "1"
-          - name: net.ipv6.conf.iot.accept_ra_rt_info_max_plen
-            value: "64"
           - name: net.ipv6.conf.iot.accept_ra
             value: "2"
+          - name: net.ipv6.conf.iot.accept_ra_rt_info_max_plen
+            value: "64"
     service:
       app:
         ports:
