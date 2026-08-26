@@ -43,13 +43,7 @@ spec:
               limits:
                 memory: 512M
             securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                  - ALL
-                add:
-                  - NET_ADMIN
-                  - NET_RAW
+              privileged: true
         pod:
           nodeSelector:
             feature.node.kubernetes.io/usb-zigbee: "true"
@@ -84,10 +78,16 @@ spec:
         existingClaim: "${VOLSYNC_CLAIM}"
       usb:
         type: hostPath
-        hostPath: /dev/serial/by-id/usb-Nabu_Casa_Home_Assistant_Connect_ZBT-1_fc2af04589ffef11a24ee81497bbefe1-if00-port0
+        hostPath: /dev/serial/by-id/usb-Nabu_Casa_ZBT-2_94A990D0278C-if00
         hostPathType: CharDevice
         globalMounts:
           - path: /dev/ttyUSB0
+      tun:
+        type: hostPath
+        hostPath: /dev/net/tun
+        hostPathType: CharDevice
+        globalMounts:
+          - path: /dev/net/tun
       tmp:
         type: emptyDir
         globalMounts:
