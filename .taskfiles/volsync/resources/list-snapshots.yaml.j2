@@ -22,7 +22,7 @@ spec:
             - secretRef:
                 name: {{ ENV.APP }}-volsync-nfs
           volumeMounts:
-            - mountPath: /repository
+            - mountPath: /mnt/repository
               name: repository
       volumes:
         - name: repository
