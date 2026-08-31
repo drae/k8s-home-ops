@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: media
 resources:
   - ./namespace.yaml
-  - ./music-assistant/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
   - ./tvheadend/ks.yaml
