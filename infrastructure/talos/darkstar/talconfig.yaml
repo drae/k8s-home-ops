@@ -48,28 +48,16 @@ nodes:
         dhcp: true
         vip:
           ip: 10.1.10.20
-        vlans:
-          - vlanId: 20
-            mtu: 1500
-            dhcp: false
-          - vlanId: 30
-            mtu: 1500
-            dhcp: false
-          - vlanId: 50
-            mtu: 1500
-            dhcp: false
     nodeLabels:
       intel.feature.node.kubernetes.io/gpu: "true"
-      # ZBT-2
-      feature.node.kubernetes.io/usb-zigbee: "true"
-    userVolumes:
-      - name: usb
-        provisioning:
-          diskSelector:
-            match: disk.transport == "usb"
-          maxSize: 1TB
-        filesystem:
-          type: xfs
+#    userVolumes:
+#      - name: usb
+#        provisioning:
+#          diskSelector:
+#            match: disk.transport == "usb"
+#          maxSize: 1TB
+#        filesystem:
+#          type: xfs
 
 controlPlane:
   schematic:
@@ -181,9 +169,6 @@ controlPlane:
           net.ipv6.conf.all.accept_ra: "2"
           net.ipv6.conf.default.accept_ra: "2"
           net.ipv6.conf.eno1.accept_ra: "2"
-          net.ipv6.conf.ethSel0/20.disable_ipv6: "1"
-          net.ipv6.conf.ethSel0/30.disable_ipv6: "1"
-          net.ipv6.conf.ethSel0/50.disable_ipv6: "1"
         time:
           disabled: false
           servers:
