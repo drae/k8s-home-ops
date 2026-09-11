@@ -54,6 +54,9 @@ radarr:
       - trash_id: c3933358ba2356bafc41524f81471069 # [SQP] SQP-2
         reset_unmatched_scores:
           enabled: true
+      - trash_id: 7526db7ac0a1f764793fb181864d0222 # [SQP] SQP-4 (MA Hybrid)
+        reset_unmatched_scores:
+          enabled: true
 
     custom_format_groups:
       add:
@@ -75,6 +78,8 @@ radarr:
           - 5153ec7413d9dae44e24275589b5e944 # bhdstudio - downgrade
         assign_scores_to:
           - name: "[SQP] SQP-2"
+            score: -10000
+          - name: "[SQP] SQP-4 (MA Hybrid)"
             score: -10000
 
       # Not bothered about which positional audio format is used - remove these if that changes
