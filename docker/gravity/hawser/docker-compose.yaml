@@ -1,7 +1,7 @@
 ---
 services:
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.46
+    image: ghcr.io/finsys/hawser:0.2.47
     container_name: hawser
     restart: unless-stopped
     environment:
