@@ -3,21 +3,31 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
-  name: nas
+  name: local
 spec:
   allowedNamespaces:
     all: true
   backend:
     filesystem:
       path: /repo
-      volume:
-        nfs:
-          server: 10.1.10.10
-          path: /mnt/zstore/backup/kopiur
   encryption:
     passwordSecretRef:
       name: kopiur-nas-secret
       namespace: storage
       key: KOPIA_PASSWORD
+  identityDefaults:
+    hostnameExpr: namespace
+    usernameExpr: policyName
+  maintenance:
+    schedule:
+      quick:
+        cron: 0 * * * *
+        jitter: 10m
+      full:
+        cron: 0 3 * * *
+        jitter: 1h
+  parameters:
+    epoch:
+      minDuration: 1h
   scheduleDefaults:
     timezone: Europe/London

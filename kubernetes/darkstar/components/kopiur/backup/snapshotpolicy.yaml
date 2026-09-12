@@ -5,22 +5,27 @@ kind: SnapshotPolicy
 metadata:
   name: ${APP}
 spec:
-  compression:
-    compressor: zstd
   mover:
     cache:
       capacity: ${KOPIUR_CAPACITY:=5Gi}
-      mode: Persistent
+      mode: Ephemeral
       storageClassName: local-hostpath
     securityContext:
       runAsUser: ${APP_UID:-2000}
       runAsGroup: ${APP_GID:-2000}
   repository:
     kind: ClusterRepository
-    name: nas
+    name: local
   retention:
     keepHourly: 24
     keepDaily: 7
+  verification:
+    deep:
+      schedule:
+        cron: H 5 1 * *
+    quick:
+      schedule:
+        cron: H 3 * * *
   sources:
     - pvc:
         name: "${KOPIUR_CLAIM:-${APP}}"
