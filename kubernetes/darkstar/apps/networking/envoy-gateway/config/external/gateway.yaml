@@ -5,7 +5,7 @@ kind: Gateway
 metadata:
   name: envoy-external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname ingress.starstreak.net
+    external-dns.kubernetes.io/target: &hostname ingress.starstreak.net
     gatus.home-operations.com/endpoint: |-
       client:
         dns-resolver: tcp://1.1.1.1:53
@@ -40,7 +40,7 @@ kind: HTTPRoute
 metadata:
   name: envoy-external
   annotations:
-    external-dns.alpha.kubernetes.io/controller: none
+    external-dns.kubernetes.io/controller: none
 spec:
   parentRefs:
     - name: envoy-external
