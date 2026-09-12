@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.8.0
+    tag: 0.10.8
   url: oci://ghcr.io/home-operations/charts/kopiur
 ---
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -24,20 +24,13 @@ spec:
     name: kopiur
   interval: 1h
   values:
-    controller:
-      extraVolumes:
-        - name: repo
-          nfs:
-            path: 10.1.10.10
-            server: /mnt/zstore/backup/kopiur
-      extraVolumeMounts:
-        - name: repo
-          mountPath: /repo
-      resources:
-        requests:
-          cpu: 100m
-        limits:
-          memory: 2Gi
+    extraVolumes:
+      - name: repo
+        hostPath:
+          path: /var/mnt/usb/kopiur
+    extraVolumeMounts:
+      - name: repo
+        mountPath: /repo
     monitoring:
       dashboards:
         enabled: true
@@ -51,3 +44,8 @@ spec:
       runAsGroup: 2000
       fsGroup: 2000
       fsGroupChangePolicy: OnRootMismatch
+    resources:
+      requests:
+        cpu: 100m
+      limits:
+        memory: 1Gi
