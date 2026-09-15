@@ -101,3 +101,5 @@ radarr:
         assign_scores_to:
           - name: "[SQP] SQP-2"
             score: 5000
+          - name: "[SQP] SQP-5"
+            score: 5000
