@@ -15,18 +15,6 @@ spec:
       plex:
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          resourceClaims:
-            - name: gpu
-              resourceClaimTemplateName: plex-gpu
-          securityContext:
-            runAsUser: 2000
-            runAsGroup: 2000
-            fsGroup: 2000
-            fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups:
-              - 44
-              - 109
         containers:
           app:
             image:
@@ -68,6 +56,16 @@ spec:
               capabilities:
                 drop:
                   - ALL
+    defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: plex-gpu
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000
+        runAsGroup: 2000
+        fsGroup: 2000
+        fsGroupChangePolicy: "OnRootMismatch"
     service:
       app:
         type: LoadBalancer
@@ -92,12 +90,30 @@ spec:
           - name: envoy-external
             namespace: networking
         rules:
-          - backendRefs:
+          - backendRefs: &backendRefs
               - identifier: app
                 port: *port
             filters:
               - type: RequestHeaderModifier
+                requestHeaderModifier: &pipeline
+                  set:
+                    # Plex closes idle keep-alive connections after 20s unless this is set, so Envoy owns the pool
+                    - name: X-Plex-Http-Pipeline
+                      value: infinite
+          - backendRefs: *backendRefs
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier: *pipeline
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /:/eventsource
+          - # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
+            backendRefs: *backendRefs
+            filters:
+              - type: RequestHeaderModifier
                 requestHeaderModifier:
+                  <<: *pipeline
                   remove:
                     - Range
             matches:
