@@ -74,33 +74,13 @@ spec:
         annotations:
           lbipam.cilium.io/ips: 10.1.10.32
         externalTrafficPolicy: Local
-        ipFamilyPolicy: PreferDualStack
         ports:
           http:
             primary: true
             port: *port
-          dlna:
-            port: 1900
-            protocol: UDP
-          dlna2:
-            port: 32469
           avahi:
             port: 5353
             protocol: UDP
-          gdm1:
-            port: 32410
-            protocol: UDP
-          gdm2:
-            port: 32412
-            protocol: UDP
-          gdm3:
-            port: 32413
-            protocol: UDP
-          gdm4:
-            port: 32414
-            protocol: UDP
-          gdm5:
-            port: 32500
     route:
       app:
         annotations:
