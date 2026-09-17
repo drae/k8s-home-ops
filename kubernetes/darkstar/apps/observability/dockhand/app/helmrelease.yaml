@@ -31,6 +31,7 @@ spec:
               TZ: Europe/London
               PUID: 2000
               PGID: 2000
+              FEAT_BACKUPS_ENABLED: true
             resources:
               requests:
                 memory: 128Mi
