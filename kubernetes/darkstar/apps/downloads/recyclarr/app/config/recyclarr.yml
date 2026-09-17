@@ -86,11 +86,14 @@ radarr:
             score: -10000
           - name: "[SQP] SQP-4 (MA Hybrid)"
             score: -10000
+
       - trash_ids:
           - d66d26d37c32b0137cd26f42abaa7c2e # The Farm
         assign_scores_to:
           - name: "[SQP] SQP-5"
-            score: 4000
+            score: 1040
+          - name: "[SQP] SQP-4 (MA Hybrid)"
+            score: 1040
 
       # Not bothered about which positional audio format is used - remove these if that changes
       - trash_ids:
@@ -101,5 +104,7 @@ radarr:
         assign_scores_to:
           - name: "[SQP] SQP-2"
             score: 5000
+          - name: "[SQP] SQP-4 (MA Hybrid)"
+            score: 2510
           - name: "[SQP] SQP-5"
             score: 5000
