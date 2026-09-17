@@ -12,6 +12,7 @@ spec:
     destinationPVC: {{ ENV.CLAIM }}
     copyMethod: Direct
     storageClassName: {{ ENV.STORAGE_CLASS_NAME }}
+    cacheStorageClassName: local-hostpath
     previous: {{ ENV.PREVIOUS }}
     moverSecurityContext:
       runAsUser: {{ ENV.PUID }}
@@ -20,3 +21,9 @@ spec:
     enableFileDeletion: true
     cleanupCachePVC: true
     cleanupTempPVC: true
+    moverVolumes:
+      - mountPath: repository
+        volumeSource:
+          nfs:
+            server: 10.1.10.10
+            path: /mnt/zstore/backup/volsync
