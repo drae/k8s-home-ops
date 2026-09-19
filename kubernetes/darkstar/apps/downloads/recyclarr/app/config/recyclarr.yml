@@ -54,9 +54,46 @@ radarr:
       - trash_id: c3933358ba2356bafc41524f81471069 # [SQP] SQP-2
         reset_unmatched_scores:
           enabled: true
+        qualities:
+          - name: WEB|Remux|Bluray|2160p
+            qualities:
+              - Remux-2160p
+              - Bluray-2160p
+              - WEBDL-2160p
+              - WEBRip-2160p
+          - name: WEB|Remux|1080p
+            qualities:
+              - Remux-1080p
+              - WEBDL-1080p
+              - WEBRip-1080p
       - trash_id: 7526db7ac0a1f764793fb181864d0222 # [SQP] SQP-4 (MA Hybrid)
         reset_unmatched_scores:
           enabled: true
+        qualities:
+          - name: WEB|Bluray|2160p
+            qualities:
+              - Bluray-2160p
+              - WEBDL-2160p
+              - WEBRip-2160p
+          - name: WEB|Remux|1080p
+            qualities:
+              - Remux-1080p
+              - WEBDL-1080p
+              - WEBRip-1080p
+      - trash_id: a7bb1539fd147256b21b1098f3dc2016 # [SQP] SQP-5
+        reset_unmatched_scores:
+          enabled: true
+        qualities:
+          - name: WEB|Bluray|2160p
+            qualities:
+              - Bluray-2160p
+              - WEBDL-2160p
+              - WEBRip-2160p
+          - name: WEB|Remux|1080p
+            qualities:
+              - Remux-1080p
+              - WEBDL-1080p
+              - WEBRip-1080p
 
     custom_format_groups:
       add:
@@ -86,6 +123,8 @@ radarr:
             score: -10000
           - name: "[SQP] SQP-4 (MA Hybrid)"
             score: -10000
+          - name: "[SQP] SQP-5"
+            score: -10000
 
       # Not bothered about which positional audio format is used - remove these if that changes
       - trash_ids:
@@ -98,6 +137,8 @@ radarr:
             score: 3000
           - name: "[SQP] SQP-4 (MA Hybrid)"
             score: 3000
+          - name: "[SQP] SQP-5"
+            score: 3000
 
       # Disable scoring of x264 - single radarr instance
       - trash_ids:
@@ -106,4 +147,6 @@ radarr:
           - name: "[SQP] SQP-2"
             score: 0
           - name: "[SQP] SQP-4 (MA Hybrid)"
+            score: 0
+          - name: "[SQP] SQP-5"
             score: 0
