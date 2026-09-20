@@ -57,8 +57,8 @@ radarr:
         qualities:
           - name: WEB|Remux|Bluray|2160p
             qualities:
-              - Remux-2160p
               - Bluray-2160p
+              - Remux-2160p
               - WEBDL-2160p
               - WEBRip-2160p
           - name: WEB|Remux|1080p
