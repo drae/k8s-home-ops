@@ -1,0 +1,15 @@
+# Managed by Ansible - do not edit directly
+[global]
+# Prior to version 4.23.0+dfsg-4, debian samba package carried usershare.patch
+# patch which changed default value for "usershare max share" parameter
+    usershare max shares = 100
+        log file = /var/log/samba/%m
+        log level = 1
+        server role = standalone server
+{% for share in samba_shares %}
+
+[{{ share.name }}]
+        path = {{ share.path }}
+        read only = no
+        inherit permissions = yes
+{% endfor %}

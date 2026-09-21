@@ -72,6 +72,7 @@ task ansible:run machine=<machine> playbook=<playbook>
 #### Available Playbooks
 
 - `os` - Operating system configuration
+- `samba` - Samba shares and users (nas only; password read from Infisical `/apollo/samba`)
 - `apps` - Application deployment and configuration
 
 ### Examples

@@ -1,0 +1,91 @@
+---
+- name: NAS (apollo) Samba setup
+  hosts: nas
+  become: true
+  gather_facts: true
+  any_errors_fatal: true
+
+  handlers:
+    - name: Restart samba
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: restarted
+        enabled: true
+      loop:
+        - smbd.service
+        - nmbd.service
+
+  tasks:
+    - name: Read Samba passwords from Infisical
+      ansible.builtin.shell: "infisical secrets get --plain --env=prod --path=/apollo/samba '{{ item.infisical_key }}' < /dev/null"
+      delegate_to: localhost
+      become: false
+      loop: "{{ samba_users }}"
+      loop_control:
+        label: "{{ item.name }}"
+      check_mode: false
+      changed_when: false
+      no_log: true
+      register: samba_secrets
+
+    - name: Set Samba password facts
+      ansible.builtin.set_fact:
+        samba_passwords: "{{ samba_passwords | default({}) | combine({item.item.name: item.stdout}) }}"
+      loop: "{{ samba_secrets.results }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+      no_log: true
+
+    - name: Ensure Samba users exist and can access shares
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        groups: users,sambashare
+        append: true
+        shell: /usr/sbin/nologin
+        create_home: false
+        home: /nonexistent
+        state: present
+      loop: "{{ samba_users }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: Configure smb.conf
+      ansible.builtin.template:
+        src: smb.conf.j2
+        dest: /etc/samba/smb.conf
+        owner: root
+        group: root
+        mode: "0644"
+        validate: testparm -s %s
+      notify: Restart samba
+
+    - name: Check for existing Samba users
+      ansible.builtin.command: pdbedit -L -u {{ item.name }}
+      loop: "{{ samba_users }}"
+      loop_control:
+        label: "{{ item.name }}"
+      register: samba_user_check
+      failed_when: false
+      changed_when: false
+      check_mode: false
+
+    - name: Set Samba passwords
+      ansible.builtin.command:
+        cmd: smbpasswd -a -s {{ item.name }}
+        stdin: "{{ samba_passwords[item.name] }}\n{{ samba_passwords[item.name] }}"
+      loop: "{{ samba_users }}"
+      loop_control:
+        label: "{{ item.name }}"
+        extended: true
+      changed_when: samba_user_check.results[ansible_loop.index0].rc != 0
+      no_log: true
+      when: not ansible_check_mode
+
+    - name: Ensure Samba services are enabled and running
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - smbd.service
+        - nmbd.service

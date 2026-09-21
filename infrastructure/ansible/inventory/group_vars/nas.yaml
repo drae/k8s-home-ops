@@ -21,3 +21,22 @@ os_packages_remove: "{{ os_packages_remove_base + os_packages_remove_additional 
 
 # zfs_exporter
 zfs_exporter_version: 2.3.10
+
+# Samba
+samba_shares:
+  - name: television
+    path: /mnt/zstore/media/television
+  - name: movies
+    path: /mnt/zstore/media/movies
+  - name: music
+    path: /mnt/zstore/media/music
+  - name: software
+    path: /mnt/zstore/software
+  - name: downloads
+    path: /mnt/zstore/media/.downloads
+  - name: soulseek
+    path: /mnt/zstore/media/soulseek
+
+samba_users:
+  - name: paul
+    infisical_key: SMB_PASSWORD_PAUL
