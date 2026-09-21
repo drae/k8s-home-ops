@@ -66,20 +66,6 @@ radarr:
               - Remux-1080p
               - WEBDL-1080p
               - WEBRip-1080p
-      - trash_id: 7526db7ac0a1f764793fb181864d0222 # [SQP] SQP-4 (MA Hybrid)
-        reset_unmatched_scores:
-          enabled: true
-        qualities:
-          - name: WEB|Bluray|2160p
-            qualities:
-              - Bluray-2160p
-              - WEBDL-2160p
-              - WEBRip-2160p
-          - name: WEB|Remux|1080p
-            qualities:
-              - Remux-1080p
-              - WEBDL-1080p
-              - WEBRip-1080p
       - trash_id: a7bb1539fd147256b21b1098f3dc2016 # [SQP] SQP-5
         reset_unmatched_scores:
           enabled: true
@@ -113,12 +99,6 @@ radarr:
             - 9d27d9d2181838f76dee150882bdc58c # Masters of cinema
             - db9b4c4b53d312a3ca5f1378f6440fc9 # Vinegar syndrome
             - 0f12c086e289cf966fa5948eac571f44 # Hybrid
-        - trash_id: f638e33c933bf0a8067559247953a270 # [SQP-4 (MA Hybrid) Optional] Release Groups
-          select:
-            - e098247bc6652dd88c76644b275260ed # FLUX
-            - 8cd3ac70db7ac318cf9a0e01333940a4 # SiC
-            - 9681750c690210f0936faed781bb7f06 # 126811
-            - 8016f2f66e751dea613e6b5b94bf633c # MainFrame
 
     custom_formats:
       # Release groups/quality
@@ -127,18 +107,15 @@ radarr:
         assign_scores_to:
           - name: "[SQP] SQP-2"
             score: -10000
-          - name: "[SQP] SQP-4 (MA Hybrid)"
-            score: -10000
           - name: "[SQP] SQP-5"
             score: -10000
 
-      # Bump MA and PLAY for SQP-5? - assumes MA > Encodes
+      # Bump MA for SQP-5 - assumes MA > Encodes
       - trash_ids:
           - 2a6039655313bf5dab1e43523b62c374 # MA
-          - 350e9170619683a55cb9191d0b1ababa # PLAY
         assign_scores_to:
           - name: "[SQP] SQP-5"
-            score: 2400
+            score: 3000
 
       # Not bothered about which positional audio format is used - remove these if that changes
       - trash_ids:
@@ -149,8 +126,6 @@ radarr:
         assign_scores_to:
           - name: "[SQP] SQP-2"
             score: 3000
-          - name: "[SQP] SQP-4 (MA Hybrid)"
-            score: 3000
           - name: "[SQP] SQP-5"
             score: 3000
 
@@ -159,8 +134,6 @@ radarr:
           - 2899d84dc9372de3408e6d8cc18e9666
         assign_scores_to:
           - name: "[SQP] SQP-2"
-            score: 0
-          - name: "[SQP] SQP-4 (MA Hybrid)"
             score: 0
           - name: "[SQP] SQP-5"
             score: 0
