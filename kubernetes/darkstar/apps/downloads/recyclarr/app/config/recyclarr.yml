@@ -115,7 +115,7 @@ radarr:
           - 2a6039655313bf5dab1e43523b62c374 # MA
         assign_scores_to:
           - name: "[SQP] SQP-5"
-            score: 3000
+            score: 1040
 
       # Not bothered about which positional audio format is used - remove these if that changes
       - trash_ids:
