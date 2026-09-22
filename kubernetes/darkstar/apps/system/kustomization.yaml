@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: system
 resources:
   - ./namespace.yaml
-  - ./fstrim/ks.yaml
   - ./generic-device-plugin/ks.yaml
   - ./reloader/ks.yaml
 components:
