@@ -1,0 +1,137 @@
+---
+# Rendered by .taskfiles/talos/Taskfile.yaml `genconfig`, merged with
+# controlplane.yaml.j2 and a per-node file via `talosctl machineconfig patch`.
+version: v1alpha1
+debug: false
+persist: true
+machine:
+  ca:
+    crt: "{{ ENV.OSCERT }}"
+    key: "{{ ENV.OSKEY }}"
+  token: "{{ ENV.TRUSTDTOKEN }}"
+  certSANs:
+    - darkstar.lan.starstreak.net
+    - 127.0.0.1
+  features:
+    diskQuotaSupport: true
+  kubelet:
+    image: ghcr.io/siderolabs/kubelet:{{ kubernetes_version }}
+    defaultRuntimeSeccompProfileEnabled: true
+    disableManifestsDirectory: true
+    extraArgs:
+      allowed-unsafe-sysctls: net.ipv6.conf.*
+    extraConfig:
+      featureGates:
+        ImageVolume: true
+        ResourceHealthStatus: true
+      maxPods: 250
+    extraMounts:
+      - destination: /var/mnt/openebs/local
+        type: bind
+        source: /var/mnt/openebs/local
+        options: [bind, rshared, rw]
+cluster:
+  controlPlane:
+    endpoint: https://darkstar.lan.starstreak.net:6443
+  clusterName: darkstar
+  token: "{{ ENV.BOOTSTRAPTOKEN }}"
+  secretboxEncryptionSecret: "{{ ENV.AESCBCENCYPTIONKEY }}"
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  image: factory.talos.dev/metal-installer-secureboot/{{ schematic }}:{{ talos_version }}
+---
+apiVersion: v1alpha1
+kind: TimeSyncConfig
+ntp:
+  servers:
+    - 10.1.10.1
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:admin
+allowedKubernetesNamespaces:
+  - system-upgrade
+  - actions-runner-system
+---
+apiVersion: v1alpha1
+kind: KubePrismConfig
+port: 7445
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+hostDNS:
+  enabled: true
+  forwardKubeDNSToHost: false
+  resolveMemberNames: true
+---
+apiVersion: v1alpha1
+kind: KubeNetworkConfig
+dnsDomain: cluster.local
+podSubnets:
+  - 10.244.0.0/16
+  - fd79:4c9c:b9c3:2400::/56
+serviceSubnets:
+  - 10.96.0.0/12
+  - fd79:4c9c:b9c3:9600::/112
+---
+apiVersion: v1alpha1
+kind: DiscoveryIdentityConfig
+clusterID: darkstar
+clusterSecret: "{{ ENV.CLUSTERSECRET }}"
+---
+apiVersion: v1alpha1
+kind: DiscoveryServiceConfig
+name: default
+endpoint: https://discovery.talos.dev/
+---
+apiVersion: v1alpha1
+kind: EtcFileConfig
+name: nfsmount.conf
+mode: 0o644
+contents: |
+  [ NFSMount_Global_Options ]
+  nfsvers=4.2
+  hard=True
+  noatime=True
+  nodiratime=True
+  rsize=131072
+  wsize=131072
+  nconnect=8
+---
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: 20-customization
+content: |
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false
+  [plugins."io.containerd.cri.v1.runtime"]
+    cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+    device_ownership_from_security_context = true
+---
+apiVersion: v1alpha1
+kind: StaticHostConfig
+name: 10.1.10.1
+hostnames: [gw, gw.lan.starstreak.net]
+---
+apiVersion: v1alpha1
+kind: StaticHostConfig
+name: 10.1.10.10
+hostnames: [apollo, apollo.lan.starstreak.net]
+---
+apiVersion: v1alpha1
+kind: StaticHostConfig
+name: 10.1.10.20
+hostnames: [darkstar, darkstar.lan.starstreak.net]
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  net.ipv6.conf.all.accept_ra: "2"
+  net.ipv6.conf.default.accept_ra: "2"
+---
+apiVersion: v1alpha1
+kind: FilesystemTrimConfig
+interval: 168h0m0s

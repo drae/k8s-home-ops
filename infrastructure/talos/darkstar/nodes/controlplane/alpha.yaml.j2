@@ -1,0 +1,87 @@
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: glob("INTEL *", disk.model)
+  wipe: false
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+auto: 'off'
+hostname: alpha.lan.starstreak.net
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+nameservers:
+  - address: 10.1.10.1
+searchDomains:
+  disableDefault: true
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel0
+selector:
+  match: glob("*:70:e2", mac(link.hardware_addr)) && glob("e1000e", link.driver)
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: ethSel0
+---
+apiVersion: v1alpha1
+kind: Layer2VIPConfig
+name: 10.1.10.20
+link: ethSel0
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ethSel0
+mtu: 1500
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: ethSel0.20
+vlanID: 20
+parent: ethSel0
+mtu: 1500
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: ethSel0.30
+vlanID: 30
+parent: ethSel0
+mtu: 1500
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: ethSel0.50
+vlanID: 50
+parent: ethSel0
+mtu: 1500
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  validSubnets:
+    - 10.1.10.0/24
+    - fd79:4c9c:b9c3:10::/108
+labels:
+  node-role.kubernetes.io/control-plane: ""
+  intel.feature.node.kubernetes.io/gpu: "true"
+  feature.node.kubernetes.io/usb-zigbee: "true"
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  net.ipv6.conf.eno1.accept_ra: "2"
+  net.ipv6.conf.ethSel0/20.disable_ipv6: "1"
+  net.ipv6.conf.ethSel0/30.disable_ipv6: "1"
+  net.ipv6.conf.ethSel0/50.disable_ipv6: "1"
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: dm_thin_pool
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: dm_mod

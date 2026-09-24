@@ -4,17 +4,70 @@ version: "3"
 
 tasks:
   genconfig:
-    desc: Generate clusterconfig for Talos
+    desc: Render clusterconfig for all Talos nodes from the cluster/role/node templates
     silent: true
+    vars:
+      NODE_FILES:
+        sh: find {{.INFRASTRUCTURE_DIR}}/talos/darkstar/nodes -type f -name '*.yaml.j2' -printf '%P\n'
     cmds:
-      - infisical run --path=/darkstar/talos -- talhelper genconfig
-        --secret-file {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.yaml
-        --config-file {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talconfig.yaml
-        --out-dir {{.INFRASTRUCTURE_DIR}}/talos/darkstar/clusterconfig
+      - for:
+          var: NODE_FILES
+        task: _render-machineconfig
+        vars:
+          # e.g. "controlplane/alpha.yaml.j2" -> role=controlplane, node=alpha
+          role: '{{ .ITEM | splitList "/" | first }}'
+          node: '{{ .ITEM | splitList "/" | last | trimSuffix ".yaml.j2" }}'
     preconditions:
-      - which infisical talhelper
-      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talsecret.yaml
-      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/talconfig.yaml
+      - which infisical minijinja-cli talosctl yq jq curl
+      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/version.yaml
+      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/schematic.yaml
+
+  _render-machineconfig:
+    internal: true
+    desc: Render + merge a single node's machine config from templates
+    requires:
+      vars:
+        - role
+        - node
+    vars:
+      TALOS_DIR: "{{.INFRASTRUCTURE_DIR}}/talos/darkstar"
+      TALOS_VERSION:
+        sh: yq '.talos_version' {{.INFRASTRUCTURE_DIR}}/talos/darkstar/version.yaml
+      KUBERNETES_VERSION:
+        sh: yq '.kubernetes_version' {{.INFRASTRUCTURE_DIR}}/talos/darkstar/version.yaml
+      # https://factory.talos.dev/schematics - deterministic id derived from
+      # schematic.yaml's content (extensions + kernel args). Read-only POST,
+      # does not touch the node.
+      SCHEMATIC_ID:
+        sh: curl -sX POST --data-binary @{{.INFRASTRUCTURE_DIR}}/talos/darkstar/schematic.yaml https://factory.talos.dev/schematics | jq -r '.id'
+      TMP_CLUSTER: "{{.TALOS_DIR}}/clusterconfig/.render-cluster.yaml"
+      TMP_ROLE: "{{.TALOS_DIR}}/clusterconfig/.render-role.yaml"
+      TMP_NODE: "{{.TALOS_DIR}}/clusterconfig/.render-node.yaml"
+      TMP_MERGED: "{{.TALOS_DIR}}/clusterconfig/.render-merged.yaml"
+    cmds:
+      - infisical run --path=/darkstar/talos --
+        minijinja-cli {{.TALOS_DIR}}/cluster.yaml.j2
+        -D schematic={{.SCHEMATIC_ID}} -D talos_version={{.TALOS_VERSION}}
+        -D kubernetes_version={{.KUBERNETES_VERSION}}
+        -o {{.TMP_CLUSTER}}
+      - infisical run --path=/darkstar/talos --
+        minijinja-cli {{.TALOS_DIR}}/{{.role}}.yaml.j2
+        -D kubernetes_version={{.KUBERNETES_VERSION}}
+        -o {{.TMP_ROLE}}
+      - infisical run --path=/darkstar/talos --
+        minijinja-cli {{.TALOS_DIR}}/nodes/{{.role}}/{{.node}}.yaml.j2
+        -o {{.TMP_NODE}}
+      - talosctl machineconfig patch {{.TMP_CLUSTER}}
+        -p @{{.TMP_ROLE}} -p @{{.TMP_NODE}} -o {{.TMP_MERGED}}
+      # Output filename must stay "darkstar-<hostname>.yaml" - applyconfig
+      # and upgrade-node derive the node to target from this exact pattern.
+      - |
+        HOSTNAME=$(yq ea 'select(.kind == "HostnameConfig") | .hostname' {{.TMP_MERGED}})
+        mv {{.TMP_MERGED}} {{.TALOS_DIR}}/clusterconfig/darkstar-${HOSTNAME}.yaml
+      - rm -f {{.TMP_CLUSTER}} {{.TMP_ROLE}} {{.TMP_NODE}}
+    preconditions:
+      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/{{.role}}.yaml.j2
+      - test -f {{.INFRASTRUCTURE_DIR}}/talos/darkstar/nodes/{{.role}}/{{.node}}.yaml.j2
 
   applyconfig:
     desc: Apply clusterconfig for a Talos cluster
