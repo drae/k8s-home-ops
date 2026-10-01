@@ -23,5 +23,5 @@ kubectl                        = '1.37.1'
 kustomize                      = '5.8.1'
 "aqua:mitsuhiko/minijinja"     = '2.24.0'
 talosctl                       = '1.14.2'
-task                           = '3.53.1'
+task                           = '3.54.0'
 stern = "latest"
