@@ -16,9 +16,7 @@ services:
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --entrypoints.websecure.address=:443
       - --entrypoints.websecure.http.tls.certresolver=cloudflare
-      # wildcard plus the host name, so each host's cert is a distinct LE certificate set
       - --entrypoints.websecure.http.tls.domains[0].main=*.starstreak.net
-      - --entrypoints.websecure.http.tls.domains[0].sans=apollo.starstreak.net
       - --certificatesresolvers.cloudflare.acme.storage=/data/acme.json
       - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
       - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53
