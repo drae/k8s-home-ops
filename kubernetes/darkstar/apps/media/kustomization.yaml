@@ -7,7 +7,6 @@ resources:
   - ./namespace.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
-  - ./tvheadend/ks.yaml
 components:
   - ../../components/alerts
   - ../../components/kopiur/secret
