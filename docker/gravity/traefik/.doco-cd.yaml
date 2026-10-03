@@ -1,0 +1,4 @@
+external_secrets:
+  CLOUDFLARE_DNS: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/gravity/docker/CLOUDFLARE_DNS
+  ADGUARD_USER: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/gravity/docker/ADGUARD_USER
+  ADGUARD_PASSWORD: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/gravity/docker/ADGUARD_PASSWORD
