@@ -4,6 +4,10 @@ services:
     image: ghcr.io/linuxserver/tvheadend:latest@sha256:04caf2d70776233154fff1a184647c72068b3aa1593f3576c1c9ea3a755ae18c
     container_name: tvheadend
     restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.tvheadend.rule=Host(`tvheadend.starstreak.net`)
+      - traefik.http.services.tvheadend.loadbalancer.server.port=9981
     environment:
       - PUID=1000
       - PGID=1000

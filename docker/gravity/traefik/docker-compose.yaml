@@ -1,0 +1,53 @@
+---
+services:
+  traefik:
+    image: docker.io/library/traefik:v3.7.13
+    container_name: traefik
+    restart: unless-stopped
+    network_mode: host # reach host-network containers (tvheadend) on 127.0.0.1
+    command:
+      - --global.checknewversion=false
+      - --global.sendanonymoususage=false
+      - --log.level=INFO
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls.certresolver=cloudflare
+      # wildcard plus the host name, so each host's cert is a distinct LE certificate set
+      - --entrypoints.websecure.http.tls.domains[0].main=*.starstreak.net
+      - --entrypoints.websecure.http.tls.domains[0].sans=gravity.starstreak.net
+      - --certificatesresolvers.cloudflare.acme.storage=/data/acme.json
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53
+    environment:
+      - TZ=Europe/London
+      - CF_DNS_API_TOKEN=${CLOUDFLARE_DNS}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - data:/data
+
+  dnsweaver:
+    image: ghcr.io/maxfield-allison/dnsweaver:v3.0.0
+    container_name: dnsweaver
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/London
+      - DNSWEAVER_SOURCES=traefik
+      - DNSWEAVER_INSTANCES=adguard
+      - DNSWEAVER_ADGUARD_TYPE=adguard
+      - DNSWEAVER_ADGUARD_URL=http://10.1.10.1:8053
+      - DNSWEAVER_ADGUARD_USERNAME=${ADGUARD_USER}
+      - DNSWEAVER_ADGUARD_PASSWORD=${ADGUARD_PASSWORD}
+      - DNSWEAVER_ADGUARD_MODE=managed # only touches rewrites pointing at TARGET
+      - DNSWEAVER_ADGUARD_ZONE=starstreak.net
+      - DNSWEAVER_ADGUARD_RECORD_TYPE=A
+      - DNSWEAVER_ADGUARD_TARGET=10.1.10.98
+      - DNSWEAVER_ADGUARD_DOMAINS=*.starstreak.net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+volumes:
+  data: {}

@@ -4,6 +4,10 @@ services:
     image: ghcr.io/linuxserver/sabnzbd:5.1.3
     container_name: sabnzbd
     restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.starstreak.net`)
+      - traefik.http.services.sabnzbd.loadbalancer.server.port=8080
     environment:
       - PUID=2000
       - PGID=2000
