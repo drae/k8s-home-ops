@@ -6,7 +6,6 @@ namespace: observability
 resources:
   - ./namespace.yaml
   - ./blackbox-exporter/ks.yaml
-  - ./dockhand/ks.yaml
   - ./dozzle/ks.yaml
   - ./fluent-bit/ks.yaml
   - ./gatus/ks.yaml
