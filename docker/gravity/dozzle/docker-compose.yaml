@@ -1,0 +1,34 @@
+---
+services:
+  dozzle:
+    image: docker.io/amir20/dozzle:v10.10.0
+    container_name: dozzle
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/London
+      - DOZZLE_HOSTNAME=gravity
+      - DOZZLE_AUTH_PROVIDER=simple
+      - DOZZLE_AUTH_TTL=168h
+      - DOZZLE_NO_ANALYTICS=true
+    ports:
+      - 8090:8080/tcp # dozzle web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - data:/data
+    configs:
+      - source: users
+        target: /data/users.yml
+        mode: 0400
+
+configs:
+  users:
+    content: |
+      users:
+        paul:
+          name: Paul
+          password: ${DOZZLE_PASSWORD_HASH}
+          filter:
+          roles:
+
+volumes:
+  data: {}
