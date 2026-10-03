@@ -5,6 +5,8 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - ./node-exporter.yaml
+  - ./sabon.yaml
+  - ./slskd.yaml
   #  - ./smartctl-exporter.yaml
   - ./topolvm.yaml
   - ./zfs-exporter.yaml

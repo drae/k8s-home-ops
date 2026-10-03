@@ -1,0 +1,18 @@
+external_secrets:
+  PROWLARR_API_KEY: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/PROWLARR_API_KEY
+  SONARR_API_KEY: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SONARR_API_KEY
+  RADARR_API_KEY: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/RADARR_API_KEY
+  SABNZBD_API_KEY: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SABNZBD_API_KEY
+  SABNZBD_SERVER_1: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SABNZBD_SERVER_1
+  SABNZBD_SERVER_1_USER: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SABNZBD_SERVER_1_USER
+  SABNZBD_SERVER_1_PASS: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SABNZBD_SERVER_1_PASS
+  SABNZBD_SERVER_2: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SABNZBD_SERVER_2
+  SABNZBD_SERVER_2_USER: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SABNZBD_SERVER_2_USER
+  SABNZBD_SERVER_2_PASS: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SABNZBD_SERVER_2_PASS
+  SLSKD_WG_ENDPOINT: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SLSKD_WG_ENDPOINT
+  SLSKD_WG_PRIVATE_KEY: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SLSKD_WG_PRIVATE_KEY
+  SLSKD_WG_PUBLIC_KEY: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SLSKD_WG_PUBLIC_KEY
+  SLSKD_WG_ADDRESSES: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SLSKD_WG_ADDRESSES
+  SLSKD_USER: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SLSKD_USER
+  SLSKD_PASS: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SLSKD_PASS
+  SLSKD_API_KEY: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SLSKD_API_KEY

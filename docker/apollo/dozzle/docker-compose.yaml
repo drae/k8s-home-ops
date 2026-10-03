@@ -63,9 +63,15 @@ configs:
           name: container-lifecycle
           enabled: true
           dispatcherId: 1
-          containerExpression: "true"
+          # Skip sabon's short-lived backup containers
+          containerExpression: >-
+            !("sabon.mover" in labels) &&
+            !("sabon.zfs-snapshotter" in labels) &&
+            !("sabon.hook" in labels)
+          # Only crashes: sabon stops and starts apps cleanly every night
           eventExpression: >-
-            name in ["start", "die", "oom"] ||
+            (name == "die" && attributes["exitCode"] != "0") ||
+            name == "oom" ||
             (name == "health_status" && attributes["healthStatus"] == "unhealthy")
 
 volumes:

@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  SABON_HOST: '{{.SABON_HOST | default "apollo"}}'
+  SSH: ssh localadmin@{{.SABON_HOST}}
+  SABON: "{{.SSH}} docker exec sabon /sabon"
+
+tasks:
+  validate:
+    desc: Show the backup plan sabon discovered [SABON_HOST=apollo]
+    cmds:
+      - "{{.SABON}} validate"
+
+  list:
+    desc: List snapshots for an app [APP=required] [SABON_HOST=apollo]
+    requires:
+      vars:
+        - APP
+    cmds:
+      - "{{.SABON}} snapshots --app {{.APP}}"
+
+  snapshot:
+    desc: Back up an app now [APP=required] [SABON_HOST=apollo]
+    requires:
+      vars:
+        - APP
+    cmds:
+      - "{{.SABON}} backup --app {{.APP}}"
+
+  restore:
+    desc: Restore an app in place, stopping it first [APP=required] [SNAPSHOT=latest] [TARGET=local] [SABON_HOST=apollo]
+    prompt: Overwrite {{.APP}}'s live data on {{.SABON_HOST}} with snapshot {{.SNAPSHOT}}?
+    requires:
+      vars:
+        - APP
+    vars:
+      SNAPSHOT: '{{.SNAPSHOT | default "latest"}}'
+      TARGET: '{{.TARGET | default "local"}}'
+    cmds:
+      - "{{.SABON}} restore --app {{.APP}} --target {{.TARGET}} --snapshot {{.SNAPSHOT}} --in-place --stop"
+
+  # One-off move off k8s: run after the docker stack is deployed, while the
+  # VolSync repo is still on zstore
+  migrate:
+    desc: Replace an app's data on apollo with its latest VolSync backup [APP=required] [SABON_HOST=apollo]
+    prompt: Replace {{.APP}}'s data on {{.SABON_HOST}} with its latest VolSync backup?
+    requires:
+      vars:
+        - APP
+    vars:
+      DIR: /opt/docker/apps/{{.APP}}
+      REPO_DIR: /mnt/zstore/backup/volsync
+    preconditions:
+      - which infisical jq
+      - "{{.SSH}} test -d {{.REPO_DIR}}/{{.APP}}"
+      - "{{.SSH}} docker inspect {{.APP}} >/dev/null"
+    cmds:
+      - "{{.SSH}} docker stop {{.APP}}"
+      - >-
+        infisical secrets get --plain --env=prod --path=/darkstar/k8s VOLSYNC_NFS </dev/null
+        | jq -r .restic_pass
+        | {{.SSH}} docker run --rm -i
+        -v {{.REPO_DIR}}:/repo:ro -v {{.DIR}}:/restore --entrypoint sh docker.io/restic/restic:0.19.1
+        -c "'cat > /tmp/pass && restic -r /repo/{{.APP}} --password-file /tmp/pass --no-lock restore latest --target /restore --delete --exclude-xattr security.selinux'"
+      - "{{.SSH}} docker run --rm -v {{.DIR}}:/restore docker.io/library/busybox:1.37.0 chown -R 2000:2000 /restore"
+      - "{{.SSH}} docker start {{.APP}}"

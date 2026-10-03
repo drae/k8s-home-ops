@@ -1,0 +1,3 @@
+external_secrets:
+  SABON_RESTIC_PASSWORD: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SABON_RESTIC_PASSWORD
+  SABON_NOTIFY_URLS: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/SABON_NOTIFY_URLS
