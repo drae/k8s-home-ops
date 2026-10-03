@@ -1,0 +1,139 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/master/schemas/config-schema.json
+---
+sonarr:
+  sonarr:
+    base_url: http://sonarr:8989
+    api_key: !env_var SONARR_API_KEY
+
+    delete_old_custom_formats: true
+
+    media_naming:
+      series: plex-tvdb
+      season: default
+      episodes:
+        rename: true
+        standard: default
+        daily: default
+        anime: default
+    quality_definition:
+      type: series
+    quality_profiles:
+      - trash_id: 72dae194fc92bf828f32cde7744e51a1 # WEB-1080p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: d1498e7d189fbe6c7110ceaabb7473e6 # WEB-2160p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
+        reset_unmatched_scores:
+          enabled: true
+    custom_format_groups:
+      add:
+        - trash_id: d776a1ea912a117d66d83b880ff2055d # [HDR Formats] DV (w/o HDR fallback)
+        - trash_id: e0b2774083df4265f25c9e5bc6c80940 # [HDR Formats] DV Boost
+        - trash_id: ddab3095a5d2f436f369263840af34f9 # [Streaming Services] UK
+        - trash_id: 59c3af66780d08332fdc64e68297098f # [Unwanted] Unwanted groups
+
+radarr:
+  radarr:
+    base_url: http://radarr:7878
+    api_key: !env_var RADARR_API_KEY
+
+    delete_old_custom_formats: true
+
+    media_naming:
+      folder: default
+      movie:
+        rename: true
+        standard: plex-imdb
+
+    quality_definition:
+      type: sqp-uhd
+
+    quality_profiles:
+      - trash_id: c3933358ba2356bafc41524f81471069 # [SQP] SQP-2
+        reset_unmatched_scores:
+          enabled: true
+        qualities:
+          - name: WEB|Remux|Bluray|2160p
+            qualities:
+              - Bluray-2160p
+              - Remux-2160p
+              - WEBDL-2160p
+              - WEBRip-2160p
+          - name: WEB|Remux|1080p
+            qualities:
+              - Remux-1080p
+              - WEBDL-1080p
+              - WEBRip-1080p
+      - trash_id: a7bb1539fd147256b21b1098f3dc2016 # [SQP] SQP-5
+        reset_unmatched_scores:
+          enabled: true
+        qualities:
+          - name: WEB|Bluray|2160p
+            qualities:
+              - Bluray-2160p
+              - WEBDL-2160p
+              - WEBRip-2160p
+          - name: WEB|Remux|1080p
+            qualities:
+              - Remux-1080p
+              - WEBDL-1080p
+              - WEBRip-1080p
+
+    custom_format_groups:
+      add:
+        - trash_id: 7fc2751eef7e6bdc70b74136e5e35c76 # [HDR Formats] DV (w/o HDR fallback)
+        - trash_id: 1616617ab3a14397a2b2321bcbda44d1 # [HDR Formats] DV Boost
+        - trash_id: 15b1cf0b6f1a1493856a4355907affee # [Unwanted] Unwanted Formats SQP
+          select:
+            - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
+            - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
+            - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
+            - f537cf427b64c38c8e36298f657e4828 # Scene
+        - trash_id: f4f1474b963b24cf983455743aa9906c # [Optional] Movie Versions
+          select:
+            - 570bc9ebecd92723d2d21500f4be314c # Remaster
+            - eca37840c13c6ef2dd0262b141a5482f # 4K remaster
+            - e0c07d59beb37348e975a930d5e50319 # Criterion collection
+            - 9d27d9d2181838f76dee150882bdc58c # Masters of cinema
+            - db9b4c4b53d312a3ca5f1378f6440fc9 # Vinegar syndrome
+            - 0f12c086e289cf966fa5948eac571f44 # Hybrid
+
+    custom_formats:
+      # Release groups/quality
+      - trash_ids:
+          - 5153ec7413d9dae44e24275589b5e944 # bhdstudio - downgrade - personal pref
+        assign_scores_to:
+          - name: "[SQP] SQP-2"
+            score: -10000
+          - name: "[SQP] SQP-5"
+            score: -10000
+
+      # Bump MA for SQP-5 - assumes MA > Encodes
+      - trash_ids:
+          - 2a6039655313bf5dab1e43523b62c374 # MA
+        assign_scores_to:
+          - name: "[SQP] SQP-5"
+            score: 1040
+
+      # Not bothered about which positional audio format is used - remove these if that changes
+      - trash_ids:
+          - 496f355514737f7d83bf7aa4d24f8169 # TrueHD Atmos
+          - 2f22d89048b01681dde8afe203bf2e95 # DTS-X
+          - 417804f7f2c4308c1f4c5d380d4c4475 # Atmos (undefined)
+          - 1af239278386be2919e1bcee0bde047e # DD+Atmos
+        assign_scores_to:
+          - name: "[SQP] SQP-2"
+            score: 3000
+          - name: "[SQP] SQP-5"
+            score: 3000
+
+      # Disable scoring of x264 - single radarr instance
+      - trash_ids:
+          - 2899d84dc9372de3408e6d8cc18e9666
+        assign_scores_to:
+          - name: "[SQP] SQP-2"
+            score: 0
+          - name: "[SQP] SQP-5"
+            score: 0

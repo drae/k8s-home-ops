@@ -1,0 +1,39 @@
+---
+services:
+  sabon:
+    image: ghcr.io/davidborzek/sabon:0.3.1
+    container_name: sabon
+    restart: unless-stopped
+    user: "1000:1000"
+    group_add:
+      - "988" # apollo's docker gid, for the socket
+    environment:
+      - TZ=Europe/London
+      - SABON_CONFIG=/etc/sabon/targets.yaml
+      - SABON_METRICS_ADDR=:9333
+      - SABON_LOG_LEVEL=info
+      - SABON_NOTIFY_URLS=${SABON_NOTIFY_URLS}
+      - SABON_NOTIFY_ON=failure
+      - RESTIC_PASSWORD=${SABON_RESTIC_PASSWORD}
+    ports:
+      - 9333:9333/tcp # metrics, scraped by prometheus
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/zstore/backup/sabon:/mnt/zstore/backup/sabon
+    configs:
+      - source: targets
+        target: /etc/sabon/targets.yaml
+        mode: 0444
+
+configs:
+  targets:
+    content: |
+      targets:
+        # App data is on the SSD; the repo is on zstore, so keep every run
+        # inside one nightly window to wake the disks only once a day
+        - name: local
+          path: /mnt/zstore/backup/sabon
+          schedule: "0 0 4 * * *"
+          retention: { daily: 14, weekly: 8 }
+          check: "0 15 4 * * 0"
+          prune: "0 30 4 * * 0"

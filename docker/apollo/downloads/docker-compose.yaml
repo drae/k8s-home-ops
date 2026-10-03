@@ -1,0 +1,276 @@
+---
+# App config lives on the SSD under /opt/docker/apps/<app> so the zstore
+# disks can stay spun down; sabon backs it up to zstore once a night
+services:
+  # Docker creates missing bind paths as root; hand them to the app user
+  init:
+    image: docker.io/library/busybox:1.37.0
+    container_name: downloads-init
+    command: ["sh", "-c", "chown 2000:2000 /apps/*"]
+    volumes:
+      - /opt/docker/apps/prowlarr:/apps/prowlarr
+      - /opt/docker/apps/radarr:/apps/radarr
+      - /opt/docker/apps/recyclarr:/apps/recyclarr
+      - /opt/docker/apps/slskd:/apps/slskd
+      - /opt/docker/apps/sonarr:/apps/sonarr
+
+  prowlarr:
+    image: ghcr.io/home-operations/prowlarr:2.6.5.5623@sha256:6152751c3ea2e7751564f5952173d5e83eed0e09f3fabd2cb6bdb58690c39e2f
+    container_name: prowlarr
+    restart: unless-stopped
+    user: "2000:2000"
+    read_only: true
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.prowlarr.rule: Host(`prowlarr.starstreak.net`)
+      traefik.http.services.prowlarr.loadbalancer.server.port: "9696"
+      sabon.enable: "true"
+      sabon.backup: |
+        repo: prowlarr
+        auto: false
+        stop: true # consistent SQLite copy; down for a few seconds
+        extraPaths:
+          - /opt/docker/apps/prowlarr
+        exclude:
+          - "**/logs/**"
+    environment:
+      - TZ=Europe/London
+      - PROWLARR__INSTANCE_NAME=Prowlarr
+      - PROWLARR__PORT=9696
+      - PROWLARR__LOG_LEVEL=info
+      - PROWLARR__ANALYTICS_ENABLED=False
+      - PROWLARR__AUTHENTICATION_METHOD=External
+      - PROWLARR__THEME=dark
+      - PROWLARR__AUTH__APIKEY=${PROWLARR_API_KEY}
+    volumes:
+      - /opt/docker/apps/prowlarr:/config
+    tmpfs:
+      - /tmp
+
+  sonarr:
+    image: ghcr.io/home-operations/sonarr:4.0.20.3012@sha256:1f19eb5e0f421418c1a956bbe01310a0141423afe28bd9a4b1dcb8629ff2bce2
+    container_name: sonarr
+    restart: unless-stopped
+    user: "2000:2000"
+    read_only: true
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.sonarr.rule: Host(`sonarr.starstreak.net`)
+      traefik.http.services.sonarr.loadbalancer.server.port: "8989"
+      sabon.enable: "true"
+      sabon.backup: |
+        repo: sonarr
+        auto: false
+        stop: true # consistent SQLite copy; down for a few seconds
+        extraPaths:
+          - /opt/docker/apps/sonarr
+        exclude:
+          - "**/logs/**"
+          - "**/MediaCover/**" # re-downloaded on demand
+    environment:
+      - TZ=Europe/London
+      - SONARR__INSTANCE_NAME=Sonarr
+      - SONARR__PORT=8989
+      - SONARR__AUTHENTICATION_METHOD=External
+      - SONARR__AUTHENTICATION_REQUIRED=DisabledForLocalAddresses
+      - SONARR__THEME=dark
+      - SONARR__AUTH__APIKEY=${SONARR_API_KEY}
+    volumes:
+      - /opt/docker/apps/sonarr:/config
+      - /mnt/zstore/media:/mnt/media
+    tmpfs:
+      - /tmp
+    configs:
+      - source: refresh-series
+        target: /scripts/refresh-series.sh
+
+  radarr:
+    image: ghcr.io/home-operations/radarr:6.4.4.10685@sha256:be53998a2d39cfa3c3315b70c7509a6a1f2a10c3aee9337653efc9f4c970430e
+    container_name: radarr
+    restart: unless-stopped
+    user: "2000:2000"
+    read_only: true
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.radarr.rule: Host(`radarr.starstreak.net`)
+      traefik.http.services.radarr.loadbalancer.server.port: "7878"
+      sabon.enable: "true"
+      sabon.backup: |
+        repo: radarr
+        auto: false
+        stop: true # consistent SQLite copy; down for a few seconds
+        extraPaths:
+          - /opt/docker/apps/radarr
+        exclude:
+          - "**/logs/**"
+          - "**/MediaCover/**" # re-downloaded on demand
+    environment:
+      - TZ=Europe/London
+      - RADARR__INSTANCE_NAME=Radarr
+      - RADARR__PORT=7878
+      - RADARR__AUTHENTICATION_METHOD=External
+      - RADARR__AUTHENTICATION_REQUIRED=DisabledForLocalAddresses
+      - RADARR__THEME=dark
+      - RADARR__AUTH__APIKEY=${RADARR_API_KEY}
+    volumes:
+      - /opt/docker/apps/radarr:/config
+      - /mnt/zstore/media:/mnt/media
+    tmpfs:
+      - /tmp
+
+  # Runs in cron mode; only a cache lives in /config, so no backup
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:8.7.2@sha256:6e69e009e1cd7493ff6093e8e187b5d3788c75b4a2c0c5127b6a1beda1c19728
+    container_name: recyclarr
+    restart: unless-stopped
+    user: "2000:2000"
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    environment:
+      - TZ=Europe/London
+      - CRON_SCHEDULE=@daily
+      - SONARR_API_KEY=${SONARR_API_KEY}
+      - RADARR_API_KEY=${RADARR_API_KEY}
+    volumes:
+      - /opt/docker/apps/recyclarr:/config
+    configs:
+      - source: recyclarr
+        target: /config/recyclarr.yml
+
+  sabnzbd:
+    image: ghcr.io/linuxserver/sabnzbd:5.1.3
+    container_name: sabnzbd
+    restart: always
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.sabnzbd.rule: Host(`sabnzbd.starstreak.net`)
+      traefik.http.services.sabnzbd.loadbalancer.server.port: "8080"
+    environment:
+      - PUID=2000
+      - PGID=2000
+      - TZ=Europe/London
+    ports:
+      - 8081:8080/tcp # sabnzbd web
+    volumes:
+      - /mnt/zstore/media/.downloads:/downloads
+    configs:
+      - source: sabnzbd
+        target: /config/sabnzbd.ini
+        mode: 0600
+
+  # slskd shares gluetun's network namespace, so all its traffic goes over
+  # the VPN; traefik routes to gluetun, which forwards port 80 to slskd
+  gluetun:
+    image: ghcr.io/qdm12/gluetun:v3.41.3
+    container_name: gluetun
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.slskd.rule: Host(`slskd.starstreak.net`)
+      traefik.http.services.slskd.loadbalancer.server.port: "80"
+    environment:
+      - TZ=Europe/London
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+      - VPN_INTERFACE=wg0
+      - WIREGUARD_ENDPOINT_IP=${SLSKD_WG_ENDPOINT}
+      - WIREGUARD_ENDPOINT_PORT=51820
+      - WIREGUARD_PRIVATE_KEY=${SLSKD_WG_PRIVATE_KEY}
+      - WIREGUARD_PUBLIC_KEY=${SLSKD_WG_PUBLIC_KEY}
+      - WIREGUARD_ADDRESSES=${SLSKD_WG_ADDRESSES}
+      - FIREWALL_INPUT_PORTS=80 # traefik, from the docker network
+      - FIREWALL_VPN_INPUT_PORTS=50300 # soulseek peers, through the tunnel
+
+  slskd:
+    image: ghcr.io/slskd/slskd:0.26.0@sha256:ecd4026d4f8fb504e2cc55323efa2c1f5b56d20d3686b018249cc36b48ea17a6
+    container_name: slskd
+    restart: unless-stopped
+    user: "2000:2000"
+    read_only: true
+    network_mode: service:gluetun
+    depends_on:
+      init:
+        condition: service_completed_successfully
+      gluetun:
+        condition: service_healthy
+    labels:
+      sabon.enable: "true"
+      sabon.backup: |
+        repo: slskd
+        auto: false
+        stop: true # consistent SQLite copy; down for a few seconds
+        extraPaths:
+          - /opt/docker/apps/slskd
+        exclude:
+          - "**/logs/**"
+    environment:
+      - TZ=Europe/London
+      - DOTNET_BUNDLE_EXTRACT_BASE_DIR=/tmp/.net
+      - SLSKD_APP_DIR=/config
+      - SLSKD_HTTP_PORT=80
+      - SLSKD_METRICS=true
+      - SLSKD_METRICS_NO_AUTH=true
+      - SLSKD_NO_AUTH=true
+      - SLSKD_NO_HTTPS=true
+      - SLSKD_NO_VERSION_CHECK=true
+      - SLSKD_SLSK_LISTEN_PORT=50300
+      - SLSKD_UMASK=0000
+      - SLSKD_SLSK_USERNAME=${SLSKD_USER}
+      - SLSKD_SLSK_PASSWORD=${SLSKD_PASS}
+      - SLSKD_API_KEY=${SLSKD_API_KEY}
+    volumes:
+      - /opt/docker/apps/slskd:/config
+      - /mnt/zstore/media/.downloads/soulseek:/media/.downloads/soulseek
+      - /mnt/zstore/media/soulseek:/media/soulseek
+    tmpfs: # exec: .NET extracts and runs native libraries from /tmp/.net
+      - /app:exec
+      - /tmp:exec
+    configs:
+      - source: slskd
+        target: /config/slskd.yml
+
+configs:
+  refresh-series:
+    file: ./resources/refresh-series.sh
+  recyclarr:
+    file: ./resources/recyclarr.yml
+  slskd:
+    file: ./resources/slskd.yml
+  sabnzbd:
+    content: |
+      __version__ = 19
+      __encoding__ = utf-8
+      [misc]
+      api_key = ${SABNZBD_API_KEY}
+      host_whitelist = sabnzbd.starstreak.net, sabnzbd
+      download_dir = /downloads/usenet/intermediate
+      complete_dir = /downloads/usenet/completed
+      schedlines = "1 59 15 1234567 pause ", "1 1 19 1234567 resume "
+      [servers]
+      [[${SABNZBD_SERVER_1}]]
+      name = ${SABNZBD_SERVER_1}
+      displayname = ${SABNZBD_SERVER_1}
+      host = ${SABNZBD_SERVER_1}
+      port = 563
+      timeout = 60
+      username = ${SABNZBD_SERVER_1_USER}
+      password = ${SABNZBD_SERVER_1_PASS}
+      connections = 60
+      ssl = 1
+      ssl_verify = 3
+      enable = 1
+      priority = 0

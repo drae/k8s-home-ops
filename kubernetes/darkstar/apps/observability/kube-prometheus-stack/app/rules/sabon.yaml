@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: alert-sabon
+spec:
+  groups:
+    - name: alert-sabon
+      rules:
+        - alert: SabonDown
+          expr: up{job="scrapeConfig/observability/sabon"} == 0
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: sabon is down on {{ $labels.instance }}
+            description: "Docker volume backups on {{ $labels.instance }} are not running."
+        - alert: SabonBackupErrors
+          expr: increase(sabon_backups_total{result="error"}[1h]) > 0
+          labels:
+            severity: warning
+          annotations:
+            summary: sabon backup of {{ $labels.app }} to {{ $labels.target }} failed
+            description: "Check the mover container logs on {{ $labels.instance }} and the restic repo."
+        - alert: SabonBackupStale
+          expr: time() - max by (app, target) (sabon_last_backup_success_timestamp_seconds) > 93600
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: No successful sabon backup of {{ $labels.app }} to {{ $labels.target }} in 26h
+            description: "The last successful backup is older than a day."
