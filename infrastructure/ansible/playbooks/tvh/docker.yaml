@@ -68,7 +68,7 @@
           var: doco_api_secret
         - key: DOCO_CD_WEBHOOK_TOKEN
           var: doco_webhook_secret
-        - key: DOCO_CD_APPRISE_NOTIFY_URLS
+        - key: DOCKER_DISCORD_URL
           var: doco_apprise_notify_urls
       check_mode: false
       changed_when: false

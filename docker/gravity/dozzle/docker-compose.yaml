@@ -23,6 +23,9 @@ services:
       - source: users
         target: /data/users.yml
         mode: 0400
+      - source: notifications
+        target: /data/notifications.yml
+        mode: 0400
 
 configs:
   users:
@@ -33,6 +36,37 @@ configs:
           password: ${DOZZLE_PASSWORD_HASH}
           filter:
           roles:
+  # Managed here; alerts edited in the UI won't persist
+  notifications:
+    content: |
+      dispatchers:
+        - id: 1
+          name: discord
+          type: webhook
+          url: ${DOCKER_DISCORD_URL}
+          template: |
+            {
+              "content": "{{ .Container.Name }}",
+              "embeds": [
+                {
+                  "title": "{{ .Container.Name }}",
+                  "description": "{{ .Detail }}",
+                  "fields": [
+                    { "name": "Host", "value": "{{ .Container.HostName }}", "inline": true },
+                    { "name": "Image", "value": "{{ .Container.Image }}", "inline": true }
+                  ]
+                }
+              ]
+            }
+      subscriptions:
+        - id: 1
+          name: container-lifecycle
+          enabled: true
+          dispatcherId: 1
+          containerExpression: "true"
+          eventExpression: >-
+            name in ["start", "die", "oom"] ||
+            (name == "health_status" && attributes["healthStatus"] == "unhealthy")
 
 volumes:
   data: {}
