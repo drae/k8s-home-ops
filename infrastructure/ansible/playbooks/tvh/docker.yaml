@@ -68,6 +68,8 @@
           var: doco_api_secret
         - key: DOCO_CD_WEBHOOK_TOKEN
           var: doco_webhook_secret
+        - key: DOCKER_DISCORD_URL
+          var: doco_apprise_notify_urls
       check_mode: false
       changed_when: false
       no_log: true
@@ -78,6 +80,7 @@
         doco_infisical_secret: "{{ secrets_raw.results[0].stdout }}"
         doco_api_secret: "{{ secrets_raw.results[1].stdout }}"
         doco_webhook_secret: "{{ secrets_raw.results[2].stdout }}"
+        doco_apprise_notify_urls: "{{ secrets_raw.results[3].stdout }}"
       no_log: true
 
     - name: Setup doco-cd
@@ -125,6 +128,8 @@
               content: "{{ doco_api_secret }}"
             - name: webhook_secret
               content: "{{ doco_webhook_secret }}"
+            - name: apprise_notify_urls
+              content: "{{ doco_apprise_notify_urls }}"
 
         - name: Run docker-compose
           community.docker.docker_compose_v2:

@@ -1,2 +1,3 @@
 external_secrets:
   DOZZLE_PASSWORD_HASH: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/DOZZLE_PASSWORD_HASH
+  DOCKER_DISCORD_URL: 7ada94fa-d930-4461-83ca-5eb11a28b33f:prod:/apollo/docker/DOCKER_DISCORD_URL
