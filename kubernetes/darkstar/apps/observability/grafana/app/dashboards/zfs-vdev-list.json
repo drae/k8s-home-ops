@@ -65,7 +65,7 @@
       "title": "Pool",
       "tooltip": "",
       "type": "link",
-      "url": "/d/AweIwvnk4/zfs-pool-overview?${datasource:queryparam}﻿&﻿${cluster:queryparam}﻿&﻿${instance:queryparam}﻿&${pool:queryparam}﻿&﻿${__url_time_range}"
+      "url": "/d/AweIwvnk4/zfs-pool-overview?${datasource:queryparam}&${cluster:queryparam}&${instance:queryparam}&${pool:queryparam}&${__url_time_range}"
     }
   ],
   "panels": [

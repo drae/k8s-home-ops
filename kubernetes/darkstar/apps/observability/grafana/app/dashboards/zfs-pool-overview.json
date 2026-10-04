@@ -264,7 +264,7 @@
                 "value": [
                   {
                     "title": "Pool datasets",
-                    "url": "/d/AweIwvnk4g1/zfs-dataset-list?${datasource:queryparam}﻿&﻿${cluster:queryparam}﻿&var-instance=${__data.fields.instance}﻿&var-pool=﻿${__data.fields.pool}﻿&﻿${__url_time_range}"
+                    "url": "/d/AweIwvnk4g1/zfs-dataset-list?${datasource:queryparam}&${cluster:queryparam}&var-instance=${__data.fields.instance}&var-pool=${__data.fields.pool}&${__url_time_range}"
                   }
                 ]
               }
@@ -372,7 +372,7 @@
                 "value": [
                   {
                     "title": "vdev details",
-                    "url": "/d/AweIwvnk4sls/zfs-vdev?${datasource:queryparam}﻿&﻿${cluster:queryparam}﻿&﻿var-instance=${__data.fields.instance}﻿&var-pool=﻿${__data.fields.pool}﻿&﻿${__url_time_range}"
+                    "url": "/d/AweIwvnk4sls/zfs-vdev?${datasource:queryparam}&${cluster:queryparam}&var-instance=${__data.fields.instance}&var-pool=${__data.fields.pool}&${__url_time_range}"
                   }
                 ]
               },
