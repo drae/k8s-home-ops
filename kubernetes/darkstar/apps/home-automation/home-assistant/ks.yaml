@@ -26,7 +26,7 @@ spec:
       APP: *appname
       GATUS_SUBDOMAIN: hass
       VOLSYNC_CLAIM: home-assistant-config
-      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CAPACITY: 10Gi
       KOPIUR_CLAIM: home-assistant-config
       KOPIUR_CAPACITY: 5Gi
   dependsOn:

@@ -13,6 +13,7 @@ spec:
   values:
     controllers:
       home-assistant:
+        replicas: 0 # TODO: set to 1 at cutover, after restoring the HAOS backup
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -40,24 +41,6 @@ spec:
               capabilities:
                 drop:
                   - ALL
-          #          matter-hub:
-          #            image:
-          #              repository: ghcr.io/riddix/home-assistant-matter-hub
-          #              tag: 2.0.56@sha256:0255708cac22bc5109fec84c9c87605a82825c557ca07cecbcb36a7aac795c8f
-          #            env:
-          #              HAMH_STORAGE_LOCATION: /config/matter-hub
-          #              HAMH_HOME_ASSISTANT_URL: http://localhost:8123/
-          #              HAMH_LOG_LEVEL: info
-          #              HAMH_HTTP_PORT: "8482"
-          #            envFrom:
-          #              - secretRef:
-          #                  name: home-assistant-matter-secret
-          #            securityContext:
-          #              allowPrivilegeEscalation: false
-          #              readOnlyRootFilesystem: true
-          #              capabilities:
-          #                drop:
-          #                  - ALL
           code-server:
             image:
               repository: ghcr.io/coder/code-server
@@ -78,17 +61,10 @@ spec:
             env:
               HASS_SERVER: http://localhost:8123
     defaultPodOptions:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name":"multus-iot",
-            "namespace": "networking",
-            "interface": "iot",
-            "ips": [
-              "10.1.20.33/24",
-              "fd79:4c9c:b9c3:20::33/64"
-            ]
-          }]
+      # Host network for mDNS/SSDP discovery, Wake-on-LAN and localhost access
+      # to matter-server/otbr, as on HAOS
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       securityContext:
         fsGroup: 2000
         fsGroupChangePolicy: OnRootMismatch
@@ -97,23 +73,12 @@ spec:
         runAsGroup: 2000
         seccompProfile:
           type: RuntimeDefault
-        sysctls:
-          - name: net.ipv6.conf.all.forwarding
-            value: "1"
-          - name: net.ipv6.conf.iot.accept_ra
-            value: "2"
-          - name: net.ipv6.conf.iot.accept_ra_rt_info_max_plen
-            value: "64"
     service:
       app:
         ports:
           http:
             appProtocol: kubernetes.io/ws
             port: &port 8123
-      #      matter-hub:
-      #        ports:
-      #          matter-hub:
-      #            port: &matter-port 8482
       code-server:
         ports:
           code-server:
@@ -142,24 +107,6 @@ spec:
             backendRefs:
               - identifier: code-server
                 port: *code-server-port
-          #          - matches:
-          #              - path:
-          #                  type: PathPrefix
-          #                  value: /matter/
-          #            filters:
-          #              - type: URLRewrite
-          #                urlRewrite:
-          #                  path:
-          #                    type: ReplacePrefixMatch
-          #                    replacePrefixMatch: /
-          #              - type: RequestHeaderModifier
-          #                requestHeaderModifier:
-          #                  add:
-          #                    - name: "x-ingress-path"
-          #                      value: "matter"
-          #            backendRefs:
-          #              - identifier: matter-hub
-          #                port: *matter-port
           - backendRefs:
               - identifier: app
                 port: *port
@@ -170,8 +117,6 @@ spec:
           home-assistant:
             app:
               - path: /config
-            #            matter-hub:
-            #              - path: /config
             code-server:
               - path: /config
       logs:

@@ -13,6 +13,7 @@ spec:
   values:
     controllers:
       otbr:
+        replicas: 0 # TODO: set to 1 at cutover, once the ZBT-2 is on alpha
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -21,11 +22,11 @@ spec:
               repository: ghcr.io/wittdennis/homeassistant-otbr
               tag: 4.2.2@sha256:80f35717025aa5a15ce593232c2531e67e123e3e439545d5320e35a7c60da017
             env:
-              BACKBONE_IF: iot
+              BACKBONE_IF: eno1
               BAUDRATE: "460800"
               DEVICE: /dev/ttyUSB0
               FIREWALL: "0"
-              NAT64: "1"
+              NAT64: "0" # avoid touching host iptables alongside cilium
               S6_YES_I_WANT_A_WORLD_WRITABLE_RUN_BECAUSE_KUBERNETES: 1
               S6_READ_ONLY_ROOT: 1
             probes:
@@ -48,28 +49,15 @@ spec:
           nodeSelector:
             feature.node.kubernetes.io/usb-zigbee: "true"
     defaultPodOptions:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name":"multus-iot",
-            "namespace": "networking",
-            "interface": "iot",
-            "ips": [
-              "10.1.20.41/24",
-              "fd79:4c9c:b9c3:20::41/64"
-            ]
-          }]
+      # Thread border routing needs the LAN (same network as phones) as the backbone
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       securityContext:
         runAsNonRoot: false # Must be run as root user
         runAsUser: 0 # Must be run as root user
         runAsGroup: 0
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
-        sysctls:
-          - name: net.ipv6.conf.all.forwarding
-            value: "1"
-          - name: net.ipv6.conf.iot.accept_ra
-            value: "2"
     service:
       app:
         controller: otbr

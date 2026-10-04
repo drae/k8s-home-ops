@@ -16,16 +16,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-iot",
-                "namespace": "networking",
-                "ips": [
-                  "10.1.20.99/24",
-                  "fd79:4c9c:b9c3:20::99/64"
-                ]
-              }]
           securityContext:
             runAsUser: 2000
             runAsGroup: 2000
@@ -35,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/esphome
-              tag: 2026.8.1@sha256:faf5fa755140152927dc19ce5fc5df906d242189b1adbd17bd914fec577dd15f
+              tag: 2026.9.1@sha256:c42d7c962e3db7a8ad27d48da7b78812a8cc23f3ac15e9795ee307d09a47fdaf
             env:
               TZ: Europe/London
               ESPHOME_DASHBOARD_USE_PING: true

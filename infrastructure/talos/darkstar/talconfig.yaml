@@ -50,14 +50,17 @@ nodes:
           ip: 10.1.10.20
     nodeLabels:
       intel.feature.node.kubernetes.io/gpu: "true"
-#    userVolumes:
-#      - name: usb
-#        provisioning:
-#          diskSelector:
-#            match: disk.transport == "usb"
-#          maxSize: 1TB
-#        filesystem:
-#          type: xfs
+      # ZBT-2
+      feature.node.kubernetes.io/usb-zigbee: "true"
+    userVolumes:
+      # Frigate media, mounted at /var/mnt/usb
+      - name: usb
+        provisioning:
+          diskSelector:
+            match: disk.transport == "usb"
+          maxSize: 1TB
+        filesystem:
+          type: xfs
 
 controlPlane:
   schematic:
@@ -169,6 +172,8 @@ controlPlane:
           net.ipv6.conf.all.accept_ra: "2"
           net.ipv6.conf.default.accept_ra: "2"
           net.ipv6.conf.eno1.accept_ra: "2"
+          # Learn otbr's Thread (OMR) route from RA route information options
+          net.ipv6.conf.eno1.accept_ra_rt_info_max_plen: "64"
         time:
           disabled: false
           servers:
