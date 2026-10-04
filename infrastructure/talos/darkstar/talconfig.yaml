@@ -140,7 +140,7 @@ controlPlane:
           extraConfig:
             featureGates:
               ImageVolume: true
-              ResourceHealthStatus: true            
+              ResourceHealthStatus: true
             maxPods: 250
           extraMounts:
             - destination: /var/mnt/openebs/local
