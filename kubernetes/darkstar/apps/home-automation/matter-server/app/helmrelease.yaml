@@ -12,7 +12,6 @@ spec:
   values:
     controllers:
       matter-server:
-        replicas: 0 # TODO: set to 1 at cutover, after the HAOS add-on is stopped
         annotations:
           reloader.stakater.com/auto: "true"
         containers:

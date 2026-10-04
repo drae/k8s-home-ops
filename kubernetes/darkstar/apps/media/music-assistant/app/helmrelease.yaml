@@ -13,7 +13,6 @@ spec:
   values:
     controllers:
       music-assistant:
-        replicas: 0 # TODO: set to 1 at cutover, after restoring the HAOS backup
         annotations:
           reloader.stakater.com/auto: "true"
         containers:

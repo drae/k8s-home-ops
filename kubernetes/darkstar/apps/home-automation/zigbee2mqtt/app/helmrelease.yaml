@@ -13,7 +13,6 @@ spec:
   values:
     controllers:
       zigbee2mqtt:
-        replicas: 0 # TODO: set to 1 at cutover, after the HAOS add-on is stopped
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -34,7 +33,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_ADVANCED_EXT_PAN_ID: "[221, 221, 221, 221, 221, 221, 221, 221]"
               ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: "[\"console\"]"
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
               ZIGBEE2MQTT_CONFIG_ADVANCED_PAN_ID: "6754"
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_TEMPERATURE_PRECISION: "1"

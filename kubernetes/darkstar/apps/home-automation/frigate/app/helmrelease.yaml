@@ -13,7 +13,6 @@ spec:
   values:
     controllers:
       frigate:
-        replicas: 0 # TODO: set to 1 at cutover, after restoring the HAOS backup
         pod:
           resourceClaims:
             - name: gpu

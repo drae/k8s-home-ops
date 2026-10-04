@@ -13,7 +13,6 @@ spec:
   values:
     controllers:
       otbr:
-        replicas: 0 # TODO: set to 1 at cutover, once the ZBT-2 is on alpha
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
