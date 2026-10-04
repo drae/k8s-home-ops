@@ -8,4 +8,3 @@ resources:
 #  - ./bichon/ks.yaml
 components:
   - ../../components/alerts
-  - ../../components/kopiur/secret

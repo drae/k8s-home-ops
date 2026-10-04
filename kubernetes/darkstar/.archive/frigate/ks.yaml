@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/gpu
-    #    - ../../../../components/kopiur/backup
     - ../../../../components/volsync
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/frigate/app"
@@ -28,8 +27,6 @@ spec:
       GATUS_STATUS: "401"
       VOLSYNC_CLAIM: frigate-config
       VOLSYNC_CAPACITY: 5Gi
-      KOPIUR_CLAIM: frigate-config
-      KOPIUR_CAPACITY: 5Gi
   dependsOn:
     - name: topolvm
       namespace: storage
