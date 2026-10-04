@@ -65,7 +65,7 @@
       "title": "Pool",
       "tooltip": "",
       "type": "link",
-      "url": "/d/AweIwvnk4/zfs-pool-overview?${datasource:queryparam}﻿&﻿${cluster:queryparam}﻿&﻿${instance:queryparam}﻿&${pool:queryparam}﻿&﻿${__url_time_range}"
+      "url": "/d/AweIwvnk4/zfs-pool-overview?${datasource:queryparam}&${cluster:queryparam}&${instance:queryparam}&${pool:queryparam}&${__url_time_range}"
     }
   ],
   "panels": [
@@ -124,7 +124,7 @@
                 "value": [
                   {
                     "title": "Filter pool",
-                    "url": "/d/AweIwvnk4g1gmo/zfs-dataset-details?${datasource:queryparam}﻿&﻿${cluster:queryparam}﻿&﻿${instance:queryparam}﻿&var-pool=﻿${__data.fields.pool}&﻿${dataset_filter:queryparam}﻿&﻿${type:queryparam}&${dataset:queryparam}﻿&﻿${__url_time_range}"
+                    "url": "/d/AweIwvnk4g1gmo/zfs-dataset-details?${datasource:queryparam}&${cluster:queryparam}&${instance:queryparam}&var-pool=${__data.fields.pool}&${dataset_filter:queryparam}&${type:queryparam}&${dataset:queryparam}&${__url_time_range}"
                   }
                 ]
               },
