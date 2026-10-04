@@ -25,6 +25,10 @@ spec:
               - --storage-path=/data
               - --ota-provider-dir=/data/ota
               - --production-mode
+              # Same fabric as the HAOS add-on (storage: /data/server-2-134b)
+              - --vendorid=4939
+              - --fabricid=2
+              - --primary-interface=eno1
             probes:
               liveness: &probe
                 enabled: true
