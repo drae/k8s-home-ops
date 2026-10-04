@@ -7,8 +7,6 @@ resources:
   - ./namespace.yaml
   - ./openebs/ks.yaml
   - ./topolvm/ks.yaml
-  #  - ./kopiur/ks.yaml
   - ./volsync/ks.yaml
 components:
   - ../../components/alerts
-  - ../../components/kopiur/secret

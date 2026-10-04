@@ -12,4 +12,3 @@ resources:
   - ./sonarr/ks.yaml
 components:
   - ../../components/alerts
-  - ../../components/kopiur/secret

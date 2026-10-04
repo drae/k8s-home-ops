@@ -19,4 +19,3 @@ resources:
   - ./victoria-logs/ks.yaml
 components:
   - ../../components/alerts
-  - ../../components/kopiur/secret
