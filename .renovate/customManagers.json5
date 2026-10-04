@@ -3,21 +3,6 @@
   customManagers: [
     {
       customType: "regex",
-      description: "Process annotated dependencies",
-      managerFilePatterns: ["/\\.env$/", "/\\.sh$/", "/\\.ya?ml(\\.j2)?$/"],
-      matchStrings: [
-        // # renovate: datasource=github-releases depName=k3s-io/k3s
-        // k3s_release_version: &version v1.29.0+k3s1
-        // # renovate: datasource=helm depName=cilium repository=https://helm.cilium.io
-        // version: 1.15.1
-        // # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-        // KUBERNETES_VERSION=v1.31.1
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+(:\\s|=)(&\\S+\\s)?(?<currentValue>\\S+)",
-      ],
-      datasourceTemplate: "{{{datasource}}}",
-    },
-    {
-      customType: "regex",
       description: "Process Kubernetes image volume references",
       managerFilePatterns: ["/^kubernetes/.+\\.ya?ml$/"],
       matchStrings: [
@@ -27,14 +12,17 @@
       datasourceTemplate: "docker",
     },
     {
+      // The home-operations grafanaDashboards preset only scans grafanadashboard.yaml (Grafana
+      // Operator CRs); this covers dashboard URLs in the standalone Grafana chart's HelmRelease
       customType: "regex",
-      description: "Process raw GitHub URLs",
-      fileMatch: ["/\\.env$/", "/\\.sh$/", "/\\.ya?ml(\\.j2)?$/"],
+      description: "Process Grafana dashboards in HelmRelease values",
+      managerFilePatterns: ["/(^|/)helmrelease\\.ya?ml$/"],
       matchStrings: [
-        // https://raw.githubusercontent.com/external-secrets/external-secrets/v0.9.11/docs/snippets/dashboard.json
-        "https:\\/\\/raw.githubusercontent.com\\/(?<depName>\\S+?\\/\\S+?)\\/(?<currentValue>(v|\\d)\\S+?)\\/\\S+",
+        "dashboards\\/(?<depName>\\d+)\\/revisions\\/(?<currentValue>\\d+)\\/download",
       ],
-      datasourceTemplate: "github-releases",
+      datasourceTemplate: "custom.grafana-dashboards",
+      versioningTemplate: "regex:^(?<major>\\d+)$",
+      autoReplaceStringTemplate: "dashboards/{{depName}}/revisions/{{newValue}}/download",
     },
   ],
 }

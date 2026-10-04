@@ -33,5 +33,13 @@
       ],
       ignoreTests: false,
     },
+    {
+      description: "Auto merge Grafana dashboards",
+      matchDatasources: ["custom.grafana-dashboards"],
+      matchUpdateTypes: ["major"],
+      automerge: true,
+      automergeType: "branch",
+      ignoreTests: true,
+    },
   ]
 }
