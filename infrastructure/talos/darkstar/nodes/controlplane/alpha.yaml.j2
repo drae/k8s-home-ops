@@ -8,7 +8,7 @@ provisioning:
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
-auto: 'off'
+auto: "off"
 hostname: alpha.lan.starstreak.net
 ---
 apiVersion: v1alpha1
@@ -22,7 +22,7 @@ apiVersion: v1alpha1
 kind: LinkAliasConfig
 name: ethSel0
 selector:
-  match: glob("*:70:e2", mac(link.hardware_addr)) && glob("e1000e", link.driver)
+  match: glob("e1000e", link.driver)
 ---
 apiVersion: v1alpha1
 kind: DHCPv4Config

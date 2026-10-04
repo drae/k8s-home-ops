@@ -27,8 +27,19 @@ certExtraSANs:
   - darkstar.lan.starstreak.net
   - 127.0.0.1
 ---
-# Without explicit authorizers kube-apiserver refuses to start; the old
-# talhelper/v1alpha1 config added Node + RBAC by default
+# kube-apiserver needs explicit authentication/authorization documents;
+# these match what `talosctl gen config` v1.14 generates by default
+apiVersion: v1alpha1
+kind: KubeAuthenticationConfig
+configuration:
+  anonymous:
+    enabled: true
+    conditions:
+      - path: /livez
+      - path: /readyz
+      - path: /healthz
+  jwt: []
+---
 apiVersion: v1alpha1
 kind: KubeAuthorizerConfig
 name: node
