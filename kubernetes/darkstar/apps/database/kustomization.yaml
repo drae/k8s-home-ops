@@ -2,11 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: media
+namespace: database
 resources:
   - ./namespace.yaml
-  - ./music-assistant/ks.yaml
-  - ./plex/ks.yaml
-  - ./tautulli/ks.yaml
+  - ./mosquitto/ks.yaml
 components:
   - ../../components/alerts

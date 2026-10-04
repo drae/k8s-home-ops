@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname home-assistant
+  name: &appname zigbee2mqtt
   namespace: &namespace home-automation
 spec:
   targetNamespace: *namespace
@@ -13,7 +13,7 @@ spec:
   components:
     - ../../../../components/volsync
   interval: 10m
-  path: "./kubernetes/darkstar/apps/home-automation/home-assistant/app"
+  path: "./kubernetes/darkstar/apps/home-automation/zigbee2mqtt/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -23,11 +23,11 @@ spec:
   postBuild:
     substitute:
       APP: *appname
-      GATUS_SUBDOMAIN: hass
-      VOLSYNC_CLAIM: home-assistant-config
-      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CLAIM: zigbee2mqtt-data
   dependsOn:
     - name: topolvm
       namespace: storage
     - name: volsync
       namespace: storage
+    - name: mosquitto
+      namespace: database

@@ -13,13 +13,14 @@ spec:
   values:
     controllers:
       music-assistant:
+        replicas: 0 # TODO: set to 1 at cutover, after restoring the HAOS backup
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/music-assistant/server
-              tag: 2.10.1@sha256:e6edefe825b1cdc50223c16d9bc2fca909a158b36555a7763512b76ba04a1b9e
+              tag: 2.10.5@sha256:28023f8c0d96ca2496391f3218a6d70d7ef3ba84db846b3a3f3cd9ce7ef8aedc
             env:
               TZ: Europe/London
               LOG_LEVEL: info
@@ -57,25 +58,9 @@ spec:
                 drop:
                   - ALL
     defaultPodOptions:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name":"multus-iot",
-            "namespace": "networking",
-            "interface": "iot",
-            "ips": [
-              "10.1.20.38/24",
-              "fd79:4c9c:b9c3:20::38/64"
-            ]
-          }]
-      securityContext:
-        sysctls:
-          - name: net.ipv6.conf.all.forwarding
-            value: "1"
-          - name: net.ipv6.conf.iot.accept_ra_rt_info_max_plen
-            value: "64"
-          - name: net.ipv6.conf.iot.accept_ra
-            value: "2"
+      # Host network for player discovery (mDNS/SSDP) and stream URLs on the LAN
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
     service:
       app:
         type: LoadBalancer

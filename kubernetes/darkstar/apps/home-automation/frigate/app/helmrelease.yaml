@@ -13,16 +13,8 @@ spec:
   values:
     controllers:
       frigate:
-        annotations:
-          configmap.reloader.stakater.com/reload: frigate-configmap
+        replicas: 0 # TODO: set to 1 at cutover, after restoring the HAOS backup
         pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-cam",
-                "namespace": "networking",
-                "ips": ["10.1.50.34/24"]
-              }]
           resourceClaims:
             - name: gpu
               resourceClaimTemplateName: frigate-gpu
@@ -30,7 +22,7 @@ spec:
           app:
             image:
               repository: ghcr.io/blakeblackshear/frigate
-              tag: 0.17.2@sha256:d4351369984d4a9e2a49ac59736f6490856a7ea11f7790040746d21496967010
+              tag: 0.18.0@sha256:9678a83a76e4730ac7d9ea7428370e32ae656d6b312aaad30d6c69f3fef14d35
             envFrom:
               - secretRef:
                   name: frigate-secret
@@ -95,15 +87,11 @@ spec:
               - identifier: frigate
                 port: 5000
     persistence:
-      data:
-        existingClaim: frigate-config
       config:
-        type: configMap
-        name: frigate-configmap
+        # config.yml and frigate.db live on the volume, editable from the Frigate UI
+        existingClaim: "${VOLSYNC_CLAIM}"
         globalMounts:
-          - path: /config/config.yml
-            subPath: config.yml
-            readOnly: true
+          - path: /config
       cache:
         type: emptyDir
         medium: Memory
