@@ -96,21 +96,9 @@ jobs:
               gh attestation verify --owner bjw-s-labs "oci://${MATRIX_IMAGE}" ;;
           esac
 
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          sparse-checkout: .mise.toml
-          sparse-checkout-cone-mode: false
-
-      - name: Setup Mise
-        uses: jdx/mise-action@7a4e45a543138629540c9a1616d08632b893e492 # v5.0.1
-        with:
-          cache: false
-          install_args: talosctl
-
+      # talosctl comes from the runner pod's ghcr.io/siderolabs/talosctl image volume
       - name: Pre-pull Image
-        run: talosctl -n "$NODE" image pull "${MATRIX_IMAGE}"
+        run: /opt/talosctl/talosctl -n "$NODE" image pull "${MATRIX_IMAGE}"
 
   pre-pull-images-success:
     if: ${{ !cancelled() }}
