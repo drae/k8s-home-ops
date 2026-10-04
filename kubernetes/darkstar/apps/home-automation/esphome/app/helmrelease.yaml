@@ -16,6 +16,10 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
+          # Host network so the dashboard sees VLAN 20 devices' .local names,
+          # reflected onto the LAN by the router's avahi reflector
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
           securityContext:
             runAsUser: 2000
             runAsGroup: 2000
@@ -28,7 +32,6 @@ spec:
               tag: 2026.9.1@sha256:c42d7c962e3db7a8ad27d48da7b78812a8cc23f3ac15e9795ee307d09a47fdaf
             env:
               TZ: Europe/London
-              ESPHOME_DASHBOARD_USE_PING: true
               PLATFORMIO_CORE_DIR: .platformio
               PLATFORMIO_GLOBALLIB_DIR: .platformiolibs
             probes:
