@@ -23,6 +23,10 @@ spec:
             env:
               TZ: Europe/London
               LOG_LEVEL: info
+              # Root filesystem is read-only; point model/JIT caches at the
+              # /cache volume (Smart Fades and Sonic analysis fail without it)
+              XDG_CACHE_HOME: /cache/xdg
+              NUMBA_CACHE_DIR: /cache/numba
             securityContext:
               runAsNonRoot: true
               runAsUser: 2000
