@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: Flux Local
+name: Flate
 
 on:
   pull_request:
@@ -9,6 +9,9 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   filter-changes:
@@ -23,69 +26,77 @@ jobs:
         with:
           patterns: |-
             kubernetes/**/*
+
   test:
     if: ${{ needs.filter-changes.outputs.changed-files != '[]' }}
-    name: Flux Local Test
+    name: Flate Test
     needs: filter-changes
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - name: Run flux-local test
-        uses: docker://ghcr.io/allenporter/flux-local:v8.1.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          args: test --enable-helm --all-namespaces --path /github/workspace/kubernetes/darkstar/flux/cluster -v
+          persist-credentials: false
+
+      - name: Setup Mise
+        uses: jdx/mise-action@7a4e45a543138629540c9a1616d08632b893e492 # v5.0.1
+        with:
+          cache: false
+          install_args: github:home-operations/flate
+
+      - name: Run flate test
+        env:
+          FLATE_NO_PROGRESS: "true"
+          FLATE_PATH: ./kubernetes/darkstar/flux/cluster
+        run: flate test all
 
   diff:
     if: ${{ needs.filter-changes.outputs.changed-files != '[]' }}
-    name: Flux Local Diff
+    name: Flate Diff
     needs: filter-changes
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     strategy:
       matrix:
         resources: ["helmrelease", "kustomization"]
       max-parallel: 4
       fail-fast: false
     steps:
-      - name: Checkout Pull Request Branch
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          path: pull
+          fetch-depth: 0
+          persist-credentials: false
 
-      - name: Checkout Default Branch
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Setup Mise
+        uses: jdx/mise-action@7a4e45a543138629540c9a1616d08632b893e492 # v5.0.1
         with:
-          ref: "${{ github.event.repository.default_branch }}"
-          path: default
+          cache: false
+          install_args: github:home-operations/flate
 
-      - name: Run flux-local diff
-        uses: docker://ghcr.io/allenporter/flux-local:v8.1.0
-        with:
-          args: >-
-            diff ${{ matrix.resources }}
-            --unified 6
-            --path /github/workspace/pull/kubernetes/darkstar/flux/cluster
-            --path-orig /github/workspace/default/kubernetes/darkstar/flux/cluster
-            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
-            --limit-bytes 10000
-            --all-namespaces
-            --sources "k8s-home-ops"
-            --output-file diff.patch
-
-      - name: Generate Diff
+      - name: Run flate diff
         id: diff
+        env:
+          FLATE_BASE: origin/${{ github.event.pull_request.base.ref }}
+          FLATE_NO_PROGRESS: "true"
+          FLATE_OUTPUT: github
+          FLATE_PATH: ./kubernetes/darkstar/flux/cluster
+          RESOURCES: ${{ matrix.resources }}
         run: |
-          echo 'diff<<EOF' >> $GITHUB_OUTPUT
-          cat diff.patch >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          flate diff "${RESOURCES}" > diff.patch
 
-          echo '## Flux ${{ matrix.resources }} diff' >> $GITHUB_STEP_SUMMARY
-          echo '```diff' >> $GITHUB_STEP_SUMMARY
-          cat diff.patch >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          delimiter="EOF_$(openssl rand -hex 8)"
+          {
+            echo "diff<<${delimiter}"
+            cat diff.patch
+            echo "${delimiter}"
+          } >> "${GITHUB_OUTPUT}"
+
+          {
+            echo "## Flux ${RESOURCES} diff"
+            echo '```diff'
+            cat diff.patch
+            echo '```'
+          } >> "${GITHUB_STEP_SUMMARY}"
 
       - name: Generate Token
         if: ${{ steps.diff.outputs.diff != '' }}
@@ -94,6 +105,7 @@ jobs:
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          permission-pull-requests: write
 
       - name: Add Comment
         if: ${{ steps.diff.outputs.diff != '' }}
@@ -109,8 +121,8 @@ jobs:
             ```
 
   status:
-    if: ${{ always() }}
-    name: Flux Local - Success
+    if: ${{ !cancelled() }}
+    name: Flate - Success
     needs: ["test", "diff"]
     runs-on: ubuntu-latest
     steps:
@@ -120,4 +132,6 @@ jobs:
 
       - name: All jobs passed or skipped?
         if: ${{ !(contains(needs.*.result, 'failure')) }}
-        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
+        env:
+          RESULTS: ${{ toJSON(needs.*.result) }}
+        run: echo "All jobs passed or skipped" && echo "${RESULTS}"
