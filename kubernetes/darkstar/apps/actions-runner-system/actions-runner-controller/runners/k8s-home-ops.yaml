@@ -58,8 +58,16 @@ spec:
               - mountPath: /var/run/secrets/talos.dev
                 name: talos
                 readOnly: true
+              - mountPath: /opt/talosctl
+                name: talosctl
+                readOnly: true
         serviceAccountName: k8s-home-ops-runner
         volumes:
           - name: talos
             secret:
               secretName: k8s-home-ops-runner
+          # Pre-pull workflow copies the binary out of this mount instead of downloading it per job
+          - name: talosctl
+            image:
+              reference: ghcr.io/siderolabs/talosctl:v1.14.2@sha256:b655ae1c73789c4789fcf6fbd61c8f45400ed4b3bd9892a26092fcd4d8d95d86
+              pullPolicy: IfNotPresent

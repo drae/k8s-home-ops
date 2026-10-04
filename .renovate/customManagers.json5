@@ -18,6 +18,16 @@
     },
     {
       customType: "regex",
+      description: "Process Kubernetes image volume references",
+      managerFilePatterns: ["/^kubernetes/.+\\.ya?ml$/"],
+      matchStrings: [
+        // reference: ghcr.io/siderolabs/talosctl:v1.14.2@sha256:...
+        "reference:\\s*[\"']?(?<depName>[^\\s:@\"']+):(?<currentValue>[^\\s@\"']+)(@(?<currentDigest>sha256:[a-f0-9]+))?",
+      ],
+      datasourceTemplate: "docker",
+    },
+    {
+      customType: "regex",
       description: "Process raw GitHub URLs",
       fileMatch: ["/\\.env$/", "/\\.sh$/", "/\\.ya?ml(\\.j2)?$/"],
       matchStrings: [
