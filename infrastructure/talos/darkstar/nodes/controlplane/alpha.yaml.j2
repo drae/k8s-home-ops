@@ -76,6 +76,9 @@ params:
   net.ipv6.conf.eno1.accept_ra: "2"
   # Learn otbr's Thread (OMR) route from RA route information options
   net.ipv6.conf.eno1.accept_ra_rt_info_max_plen: "64"
+  # Unprivileged ICMP for host-network pods (ESPHome dashboard ping);
+  # matches what pod network namespaces already get
+  net.ipv4.ping_group_range: "0 2147483647"
   net.ipv6.conf.ethSel0/20.disable_ipv6: "1"
   net.ipv6.conf.ethSel0/30.disable_ipv6: "1"
   net.ipv6.conf.ethSel0/50.disable_ipv6: "1"
