@@ -11,7 +11,6 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    #    - ../../../../components/kopiur/backup
     - ../../../../components/volsync
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/zigbee2mqtt/app"
@@ -25,7 +24,6 @@ spec:
     substitute:
       APP: *appname
       VOLSYNC_CLAIM: zigbee2mqtt-data
-      KOPIUR_CLAIM: zigbee2mqtt-data
   dependsOn:
     - name: topolvm
       namespace: storage

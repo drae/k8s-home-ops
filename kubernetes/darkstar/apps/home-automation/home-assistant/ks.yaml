@@ -11,7 +11,6 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   components:
-    #    - ../../../../components/kopiur/backup
     - ../../../../components/volsync
   interval: 10m
   path: "./kubernetes/darkstar/apps/home-automation/home-assistant/app"
@@ -27,8 +26,6 @@ spec:
       GATUS_SUBDOMAIN: hass
       VOLSYNC_CLAIM: home-assistant-config
       VOLSYNC_CAPACITY: 10Gi
-      KOPIUR_CLAIM: home-assistant-config
-      KOPIUR_CAPACITY: 5Gi
   dependsOn:
     - name: topolvm
       namespace: storage

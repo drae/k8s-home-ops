@@ -74,9 +74,22 @@ apiVersion: v1alpha1
 kind: SysctlConfig
 params:
   net.ipv6.conf.eno1.accept_ra: "2"
+  # Learn otbr's Thread (OMR) route from RA route information options
+  net.ipv6.conf.eno1.accept_ra_rt_info_max_plen: "64"
   net.ipv6.conf.ethSel0/20.disable_ipv6: "1"
   net.ipv6.conf.ethSel0/30.disable_ipv6: "1"
   net.ipv6.conf.ethSel0/50.disable_ipv6: "1"
+---
+# Frigate media, mounted at /var/mnt/usb
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: usb
+provisioning:
+  diskSelector:
+    match: disk.transport == "usb"
+  maxSize: 1TB
+filesystem:
+  type: xfs
 ---
 apiVersion: v1alpha1
 kind: KernelModuleConfig

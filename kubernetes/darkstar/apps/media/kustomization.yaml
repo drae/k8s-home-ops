@@ -10,4 +10,3 @@ resources:
   - ./tautulli/ks.yaml
 components:
   - ../../components/alerts
-  - ../../components/kopiur/secret

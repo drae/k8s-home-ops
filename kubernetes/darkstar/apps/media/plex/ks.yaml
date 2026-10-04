@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *appname
   components:
     - ../../../../components/gpu
-    #    - ../../../../components/kopiur/backup
     - ../../../../components/volsync
   #    - ../../../../components/zeroscaler
   interval: 10m
@@ -29,8 +28,6 @@ spec:
       GATUS_PATH: /identity
       VOLSYNC_CLAIM: plex-config
       VOLSYNC_CAPACITY: 50Gi
-      KOPIUR_CLAIM: plex-config
-      KOPIUR_CAPACITY: 50Gi
   dependsOn:
     - name: topolvm
       namespace: storage
