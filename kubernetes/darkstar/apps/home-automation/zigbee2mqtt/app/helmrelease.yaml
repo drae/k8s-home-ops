@@ -36,6 +36,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
               ZIGBEE2MQTT_CONFIG_ADVANCED_PAN_ID: "6754"
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
+              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: "8099"
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_TEMPERATURE_PRECISION: "1"
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_HUMIDITY_PRECISION: "0"
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_PRESSURE_PRECISION: "0"
@@ -78,7 +79,7 @@ spec:
         ports:
           http:
             primary: true
-            port: &port 8080
+            port: &port 8099
           metrics:
             enabled: true
             port: 9000
