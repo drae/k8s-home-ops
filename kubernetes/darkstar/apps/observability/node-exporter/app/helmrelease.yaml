@@ -56,3 +56,14 @@ spec:
       limits:
         memory: 64M
     hostNetwork: false
+    # RAPL energy_uj is root-only (0400); uid 0 as file owner can read it
+    # with every capability dropped
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+      runAsNonRoot: false
+    containerSecurityContext:
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]

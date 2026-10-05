@@ -4,6 +4,10 @@ services:
     image: quay.io/prometheus/node-exporter:v1.12.1
     container_name: node-exporter
     restart: always
+    # RAPL energy_uj is root-only (0400); root as file owner reads it without caps
+    user: root
+    cap_drop:
+      - ALL
     command:
       - --path.procfs=/host/proc
       - --path.rootfs=/rootfs
