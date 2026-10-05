@@ -40,6 +40,15 @@
       tags:
         - always
 
+    # sabnzbd downloads into the root SSD so zstore only spins up for the unpack
+    - name: Create sabnzbd intermediate directory
+      ansible.builtin.file:
+        path: "{{ docker_base_dir }}/sabnzbd/intermediate"
+        state: directory
+        owner: 2000
+        group: 2000
+        mode: "0755"
+
     - name: Ensure docker.service.d directory exists
       ansible.builtin.file:
         path: /etc/systemd/system/docker.service.d
