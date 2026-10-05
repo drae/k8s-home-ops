@@ -11,7 +11,7 @@ spec:
       - networking
   podMetricsEndpoints:
     - honorLabels: true
-      interval: 10s
+      interval: 30s
       path: /stats/prometheus
       port: metrics
   selector:

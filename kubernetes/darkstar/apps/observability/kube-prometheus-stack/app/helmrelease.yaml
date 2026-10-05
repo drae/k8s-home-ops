@@ -29,6 +29,14 @@ spec:
       valuesKey: flux-metrics.yaml
   values:
     cleanPrometheusOperatorObjectNames: true
+    # These groups are built on apiserver_request_sli_duration_seconds_bucket,
+    # which kubeApiServer drops below, so they evaluate empty every cycle
+    defaultRules:
+      rules:
+        kubeApiserverAvailability: false
+        kubeApiserverBurnrate: false
+        kubeApiserverHistogram: false
+        kubeApiserverSlos: false
     crds:
       enabled: true
     # Individual stack components
@@ -58,6 +66,8 @@ spec:
     kubeApiServer:
       enabled: true
       serviceMonitor:
+        # ~74k samples per scrape; the apiserver renders them all regardless of drops
+        interval: 1m
         metricRelabelings:
           # Drop high cardinality labels
           - action: drop
@@ -68,6 +78,10 @@ spec:
             sourceLabels:
               - "__name__"
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+          - action: drop
+            sourceLabels:
+              - "__name__"
+            regex: (apiserver_(watch_events_dispatch_duration_seconds|watch_list_duration_seconds|request_body_size_bytes|storage_list_duration_seconds|watch_cache_[a-z_]+)|informer_processing_latency_seconds)_bucket
     kubeControllerManager:
       enabled: false
     kubeEtcd:
@@ -75,6 +89,8 @@ spec:
     kubelet:
       enabled: true
       serviceMonitor:
+        # cAdvisor is ~22k samples; the chart's 10s default is the busiest scrape
+        cAdvisorInterval: 30s
         metricRelabelings:
           # Drop high cardinality labels
           - action: labeldrop
