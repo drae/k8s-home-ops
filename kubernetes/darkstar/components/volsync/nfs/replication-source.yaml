@@ -8,8 +8,10 @@ spec:
   sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
     # Once a night so zstore wakes once: 02:30 UTC is 03:30 BST / 02:30 GMT,
-    # inside the 02:00-05:00 cheap-rate window either side of the clock change
-    schedule: "30 2 * * *"
+    # inside the 02:00-05:00 cheap-rate window either side of the clock change.
+    # H is not valid cron: the volsync-schedule-jitter MutatingAdmissionPolicy
+    # (apps/storage/volsync) swaps it for a per-app minute in 30-39
+    schedule: "H 2 * * *"
   restic:
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-local-hostpath}"
