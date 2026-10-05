@@ -49,8 +49,57 @@ spec:
               capabilities:
                 drop:
                   - ALL
+      rescan:
+        # Refresh is metadata-only ("rescan after refresh" = afterManual); one
+        # full disk scan a night, just after VolSync while zstore is already up
+        type: cronjob
+        cronjob:
+          schedule: "35 2 * * *"
+          backoffLimit: 2
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 1
+          successfulJobsHistory: 1
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 2000
+            runAsGroup: 2000
+        containers:
+          app:
+            image:
+              repository: docker.io/curlimages/curl
+              tag: 8.22.0@sha256:58adaa4e8dca9c988bae2aba4ab3434a0bb2da16bbe3f92dec39ec7785166777
+            command:
+              - /bin/sh
+              - -ec
+            args:
+              - |
+                api=http://radarr.downloads.svc.cluster.local:7878/api/v3
+                h="X-Api-Key: $RADARR__AUTH__APIKEY"
+                # Re-assert the setting so a restored database can't undo it
+                curl -fsS -H "$h" "$api/config/mediamanagement" \
+                  | sed -E 's/"rescanAfterRefresh": *"[A-Za-z]+"/"rescanAfterRefresh": "afterManual"/' \
+                  | curl -fsS -X PUT -H "$h" -H "Content-Type: application/json" --data-binary @- "$api/config/mediamanagement" >/dev/null
+                curl -fsS -X POST -H "$h" -H "Content-Type: application/json" \
+                  -d '{"name": "RescanMovie"}' "$api/command" >/dev/null
+            envFrom:
+              - secretRef:
+                  name: radarr-secret
+            resources:
+              requests:
+                cpu: 5m
+                memory: 16M
+              limits:
+                memory: 32M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
     service:
       app:
+        controller: radarr
         ports:
           http:
             port: *port
@@ -69,15 +118,27 @@ spec:
     persistence:
       config:
         existingClaim: "${VOLSYNC_CLAIM}"
+        advancedMounts:
+          radarr:
+            app:
+              - path: /config
       tmp:
         type: emptyDir
+        advancedMounts:
+          radarr:
+            app:
+              - path: /tmp
       media:
         type: nfs
         server: 10.1.10.10
         path: /mnt/zstore/media
-        globalMounts:
-          - path: /mnt/media
+        advancedMounts:
+          radarr:
+            app:
+              - path: /mnt/media
       cache:
         existingClaim: radarr-cache
-        globalMounts:
-          - path: /config/MediaCover
+        advancedMounts:
+          radarr:
+            app:
+              - path: /config/MediaCover
