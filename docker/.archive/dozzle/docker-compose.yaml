@@ -1,7 +1,7 @@
 ---
 services:
   dozzle:
-    image: docker.io/amir20/dozzle:v11.2.0
+    image: docker.io/amir20/dozzle:v11.3.0
     container_name: dozzle
     restart: unless-stopped
     labels:
