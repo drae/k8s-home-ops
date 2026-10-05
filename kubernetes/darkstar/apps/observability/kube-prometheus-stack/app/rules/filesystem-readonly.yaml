@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: filesystem-readonly
+spec:
+  groups:
+    - name: filesystem-readonly
+      rules:
+        # Talos' EPHEMERAL (/var: etcd, containerd, kubelet) going read-only is
+        # how a worn-out system SSD usually fails
+        - alert: NodeFilesystemReadOnly
+          annotations:
+            summary: "{{ $labels.mountpoint }} ({{ $labels.device }}) on {{ $labels.instance }} is read-only"
+          expr: node_filesystem_readonly{mountpoint="/var", device=~"/dev/.+"} == 1
+          for: 5m
+          labels:
+            severity: critical

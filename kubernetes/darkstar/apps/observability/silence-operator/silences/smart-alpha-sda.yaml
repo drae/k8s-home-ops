@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# alpha's Intel 530 system SSD is past rated endurance (reserve space at 1/10);
+# known, replacement pending. Remove this with the drive. New errors still
+# alert via SmartDeviceErrorsIncreasing.
+apiVersion: observability.giantswarm.io/v1alpha2
+kind: Silence
+metadata:
+  name: smart-alpha-sda-worn-out
+spec:
+  matchers:
+    - name: alertname
+      value: SmartDeviceTestFailed
+    - name: instance
+      value: alpha.starstreak.net
+    - name: device
+      value: sda

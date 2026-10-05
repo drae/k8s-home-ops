@@ -71,3 +71,14 @@ spec:
           for: 15m
           labels:
             severity: critical
+        # SmartDeviceTestFailed stays firing once a drive fails, so a silence on
+        # it would hide further decline; this catches new errors on any drive
+        - alert: SmartDeviceErrorsIncreasing
+          annotations:
+            summary:
+              Drive {{ $labels.device }} on {{ $labels.instance }} logged new
+              {{ $labels.attribute_name }} errors in the last hour.
+          expr: |
+            delta(smartctl_device_attribute{attribute_value_type="raw", attribute_name=~"Reallocated_Sector_Ct|Reported_Uncorrect|Uncorrectable_Error_Cnt|Offline_Uncorrectable|Current_Pending_Sector|Program_Fail_Count|Erase_Fail_Count|End-to-End_Error|UDMA_CRC_Error_Count"}[1h]) > 0
+          labels:
+            severity: critical
