@@ -1,0 +1,51 @@
+---
+# Spread the nightly ReplicationSources over 02:30-02:39 UTC instead of all at
+# 02:30. The volsync component sets a sentinel "H <hour> * * *" schedule; this
+# replaces the H with 30 + (sum of the name's character positions % 10). The
+# minute is fixed per app, so Flux's server-side dry-run sees no drift. The
+# window stays under the 10 min zstore spin-down (hdparm -S 120), so the disks
+# wake once. VolSync's CRD rejects H, so a missing policy fails loudly.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/admissionregistration.k8s.io/mutatingadmissionpolicy_v1.json
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: volsync-schedule-jitter
+spec:
+  failurePolicy: Fail
+  reinvocationPolicy: Never
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["volsync.backube"]
+        apiVersions: ["v1alpha1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["replicationsources"]
+  matchConditions:
+    - name: hashed-schedule
+      expression: >-
+        has(object.spec.trigger) && has(object.spec.trigger.schedule) &&
+        object.spec.trigger.schedule.startsWith('H ')
+  variables:
+    - name: minute
+      expression: >-
+        30 + object.metadata.name.split('')
+          .map(c, 'abcdefghijklmnopqrstuvwxyz0123456789-'.indexOf(c))
+          .sum() % 10
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          Object{
+            spec: Object.spec{
+              trigger: Object.spec.trigger{
+                schedule: string(variables.minute) + object.spec.trigger.schedule.substring(1)
+              }
+            }
+          }
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/admissionregistration.k8s.io/mutatingadmissionpolicybinding_v1.json
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: volsync-schedule-jitter
+spec:
+  policyName: volsync-schedule-jitter
