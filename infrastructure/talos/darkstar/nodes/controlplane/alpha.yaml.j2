@@ -100,6 +100,10 @@ params:
   devices.system.cpu.cpu3.cpufreq.energy_performance_preference: balance_power
   devices.system.cpu.cpu4.cpufreq.energy_performance_preference: balance_power
   devices.system.cpu.cpu5.cpufreq.energy_performance_preference: balance_power
+  # The i5-8400 (65 W) sits in an M720q chassis built for 35 W T-series parts;
+  # cap it to T-series limits: PL1 35 W sustained, PL2 50 W burst
+  class.powercap.intel-rapl:0.constraint_0_power_limit_uw: "35000000"
+  class.powercap.intel-rapl:0.constraint_1_power_limit_uw: "50000000"
 ---
 # Frigate media, mounted at /var/mnt/usb
 apiVersion: v1alpha1
