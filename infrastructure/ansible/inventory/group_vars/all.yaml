@@ -17,7 +17,6 @@ os_packages_install_base:
   - lvm2
   - net-tools
   - nfs-common
-  - ntpdate
   - psmisc
   - software-properties-common
   - tmux
