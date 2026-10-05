@@ -350,8 +350,10 @@
       ansible.builtin.copy:
         dest: /etc/smartd.conf
         mode: "0644"
+        # Short test Sundays 03:00, long test (~7 h spun up) first Saturday of
+        # the month 02:00 - both start in the 02:00-05:00 cheap-rate window
         content: |
-          DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -W 4,35,40
+          DEVICESCAN -a -o on -S on -n standby,q -s (S/../../7/03|L/../0[1-7]/6/02) -W 4,35,40
       notify: Restart smartd
 
     # Disable swap
@@ -384,7 +386,8 @@
     - name: Ensure apparmor=0 is set in GRUB_CMDLINE_LINUX
       ansible.builtin.lineinfile:
         path: /etc/default/grub
-        regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
+        # Only matches while the option is missing, so reruns don't append it again
+        regexp: "^(GRUB_CMDLINE_LINUX=\"(?!.*\\bapparmor=0(?:\\s|\")).*)\"$"
         line: "\\1 apparmor=0\""
         backrefs: true
         state: present
@@ -394,7 +397,8 @@
     - name: Ensure mitigations=off is set in GRUB_CMDLINE_LINUX
       ansible.builtin.lineinfile:
         path: /etc/default/grub
-        regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
+        # Only matches while the option is missing, so reruns don't append it again
+        regexp: "^(GRUB_CMDLINE_LINUX=\"(?!.*\\bmitigations=off(?:\\s|\")).*)\"$"
         line: "\\1 mitigations=off\""
         backrefs: true
         state: present
