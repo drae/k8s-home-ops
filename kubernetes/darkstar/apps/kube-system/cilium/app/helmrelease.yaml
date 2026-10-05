@@ -88,6 +88,7 @@ spec:
         enabled: true
         serviceMonitor:
           enabled: true
+          interval: 30s
       replicas: 1
       rollOutPods: true
     pmtuDiscovery:
@@ -96,6 +97,7 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
+        interval: 30s
         trustCRDsExist: true # for CI or local Helm builds, such as flux-local
     rollOutCiliumPods: true
     routingMode: native

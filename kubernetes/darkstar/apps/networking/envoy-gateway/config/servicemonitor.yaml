@@ -14,5 +14,5 @@ spec:
   endpoints:
     - port: metrics
       path: /metrics
-      interval: 10s
+      interval: 30s
       honorLabels: true
