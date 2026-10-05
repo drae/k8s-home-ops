@@ -11,7 +11,7 @@
     "github>drae/k8s-home-ops//.renovate/overrides.json5",
     ":timezone(Europe/London)",
   ],
-  ignorePaths: ["**/kubernetes/**/.archive/**", "**/resources/**"],
+  ignorePaths: ["**/kubernetes/**/.archive/**", "**/docker/.archive/**", "**/resources/**"],
   suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
   "docker-compose": {
     managerFilePatterns: ["/(^|/)(?:docker-)?compose[^/]*\\.ya?ml(.j2)?$/"],
