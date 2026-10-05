@@ -52,10 +52,44 @@ type: RBAC
 ---
 apiVersion: v1alpha1
 kind: KubeAuditPolicyConfig
+# Keep metadata for changes only. Reads, lease renewals, events and health
+# probes made up ~90% of a 100 MB-per-35-min log on the system SSD.
 configuration:
   apiVersion: audit.k8s.io/v1
   kind: Policy
+  omitStages:
+    - RequestReceived
   rules:
+    - level: None
+      verbs:
+        - get
+        - list
+        - watch
+    - level: None
+      resources:
+        - group: coordination.k8s.io
+          resources:
+            - leases
+        - group: ""
+          resources:
+            - events
+        - group: events.k8s.io
+          resources:
+            - events
+        - group: authentication.k8s.io
+          resources:
+            - tokenreviews
+        - group: authorization.k8s.io
+          resources:
+            - subjectaccessreviews
+            - selfsubjectaccessreviews
+    - level: None
+      nonResourceURLs:
+        - /healthz*
+        - /livez*
+        - /readyz*
+        - /version
+        - /metrics
     - level: Metadata
 ---
 apiVersion: v1alpha1

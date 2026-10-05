@@ -145,4 +145,8 @@ spec:
       tmp:
         type: emptyDir
       transcode:
-        type: emptyDir
+        existingClaim: plex-transcode
+        advancedMounts:
+          plex:
+            app:
+              - path: /transcode

@@ -10,3 +10,17 @@ spec:
     requests:
       storage: 50Gi
   storageClassName: topolvm-thin-provisioner
+---
+# Transcode scratch on the NVMe thin pool instead of an emptyDir on the
+# system SSD (~35 GB/day of writes there)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-transcode
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+  storageClassName: topolvm-thin-provisioner
