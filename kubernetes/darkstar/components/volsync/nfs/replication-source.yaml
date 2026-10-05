@@ -7,7 +7,9 @@ metadata:
 spec:
   sourcePVC: "${VOLSYNC_CLAIM:-${APP}}"
   trigger:
-    schedule: "0 */12 * * *"
+    # Once a night so zstore wakes once: 02:30 UTC is 03:30 BST / 02:30 GMT,
+    # inside the 02:00-05:00 cheap-rate window either side of the clock change
+    schedule: "30 2 * * *"
   restic:
     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:-1Gi}"
     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:-local-hostpath}"
@@ -18,8 +20,8 @@ spec:
       fsGroup: ${APP_GID:-2000}
     pruneIntervalDays: 7
     retain:
-      hourly: 24
-      daily: 7
+      daily: 14
+      weekly: 4
     repository: "${APP}-volsync-nfs"
     storageClassName: "${VOLSYNC_STORAGECLASS:-topolvm-thin-provisioner}"
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:-topolvm-thin-provisioner}"
