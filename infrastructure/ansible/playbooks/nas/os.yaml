@@ -325,7 +325,7 @@
       ansible.builtin.file:
         path: "{{ zfs_exporter_chris_repo_path }}"
         state: absent
-      delegate_to: "{{ groups['storage'][0] }}"
+      delegate_to: localhost
       become: false
 
     - name: Create service group for zfs_exporter
