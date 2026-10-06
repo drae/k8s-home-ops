@@ -53,6 +53,12 @@
       tags:
         - skip_ansible_lint
 
+    - name: Restart apt-daily-upgrade timer
+      ansible.builtin.systemd:
+        name: apt-daily-upgrade.timer
+        daemon_reload: true
+        state: restarted
+
   tasks:
     # Set locale
     - name: Set timezone
@@ -76,6 +82,21 @@
         repo: "{{ item }}"
         update_cache: true
       loop: "{{ os_packages_repositories | default([]) }}"
+
+    # 10_linux_zfs runs `zpool import -a` and `zfs list` on every update-grub
+    # (kernel installs/removals), spinning up zstore. Root is ext4 on the SSD,
+    # so it finds nothing. A statoverride survives grub package upgrades. Must
+    # run before the upgrade below, which can pull a kernel.
+    - name: Check for a statoverride on 10_linux_zfs
+      ansible.builtin.command: dpkg-statoverride --list /etc/grub.d/10_linux_zfs
+      register: grub_zfs_statoverride
+      changed_when: false
+      failed_when: grub_zfs_statoverride.rc not in [0, 1]
+
+    - name: Stop update-grub probing the zfs pools
+      ansible.builtin.command: dpkg-statoverride --update --add root root 0644 /etc/grub.d/10_linux_zfs
+      when: grub_zfs_statoverride.rc == 1
+      changed_when: true
 
     - name: Upgrade all system packages
       ansible.builtin.apt:
@@ -447,6 +468,63 @@
         content: |
           KERNEL=="cpu", SUBSYSTEM=="event_source", ACTION=="add", \
             RUN+="/bin/sh -c 'echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor'"
+
+    # Onboard AHCI only (just the SSD); the zstore HDDs sit on the SAS2008 HBA,
+    # which has no ALPM. Takes effect on next boot.
+    - name: SATA link power management on onboard ports
+      ansible.builtin.copy:
+        dest: /etc/udev/rules.d/sata-alpm.rules
+        mode: "0644"
+        content: |
+          ACTION=="add", SUBSYSTEM=="scsi_host", KERNEL=="host*", DRIVERS=="ahci", ATTR{link_power_management_policy}="med_power_with_dipm"
+
+    # Hygiene rather than measurable savings: fewer timer wakeups. The
+    # writeback interval only affects the ext4 root; ZFS uses its own txg timer.
+    - name: Power-related sysctls
+      ansible.posix.sysctl:
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        sysctl_file: /etc/sysctl.d/90-power.conf
+        reload: true
+      loop:
+        - name: kernel.nmi_watchdog
+          value: "0"
+        - name: vm.dirty_writeback_centisecs
+          value: "1500"
+
+    # Default is 06:00 + up to 60 min; move into the 02:00-05:00 cheap-rate
+    # window. The empty OnCalendar= clears the packaged schedule.
+    - name: Create apt-daily-upgrade timer drop-in directory
+      ansible.builtin.file:
+        path: /etc/systemd/system/apt-daily-upgrade.timer.d
+        state: directory
+        mode: "0755"
+
+    - name: Run unattended upgrades in the cheap-rate window
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/apt-daily-upgrade.timer.d/override.conf
+        mode: "0644"
+        content: |
+          [Timer]
+          OnCalendar=
+          OnCalendar=*-*-* 02:15
+          RandomizedDelaySec=30m
+      notify: Restart apt-daily-upgrade timer
+
+    # Packaged cron runs these at 00:24; a scrub of zstore keeps it spun up for
+    # hours, so start in the cheap-rate window instead
+    - name: Monthly zfs trim and scrub at 02:00
+      ansible.builtin.copy:
+        dest: /etc/cron.d/zfsutils-linux
+        mode: "0644"
+        content: |
+          PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+          # TRIM the first Sunday of every month.
+          0 2 1-7 * * root if [ $(date +\%w) -eq 0 ] && [ -x /usr/lib/zfs-linux/trim ]; then /usr/lib/zfs-linux/trim; fi
+
+          # Scrub the second Sunday of every month.
+          0 2 8-14 * * root if [ $(date +\%w) -eq 0 ] && [ -x /usr/lib/zfs-linux/scrub ]; then /usr/lib/zfs-linux/scrub; fi
 
     # Add 'shared' user
     - name: Add the group 'shared'
