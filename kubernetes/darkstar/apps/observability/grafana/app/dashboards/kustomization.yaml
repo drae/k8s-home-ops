@@ -18,6 +18,12 @@ configMapGenerator:
   - name: dashboard-zfs-vdev-list
     files:
       - ./zfs-vdev-list.json
+  - name: dashboard-home
+    files:
+      - ./home.json
+    options:
+      annotations:
+        grafana_folder: System
   - name: dashboard-power
     files:
       - ./power.json
