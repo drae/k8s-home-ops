@@ -70,6 +70,8 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 10.1.10.32
+        # The LB pool is IPv4-only; an existing dual-stack Service only drops IPv6 when told explicitly
+        ipFamilyPolicy: SingleStack
         externalTrafficPolicy: Local
         ports:
           http:
