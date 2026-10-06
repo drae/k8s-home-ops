@@ -31,6 +31,8 @@ configs:
       [misc]
       api_key = ${SABNZBD_API_KEY}
       host_whitelist = sabnzbd.starstreak.net
+      # LAN, Tailscale (CGNAT), and Docker bridges (Traefik hop; XFF is also checked)
+      local_ranges = 10.1.10.0/24, 100.64.0.0/10, 172.16.0.0/12
       download_dir = /intermediate
       direct_unpack = 0
       complete_dir = /downloads/usenet/completed
