@@ -1,7 +1,7 @@
 ---
 services:
   traefik:
-    image: docker.io/library/traefik:v3.7.13
+    image: docker.io/library/traefik:v3.7.14
     container_name: traefik
     restart: unless-stopped
     network_mode: host # reach host-network containers (tvheadend) on 127.0.0.1
