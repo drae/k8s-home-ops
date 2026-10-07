@@ -37,6 +37,9 @@ spec:
         kubeApiserverBurnrate: false
         kubeApiserverHistogram: false
         kubeApiserverSlos: false
+      # Replaced by rules/node-saturation.yaml, which exempts apollo
+      disabled:
+        NodeSystemSaturation: true
     crds:
       enabled: true
     # Individual stack components
