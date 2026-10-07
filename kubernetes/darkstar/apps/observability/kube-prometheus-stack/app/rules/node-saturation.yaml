@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: node-saturation
+spec:
+  groups:
+    - name: node-saturation
+      rules:
+        # Upstream NodeSystemSaturation, minus apollo. Load average counts
+        # threads in D state, so apollo's 16 nfsd threads blocked on zstore
+        # reads push a 2-core box past load 4 with the CPU mostly idle
+        - alert: NodeSystemSaturation
+          annotations:
+            description: |
+              System load per core at {{ $labels.instance }} has been above 2 for the last 15 minutes, is currently at {{ printf "%.2f" $value }}.
+              This might indicate this instance resources saturation and can cause it becoming unresponsive.
+            runbook_url: https://runbooks.prometheus-operator.dev/runbooks/node/nodesystemsaturation
+            summary: System saturated, load per core is very high.
+          expr: |
+            node_load1{job="node-exporter", instance!="10.1.10.10"}
+            / count without (cpu, mode) (node_cpu_seconds_total{job="node-exporter", mode="idle", instance!="10.1.10.10"}) > 2
+          for: 15m
+          labels:
+            severity: warning
+        # apollo gets CPU pressure instead, which ignores I/O waits. Its
+        # 7-day peak (15m average) was 0.23 during Plex's nightly NFS reads
+        - alert: NodeCPUPressure
+          annotations:
+            description: |
+              Tasks on {{ $labels.instance }} have been waiting for CPU {{ $value | humanizePercentage }} of the time for the last 15 minutes.
+            summary: CPU is saturated.
+          expr: rate(node_pressure_cpu_waiting_seconds_total{job="node-exporter", instance="10.1.10.10"}[5m]) > 0.5
+          for: 15m
+          labels:
+            severity: warning
