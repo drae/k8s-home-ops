@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_backendtrafficpolicies.yaml
+# Replaces the gateway-wide policy for this route, minus compression. Envoy's
+# compressor strips Accept-Encoding, so Tautulli serves >100KB uncompressed CSS
+# that CherryPy's cache never stores, stalling every later request by 5s.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: tautulli
+spec:
+  retry:
+    numRetries: 2
+    retryOn:
+      triggers:
+        - reset
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: tautulli
+  tcpKeepalive: {}
+  timeout:
+    http:
+      requestTimeout: 0s
