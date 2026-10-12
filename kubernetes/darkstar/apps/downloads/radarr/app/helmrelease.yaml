@@ -34,15 +34,17 @@ spec:
               RADARR__AUTHENTICATION_METHOD: External
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
               RADARR__THEME: dark
+              # W^X double-mapping holds ~80MB of unreclaimable memfd shmem
+              DOTNET_EnableWriteXorExecute: "0"
             envFrom:
               - secretRef:
                   name: radarr-secret
             resources:
               requests:
-                memory: 250Mi
+                memory: 512Mi
                 cpu: 25m
               limits:
-                memory: 500Mi
+                memory: 1Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
