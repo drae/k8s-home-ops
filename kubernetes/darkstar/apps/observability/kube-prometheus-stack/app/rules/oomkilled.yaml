@@ -13,6 +13,11 @@ spec:
             summary: Container {{ $labels.container }} of pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is out of memory
             message: Container {{ $labels.container }} of pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is out of memory
             description: Container {{ $labels.container }} of pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is out of memory
-          expr: kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}==1
+          # last_terminated_reason stays 1 until the next termination, so on its
+          # own it never resolves; only fire while the OOM restart is recent
+          expr: |
+            increase(kube_pod_container_status_restarts_total[10m]) > 0
+            and on (namespace, pod, container)
+            kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1
           labels:
             severity: critical
