@@ -28,7 +28,7 @@ services:
       - data:/data
 
   dnsweaver:
-    image: ghcr.io/maxfield-allison/dnsweaver:v3.1.0
+    image: ghcr.io/maxfield-allison/dnsweaver:v3.1.1
     container_name: dnsweaver
     restart: unless-stopped
     environment:
