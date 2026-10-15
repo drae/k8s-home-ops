@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/drae/lvm-exporter
-              tag: v0.6.2@sha256:50660021a328edb2f991362cdee13209a29e380d00bd450cb26be57f8eab1a2e
+              tag: v0.6.3@sha256:3cb05669d857a0be55be751196062940f138c4adc4c1b6d3838841908f90f43c
             securityContext:
               privileged: true
     service:
