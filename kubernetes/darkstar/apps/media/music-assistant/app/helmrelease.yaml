@@ -39,25 +39,6 @@ spec:
                 add:
                   - SYS_ADMIN
                   - DAC_READ_SEARCH
-          alexa-skill:
-            image:
-              repository: ghcr.io/alams154/music-assistant-skill
-              tag: latest@sha256:8e8bfc59af754e6892599b36e9d2ba154e2e4ddb4461118900764477d4adb70e
-            env:
-              TZ: Europe/London
-              SKILL_HOSTNAME: mass-ax.starstreak.net
-              MA_HOSTNAME: mass-st.starstreak.net
-              PORT: 5000
-              LOCALE: en-GB
-              AWS_DEFAULT_REGION: eu-west-2
-            envFrom:
-              - secretRef:
-                  name: mass-alexa-secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                  - ALL
     defaultPodOptions:
       # Host network for player discovery (mDNS/SSDP) and stream URLs on the LAN
       hostNetwork: true
@@ -72,7 +53,6 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 10.1.10.38
-        ipFamilyPolicy: PreferDualStack
         ports:
           http:
             port: &port 8095
@@ -98,32 +78,6 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-      stream:
-        annotations:
-          gatus.home-operations.com/enabled: "false"
-        hostnames:
-          - mass-st.starstreak.net
-        parentRefs:
-          - name: envoy-external
-            namespace: networking
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: 8097
-      alexa-skill:
-        annotations:
-          gatus.home-operations.com/enabled: "false"
-        hostnames:
-          - mass-ax.starstreak.net
-        parentRefs:
-          - name: envoy-external
-            namespace: networking
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: alexa-skill
-                port: 5000
     persistence:
       data:
         existingClaim: music-assistant-config
