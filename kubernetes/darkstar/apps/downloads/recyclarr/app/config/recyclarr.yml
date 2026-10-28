@@ -66,6 +66,20 @@ radarr:
               - Remux-1080p
               - WEBDL-1080p
               - WEBRip-1080p
+      - trash_id: 2cf36c1f0106ffac993be003ade51865 # [SQP] SQP-3
+        reset_unmatched_scores:
+          enabled: true
+        qualities:
+          - name: WEB|Remux||2160p
+            qualities:
+              - Remux-2160p
+              - WEBDL-2160p
+              - WEBRip-2160p
+          - name: WEB|Remux|1080p
+            qualities:
+              - Remux-1080p
+              - WEBDL-1080p
+              - WEBRip-1080p
       - trash_id: a7bb1539fd147256b21b1098f3dc2016 # [SQP] SQP-5
         reset_unmatched_scores:
           enabled: true
@@ -117,23 +131,13 @@ radarr:
           - name: "[SQP] SQP-5"
             score: 1040
 
-      # Not bothered about which positional audio format is used - remove these if that changes
-      - trash_ids:
-          - 496f355514737f7d83bf7aa4d24f8169 # TrueHD Atmos
-          - 2f22d89048b01681dde8afe203bf2e95 # DTS-X
-          - 417804f7f2c4308c1f4c5d380d4c4475 # Atmos (undefined)
-          - 1af239278386be2919e1bcee0bde047e # DD+Atmos
-        assign_scores_to:
-          - name: "[SQP] SQP-2"
-            score: 3000
-          - name: "[SQP] SQP-5"
-            score: 3000
-
       # Disable scoring of x264 - single radarr instance
       - trash_ids:
           - 2899d84dc9372de3408e6d8cc18e9666
         assign_scores_to:
           - name: "[SQP] SQP-2"
+            score: 0
+          - name: "[SQP] SQP-3"
             score: 0
           - name: "[SQP] SQP-5"
             score: 0
