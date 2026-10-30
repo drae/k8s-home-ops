@@ -24,6 +24,6 @@ spec:
     kind: OCIRepository
     name: snapshot-controller
   values:
-    monitoring:
+    controller:
       serviceMonitor:
-        enabled: true
+        create: true
