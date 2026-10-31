@@ -33,6 +33,8 @@ spec:
               RADARR__PORT: &port 7878
               RADARR__AUTHENTICATION_METHOD: External
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              # Host names clients use: the gateway, and the service from inside the cluster
+              RADARR__SERVER__ALLOWEDHOSTS: radarr.starstreak.net,radarr,radarr.downloads,radarr.downloads.svc,radarr.downloads.svc.cluster.local
               RADARR__THEME: dark
               # W^X double-mapping holds ~80MB of unreclaimable memfd shmem
               DOTNET_EnableWriteXorExecute: "0"

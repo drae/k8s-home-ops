@@ -35,6 +35,8 @@ spec:
               SONARR__PORT: &port 8989
               SONARR__AUTHENTICATION_METHOD: External
               SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              # Host names clients use: the gateway, and the service from inside the cluster
+              SONARR__SERVER__ALLOWEDHOSTS: sonarr.starstreak.net,sonarr,sonarr.downloads,sonarr.downloads.svc,sonarr.downloads.svc.cluster.local
               SONARR__THEME: dark
             envFrom:
               - secretRef:
