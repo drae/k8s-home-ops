@@ -24,6 +24,23 @@ spec:
           - name: alertname
             value: InfoInhibitor
             matchType: =
+      - receiver: "null"
+        matchers:
+          - name: alertname
+            value: KubeHpaMaxedOut
+            matchType: =
+      # alpha's system SSD is past rated endurance; remove with the drive
+      - receiver: "null"
+        matchers:
+          - name: alertname
+            value: SmartDeviceTestFailed
+            matchType: =
+          - name: instance
+            value: alpha.starstreak.net
+            matchType: =
+          - name: device
+            value: sda
+            matchType: =
       - receiver: discord
         matchers:
           - name: severity
