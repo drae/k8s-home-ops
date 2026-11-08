@@ -24,11 +24,6 @@ spec:
           - name: alertname
             value: InfoInhibitor
             matchType: =
-      - receiver: "null"
-        matchers:
-          - name: alertname
-            value: KubeHpaMaxedOut
-            matchType: =
       # alpha's system SSD is past rated endurance; remove with the drive
       - receiver: "null"
         matchers:
