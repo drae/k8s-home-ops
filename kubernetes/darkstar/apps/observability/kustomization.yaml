@@ -9,7 +9,6 @@ resources:
   - ./fluent-bit/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
-  - ./kromgo/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./lvm-exporter/ks.yaml
   - ./node-exporter/ks.yaml
