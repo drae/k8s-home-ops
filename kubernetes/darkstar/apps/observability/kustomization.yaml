@@ -13,7 +13,6 @@ resources:
   - ./lvm-exporter/ks.yaml
   - ./node-exporter/ks.yaml
   - ./prometheus-adapter/ks.yaml
-  - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./victoria-logs/ks.yaml
 components:

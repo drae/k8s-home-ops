@@ -1,0 +1,4 @@
+---
+# Grafana chart values, under spec.values in grafana/app/helmrelease.yaml
+imageRenderer:
+  enabled: true
