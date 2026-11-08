@@ -25,7 +25,7 @@ spec:
       APP: *appname
       GATUS_SUBDOMAIN: hass
       VOLSYNC_CLAIM: home-assistant-config
-      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_CAPACITY: 20Gi
   dependsOn:
     - name: topolvm
       namespace: storage
