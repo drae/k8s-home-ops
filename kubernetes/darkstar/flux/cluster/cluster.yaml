@@ -65,7 +65,6 @@ spec:
                       name: RetryOnFailure
                   rollback:
                     cleanupOnFail: true
-                    recreate: true
                   timeout: 10m
                   upgrade:
                     cleanupOnFail: true
