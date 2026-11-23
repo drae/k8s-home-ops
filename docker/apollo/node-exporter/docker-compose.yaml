@@ -1,7 +1,7 @@
 ---
 services:
   node-exporter:
-    image: quay.io/prometheus/node-exporter:v1.12.1
+    image: quay.io/prometheus/node-exporter:v1.13.1
     container_name: node-exporter
     restart: always
     # RAPL energy_uj is root-only (0400); root as file owner reads it without caps
